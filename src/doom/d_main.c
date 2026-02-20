@@ -100,6 +100,7 @@ char *          iwadfile;
 
 
 boolean		devparm;	// started game with -devparm
+boolean		showfps;	// FPS counter display toggle
 boolean         nomonsters;	// checkparm of -nomonsters
 boolean         respawnparm;	// checkparm of -respawn
 boolean         fastparm;	// checkparm of -fast
@@ -122,6 +123,9 @@ boolean         main_loop_started = false;
 
 int             show_endoom = 1;
 int             show_diskicon = 1;
+
+// Goblin Dice Rollaz: crit powerup bonus configurable
+extern int      crit_boost_bonus;
 
 
 void D_ConnectNetGame(void);
@@ -353,16 +357,21 @@ void D_BindVariables(void)
     NET_BindVariables();
 
     M_BindIntVariable("mouse_sensitivity",      &mouseSensitivity);
+    M_BindFloatVariable("mouse_sensitivity_scale", &mouse_sensitivity_scale);
     M_BindIntVariable("sfx_volume",             &sfxVolume);
     M_BindIntVariable("music_volume",           &musicVolume);
     M_BindIntVariable("show_messages",          &showMessages);
     M_BindIntVariable("screenblocks",           &screenblocks);
     M_BindIntVariable("detaillevel",            &detailLevel);
+    M_BindIntVariable("r_spritedetail",         &r_spritedetail);
     M_BindIntVariable("snd_channels",           &snd_channels);
     M_BindIntVariable("vanilla_savegame_limit", &vanilla_savegame_limit);
     M_BindIntVariable("vanilla_demo_limit",     &vanilla_demo_limit);
     M_BindIntVariable("show_endoom",            &show_endoom);
     M_BindIntVariable("show_diskicon",          &show_diskicon);
+
+    // Goblin Dice Rollaz: crit powerup settings
+    M_BindIntVariable("crit_boost_bonus",        &crit_boost_bonus);
 
     // Multiplayer chat macros
 
@@ -1392,8 +1401,9 @@ void D_DoomMain (void)
     //
 
     devparm = M_CheckParm ("-devparm");
+    showfps = false;
 
-    I_DisplayFPSDots(devparm);
+    I_DisplayFPSDots(devparm || showfps);
 
     //!
     // @category net

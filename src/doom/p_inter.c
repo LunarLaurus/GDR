@@ -46,7 +46,7 @@
 
 #define CRIT_CHANCE	10
 #define CRIT_MULTIPLIER	2
-#define CRIT_BOOST_BONUS	15
+int	crit_boost_bonus = 15;
 
 
 
@@ -829,7 +829,7 @@ P_DamageMobj
         int effectiveCritChance = CRIT_CHANCE;
         if (source->player->powers[pw_critboost])
         {
-            effectiveCritChance += CRIT_BOOST_BONUS;
+            effectiveCritChance += crit_boost_bonus;
         }
         if ((P_Random() % 100) < effectiveCritChance)
         {
