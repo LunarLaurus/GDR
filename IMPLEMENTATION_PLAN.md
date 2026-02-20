@@ -84,7 +84,7 @@
 - [x] Add unique pickup sprite and sound
 - [x] Add duration timer and HUD display
 - [x] Prevent unintended stacking with other damage buffs
-- [ ] Add difficulty-based spawn tuning
+- [x] Add difficulty-based spawn tuning
 - [ ] Add multiplayer deterministic sync validation
 - [x] Add Dice Fortune powerup (guaranteed crit on next hit)
 - [ ] Implement one-shot guaranteed crit flag
