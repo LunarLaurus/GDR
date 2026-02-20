@@ -643,39 +643,39 @@ static const char *banners[] =
 {
     // doom2.wad
     "                         "
-    "DOOM 2: Hell on Earth v%i.%i"
+    "Goblin Dice Rollaz v%i.%i"
     "                           ",
     // doom2.wad v1.666
     "                         "
-    "DOOM 2: Hell on Earth v%i.%i66"
+    "Goblin Dice Rollaz v%i.%i"
     "                          ",
     // doom1.wad
     "                            "
-    "DOOM Shareware Startup v%i.%i"
+    "Goblin Dice Rollaz v%i.%i"
     "                           ",
     // doom.wad
     "                            "
-    "DOOM Registered Startup v%i.%i"
+    "Goblin Dice Rollaz v%i.%i"
     "                           ",
     // Registered DOOM uses this
     "                          "
-    "DOOM System Startup v%i.%i"
+    "Goblin Dice Rollaz v%i.%i"
     "                          ",
     // Doom v1.666
     "                          "
-    "DOOM System Startup v%i.%i66"
-    "                          "
+    "Goblin Dice Rollaz v%i.%i"
+    "                          ",
     // doom.wad (Ultimate DOOM)
     "                         "
-    "The Ultimate DOOM Startup v%i.%i"
+    "Goblin Dice Rollaz v%i.%i"
     "                        ",
     // tnt.wad
     "                     "
-    "DOOM 2: TNT - Evilution v%i.%i"
+    "Goblin Dice Rollaz v%i.%i"
     "                           ",
     // plutonia.wad
     "                   "
-    "DOOM 2: Plutonia Experiment v%i.%i"
+    "Goblin Dice Rollaz v%i.%i"
     "                           ",
 };
 
@@ -866,15 +866,15 @@ static void D_SetGameDescription(void)
         {
             // Ultimate Doom
 
-            gamedescription = GetGameName("The Ultimate DOOM");
+            gamedescription = GetGameName("Goblin Dice Rollaz");
         }
         else if (gamemode == registered)
         {
-            gamedescription = GetGameName("DOOM Registered");
+            gamedescription = GetGameName("Goblin Dice Rollaz");
         }
         else if (gamemode == shareware)
         {
-            gamedescription = GetGameName("DOOM Shareware");
+            gamedescription = GetGameName("Goblin Dice Rollaz");
         }
     }
     else
@@ -891,15 +891,15 @@ static void D_SetGameDescription(void)
         }
         else if (logical_gamemission == doom2)
         {
-            gamedescription = GetGameName("DOOM 2: Hell on Earth");
+            gamedescription = GetGameName("Goblin Dice Rollaz");
         }
         else if (logical_gamemission == pack_plut)
         {
-            gamedescription = GetGameName("DOOM 2: Plutonia Experiment"); 
+            gamedescription = GetGameName("Goblin Dice Rollaz");
         }
         else if (logical_gamemission == pack_tnt)
         {
-            gamedescription = GetGameName("DOOM 2: TNT - Evilution");
+            gamedescription = GetGameName("Goblin Dice Rollaz");
         }
     }
 
@@ -929,15 +929,14 @@ static boolean D_AddFile(char *filename)
 static const char *copyright_banners[] =
 {
     "===========================================================================\n"
-    "ATTENTION:  This version of DOOM has been modified.  If you would like to\n"
-    "get a copy of the original game, call 1-800-IDGAMES or see the readme file.\n"
-    "        You will not receive technical support for modified games.\n"
+    "              GOBLIN DICE ROLLAZ - Slay dwarfs, roll dice!\n"
+    "                  Based on Chocolate Doom engine\n"
     "                      press enter to continue\n"
     "===========================================================================\n",
 
     "===========================================================================\n"
-    "                 Commercial product - do not distribute!\n"
-    "         Please report software piracy to the SPA: 1-800-388-PIR8\n"
+    "                 Goblin Dice Rollaz v1.0.0\n"
+    "              Kill dwarfs and roll for damage!\n"
     "===========================================================================\n",
 
     "===========================================================================\n"
