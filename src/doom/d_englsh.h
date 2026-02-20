@@ -52,15 +52,15 @@
 "isn't even remotely fair.\n\n"PRESSYN
 
 #define SWSTRING	\
-"this is the shareware version of doom.\n\n"\
-"you need to order the entire trilogy.\n\n"PRESSKEY
+"this is the shareware version of\nGoblin Dice Rollaz.\n\n"\
+"you need to order the entire game.\n\n"PRESSKEY
 
 #define MSGOFF	"Messages OFF"
 #define MSGON		"Messages ON"
 #define NETEND	"you can't end a netgame!\n\n"PRESSKEY
 #define ENDGAME	"are you sure you want to end the game?\n\n"PRESSYN
 
-#define DOSY		"(press y to quit to dos.)"
+#define DOSY		"(press y to quit.)"
 
 #define DETAILHI	"High detail"
 #define DETAILLO	"Low detail"
@@ -96,6 +96,7 @@
 #define GOTSUIT	"Radiation Shielding Suit"
 #define GOTMAP	"Computer Area Map"
 #define GOTVISOR	"Light Amplification Visor"
+#define GOTCRITS	"Critical Boost!"
 #define GOTMSPHERE	"MegaSphere!"
 
 #define GOTCLIP	"Picked up a clip."

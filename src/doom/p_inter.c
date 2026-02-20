@@ -546,6 +546,14 @@ P_TouchSpecialThing
 	    sound = sfx_getpow;
 	break;
 	
+      case SPR_PCRT:
+	if (!P_GivePower (player, pw_critboost))
+	    return;
+	player->message = DEH_String(GOTCRITS);
+	if (gameversion > exe_doom_1_2)
+	    sound = sfx_getpow;
+	break;
+	
 	// ammo
       case SPR_CLIP:
 	if (special->flags & MF_DROPPED)

@@ -30,7 +30,7 @@
 #include "p_mobj.h"
 
 const char *sprnames[] = {
-    "TROO","SHTG","PUNG","PISG","PISF","SHTF","SHT2","CHGG","CHGF","MISG",
+    "TROO","SHTG","PUNG","PISG","PISF","D6B1","D6B2","D6BF","CHGG","CHGF","MISG",
     "MISF","SAWG","PLSG","PLSF","BFGG","BFGF","BLUD","PUFF","BAL1","BAL2",
     "PLSS","PLSE","MISL","BFS1","BFE1","BFE2","TFOG","IFOG","PLAY","POSS",
     "SPOS","VILE","FIRE","FATB","FBXP","SKEL","MANF","FATT","CPOS","SARG",
@@ -55,6 +55,11 @@ void A_Raise();
 void A_Punch();
 void A_ReFire();
 void A_FirePistol();
+void A_FireD6Blast();
+void A_FireD20Cannon();
+void A_FireD12();
+void A_FirePercentile();
+void A_FireD4();
 void A_Light1();
 void A_FireShotgun();
 void A_Light2();
@@ -143,6 +148,46 @@ state_t	states[NUMSTATES] = {
     {SPR_PISG,2,4,{NULL},S_PISTOL4,0,0},	// S_PISTOL3
     {SPR_PISG,1,5,{A_ReFire},S_PISTOL,0,0},	// S_PISTOL4
     {SPR_PISF,32768,7,{A_Light1},S_LIGHTDONE,0,0},	// S_PISTOLFLASH
+    {SPR_D6B1,0,1,{A_WeaponReady},S_D6BLAST,0,0},	// S_D6BLAST
+    {SPR_D6B1,0,1,{A_Lower},S_D6BLASTDOWN,0,0},	// S_D6BLASTDOWN
+    {SPR_D6B1,0,1,{A_Raise},S_D6BLASTUP,0,0},	// S_D6BLASTUP
+    {SPR_D6B1,0,4,{NULL},S_D6BLAST2,0,0},	// S_D6BLAST1
+    {SPR_D6B1,1,6,{A_FireD6Blast},S_D6BLAST3,0,0},	// S_D6BLAST2
+    {SPR_D6B1,2,4,{NULL},S_D6BLAST4,0,0},	// S_D6BLAST3
+    {SPR_D6B1,1,5,{A_ReFire},S_D6BLAST,0,0},	// S_D6BLAST4
+    {SPR_D6BF,32768,7,{A_Light1},S_LIGHTDONE,0,0},	// S_D6BLASTFLASH
+    {SPR_D6B1,0,1,{A_WeaponReady},S_D20CANNON,0,0},	// S_D20CANNON
+    {SPR_D6B1,0,1,{A_Lower},S_D20CANNONDOWN,0,0},	// S_D20CANNONDOWN
+    {SPR_D6B1,0,1,{A_Raise},S_D20CANNONUP,0,0},	// S_D20CANNONUP
+    {SPR_D6B1,0,8,{NULL},S_D20CANNON2,0,0},	// S_D20CANNON1
+    {SPR_D6B1,1,10,{A_FireD20Cannon},S_D20CANNON3,0,0},	// S_D20CANNON2
+    {SPR_D6B1,2,6,{NULL},S_D20CANNON4,0,0},	// S_D20CANNON3
+    {SPR_D6B1,1,8,{A_ReFire},S_D20CANNON,0,0},	// S_D20CANNON4
+    {SPR_D6BF,32768,10,{A_Light1},S_LIGHTDONE,0,0},	// S_D20CANNONFLASH
+    {SPR_D6B1,0,1,{A_WeaponReady},S_D12,0,0},	// S_D12
+    {SPR_D6B1,0,1,{A_Lower},S_D12DOWN,0,0},	// S_D12DOWN
+    {SPR_D6B1,0,1,{A_Raise},S_D12UP,0,0},	// S_D12UP
+    {SPR_D6B1,0,6,{NULL},S_D12_2,0,0},	// S_D12_1
+    {SPR_D6B1,1,8,{A_FireD12},S_D12_3,0,0},	// S_D12_2
+    {SPR_D6B1,2,5,{NULL},S_D12_4,0,0},	// S_D12_3
+    {SPR_D6B1,1,6,{A_ReFire},S_D12,0,0},	// S_D12_4
+    {SPR_D6BF,32768,8,{A_Light1},S_LIGHTDONE,0,0},	// S_D12FLASH
+    {SPR_D6B1,0,1,{A_WeaponReady},S_PERCENTILE,0,0},	// S_PERCENTILE
+    {SPR_D6B1,0,1,{A_Lower},S_PERCENTILEDOWN,0,0},	// S_PERCENTILEDOWN
+    {SPR_D6B1,0,1,{A_Raise},S_PERCENTILEUP,0,0},	// S_PERCENTILEUP
+    {SPR_D6B1,0,5,{NULL},S_PERCENTILE2,0,0},	// S_PERCENTILE1
+    {SPR_D6B1,1,10,{A_FirePercentile},S_PERCENTILE3,0,0},	// S_PERCENTILE2
+    {SPR_D6B1,2,6,{NULL},S_PERCENTILE4,0,0},	// S_PERCENTILE3
+    {SPR_D6B1,1,8,{A_ReFire},S_PERCENTILE,0,0},	// S_PERCENTILE4
+    {SPR_D6BF,32768,10,{A_Light1},S_LIGHTDONE,0,0},	// S_PERCENTILEFLASH
+    {SPR_D6B1,0,1,{A_WeaponReady},S_D4,0,0},	// S_D4
+    {SPR_D6B1,0,1,{A_Lower},S_D4DOWN,0,0},	// S_D4DOWN
+    {SPR_D6B1,0,1,{A_Raise},S_D4UP,0,0},	// S_D4UP
+    {SPR_D6B1,0,4,{NULL},S_D4_2,0,0},	// S_D4_1
+    {SPR_D6B1,1,6,{A_FireD4},S_D4_3,0,0},	// S_D4_2
+    {SPR_D6B1,2,4,{NULL},S_D4_4,0,0},	// S_D4_3
+    {SPR_D6B1,1,5,{A_ReFire},S_D4,0,0},	// S_D4_4
+    {SPR_D6BF,32768,6,{A_Light1},S_LIGHTDONE,0,0},	// S_D4FLASH
     {SPR_SHTG,0,1,{A_WeaponReady},S_SGUN,0,0},	// S_SGUN
     {SPR_SHTG,0,1,{A_Lower},S_SGUNDOWN,0,0},	// S_SGUNDOWN
     {SPR_SHTG,0,1,{A_Raise},S_SGUNUP,0,0},	// S_SGUNUP
@@ -995,6 +1040,10 @@ state_t	states[NUMSTATES] = {
     {SPR_PMAP,32769,6,{NULL},S_PMAP,0,0},	// S_PMAP6
     {SPR_PVIS,32768,6,{NULL},S_PVIS2,0,0},	// S_PVIS
     {SPR_PVIS,1,6,{NULL},S_PVIS,0,0},	// S_PVIS2
+    {SPR_PCRT,32768,6,{NULL},S_PCRT2,0,0},	// S_PCRT
+    {SPR_PCRT,32769,6,{NULL},S_PCRT3,0,0},	// S_PCRT2
+    {SPR_PCRT,32770,6,{NULL},S_PCRT4,0,0},	// S_PCRT3
+    {SPR_PCRT,32771,6,{NULL},S_PCRT,0,0},	// S_PCRT4
     {SPR_CLIP,0,-1,{NULL},S_NULL,0,0},	// S_CLIP
     {SPR_AMMO,0,-1,{NULL},S_NULL,0,0},	// S_AMMO
     {SPR_ROCK,0,-1,{NULL},S_NULL,0,0},	// S_ROCK
@@ -1696,58 +1745,239 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
     },
 
     {		// MT_WOLFSS
-	84,		// doomednum
-	S_SSWV_STND,		// spawnstate
-	50,		// spawnhealth
-	S_SSWV_RUN1,		// seestate
-	sfx_sssit,		// seesound
-	8,		// reactiontime
-	0,		// attacksound
-	S_SSWV_PAIN,		// painstate
-	170,		// painchance
-	sfx_popain,		// painsound
-	0,		// meleestate
-	S_SSWV_ATK1,		// missilestate
-	S_SSWV_DIE1,		// deathstate
-	S_SSWV_XDIE1,		// xdeathstate
-	sfx_ssdth,		// deathsound
-	8,		// speed
-	20*FRACUNIT,		// radius
-	56*FRACUNIT,		// height
-	100,		// mass
-	0,		// damage
-	sfx_posact,		// activesound
-	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
-	S_SSWV_RAISE1		// raisestate
+ 	84,		// doomednum
+ 	S_SSWV_STND,		// spawnstate
+ 	50,		// spawnhealth
+ 	S_SSWV_RUN1,		// seestate
+ 	sfx_sssit,		// seesound
+ 	8,		// reactiontime
+ 	0,		// attacksound
+ 	S_SSWV_PAIN,		// painstate
+ 	170,		// painchance
+ 	sfx_popain,		// painsound
+ 	0,		// meleestate
+ 	S_SSWV_ATK1,		// missilestate
+ 	S_SSWV_DIE1,		// deathstate
+ 	S_SSWV_XDIE1,		// xdeathstate
+ 	ssfx_ssdth,		// deathsound
+ 	8,		// speed
+ 	20*FRACUNIT,		// radius
+ 	40*FRACUNIT,		// height (shorter than human - dwarves are shorter)
+ 	150,		// mass (heavier)
+ 	0,		// damage
+ 	sfx_posact,		// activesound
+ 	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+ 	S_SSWV_RAISE1		// raisestate
     },
+
+    {		// MT_DWARF
+ 	8020,		// doomednum (custom mapthing number)
+ 	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations)
+ 	35,		// spawnhealth (tougher than zombie)
+ 	S_SPOS_RUN1,		// seestate
+ 	sfx_posit2,		// seesound
+ 	8,		// reactiontime
+ 	sfx_pistol,		// attacksound
+ 	S_SPOS_PAIN,		// painstate
+ 	150,		// painchance (less likely to flee)
+ 	sfx_popain,		// painsound
+ 	0,		// meleestate
+ 	S_SPOS_ATK1,		// missilestate
+ 	S_SPOS_DIE1,		// deathstate
+ 	S_SPOS_XDIE1,		// xdeathstate
+ 	sfx_podth2,		// deathsound
+ 	6,		// speed (slower than human)
+ 	16*FRACUNIT,		// radius (thinner)
+ 	40*FRACUNIT,		// height (shorter)
+ 	200,		// mass (stocky)
+ 	0,		// damage
+ 	sfx_posact,		// activesound
+ 	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+ 	S_SPOS_RAISE1		// raisestate
+    },
+
+    {		// MT_DWARF_BERSERKER
+ 	8021,		// doomednum (custom mapthing number)
+ 	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations)
+ 	50,		// spawnhealth (tougher)
+ 	S_SPOS_RUN1,		// seestate
+ 	sfx_posit2,		// seesound
+ 	8,		// reactiontime
+ 	0,		// attacksound (melee only)
+ 	S_SPOS_PAIN,		// painstate
+ 	100,		// painchance (harder to stop)
+ 	sfx_popain,		// painsound
+ 	S_SPOS_ATK1,		// meleestate (charges when close)
+ 	0,		// missilestate
+ 	S_SPOS_DIE1,		// deathstate
+ 	S_SPOS_XDIE1,		// xdeathstate
+ 	sfx_podth2,		// deathsound
+ 	10,		// speed (faster - berserker charge)
+ 	18*FRACUNIT,		// radius
+ 	44*FRACUNIT,		// height 
+  	250,		// mass (very stocky)
+  	3*15,		// damage (3d10 berserker rage damage = 30)
+  	sfx_posact,		// activesound
+  	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL|MF_JUSTHIT,		// flags (aggressive)
+   	S_SPOS_RAISE1		// raisestate
+    },
+
+    {		// MT_DWARF_ENGINEER
+  	8022,		// doomednum (custom mapthing number)
+  	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations)
+  	60,		// spawnhealth (tougher than basic dwarf)
+  	S_SPOS_RUN1,		// seestate
+  	sfx_posit2,		// seesound
+  	8,		// reactiontime
+  	0,		// attacksound (uses bombs)
+  	S_SPOS_PAIN,		// painstate
+  	200,		// painchance (more likely to flee when hurt)
+  	0,		// meleestate (no melee - uses bombs)
+  	S_SPOS_ATK1,		// missilestate (throws bombs)
+  	S_SPOS_DIE1,		// deathstate
+  	S_SPOS_XDIE1,		// xdeathstate
+  	sfx_podth2,		// deathsound
+  	5,		// speed (slower movement)
+  	16*FRACUNIT,		// radius
+  	40*FRACUNIT,		// height
+  	200,		// mass
+  	0,		// damage (melee - not used)
+  	sfx_posact,		// activesound
+  	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+  	S_SPOS_RAISE1		// raisestate
+    },
+
+    {		// MT_DWARF_BOMB
+   	-1,		// doomednum (not spawned via mapthing)
+   	S_ROCKET,		// spawnstate (reuses rocket animation)
+   	1000,		// spawnhealth
+   	S_NULL,		// seestate
+   	sfx_rlaunc,		// seesound (toss sound)
+   	8,		// reactiontime
+   	sfx_None,		// attacksound
+   	S_NULL,		// painstate
+   	0,		// painchance
+   	sfx_None,		// painsound
+   	S_NULL,		// meleestate
+   	S_NULL,		// missilestate
+   	S_EXPLODE1,		// deathstate (explodes on impact)
+   	S_NULL,		// xdeathstate
+   	sfx_barexp,		// deathsound (explosion)
+   	12*FRACUNIT,		// speed (slower than rocket)
+   	8*FRACUNIT,		// radius (small bomb)
+   	8*FRACUNIT,		// height
+   	50,		// mass (light)
+   	40,		// damage (higher damage on direct hit)
+   	sfx_None,		// activesound
+   	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_NOGRAVITY,		// flags
+   	S_NULL		// raisestate
+     },
+
+    {		// MT_GOBLIN_SHAMAN
+  	8023,		// doomednum (custom mapthing number)
+  	S_SPOS_STND,		// spawnstate (reuses Imp animations as base)
+  	45,		// spawnhealth (glass cannon - low HP but dangerous)
+  	S_SPOS_RUN1,		// seestate
+  	sfx_posit2,		// seesound (goblin cackle)
+  	8,		// reactiontime
+  	0,		// attacksound (uses spells)
+  	S_SPOS_PAIN,		// painstate
+  	150,		// painchance (easily disrupted)
+  	sfx_popain,		// painsound
+  	0,		// meleestate (no melee)
+  	S_SPOS_ATK1,		// missilestate (casts spells)
+  	S_SPOS_DIE1,		// deathstate
+  	S_SPOS_XDIE1,		// xdeathstate
+  	sfx_podth2,		// deathsound
+  	7,		// speed (moderate movement)
+  	16*FRACUNIT,		// radius
+  	44*FRACUNIT,		// height
+  	150,		// mass
+  	0,		// damage (melee - not used)
+  	sfx_posact,		// activesound
+  	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+  	S_SPOS_RAISE1		// raisestate
+     },
+
+    {		// MT_SHAMAN_FIREBOLT
+  	-1,		// doomednum (not spawned via mapthing)
+  	S_TRACER,		// spawnstate (reuses tracer animation)
+  	1000,		// spawnhealth
+  	S_NULL,		// seestate
+  	sfx_None,		// seesound
+  	8,		// reactiontime
+  	sfx_None,		// attacksound
+  	S_NULL,		// painstate
+  	0,		// painchance
+  	sfx_None,		// painsound
+  	S_NULL,		// meleestate
+  	S_NULL,		// missilestate
+  	S_EXPLODE1,		// deathstate (explodes on impact)
+  	S_NULL,		// xdeathstate
+  	sfx_barexp,		// deathsound
+  	10*FRACUNIT,		// speed
+  	8*FRACUNIT,		// radius
+  	8*FRACUNIT,		// height
+  	100,		// mass
+  	15,		// damage (d8 fire damage)
+  	sfx_None,		// activesound
+  	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_NOGRAVITY,		// flags
+  	S_NULL		// raisestate
+     },
+
+    {		// MT_SHAMAN_HEAL
+  	-1,		// doomednum (not spawned via mapthing)
+  	S_IFOG00,		// spawnstate (reuses item fog)
+  	1000,		// spawnhealth
+  	S_NULL,		// seestate
+  	sfx_None,		// seesound
+  	8,		// reactiontime
+  	sfx_None,		// attacksound
+  	S_NULL,		// painstate
+  	0,		// painchance
+  	sfx_None,		// painsound
+  	S_NULL,		// meleestate
+  	S_NULL,		// missilestate
+  	S_IFOG01,		// deathstate (fades out)
+  	S_NULL,		// xdeathstate
+  	sfx_None,		// deathsound
+  	0,		// speed (stationary healing effect)
+  	8*FRACUNIT,		// radius
+  	8*FRACUNIT,		// height
+  	100,		// mass
+  	-10,		// damage (negative = healing)
+  	sfx_None,		// activesound
+  	MF_NOBLOCKMAP|MF_MISSILE|MF_NOGRAVITY|MF_SPECIAL,		// flags (heals allies)
+  	S_NULL		// raisestate
+     },
+
+    {		// MT_SHAMAN_FREEZE
+  	-1,		// doomednum (not spawned via mapthing)
+  	S_PUFF1,		// spawnstate (reuses puff)
+  	1000,		// spawnhealth
+  	S_NULL,		// seestate
+  	sfx_None,		// seesound
+  	8,		// reactiontime
+  	sfx_None,		// attacksound
+  	S_NULL,		// painstate
+  	0,		// painchance
+  	sfx_None,		// painsound
+  	S_NULL,		// meleestate
+  	S_NULL,		// missilestate
+  	S_NULL,		// deathstate
+  	S_NULL,		// xdeathstate
+  	sfx_None,		// deathsound
+  	12*FRACUNIT,		// speed
+  	8*FRACUNIT,		// radius
+  	8*FRACUNIT,		// height
+  	100,		// mass
+  	20,		// damage (d12 freeze damage)
+  	sfx_None,		// activesound
+  	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_NOGRAVITY,		// flags
+  	S_NULL		// raisestate
+     },
 
     {		// MT_KEEN
-	72,		// doomednum
-	S_KEENSTND,		// spawnstate
-	100,		// spawnhealth
-	S_NULL,		// seestate
-	sfx_None,		// seesound
-	8,		// reactiontime
-	sfx_None,		// attacksound
-	S_KEENPAIN,		// painstate
-	256,		// painchance
-	sfx_keenpn,		// painsound
-	S_NULL,		// meleestate
-	S_NULL,		// missilestate
-	S_COMMKEEN,		// deathstate
-	S_NULL,		// xdeathstate
-	sfx_keendt,		// deathsound
-	0,		// speed
-	16*FRACUNIT,		// radius
-	72*FRACUNIT,		// height
-	10000000,		// mass
-	0,		// damage
-	sfx_None,		// activesound
-	MF_SOLID|MF_SPAWNCEILING|MF_NOGRAVITY|MF_SHOOTABLE|MF_COUNTKILL,		// flags
-	S_NULL		// raisestate
-    },
-
-    {		// MT_BOSSBRAIN
 	88,		// doomednum
 	S_BRAIN,		// spawnstate
 	250,		// spawnhealth
@@ -2556,6 +2786,32 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
     {		// MT_INV
 	2022,		// doomednum
 	S_PINV,		// spawnstate
+	1000,		// spawnhealth
+	S_NULL,		// seestate
+	sfx_None,		// seesound
+	8,		// reactiontime
+	sfx_None,		// attacksound
+	S_NULL,		// painstate
+	0,		// painchance
+	sfx_None,		// painsound
+	S_NULL,		// meleestate
+	S_NULL,		// missilestate
+	S_NULL,		// deathstate
+	S_NULL,		// xdeathstate
+	sfx_None,		// deathsound
+	0,		// speed
+	20*FRACUNIT,		// radius
+	16*FRACUNIT,		// height
+	100,		// mass
+	0,		// damage
+	sfx_None,		// activesound
+	MF_SPECIAL|MF_COUNTITEM,		// flags
+	S_NULL		// raisestate
+    },
+
+    {		// MT_CRITBOOST
+	8050,		// doomednum (custom mapthing number - crit boost powerup)
+	S_PCRT,		// spawnstate
 	1000,		// spawnhealth
 	S_NULL,		// seestate
 	sfx_None,		// seesound
