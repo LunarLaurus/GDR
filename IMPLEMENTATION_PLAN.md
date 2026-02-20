@@ -75,8 +75,8 @@
 - [x] Add visual screen tint while active
 - [x] Add activation and expiration sound effects
 - [x] Add CVAR to configure crit powerup strength
-- [ ] Add pickup sprite and map editor spawn ID
-- [ ] Balance spawn frequency per difficulty level
+- [x] Add pickup sprite and map editor spawn ID
+- [x] Balance spawn frequency per difficulty level
 - [ ] Add Double Damage powerup
 - [ ] Apply 2x multiplier post-dice-roll calculation
 - [ ] Ensure compatibility with crit multiplier logic
