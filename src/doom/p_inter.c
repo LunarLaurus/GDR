@@ -573,20 +573,10 @@ P_TouchSpecialThing
 	break;
 	
       case SPR_PCRT:
-	if (special->type == MT_DICEFORTUNE)
-	{
-	    if (!P_GivePower (player, pw_dicefortune))
-		return;
-	    player->message = "DICE FORTUNE!";
-	    sound = sfx_critup;
-	}
-	else if (!P_GivePower (player, pw_critboost))
+	if (!P_GivePower (player, pw_critboost))
 	    return;
-	else
-	{
-	    player->message = DEH_String(GOTCRITS);
-	    sound = sfx_critup;
-	}
+	player->message = DEH_String(GOTCRITS);
+	sound = sfx_critup;
 	break;
 	
       case SPR_PDMD:
@@ -594,6 +584,13 @@ P_TouchSpecialThing
 	    return;
 	player->message = DEH_String(GOTDOUBLEDAMAGE);
 	sound = sfx_doubup;
+	break;
+	
+      case SPR_PFTR:
+	if (!P_GivePower (player, pw_dicefortune))
+	    return;
+	player->message = "DICE FORTUNE!";
+	sound = sfx_critup;
 	break;
 	
 	// ammo

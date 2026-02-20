@@ -1048,6 +1048,10 @@ state_t	states[NUMSTATES] = {
     {SPR_PDMD,32769,6,{NULL},S_PDMD3,0,0},	// S_PDMD2
     {SPR_PDMD,32770,6,{NULL},S_PDMD4,0,0},	// S_PDMD3
     {SPR_PDMD,32771,6,{NULL},S_PDMD,0,0},	// S_PDMD4
+    {SPR_PFTR,32768,6,{NULL},S_PFTR2,0,0},	// S_PFTR
+    {SPR_PFTR,32769,6,{NULL},S_PFTR3,0,0},	// S_PFTR2
+    {SPR_PFTR,32770,6,{NULL},S_PFTR4,0,0},	// S_PFTR3
+    {SPR_PFTR,32771,6,{NULL},S_PFTR,0,0},	// S_PFTR4
     {SPR_CLIP,0,-1,{NULL},S_NULL,0,0},	// S_CLIP
     {SPR_AMMO,0,-1,{NULL},S_NULL,0,0},	// S_AMMO
     {SPR_ROCK,0,-1,{NULL},S_NULL,0,0},	// S_ROCK
@@ -2867,7 +2871,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 
     {		// MT_DICEFORTUNE
 	8052,		// doomednum (custom mapthing number - dice fortune powerup)
-	S_PCRT,		// spawnstate (reuse crit boost visual for now)
+	S_PFTR,		// spawnstate (unique dice fortune visual)
 	1000,		// spawnhealth
 	S_NULL,		// seestate
 	sfx_None,		// seesound
