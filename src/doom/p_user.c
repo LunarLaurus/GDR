@@ -37,6 +37,7 @@
 // Use colormap 20 for crit boost (darker = more intense)
 #define INVERSECOLORMAP		32
 #define CRITCOLORMAP		20
+#define DOUBLEDAMAGECOLORMAP	21
 
 
 //
@@ -358,6 +359,15 @@ void P_PlayerThink (player_t* player)
         }
         player->powers[pw_critboost]--;
     }
+
+    if (player->powers[pw_doubledamage])
+    {
+        if (player->powers[pw_doubledamage] == 1)
+        {
+            S_StartSound(&player->mo->sphere, sfx_wpnup);
+        }
+        player->powers[pw_doubledamage]--;
+    }
 		
     if (player->damagecount)
 	player->damagecount--;
@@ -378,6 +388,10 @@ void P_PlayerThink (player_t* player)
     else if (player->powers[pw_critboost])
     {
 	player->fixedcolormap = CRITCOLORMAP;
+    }
+    else if (player->powers[pw_doubledamage])
+    {
+	player->fixedcolormap = DOUBLEDAMAGECOLORMAP;
     }
     else if (player->powers[pw_infrared])
     {

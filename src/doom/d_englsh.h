@@ -97,6 +97,7 @@
 #define GOTMAP	"Computer Area Map"
 #define GOTVISOR	"Light Amplification Visor"
 #define GOTCRITS	"Critical Boost!"
+#define GOTDOUBLEDAMAGE	"Double Damage!"
 #define GOTMSPHERE	"MegaSphere!"
 
 #define GOTCLIP	"Picked up a clip."

@@ -296,6 +296,7 @@ static st_percent_t	w_armor;
 // crit chance widget (dice-themed)
 static st_number_t	w_crit;
 static st_number_t	w_critboost_timer;
+static st_number_t	w_doubledamage_timer;
 
 // ammo widgets
 static st_number_t	w_ammo[4];
@@ -331,6 +332,9 @@ static int	st_critchance = 10;
 
 // crit boost timer value (in seconds)
 static int	st_critboost_timer = 0;
+
+// double damage timer value (in seconds)
+static int	st_doubledamage_timer = 0;
 
 cheatseq_t cheat_mus = CHEAT("idmus", 2);
 cheatseq_t cheat_god = CHEAT("iddqd", 0);
@@ -886,6 +890,16 @@ void ST_updateWidgets(void)
 	st_critboost_timer = 0;
     }
 
+    // update double damage timer (convert tics to seconds)
+    if (plyr->powers[pw_doubledamage] > 0)
+    {
+	st_doubledamage_timer = (plyr->powers[pw_doubledamage] + TICRATE - 1) / TICRATE;
+    }
+    else
+    {
+	st_doubledamage_timer = 0;
+    }
+
     // used by the w_armsbg widget
     st_notdeathmatch = !deathmatch;
     
@@ -1013,6 +1027,12 @@ void ST_drawWidgets(boolean refresh)
     if (st_critboost_timer > 0)
     {
 	STlib_updateNum(&w_critboost_timer, refresh);
+    }
+
+    // Only update timer display when powerup is active
+    if (st_doubledamage_timer > 0)
+    {
+	STlib_updateNum(&w_doubledamage_timer, refresh);
     }
 
     STlib_updateBinIcon(&w_armsbg, refresh);
@@ -1309,6 +1329,15 @@ void ST_createWidgets(void)
 		  ST_CRITTIMERY,
 		  shortnum,
 		  &st_critboost_timer,
+		  &st_statusbaron,
+		  ST_CRITTIMERWIDTH);
+
+    // double damage timer (shown when powerup active)
+    STlib_initNum(&w_doubledamage_timer,
+		  ST_CRITTIMERX,
+		  ST_CRITTIMERY + 12,
+		  shortnum,
+		  &st_doubledamage_timer,
 		  &st_statusbaron,
 		  ST_CRITTIMERWIDTH);
 

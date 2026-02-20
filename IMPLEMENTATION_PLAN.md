@@ -77,7 +77,7 @@
 - [x] Add CVAR to configure crit powerup strength
 - [x] Add pickup sprite and map editor spawn ID
 - [x] Balance spawn frequency per difficulty level
-- [ ] Add Double Damage powerup
+- [x] Add Double Damage powerup
 - [ ] Apply 2x multiplier post-dice-roll calculation
 - [ ] Ensure compatibility with crit multiplier logic
 - [ ] Add distinct visual effect (screen glow or weapon aura)

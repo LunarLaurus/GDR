@@ -1044,6 +1044,10 @@ state_t	states[NUMSTATES] = {
     {SPR_PCRT,32769,6,{NULL},S_PCRT3,0,0},	// S_PCRT2
     {SPR_PCRT,32770,6,{NULL},S_PCRT4,0,0},	// S_PCRT3
     {SPR_PCRT,32771,6,{NULL},S_PCRT,0,0},	// S_PCRT4
+    {SPR_PDMD,32768,6,{NULL},S_PDMD2,0,0},	// S_PDMD
+    {SPR_PDMD,32769,6,{NULL},S_PDMD3,0,0},	// S_PDMD2
+    {SPR_PDMD,32770,6,{NULL},S_PDMD4,0,0},	// S_PDMD3
+    {SPR_PDMD,32771,6,{NULL},S_PDMD,0,0},	// S_PDMD4
     {SPR_CLIP,0,-1,{NULL},S_NULL,0,0},	// S_CLIP
     {SPR_AMMO,0,-1,{NULL},S_NULL,0,0},	// S_AMMO
     {SPR_ROCK,0,-1,{NULL},S_NULL,0,0},	// S_ROCK
@@ -2812,6 +2816,32 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
     {		// MT_CRITBOOST
 	8050,		// doomednum (custom mapthing number - crit boost powerup)
 	S_PCRT,		// spawnstate
+	1000,		// spawnhealth
+	S_NULL,		// seestate
+	sfx_None,		// seesound
+	8,		// reactiontime
+	sfx_None,		// attacksound
+	S_NULL,		// painstate
+	0,		// painchance
+	sfx_None,		// painsound
+	S_NULL,		// meleestate
+	S_NULL,		// missilestate
+	S_NULL,		// deathstate
+	S_NULL,		// xdeathstate
+	sfx_None,		// deathsound
+	0,		// speed
+	20*FRACUNIT,		// radius
+	16*FRACUNIT,		// height
+	100,		// mass
+	0,		// damage
+	sfx_None,		// activesound
+	MF_SPECIAL|MF_COUNTITEM,		// flags
+	S_NULL		// raisestate
+    },
+
+    {		// MT_DOUBLEDAMAGE
+	8051,		// doomednum (custom mapthing number - double damage powerup)
+	S_PDMD,		// spawnstate
 	1000,		// spawnhealth
 	S_NULL,		// seestate
 	sfx_None,		// seesound

@@ -143,6 +143,7 @@ typedef enum
 // Additional colormap indices for special effects
 #define INVERSECOLORMAP        32
 #define CRITCOLORMAP           20
+#define DOUBLEDAMAGECOLORMAP   21
 #define NUMCOLORMAPS           33
 
 
@@ -156,6 +157,7 @@ typedef enum
     pw_allmap,
     pw_infrared,
     pw_critboost,
+    pw_doubledamage,
     NUMPOWERS
     
 } powertype_t;
@@ -173,7 +175,8 @@ typedef enum
     INVISTICS	= (60*TICRATE),
     INFRATICS	= (120*TICRATE),
     IRONTICS	= (60*TICRATE),
-    CRITBOOSTTICS = (30*TICRATE)
+    CRITBOOSTTICS = (30*TICRATE),
+    DOUBLEDAMAGETICS = (30*TICRATE)
     
 } powerduration_t;
 

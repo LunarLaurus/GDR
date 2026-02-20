@@ -327,6 +327,13 @@ P_GivePower
 	S_StartSound(&player->mo->sphere, sfx_getpow);
 	return true;
     }
+
+    if (power == pw_doubledamage)
+    {
+	player->powers[power] = DOUBLEDAMAGETICS;
+	S_StartSound(&player->mo->sphere, sfx_getpow);
+	return true;
+    }
 	
     if (player->powers[power])
 	return false;	// already got it
@@ -550,6 +557,14 @@ P_TouchSpecialThing
 	if (!P_GivePower (player, pw_critboost))
 	    return;
 	player->message = DEH_String(GOTCRITS);
+	if (gameversion > exe_doom_1_2)
+	    sound = sfx_getpow;
+	break;
+	
+      case SPR_PDMD:
+	if (!P_GivePower (player, pw_doubledamage))
+	    return;
+	player->message = DEH_String(GOTDOUBLEDAMAGE);
 	if (gameversion > exe_doom_1_2)
 	    sound = sfx_getpow;
 	break;
@@ -847,6 +862,15 @@ P_DamageMobj
             if (target == &players[consoleplayer].mo)
             {
                 players[consoleplayer].message = "CRITICAL HIT!";
+            }
+        }
+
+        if (source->player->powers[pw_doubledamage])
+        {
+            damage *= 2;
+            if (target == &players[consoleplayer].mo)
+            {
+                players[consoleplayer].message = "DOUBLE DAMAGE!";
             }
         }
     }

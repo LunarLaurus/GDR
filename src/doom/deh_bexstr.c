@@ -81,6 +81,7 @@ static const bex_string_t bex_stringtable[] = {
     {"GOTMAP", GOTMAP},
     {"GOTVISOR", GOTVISOR},
     {"GOTCRITS", GOTCRITS},
+    {"GOTDOUBLEDAMAGE", GOTDOUBLEDAMAGE},
     {"GOTMSPHERE", GOTMSPHERE},
     {"GOTCLIP", GOTCLIP},
     {"GOTCLIPBOX", GOTCLIPBOX},
