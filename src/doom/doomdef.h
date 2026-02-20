@@ -140,6 +140,12 @@ typedef enum
 } ammotype_t;
 
 
+// Additional colormap indices for special effects
+#define INVERSECOLORMAP        32
+#define CRITCOLORMAP           20
+#define NUMCOLORMAPS           33
+
+
 // Power up artifacts.
 typedef enum
 {

@@ -72,7 +72,7 @@
 - [x] Implement timed powerup thinker logic
 - [x] Ensure crit bonus stacks safely with existing crit system
 - [x] Add HUD timer indicator for active crit buff
-- [ ] Add visual screen tint while active
+- [x] Add visual screen tint while active
 - [ ] Add activation and expiration sound effects
 - [ ] Add CVAR to configure crit powerup strength
 - [ ] Add pickup sprite and map editor spawn ID

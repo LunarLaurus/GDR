@@ -31,7 +31,9 @@
 
 
 // Index of the special effects (INVUL inverse) map.
+// Use colormap 20 for crit boost (darker = more intense)
 #define INVERSECOLORMAP		32
+#define CRITCOLORMAP		20
 
 
 //
@@ -364,7 +366,11 @@ void P_PlayerThink (player_t* player)
 	else
 	    player->fixedcolormap = 0;
     }
-    else if (player->powers[pw_infrared])	
+    else if (player->powers[pw_critboost])
+    {
+	player->fixedcolormap = CRITCOLORMAP;
+    }
+    else if (player->powers[pw_infrared])
     {
 	if (player->powers[pw_infrared] > 4*32
 	    || (player->powers[pw_infrared]&8) )
