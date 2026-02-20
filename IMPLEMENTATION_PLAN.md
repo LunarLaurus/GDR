@@ -81,7 +81,7 @@
 - [x] Apply 2x multiplier post-dice-roll calculation
 - [x] Ensure compatibility with crit multiplier logic
 - [x] Add distinct visual effect (screen glow or weapon aura)
-- [ ] Add unique pickup sprite and sound
+- [x] Add unique pickup sprite and sound
 - [x] Add duration timer and HUD display
 - [ ] Prevent unintended stacking with other damage buffs
 - [ ] Add difficulty-based spawn tuning

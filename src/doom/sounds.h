@@ -221,6 +221,8 @@ typedef enum
     sfx_skesit,
     sfx_skeatk,
     sfx_radio,
+    sfx_critup,       // Goblin Dice Rollaz: crit boost powerup pickup
+    sfx_doubup,       // Goblin Dice Rollaz: double damage powerup pickup
     NUMSFX
 } sfxenum_t;
 

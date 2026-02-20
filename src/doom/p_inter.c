@@ -557,16 +557,14 @@ P_TouchSpecialThing
 	if (!P_GivePower (player, pw_critboost))
 	    return;
 	player->message = DEH_String(GOTCRITS);
-	if (gameversion > exe_doom_1_2)
-	    sound = sfx_getpow;
+	sound = sfx_critup;
 	break;
 	
       case SPR_PDMD:
 	if (!P_GivePower (player, pw_doubledamage))
 	    return;
 	player->message = DEH_String(GOTDOUBLEDAMAGE);
-	if (gameversion > exe_doom_1_2)
-	    sound = sfx_getpow;
+	sound = sfx_doubup;
 	break;
 	
 	// ammo
