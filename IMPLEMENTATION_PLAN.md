@@ -9,9 +9,9 @@
 - [x] Create GitHub Actions workflow
 
 ### Phase 2: Game Identity
-- [ ] Update d_main.c with "Goblin Dice Rollaz" title
-- [ ] Update m_menu.c title screen text
-- [ ] Update binary output names in CMakeLists.txt
+- [x] Update d_main.c with "Goblin Dice Rollaz" title
+- [x] Update m_menu.c title screen text
+- [x] Update binary output names in CMakeLists.txt
 - [ ] Test build succeeds
 
 ### Phase 3: CI/CD Validation  
