@@ -106,7 +106,9 @@ typedef enum
 typedef enum
 {
     wp_fist,
-    wp_pistol,
+    wp_d6blaster,
+    wp_d20cannon,
+    wp_d12,       // d12 heavy impact weapon
     wp_shotgun,
     wp_chaingun,
     wp_missile,
@@ -114,6 +116,8 @@ typedef enum
     wp_bfg,
     wp_chainsaw,
     wp_supershotgun,
+    wp_percentile,    // Percentile dice (rolls 1-100)
+    wp_d4,            // d4 throwing knives
 
     NUMWEAPONS,
     
@@ -145,6 +149,7 @@ typedef enum
     pw_ironfeet,
     pw_allmap,
     pw_infrared,
+    pw_critboost,
     NUMPOWERS
     
 } powertype_t;
@@ -161,7 +166,8 @@ typedef enum
     INVULNTICS	= (30*TICRATE),
     INVISTICS	= (60*TICRATE),
     INFRATICS	= (120*TICRATE),
-    IRONTICS	= (60*TICRATE)
+    IRONTICS	= (60*TICRATE),
+    CRITBOOSTTICS = (30*TICRATE)
     
 } powerduration_t;
 

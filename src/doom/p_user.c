@@ -344,6 +344,9 @@ void P_PlayerThink (player_t* player)
 		
     if (player->powers[pw_ironfeet])
 	player->powers[pw_ironfeet]--;
+
+    if (player->powers[pw_critboost])
+	player->powers[pw_critboost]--;
 		
     if (player->damagecount)
 	player->damagecount--;

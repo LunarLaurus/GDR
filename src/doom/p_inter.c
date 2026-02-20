@@ -34,13 +34,19 @@
 #include "am_map.h"
 
 #include "p_local.h"
+#include "r_state.h"
 
 #include "s_sound.h"
 
 #include "p_inter.h"
+#include "dmg_ovl.h"
 
 
 #define BONUSADD	6
+
+#define CRIT_CHANCE	10
+#define CRIT_MULTIPLIER	2
+#define CRIT_BOOST_BONUS	15
 
 
 
@@ -312,6 +318,12 @@ P_GivePower
     {
 	P_GiveBody (player, 100);
 	player->powers[power] = 1;
+	return true;
+    }
+
+    if (power == pw_critboost)
+    {
+	player->powers[power] = CRITBOOSTTICS;
 	return true;
     }
 	
@@ -796,6 +808,9 @@ P_DamageMobj
     player_t*	player;
     fixed_t	thrust;
     int		temp;
+    boolean was_critical = false;
+    int crit_roll = 0;
+    int screen_x, screen_y;
 	
     if ( !(target->flags & MF_SHOOTABLE) )
 	return;	// shouldn't happen...
@@ -806,6 +821,25 @@ P_DamageMobj
     if ( target->flags & MF_SKULLFLY )
     {
 	target->momx = target->momy = target->momz = 0;
+    }
+    
+    if (source && source->player && damage > 0)
+    {
+        int effectiveCritChance = CRIT_CHANCE;
+        if (source->player->powers[pw_critboost])
+        {
+            effectiveCritChance += CRIT_BOOST_BONUS;
+        }
+        if ((P_Random() % 100) < effectiveCritChance)
+        {
+            damage *= CRIT_MULTIPLIER;
+            was_critical = true;
+            crit_roll = (P_Random() % 20) + 1;
+            if (target == &players[consoleplayer].mo)
+            {
+                players[consoleplayer].message = "CRITICAL HIT!";
+            }
+        }
     }
 	
     player = target->player;
@@ -898,6 +932,32 @@ P_DamageMobj
     
     // do the damage	
     target->health -= damage;	
+    
+    if (damage > 0 && target->health > 0)
+    {
+        fixed_t tr_x = target->x - viewx;
+        fixed_t tr_y = target->y - viewy;
+        fixed_t gxt = FixedMul(tr_x, viewcos);
+        fixed_t gyt = -FixedMul(tr_y, viewsin);
+        fixed_t tz = gxt - gyt;
+        
+        if (tz > 0)
+        {
+            fixed_t xscale = FixedDiv(projection, tz);
+            gxt = -FixedMul(tr_x, viewsin);
+            gyt = FixedMul(tr_y, viewcos);
+            fixed_t tx = -(gyt + gxt);
+            
+            int screen_x = (centerxfrac + FixedMul(tx, xscale)) >> FRACBITS;
+            int screen_y = (centeryfrac + FixedMul(target->z - viewz, xscale)) >> FRACBITS;
+            
+            if (screen_x > 0 && screen_x < SCREENWIDTH && screen_y > 0 && screen_y < SCREENHEIGHT)
+            {
+                DMG_AddDamage(screen_x, screen_y, damage, was_critical, crit_roll);
+            }
+        }
+    }
+    
     if (target->health <= 0)
     {
 	P_KillMobj (source, target);
