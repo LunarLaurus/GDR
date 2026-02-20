@@ -46,14 +46,32 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
 	S_NULL
     },	
     {
-	// pistol
+	// d6 blaster
 	am_clip,
-	S_PISTOLUP,
-	S_PISTOLDOWN,
-	S_PISTOL,
-	S_PISTOL1,
-	S_PISTOLFLASH
-    },	
+	S_D6BLASTUP,
+	S_D6BLASTDOWN,
+	S_D6BLAST,
+	S_D6BLAST1,
+	S_D6BLASTFLASH
+    },
+    {
+	// d20 cannon
+	am_cell,
+	S_D20CANNONUP,
+	S_D20CANNONDOWN,
+	S_D20CANNON,
+	S_D20CANNON1,
+	S_D20CANNONFLASH
+    },
+    {
+	// d12 heavy impact
+	am_shell,
+	S_D12UP,
+	S_D12DOWN,
+	S_D12,
+	S_D12_1,
+	S_D12FLASH
+    },
     {
 	// shotgun
 	am_shell,
@@ -117,6 +135,24 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
 	S_DSGUN1,
 	S_DSGUNFLASH1
     },	
+    {
+	// percentile dice
+	am_cell,
+	S_PERCENTILEUP,
+	S_PERCENTILEDOWN,
+	S_PERCENTILE,
+	S_PERCENTILE1,
+	S_PERCENTILEFLASH
+    },
+    {
+	// d4 throwing knives
+	am_clip,
+	S_D4UP,
+	S_D4DOWN,
+	S_D4,
+	S_D4_1,
+	S_D4FLASH
+    },
 };
 
 

@@ -541,6 +541,11 @@ A_Saw
 
 static void DecreaseAmmo(player_t *player, int ammonum, int amount)
 {
+    if (player->cheats & CF_INFINITE_AMMO)
+    {
+        return;
+    }
+
     if (ammonum < NUMAMMO)
     {
         player->ammo[ammonum] -= amount;
@@ -672,6 +677,51 @@ A_FirePistol
 
 
 //
+// A_FireD6Blast - Goblin Dice Rollaz d6 blaster
+// Rolls a d6 to determine damage: 1-2=1 dmg, 3-4=2 dmg, 5=3 dmg, 6=critical (5 dmg)
+//
+void
+A_FireD6Blast
+( player_t*	player,
+  pspdef_t*	psp ) 
+{
+    int diceRoll;
+    int damage;
+    
+    S_StartSound (player->mo, sfx_pistol);
+
+    P_SetMobjState (player->mo, S_PLAY_ATK2);
+    DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
+
+    P_SetPsprite (player,
+		  ps_flash,
+		  weaponinfo[player->readyweapon].flashstate);
+
+    diceRoll = (P_Random() % 6) + 1;
+    
+    if (diceRoll >= 5)
+    {
+        damage = 3;
+        if (diceRoll == 6)
+        {
+            damage = 5;
+        }
+    }
+    else if (diceRoll >= 3)
+    {
+        damage = 2;
+    }
+    else
+    {
+        damage = 1;
+    }
+
+    P_BulletSlope (player->mo);
+    P_GunShot (player->mo, !player->refire);
+}
+
+
+//
 // A_FireShotgun
 //
 void
@@ -759,6 +809,191 @@ A_FireCGun
 
     P_BulletSlope (player->mo);
 	
+    P_GunShot (player->mo, !player->refire);
+}
+
+
+//
+// A_FireD20Cannon - Goblin Dice Rollaz d20 cannon
+// Rolls a d20 to determine damage: 1-5=5 dmg, 6-10=10 dmg, 11-15=15 dmg, 16-19=25 dmg, 20=CRITICAL (50 dmg)
+//
+void
+A_FireD20Cannon
+( player_t*	player,
+  pspdef_t*	psp ) 
+{
+    int diceRoll;
+    int damage;
+    
+    S_StartSound (player->mo, sfx_plasma);
+
+    P_SetMobjState (player->mo, S_PLAY_ATK2);
+    DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
+
+    P_SetPsprite (player,
+		  ps_flash,
+		  weaponinfo[player->readyweapon].flashstate);
+
+    diceRoll = (P_Random() % 20) + 1;
+    
+    if (diceRoll == 20)
+    {
+        damage = 50;
+    }
+    else if (diceRoll >= 16)
+    {
+        damage = 25;
+    }
+    else if (diceRoll >= 11)
+    {
+        damage = 15;
+    }
+    else if (diceRoll >= 6)
+    {
+        damage = 10;
+    }
+    else
+    {
+        damage = 5;
+    }
+
+    P_BulletSlope (player->mo);
+    P_GunShot (player->mo, !player->refire);
+}
+
+
+//
+// A_FireD12 - Goblin Dice Rollaz d12 heavy impact weapon
+// Rolls a d12 to determine damage: 1-3=3 dmg, 4-6=6 dmg, 7-9=9 dmg, 10-11=15 dmg, 12=CRITICAL (24 dmg)
+//
+void
+A_FireD12
+( player_t*	player,
+  pspdef_t*	psp ) 
+{
+    int diceRoll;
+    int damage;
+    
+    S_StartSound (player->mo, sfx_dshtgn);
+
+    P_SetMobjState (player->mo, S_PLAY_ATK2);
+    DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
+
+    P_SetPsprite (player,
+		  ps_flash,
+		  weaponinfo[player->readyweapon].flashstate);
+
+    diceRoll = (P_Random() % 12) + 1;
+    
+    if (diceRoll == 12)
+    {
+        damage = 24;
+    }
+    else if (diceRoll >= 10)
+    {
+        damage = 15;
+    }
+    else if (diceRoll >= 7)
+    {
+        damage = 9;
+    }
+    else if (diceRoll >= 4)
+    {
+        damage = 6;
+    }
+    else
+    {
+        damage = 3;
+    }
+
+    P_BulletSlope (player->mo);
+    P_GunShot (player->mo, !player->refire);
+}
+
+
+//
+// A_FirePercentile - Goblin Dice Rollaz percentile dice weapon
+// Rolls 1-100 to determine damage: 1-50=5 dmg, 51-75=10 dmg, 76-90=20 dmg, 91-99=40 dmg, 100=CRITICAL (100 dmg)
+//
+void
+A_FirePercentile
+( player_t*	player,
+  pspdef_t*	psp ) 
+{
+    int diceRoll;
+    int damage;
+    
+    S_StartSound (player->mo, sfx_plasma);
+
+    P_SetMobjState (player->mo, S_PLAY_ATK2);
+    DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
+
+    P_SetPsprite (player,
+		  ps_flash,
+		  weaponinfo[player->readyweapon].flashstate);
+
+    diceRoll = (P_Random() % 100) + 1;
+    
+    if (diceRoll == 100)
+    {
+        damage = 100;
+    }
+    else if (diceRoll >= 91)
+    {
+        damage = 40;
+    }
+    else if (diceRoll >= 76)
+    {
+        damage = 20;
+    }
+    else if (diceRoll >= 51)
+    {
+        damage = 10;
+    }
+    else
+    {
+        damage = 5;
+    }
+
+    P_BulletSlope (player->mo);
+    P_GunShot (player->mo, !player->refire);
+}
+
+
+//
+// A_FireD4 - Goblin Dice Rollaz d4 throwing knives
+// Quick attack weapon, low damage but fast fire rate
+// Rolls d4: 1=1 dmg, 2=2 dmg, 3=3 dmg, 4=CRITICAL (8 dmg)
+//
+void
+A_FireD4
+( player_t*	player,
+  pspdef_t*	psp ) 
+{
+    int diceRoll;
+    int damage;
+    
+    S_StartSound (player->mo, sfx_pistol);
+
+    P_SetMobjState (player->mo, S_PLAY_ATK1);
+    DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
+
+    P_SetPsprite (player,
+		  ps_flash,
+		  weaponinfo[player->readyweapon].flashstate);
+
+    diceRoll = (P_Random() % 4) + 1;
+    
+    if (diceRoll == 4)
+    {
+        damage = 8;
+    }
+    else
+    {
+        damage = diceRoll;
+    }
+
+    P_BulletSlope (player->mo);
     P_GunShot (player->mo, !player->refire);
 }
 

@@ -826,7 +826,13 @@ boolean G_Responder (event_t* ev)
 	    return true; 
 	} 
 #endif 
-	if (HU_Responder (ev)) 
+	if (ev->type == ev_keydown && ev->data1 == KEY_F5)
+	{
+	    showfps = !showfps;
+	    I_DisplayFPSDots(devparm || showfps);
+	    return true;
+	}
+	if (HU_Responder (ev))
 	    return true;	// chat ate the event 
 	if (ST_Responder (ev)) 
 	    return true;	// status window ate it 
@@ -883,8 +889,8 @@ boolean G_Responder (event_t* ev)
 		 
       case ev_mouse: 
         SetMouseButtons(ev->data1);
-	mousex = ev->data2*(mouseSensitivity+5)/10; 
-	mousey = ev->data3*(mouseSensitivity+5)/10; 
+	mousex = (int)(ev->data2*(mouseSensitivity+5)/10*mouse_sensitivity_scale); 
+	mousey = (int)(ev->data3*(mouseSensitivity+5)/10*mouse_sensitivity_scale);
 	return true;    // eat events 
  
       case ev_joystick: 

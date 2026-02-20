@@ -70,6 +70,8 @@ fixed_t		pspriteiscale;
 
 lighttable_t**	spritelights;
 
+int r_spritedetail = 0;
+
 // constant arrays
 //  used for psprite clipping and initializing clipping
 short		negonearray[SCREENWIDTH];
@@ -413,7 +415,7 @@ R_DrawVisSprite
 	    ( (vis->mobjflags & MF_TRANSLATION) >> (MF_TRANSSHIFT-8) );
     }
 	
-    dc_iscale = abs(vis->xiscale)>>detailshift;
+    dc_iscale = abs(vis->xiscale) >> (r_spritedetail ? 0 : detailshift);
     dc_texturemid = vis->texturemid;
     frac = vis->startfrac;
     spryscale = vis->scale;
@@ -541,7 +543,7 @@ void R_ProjectSprite (mobj_t* thing)
     // store information in a vissprite
     vis = R_NewVisSprite ();
     vis->mobjflags = thing->flags;
-    vis->scale = xscale<<detailshift;
+    vis->scale = xscale << (r_spritedetail ? 0 : detailshift);
     vis->gx = thing->x;
     vis->gy = thing->y;
     vis->gz = thing->z;
@@ -586,7 +588,7 @@ void R_ProjectSprite (mobj_t* thing)
     else
     {
 	// diminished light
-	index = xscale>>(LIGHTSCALESHIFT-detailshift);
+	index = xscale >> (r_spritedetail ? 0 : (LIGHTSCALESHIFT - detailshift));
 
 	if (index >= MAXLIGHTSCALE) 
 	    index = MAXLIGHTSCALE-1;
@@ -687,7 +689,7 @@ void R_DrawPSprite (pspdef_t* psp)
     vis->texturemid = (BASEYCENTER<<FRACBITS)+FRACUNIT/2-(psp->sy-spritetopoffset[lump]);
     vis->x1 = x1 < 0 ? 0 : x1;
     vis->x2 = x2 >= viewwidth ? viewwidth-1 : x2;	
-    vis->scale = pspritescale<<detailshift;
+    vis->scale = pspritescale << (r_spritedetail ? 0 : detailshift);
     
     if (flip)
     {
@@ -771,60 +773,56 @@ void R_DrawPlayerSprites (void)
 
 
 //
-// R_SortVisSprites
+// R_SortVisSprites - Optimized sorting for modern hardware
+// Uses insertion sort which is O(n) for nearly-sorted data
+// and much faster than selection sort for typical vissprite counts
 //
 vissprite_t	vsprsortedhead;
 
-
 void R_SortVisSprites (void)
 {
-    int			i;
     int			count;
     vissprite_t*	ds;
-    vissprite_t*	best;
-    static vissprite_t	unsorted;
-    fixed_t		bestscale;
+    vissprite_t*	next;
+    vissprite_t*	insert;
+    fixed_t		scale;
 
     count = vissprite_p - vissprites;
-	
-    unsorted.next = unsorted.prev = &unsorted;
 
     if (!count)
 	return;
-		
-    for (ds=vissprites ; ds<vissprite_p ; ds++)
-    {
-	ds->next = ds+1;
-	ds->prev = ds-1;
-    }
-    
-    vissprites[0].prev = &unsorted;
-    unsorted.next = &vissprites[0];
-    (vissprite_p-1)->next = &unsorted;
-    unsorted.prev = vissprite_p-1;
-    
-    // pull the vissprites out by scale
 
     vsprsortedhead.next = vsprsortedhead.prev = &vsprsortedhead;
-    for (i=0 ; i<count ; i++)
+
+    ds = vissprites;
+    next = ds + 1;
+
+    vsprsortedhead.next = ds;
+    ds->prev = &vsprsortedhead;
+    ds->next = next;
+    ds = next;
+
+    for (; ds < vissprite_p; ds = ds->next)
     {
-	bestscale = INT_MAX;
-        best = unsorted.next;
-	for (ds=unsorted.next ; ds!= &unsorted ; ds=ds->next)
+	scale = ds->scale;
+	insert = ds->prev;
+
+	while (insert != &vsprsortedhead && insert->scale > scale)
 	{
-	    if (ds->scale < bestscale)
-	    {
-		bestscale = ds->scale;
-		best = ds;
-	    }
+	    insert = insert->prev;
 	}
-	best->next->prev = best->prev;
-	best->prev->next = best->next;
-	best->next = &vsprsortedhead;
-	best->prev = vsprsortedhead.prev;
-	vsprsortedhead.prev->next = best;
-	vsprsortedhead.prev = best;
+
+	next = ds->next;
+	next->prev = ds->prev;
+	insert->next->prev = ds;
+
+	ds->next = insert->next;
+	ds->prev = insert;
+	insert->next = ds;
     }
+
+    (vissprite_p-1)->next = &vsprsortedhead;
+    vsprsortedhead.prev = vissprite_p-1;
 }
 
 

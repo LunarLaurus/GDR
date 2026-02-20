@@ -84,7 +84,11 @@ extern lighttable_t*	fixedcolormap;
 // Blocky/low detail mode.
 //B remove this?
 //  0 = high, 1 = low
-extern	int		detailshift;	
+extern	int		detailshift;
+
+// Sprite detail override for modern hardware optimization
+// 0 = use detaillevel setting, 1 = force high detail sprites
+extern  int     r_spritedetail;
 
 
 //

@@ -31,6 +31,7 @@
 
 #include "hu_stuff.h"
 #include "hu_lib.h"
+#include "dmg_ovl.h"
 #include "m_controls.h"
 #include "m_misc.h"
 #include "m_menu.h"
@@ -348,6 +349,8 @@ void HU_Init(void)
 	hu_font[i] = (patch_t *) W_CacheLumpName(buffer, PU_STATIC);
     }
 
+    DMG_Init();
+
 }
 
 void HU_Stop(void)
@@ -440,6 +443,8 @@ void HU_Drawer(void)
     if (automapactive)
 	HUlib_drawTextLine(&w_title, false);
 
+    DMG_Drawer();
+
 }
 
 void HU_Erase(void)
@@ -522,7 +527,9 @@ void HU_Ticker(void)
 	}
     }
 
-}
+    DMG_Ticker();
+
+}    DMG_T
 
 #define QUEUESIZE		128
 

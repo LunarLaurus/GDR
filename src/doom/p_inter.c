@@ -323,16 +323,24 @@ P_GivePower
 
     if (power == pw_critboost)
     {
-	player->powers[power] = CRITBOOSTTICS;
-	S_StartSound(&player->mo->sphere, sfx_getpow);
-	return true;
+        if (player->powers[pw_doubledamage])
+        {
+            return false;
+        }
+        player->powers[power] = CRITBOOSTTICS;
+        S_StartSound(&player->mo->sphere, sfx_getpow);
+        return true;
     }
 
     if (power == pw_doubledamage)
     {
-	player->powers[power] = DOUBLEDAMAGETICS;
-	S_StartSound(&player->mo->sphere, sfx_getpow);
-	return true;
+        if (player->powers[pw_critboost])
+        {
+            return false;
+        }
+        player->powers[power] = DOUBLEDAMAGETICS;
+        S_StartSound(&player->mo->sphere, sfx_getpow);
+        return true;
     }
 	
     if (player->powers[power])

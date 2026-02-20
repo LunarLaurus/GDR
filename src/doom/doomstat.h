@@ -48,6 +48,7 @@ extern  boolean	respawnparm;	// checkparm of -respawn
 extern  boolean	fastparm;	// checkparm of -fast
 
 extern  boolean	devparm;	// DEBUG: launched with -devparm
+extern  boolean	showfps;	// FPS counter display toggle
 
 
 // -----------------------------------------------------
@@ -254,6 +255,7 @@ extern  boolean         precache;
 extern  gamestate_t     wipegamestate;
 
 extern  int             mouseSensitivity;
+extern  float           mouse_sensitivity_scale;
 
 extern  int             bodyqueslot;
 

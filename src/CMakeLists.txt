@@ -10,7 +10,7 @@ set(COMMON_SOURCE_FILES
     m_argv.c             m_argv.h
     m_misc.c             m_misc.h)
 
-# Dedicated server (chocolate-server):
+# Dedicated server (goblin-server):
 
 set(DEDSERV_FILES
     d_dedicated.c
@@ -57,7 +57,7 @@ target_link_libraries("${PROGRAM_PREFIX}server" ${SDL_LINK_LIBS})
 set_target_properties("${PROGRAM_PREFIX}server" PROPERTIES COMPILE_FLAGS "${SDL_FLAGS}")
 set_target_properties("${PROGRAM_PREFIX}server" PROPERTIES LINK_FLAGS "${SDL_FLAGS}")
 
-# Source files used by the game binaries (chocolate-doom, etc.)
+# Source files used by the game binaries (goblin-doom, etc.)
 
 set(GAME_SOURCE_FILES
     aes_prng.c          aes_prng.h
@@ -221,7 +221,7 @@ if(MSVC)
                           LINK_FLAGS "/MANIFEST:NO")
 endif()
 
-# Source files needed for chocolate-setup:
+# Source files needed for goblin-setup:
 
 set(SETUP_FILES
     deh_str.c           deh_str.h

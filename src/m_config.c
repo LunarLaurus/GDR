@@ -132,6 +132,14 @@ static default_t	doom_defaults_list[] =
     CONFIG_VARIABLE_INT(mouse_sensitivity),
 
     //!
+    // Mouse sensitivity scaling factor. Multiplies the final mouse
+    // sensitivity value for finer control. Default is 1.0.
+    // Useful for high-DPI mice or vertical sync.
+    //
+
+    CONFIG_VARIABLE_FLOAT(mouse_sensitivity_scale),
+
+    //!
     // Volume of sound effects, range 0-15.
     //
 

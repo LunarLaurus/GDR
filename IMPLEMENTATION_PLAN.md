@@ -83,7 +83,7 @@
 - [x] Add distinct visual effect (screen glow or weapon aura)
 - [x] Add unique pickup sprite and sound
 - [x] Add duration timer and HUD display
-- [ ] Prevent unintended stacking with other damage buffs
+- [x] Prevent unintended stacking with other damage buffs
 - [ ] Add difficulty-based spawn tuning
 - [ ] Add multiplayer deterministic sync validation
 - [ ] Add Dice Fortune powerup (guaranteed crit on next hit)

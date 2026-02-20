@@ -67,7 +67,9 @@ typedef enum
     // No damage, no health loss.
     CF_GODMODE		= 2,
     // Not really a cheat, just a debug aid.
-    CF_NOMOMENTUM	= 4
+    CF_NOMOMENTUM	= 4,
+    // Infinite ammo, never run out.
+    CF_INFINITE_AMMO	= 8
 
 } cheat_t;
 

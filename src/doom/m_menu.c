@@ -66,6 +66,7 @@
 // defaulted values
 //
 int			mouseSensitivity = 5;
+float		mouse_sensitivity_scale = 1.0f;
 
 // Show messages has default, 0 = off, 1 = on
 int			showMessages = 1;
@@ -1731,7 +1732,7 @@ boolean M_Responder (event_t* ev)
 	    M_QuickLoad();
 	    return true;
         }
-        else if (key == key_menu_quit)     // Quit DOOM
+        else if (key == key_menu_quit)     // Quit Game
         {
 	    S_StartSound(NULL,sfx_swtchn);
 	    M_QuitDOOM(0);
