@@ -94,7 +94,7 @@
 - [x] Add expiration fail-safe on player death
 - [x] Add unique pickup sprite variant
 - [x] Add audio cue when guaranteed crit triggers
-- [ ] Add balance pass for rarity and placement
+- [x] Add balance pass for rarity and placement
 - [ ] Implement shared powerup framework for future buffs
 - [ ] Add global powerup HUD slot system
 - [ ] Add powerup debug command for testing

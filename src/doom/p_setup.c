@@ -346,6 +346,12 @@ void P_LoadNodes (int lump)
 
 int powerup_spawn_rate = 100;
 
+// Goblin Dice Rollaz: Per-powerup rarity settings (0-100, lower = rarer)
+// These default to different values to create rarity hierarchy
+int critboost_spawn_rate = 100;      // Common - crit boost is the baseline powerup
+int doubledamage_spawn_rate = 75;    // Uncommon - strong but not guaranteed
+int dicefortune_spawn_rate = 40;     // Rare - guaranteed crit is very powerful
+
 void P_LoadThings (int lump)
 {
     byte               *data;
@@ -386,10 +392,32 @@ void P_LoadThings (int lump)
 	    break;
 
 	// Goblin Dice Rollaz: Difficulty-based spawn frequency for custom powerups
-	// Custom powerups (doomednum >= 8000) have spawn rate scaled by difficulty
+	// Custom powerups (doomednum >= 8000) have per-powerup rarity scaled by difficulty
 	if (spawn && SHORT(mt->type) >= 8000 && SHORT(mt->type) < 9000)
 	{
 	    int spawnChance = powerup_spawn_rate;
+
+	    // Goblin Dice Rollaz: Apply per-powerup rarity
+	    // 8050 = MT_CRITBOOST, 8051 = MT_DOUBLEDAMAGE, 8052 = MT_DICEFORTUNE
+	    if (SHORT(mt->type) == 8050)
+	    {
+		spawnChance = critboost_spawn_rate;
+	    }
+	    else if (SHORT(mt->type) == 8051)
+	    {
+		spawnChance = doubledamage_spawn_rate;
+	    }
+	    else if (SHORT(mt->type) == 8052)
+	    {
+		spawnChance = dicefortune_spawn_rate;
+	    }
+	    else
+	    {
+		// Default fallback for any other custom items
+		spawnChance = powerup_spawn_rate;
+	    }
+
+	    // Apply difficulty scaling
 	    switch (gameskill)
 	    {
 		case sk_baby:   spawnChance = (spawnChance * 30) / 100; break;

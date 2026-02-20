@@ -28,6 +28,11 @@ extern lumpinfo_t *maplumpinfo;
 // Goblin Dice Rollaz: powerup spawn rate (0-100)
 extern int powerup_spawn_rate;
 
+// Goblin Dice Rollaz: per-powerup rarity (0-100, lower = rarer)
+extern int critboost_spawn_rate;
+extern int doubledamage_spawn_rate;
+extern int dicefortune_spawn_rate;
+
 // NOT called by W_Ticker. Fixme.
 void
 P_SetupLevel

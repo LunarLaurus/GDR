@@ -170,6 +170,46 @@ gdr_skill_crit_hard = 12     // 12% base
 | 8051 | Double Damage | 2x damage | 20s |
 | 8052 | Dice Fortune | Next hit = crit | 1 hit |
 
+### Per-Powerup Rarity System
+
+Goblin Dice Rollaz implements per-powerup rarity via CVARs, allowing fine-tuned balance without modifying WAD files:
+
+| CVAR | Default | Rarity Tier | Description |
+|------|---------|-------------|-------------|
+| `critboost_spawn_rate` | 100 | Common | Crit boost is the baseline powerup |
+| `doubledamage_spawn_rate` | 75 | Uncommon | Strong but has duration limit |
+| `dicefortune_spawn_rate` | 40 | Rare | Guaranteed crit is very powerful |
+
+**Difficulty Scaling:** All powerup rates are scaled by skill level:
+- Baby: 30% of base rate
+- Easy: 50% of base rate  
+- Medium: 75% of base rate
+- Hard: 100% of base rate
+- Nightmare: 150% of base rate
+
+**Example Configurations:**
+
+Balanced (default):
+```
+critboost_spawn_rate = 100
+doubledamage_spawn_rate = 75
+dicefortune_spawn_rate = 40
+```
+
+Harder (rarer powerups):
+```
+critboost_spawn_rate = 60
+doubledamage_spawn_rate = 40
+dicefortune_spawn_rate = 20
+```
+
+Easier (more powerups):
+```
+critboost_spawn_rate = 100
+doubledamage_spawn_rate = 100
+dicefortune_spawn_rate = 60
+```
+
 ## Implementation Notes
 
 ### Adding New Enemies
