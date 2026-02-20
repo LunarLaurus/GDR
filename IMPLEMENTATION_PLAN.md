@@ -78,11 +78,11 @@
 - [x] Add pickup sprite and map editor spawn ID
 - [x] Balance spawn frequency per difficulty level
 - [x] Add Double Damage powerup
-- [ ] Apply 2x multiplier post-dice-roll calculation
-- [ ] Ensure compatibility with crit multiplier logic
-- [ ] Add distinct visual effect (screen glow or weapon aura)
+- [x] Apply 2x multiplier post-dice-roll calculation
+- [x] Ensure compatibility with crit multiplier logic
+- [x] Add distinct visual effect (screen glow or weapon aura)
 - [ ] Add unique pickup sprite and sound
-- [ ] Add duration timer and HUD display
+- [x] Add duration timer and HUD display
 - [ ] Prevent unintended stacking with other damage buffs
 - [ ] Add difficulty-based spawn tuning
 - [ ] Add multiplayer deterministic sync validation
