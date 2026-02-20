@@ -768,13 +768,15 @@ P_KillMobj
     
     if (target->player)
     {
-	// count environment kills against you
-	if (!source)	
-	    target->player->frags[target->player-players]++;
-			
+ 	// count environment kills against you
+ 	if (!source)	
+ 	    target->player->frags[target->player-players]++;
+ 			
 	target->flags &= ~MF_SOLID;
 	target->player->playerstate = PST_DEAD;
 	P_DropWeapon (target->player);
+
+	target->player->powers[pw_dicefortune] = 0;
 
 	if (target->player == &players[consoleplayer]
 	    && automapactive)
@@ -877,18 +879,27 @@ P_DamageMobj
     if (source && source->player && damage > 0)
     {
         int effectiveCritChance = CRIT_CHANCE;
+        boolean guaranteed_crit = false;
+
+        if (source->player->powers[pw_dicefortune])
+        {
+            guaranteed_crit = true;
+            source->player->powers[pw_dicefortune] = 0;
+        }
+
         if (source->player->powers[pw_critboost])
         {
             effectiveCritChance += crit_boost_bonus;
         }
-        if ((P_Random() % 100) < effectiveCritChance)
+
+        if (guaranteed_crit || (P_Random() % 100) < effectiveCritChance)
         {
             damage *= CRIT_MULTIPLIER;
             was_critical = true;
             crit_roll = (P_Random() % 20) + 1;
             if (target == &players[consoleplayer].mo)
             {
-                players[consoleplayer].message = "CRITICAL HIT!";
+                players[consoleplayer].message = guaranteed_crit ? "GUARANTEED CRITICAL!" : "CRITICAL HIT!";
             }
         }
 
