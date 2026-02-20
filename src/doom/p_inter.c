@@ -894,6 +894,10 @@ P_DamageMobj
             damage *= CRIT_MULTIPLIER;
             was_critical = true;
             crit_roll = (P_Random() % 20) + 1;
+            if (guaranteed_crit)
+            {
+                S_StartSound(source, sfx_fortcrit);
+            }
             if (target == &players[consoleplayer].mo)
             {
                 players[consoleplayer].message = guaranteed_crit ? "GUARANTEED CRITICAL!" : "CRITICAL HIT!";

@@ -93,7 +93,7 @@
 - [x] Add HUD indicator ("Next Hit: CRIT")
 - [x] Add expiration fail-safe on player death
 - [x] Add unique pickup sprite variant
-- [ ] Add audio cue when guaranteed crit triggers
+- [x] Add audio cue when guaranteed crit triggers
 - [ ] Add balance pass for rarity and placement
 - [ ] Implement shared powerup framework for future buffs
 - [ ] Add global powerup HUD slot system

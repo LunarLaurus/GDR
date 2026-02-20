@@ -223,6 +223,7 @@ typedef enum
     sfx_radio,
     sfx_critup,       // Goblin Dice Rollaz: crit boost powerup pickup
     sfx_doubup,       // Goblin Dice Rollaz: double damage powerup pickup
+    sfx_fortcrit,     // Goblin Dice Rollaz: guaranteed crit triggered (dice fortune consumed)
     NUMSFX
 } sfxenum_t;
 

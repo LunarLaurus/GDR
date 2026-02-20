@@ -227,5 +227,6 @@ sfxinfo_t S_sfx[] =
   SOUND("radio",  60),
   SOUND("critup", 80),   // Goblin Dice Rollaz: crit boost powerup pickup (high priority for impact)
   SOUND("doubup", 80),   // Goblin Dice Rollaz: double damage powerup pickup
+  SOUND("fortcrt", 80),  // Goblin Dice Rollaz: guaranteed crit triggered (dice fortune consumed)
 };
 
