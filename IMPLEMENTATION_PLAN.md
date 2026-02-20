@@ -71,7 +71,7 @@
 - [x] Define crit bonus percentage and duration values
 - [x] Implement timed powerup thinker logic
 - [x] Ensure crit bonus stacks safely with existing crit system
-- [ ] Add HUD timer indicator for active crit buff
+- [x] Add HUD timer indicator for active crit buff
 - [ ] Add visual screen tint while active
 - [ ] Add activation and expiration sound effects
 - [ ] Add CVAR to configure crit powerup strength

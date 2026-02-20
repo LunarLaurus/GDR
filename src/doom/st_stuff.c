@@ -149,6 +149,16 @@
 #define ST_ARMORX			221
 #define ST_ARMORY			171
 
+// CRIT CHANCE number pos (dice-themed)
+#define ST_CRITWIDTH		3
+#define ST_CRITX			155
+#define ST_CRITY			171
+
+// CRIT BOOST timer pos (when powerup active)
+#define ST_CRITTIMERWIDTH	2
+#define ST_CRITTIMERX		155
+#define ST_CRITTIMERY		179
+
 // Key icon positions.
 #define ST_KEY0WIDTH		8
 #define ST_KEY0HEIGHT		5
@@ -283,6 +293,10 @@ static st_multicon_t	w_keyboxes[3];
 // armor widget
 static st_percent_t	w_armor;
 
+// crit chance widget (dice-themed)
+static st_number_t	w_crit;
+static st_number_t	w_critboost_timer;
+
 // ammo widgets
 static st_number_t	w_ammo[4];
 
@@ -312,6 +326,12 @@ static int	keyboxes[3];
 // a random number per tick
 static int	st_randomnumber;  
 
+// crit chance value for display (dice-themed)
+static int	st_critchance = 10;
+
+// crit boost timer value (in seconds)
+static int	st_critboost_timer = 0;
+
 cheatseq_t cheat_mus = CHEAT("idmus", 2);
 cheatseq_t cheat_god = CHEAT("iddqd", 0);
 cheatseq_t cheat_ammo = CHEAT("idkfa", 0);
@@ -333,6 +353,7 @@ cheatseq_t	cheat_powerup[7] =
 cheatseq_t cheat_choppers = CHEAT("idchoppers", 0);
 cheatseq_t cheat_clev = CHEAT("idclev", 2);
 cheatseq_t cheat_mypos = CHEAT("idmypos", 0);
+cheatseq_t cheat_infammo = CHEAT("idinfammo", 0);
 
 
 //
@@ -405,7 +426,18 @@ ST_Responder (event_t* ev)
 	  plyr->message = DEH_String(STSTR_DQDON);
 	}
 	else 
-	  plyr->message = DEH_String(STSTR_DQDOFF);
+	plyr->message = DEH_String(STSTR_DQDOFF);
+      }
+      // 'infammo' cheat for infinite ammo toggle
+      else if (cht_CheckCheat(&cheat_infammo, ev->data2))
+      {
+	plyr->cheats ^= CF_INFINITE_AMMO;
+	if (plyr->cheats & CF_INFINITE_AMMO)
+	{
+	  plyr->message = "INFINITE AMMO ON";
+	}
+	else 
+	  plyr->message = "INFINITE AMMO OFF";
       }
       // 'fa' cheat for killer fucking arsenal
       else if (cht_CheckCheat(&cheat_ammonokey, ev->data2))
@@ -844,6 +876,16 @@ void ST_updateWidgets(void)
     // refresh everything if this is him coming back to life
     ST_updateFaceWidget();
 
+    // update crit boost timer (convert tics to seconds)
+    if (plyr->powers[pw_critboost] > 0)
+    {
+	st_critboost_timer = (plyr->powers[pw_critboost] + TICRATE - 1) / TICRATE;
+    }
+    else
+    {
+	st_critboost_timer = 0;
+    }
+
     // used by the w_armsbg widget
     st_notdeathmatch = !deathmatch;
     
@@ -964,6 +1006,14 @@ void ST_drawWidgets(boolean refresh)
 
     STlib_updatePercent(&w_health, refresh);
     STlib_updatePercent(&w_armor, refresh);
+
+    STlib_updateNum(&w_crit, refresh);
+
+    // Only update timer display when powerup is active
+    if (st_critboost_timer > 0)
+    {
+	STlib_updateNum(&w_critboost_timer, refresh);
+    }
 
     STlib_updateBinIcon(&w_armsbg, refresh);
 
@@ -1243,6 +1293,24 @@ void ST_createWidgets(void)
 		      tallnum,
 		      &plyr->armorpoints,
 		      &st_statusbaron, tallpercent);
+
+    // crit chance (dice-themed)
+    STlib_initNum(&w_crit,
+		  ST_CRITX,
+		  ST_CRITY,
+		  tallnum,
+		  &st_critchance,
+		  &st_statusbaron,
+		  ST_CRITWIDTH);
+
+    // crit boost timer (shown when powerup active)
+    STlib_initNum(&w_critboost_timer,
+		  ST_CRITTIMERX,
+		  ST_CRITTIMERY,
+		  shortnum,
+		  &st_critboost_timer,
+		  &st_statusbaron,
+		  ST_CRITTIMERWIDTH);
 
     // keyboxes 0-2
     STlib_initMultIcon(&w_keyboxes[0],
