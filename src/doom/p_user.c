@@ -28,6 +28,9 @@
 
 #include "doomstat.h"
 
+#include "s_sound.h"
+#include "sounds.h"
+
 
 
 // Index of the special effects (INVUL inverse) map.
@@ -348,7 +351,13 @@ void P_PlayerThink (player_t* player)
 	player->powers[pw_ironfeet]--;
 
     if (player->powers[pw_critboost])
-	player->powers[pw_critboost]--;
+    {
+        if (player->powers[pw_critboost] == 1)
+        {
+            S_StartSound(&player->mo->sphere, sfx_wpnup);
+        }
+        player->powers[pw_critboost]--;
+    }
 		
     if (player->damagecount)
 	player->damagecount--;

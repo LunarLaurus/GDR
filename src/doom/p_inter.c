@@ -324,6 +324,7 @@ P_GivePower
     if (power == pw_critboost)
     {
 	player->powers[power] = CRITBOOSTTICS;
+	S_StartSound(&player->mo->sphere, sfx_getpow);
 	return true;
     }
 	
