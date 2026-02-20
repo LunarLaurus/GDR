@@ -95,7 +95,7 @@
 - [x] Add unique pickup sprite variant
 - [x] Add audio cue when guaranteed crit triggers
 - [x] Add balance pass for rarity and placement
-- [ ] Implement shared powerup framework for future buffs
+- [x] Implement shared powerup framework for future buffs
 - [ ] Add global powerup HUD slot system
 - [ ] Add powerup debug command for testing
 - [ ] Add powerup-only test map for tuning
