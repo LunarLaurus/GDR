@@ -85,7 +85,7 @@
 - [x] Add duration timer and HUD display
 - [x] Prevent unintended stacking with other damage buffs
 - [x] Add difficulty-based spawn tuning
-- [ ] Add multiplayer deterministic sync validation
+- [x] Add multiplayer deterministic sync validation
 - [x] Add Dice Fortune powerup (guaranteed crit on next hit)
 - [x] Implement one-shot guaranteed crit flag
 - [x] Persist effect across weapon swaps

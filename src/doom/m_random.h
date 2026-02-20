@@ -37,4 +37,10 @@ void M_ClearRandom (void);
 // Defined version of P_Random() - P_Random()
 int P_SubRandom (void);
 
+// Goblin Dice Rollaz: RNG sync validation for multiplayer
+int P_GetRNGState(void);
+int M_GetRNGState(void);
+void P_SetRNGState(int state);
+void G_SyncRNGCheck(void);
+
 #endif

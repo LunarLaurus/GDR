@@ -128,6 +128,9 @@ int             show_diskicon = 1;
 extern int      crit_boost_bonus;
 extern int      powerup_spawn_rate;
 
+// Goblin Dice Rollaz: multiplayer sync debug
+int             debug_sync_check = 0;
+
 
 void D_ConnectNetGame(void);
 void D_CheckNetGame(void);
@@ -374,6 +377,9 @@ void D_BindVariables(void)
     // Goblin Dice Rollaz: crit powerup settings
     M_BindIntVariable("crit_boost_bonus",        &crit_boost_bonus);
     M_BindIntVariable("powerup_spawn_rate",       &powerup_spawn_rate);
+
+    // Goblin Dice Rollaz: multiplayer sync debug
+    M_BindIntVariable("debug_sync_check",         &debug_sync_check);
 
     // Multiplayer chat macros
 

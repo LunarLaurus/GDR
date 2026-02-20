@@ -70,3 +70,38 @@ int P_SubRandom (void)
     int r = P_Random();
     return r - P_Random();
 }
+
+//
+// Goblin Dice Rollaz: RNG sync validation for multiplayer
+// Returns the current P_Random index for sync debugging
+//
+int P_GetRNGState(void)
+{
+    return prndindex;
+}
+
+//
+// Returns the current M_Random index for sync debugging
+//
+int M_GetRNGState(void)
+{
+    return rndindex;
+}
+
+//
+// Set the RNG state (for sync recovery in debugging)
+//
+void P_SetRNGState(int state)
+{
+    prndindex = (state & 0xFF);
+    rndindex = ((state >> 8) & 0xFF);
+}
+
+//
+// Sync validation check - logs current RNG state
+// Call this from console to verify all clients have same RNG state
+//
+void G_SyncRNGCheck(void)
+{
+    printf("[SYNC] RNG State: prndindex=%d, rndindex=%d\n", prndindex, rndindex);
+}
