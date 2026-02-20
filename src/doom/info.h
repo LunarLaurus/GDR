@@ -1277,6 +1277,7 @@ typedef enum {
     MT_INV,
     MT_CRITBOOST,
     MT_DOUBLEDAMAGE,
+    MT_DICEFORTUNE,
     MT_MISC13,
     MT_INS,
     MT_MISC14,

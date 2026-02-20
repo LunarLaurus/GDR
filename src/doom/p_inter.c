@@ -342,6 +342,17 @@ P_GivePower
         S_StartSound(&player->mo->sphere, sfx_getpow);
         return true;
     }
+
+    if (power == pw_dicefortune)
+    {
+        if (player->powers[pw_dicefortune])
+        {
+            return false;
+        }
+        player->powers[power] = 1;
+        S_StartSound(&player->mo->sphere, sfx_getpow);
+        return true;
+    }
 	
     if (player->powers[power])
 	return false;	// already got it
@@ -562,10 +573,20 @@ P_TouchSpecialThing
 	break;
 	
       case SPR_PCRT:
-	if (!P_GivePower (player, pw_critboost))
+	if (special->type == MT_DICEFORTUNE)
+	{
+	    if (!P_GivePower (player, pw_dicefortune))
+		return;
+	    player->message = "DICE FORTUNE!";
+	    sound = sfx_critup;
+	}
+	else if (!P_GivePower (player, pw_critboost))
 	    return;
-	player->message = DEH_String(GOTCRITS);
-	sound = sfx_critup;
+	else
+	{
+	    player->message = DEH_String(GOTCRITS);
+	    sound = sfx_critup;
+	}
 	break;
 	
       case SPR_PDMD:

@@ -687,6 +687,7 @@ A_FireD6Blast
 {
     int diceRoll;
     int damage;
+    int guaranteedCrit = false;
     
     S_StartSound (player->mo, sfx_pistol);
 
@@ -697,7 +698,21 @@ A_FireD6Blast
 		  ps_flash,
 		  weaponinfo[player->readyweapon].flashstate);
 
-    diceRoll = (P_Random() % 6) + 1;
+    if (player->powers[pw_dicefortune])
+    {
+        guaranteedCrit = true;
+        player->powers[pw_dicefortune] = 0;
+        player->message = "CRITICAL!";
+    }
+
+    if (guaranteedCrit)
+    {
+        diceRoll = 6;
+    }
+    else
+    {
+        diceRoll = (P_Random() % 6) + 1;
+    }
     
     if (diceRoll >= 5)
     {
@@ -824,6 +839,7 @@ A_FireD20Cannon
 {
     int diceRoll;
     int damage;
+    int guaranteedCrit = false;
     
     S_StartSound (player->mo, sfx_plasma);
 
@@ -834,7 +850,21 @@ A_FireD20Cannon
 		  ps_flash,
 		  weaponinfo[player->readyweapon].flashstate);
 
-    diceRoll = (P_Random() % 20) + 1;
+    if (player->powers[pw_dicefortune])
+    {
+        guaranteedCrit = true;
+        player->powers[pw_dicefortune] = 0;
+        player->message = "CRITICAL!";
+    }
+
+    if (guaranteedCrit)
+    {
+        diceRoll = 20;
+    }
+    else
+    {
+        diceRoll = (P_Random() % 20) + 1;
+    }
     
     if (diceRoll == 20)
     {
@@ -873,6 +903,7 @@ A_FireD12
 {
     int diceRoll;
     int damage;
+    int guaranteedCrit = false;
     
     S_StartSound (player->mo, sfx_dshtgn);
 
@@ -883,7 +914,21 @@ A_FireD12
 		  ps_flash,
 		  weaponinfo[player->readyweapon].flashstate);
 
-    diceRoll = (P_Random() % 12) + 1;
+    if (player->powers[pw_dicefortune])
+    {
+        guaranteedCrit = true;
+        player->powers[pw_dicefortune] = 0;
+        player->message = "CRITICAL!";
+    }
+
+    if (guaranteedCrit)
+    {
+        diceRoll = 12;
+    }
+    else
+    {
+        diceRoll = (P_Random() % 12) + 1;
+    }
     
     if (diceRoll == 12)
     {
@@ -922,6 +967,7 @@ A_FirePercentile
 {
     int diceRoll;
     int damage;
+    int guaranteedCrit = false;
     
     S_StartSound (player->mo, sfx_plasma);
 
@@ -932,7 +978,21 @@ A_FirePercentile
 		  ps_flash,
 		  weaponinfo[player->readyweapon].flashstate);
 
-    diceRoll = (P_Random() % 100) + 1;
+    if (player->powers[pw_dicefortune])
+    {
+        guaranteedCrit = true;
+        player->powers[pw_dicefortune] = 0;
+        player->message = "CRITICAL!";
+    }
+
+    if (guaranteedCrit)
+    {
+        diceRoll = 100;
+    }
+    else
+    {
+        diceRoll = (P_Random() % 100) + 1;
+    }
     
     if (diceRoll == 100)
     {
@@ -972,6 +1032,7 @@ A_FireD4
 {
     int diceRoll;
     int damage;
+    int guaranteedCrit = false;
     
     S_StartSound (player->mo, sfx_pistol);
 
@@ -982,7 +1043,21 @@ A_FireD4
 		  ps_flash,
 		  weaponinfo[player->readyweapon].flashstate);
 
-    diceRoll = (P_Random() % 4) + 1;
+    if (player->powers[pw_dicefortune])
+    {
+        guaranteedCrit = true;
+        player->powers[pw_dicefortune] = 0;
+        player->message = "CRITICAL!";
+    }
+
+    if (guaranteedCrit)
+    {
+        diceRoll = 4;
+    }
+    else
+    {
+        diceRoll = (P_Random() % 4) + 1;
+    }
     
     if (diceRoll == 4)
     {

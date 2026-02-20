@@ -158,6 +158,7 @@ typedef enum
     pw_infrared,
     pw_critboost,
     pw_doubledamage,
+    pw_dicefortune,
     NUMPOWERS
     
 } powertype_t;

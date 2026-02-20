@@ -336,6 +336,9 @@ static int	st_critboost_timer = 0;
 // double damage timer value (in seconds)
 static int	st_doubledamage_timer = 0;
 
+// dice fortune indicator (true if player has guaranteed crit)
+static int	st_dicefortune_active = 0;
+
 cheatseq_t cheat_mus = CHEAT("idmus", 2);
 cheatseq_t cheat_god = CHEAT("iddqd", 0);
 cheatseq_t cheat_ammo = CHEAT("idkfa", 0);
@@ -899,6 +902,9 @@ void ST_updateWidgets(void)
     {
 	st_doubledamage_timer = 0;
     }
+
+    // update dice fortune indicator (one-shot guaranteed crit)
+    st_dicefortune_active = plyr->powers[pw_dicefortune];
 
     // used by the w_armsbg widget
     st_notdeathmatch = !deathmatch;
