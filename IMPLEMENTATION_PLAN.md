@@ -86,7 +86,7 @@
 - [x] Prevent unintended stacking with other damage buffs
 - [ ] Add difficulty-based spawn tuning
 - [ ] Add multiplayer deterministic sync validation
-- [ ] Add Dice Fortune powerup (guaranteed crit on next hit)
+- [x] Add Dice Fortune powerup (guaranteed crit on next hit)
 - [ ] Implement one-shot guaranteed crit flag
 - [ ] Persist effect across weapon swaps
 - [ ] Clear effect on successful hit
