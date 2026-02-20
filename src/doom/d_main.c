@@ -126,6 +126,7 @@ int             show_diskicon = 1;
 
 // Goblin Dice Rollaz: crit powerup bonus configurable
 extern int      crit_boost_bonus;
+extern int      powerup_spawn_rate;
 
 
 void D_ConnectNetGame(void);
@@ -372,6 +373,7 @@ void D_BindVariables(void)
 
     // Goblin Dice Rollaz: crit powerup settings
     M_BindIntVariable("crit_boost_bonus",        &crit_boost_bonus);
+    M_BindIntVariable("powerup_spawn_rate",       &powerup_spawn_rate);
 
     // Multiplayer chat macros
 

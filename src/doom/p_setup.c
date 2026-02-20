@@ -343,6 +343,9 @@ void P_LoadNodes (int lump)
 //
 // P_LoadThings
 //
+
+int powerup_spawn_rate = 100;
+
 void P_LoadThings (int lump)
 {
     byte               *data;
@@ -382,7 +385,29 @@ void P_LoadThings (int lump)
 	if (spawn == false)
 	    break;
 
-	// Do spawn all other stuff. 
+	// Goblin Dice Rollaz: Difficulty-based spawn frequency for custom powerups
+	// Custom powerups (doomednum >= 8000) have spawn rate scaled by difficulty
+	if (spawn && SHORT(mt->type) >= 8000 && SHORT(mt->type) < 9000)
+	{
+	    int spawnChance = powerup_spawn_rate;
+	    switch (gameskill)
+	    {
+		case sk_baby:   spawnChance = (spawnChance * 30) / 100; break;
+		case sk_easy:   spawnChance = (spawnChance * 50) / 100; break;
+		case sk_medium: spawnChance = (spawnChance * 75) / 100; break;
+		case sk_hard:   spawnChance = (spawnChance * 100) / 100; break;
+		case sk_nightmare: spawnChance = (spawnChance * 150) / 100; break;
+	    }
+	    if (P_Random() % 100 >= spawnChance)
+	    {
+		spawn = false;
+	    }
+	}
+
+	if (spawn == false)
+	    break;
+
+	// Do spawn all other stuff.
 	spawnthing.x = SHORT(mt->x);
 	spawnthing.y = SHORT(mt->y);
 	spawnthing.angle = SHORT(mt->angle);
