@@ -180,8 +180,9 @@
 - [x] Add crit resistance values per enemy type
 - [x] Add weak point logic (headshot or rear bonus multiplier)
 - [x] Add spawn group presets for map designers
-- [ ] Unique death animations per elite unit
-- [ ] Critical hit reaction animations
+- [ ] Unique death animations per elite unit (blocked: requires sprite assets)
+- [ ] Resolve blocker: Commission or create sprite assets for death animations
+- [ ] Critical hit reaction animations (blocked: requires sprite assets)
 - [ ] Elemental status visual overlays (burn/freeze/glow)
 - [ ] Add mini bestiary documentation in README or `/docs`
 

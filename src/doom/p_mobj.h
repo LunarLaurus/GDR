@@ -288,6 +288,9 @@ typedef struct mobj_s
     int			morale;       // current morale level (0-100, 0 = broken)
     int			morale_flags; // morale state flags
 
+    // Status effect system: duration counters for each status effect type
+    int			status_effects[NUMSTATUSEFFECTS];
+
 } mobj_t;
 
 

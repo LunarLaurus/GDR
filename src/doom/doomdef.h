@@ -189,4 +189,31 @@ typedef enum
     
 } powerduration_t;
 
+typedef enum
+{
+    st_none,
+    st_burning,
+    st_frozen,
+    st_stunned,
+    st_dicecurse,
+    NUMSTATUSEFFECTS
+    
+} statuseffect_t;
+
+#define STATUSEFFECT_FLAG_TIMED      0x0001
+#define STATUSEFFECT_FLAG_DAMAGE    0x0002
+#define STATUSEFFECT_FLAG_MOVESLOW  0x0004
+#define STATUSEFFECT_FLAG_ATTACKDISABLE 0x0008
+
+typedef struct
+{
+    int         effect_id;
+    const char* name;
+    int         default_duration;
+    int         flags;
+    int         damage_per_second;
+    int         move_speed_multiplier;
+    int         color;
+} status_info_t;
+
 #endif          // __DOOMDEF__

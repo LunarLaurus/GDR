@@ -33,6 +33,8 @@
 
 #include "doomstat.h"
 
+#include "g_status.h"
+
 
 void G_PlayerReborn (int player);
 void P_SpawnMapThing (mapthing_t*	mthing);
@@ -524,6 +526,8 @@ void P_MobjThinker (mobj_t* mobj)
 
 	P_NightmareRespawn (mobj);
     }
+
+    G_StatusEffectTick(mobj);
 
 }
 
