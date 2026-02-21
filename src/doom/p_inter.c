@@ -37,12 +37,11 @@
 
 #include "p_local.h"
 #include "r_state.h"
-
 #include "s_sound.h"
-
 #include "p_inter.h"
 #include "dmg_ovl.h"
 #include "d_items.h"
+#include "g_status.h"
 
 
 #define BONUSADD	6
@@ -1177,9 +1176,12 @@ P_DamageMobj
     target->health -= damage;	
     
     // Goblin Dice Rollaz: Apply freeze effect from shaman freeze projectile
+    // Use both legacy freeze_tics and new g_status framework for compatibility
     if (inflictor && inflictor->type == MT_SHAMAN_FREEZE && target->health > 0)
     {
         target->freeze_tics = SHAMAN_FREEZE_DURATION;
+        // Also apply g_status frozen effect with configurable duration and speed reduction
+        G_StatusEffectApply(target, st_frozen, FROZEN_TICS);
     }
     
     if (damage > 0 && target->health > 0)

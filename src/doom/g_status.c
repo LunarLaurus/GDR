@@ -202,6 +202,13 @@ void G_StatusEffectTick(mobj_t* target)
                         players[consoleplayer].message = "The flames subside.";
                     }
                 }
+                else if (i == st_frozen)
+                {
+                    if (target == &players[consoleplayer].mo)
+                    {
+                        players[consoleplayer].message = "You break free from the ice!";
+                    }
+                }
             }
 
             if ((se->flags & STATUSEFFECT_FLAG_DAMAGE) && (leveltime % TICRATE == 0))

@@ -26,17 +26,12 @@
 
 #include "doomdef.h"
 #include "p_local.h"
-
 #include "s_sound.h"
-
 #include "g_game.h"
-
-// State.
 #include "doomstat.h"
 #include "r_state.h"
-
-// Data.
 #include "sounds.h"
+#include "g_status.h"
 
 
 
@@ -545,9 +540,21 @@ boolean P_Move (mobj_t*	actor)
 		
     if ((unsigned)actor->movedir >= 8)
 	I_Error ("Weird actor->movedir!");
-		
-    tryx = actor->x + actor->info->speed*xspeed[actor->movedir];
-    tryy = actor->y + actor->info->speed*yspeed[actor->movedir];
+
+    // Goblin Dice Rollaz: Apply frozen status effect speed reduction
+    // Use g_status framework for configurable slow effect
+    if (G_StatusEffectIsActive(actor, st_frozen))
+    {
+        G_StatusEffectTick(actor);
+        int speed_mult = G_StatusEffectGetMoveSpeedMultiplier(actor);
+        tryx = actor->x + FixedMul(actor->info->speed, (speed_mult * xspeed[actor->movedir]) / 100);
+        tryy = actor->y + FixedMul(actor->info->speed, (speed_mult * yspeed[actor->movedir]) / 100);
+    }
+    else
+    {
+        tryx = actor->x + actor->info->speed*xspeed[actor->movedir];
+        tryy = actor->y + actor->info->speed*yspeed[actor->movedir];
+    }
 
     try_ok = P_TryMove (actor, tryx, tryy);
 
@@ -1665,10 +1672,20 @@ void A_Tracer (mobj_t* actor)
 		actor->angle = exact;
 	}
     }
-	
+    
+    // Goblin Dice Rollaz: Apply frozen status effect speed reduction
     exact = actor->angle>>ANGLETOFINESHIFT;
-    actor->momx = FixedMul (actor->info->speed, finecosine[exact]);
-    actor->momy = FixedMul (actor->info->speed, finesine[exact]);
+    if (G_StatusEffectIsActive(actor, st_frozen))
+    {
+        int speed_mult = G_StatusEffectGetMoveSpeedMultiplier(actor);
+        actor->momx = FixedMul (FixedMul(actor->info->speed, speed_mult / 100), finecosine[exact]);
+        actor->momy = FixedMul (FixedMul(actor->info->speed, speed_mult / 100), finesine[exact]);
+    }
+    else
+    {
+        actor->momx = FixedMul (actor->info->speed, finecosine[exact]);
+        actor->momy = FixedMul (actor->info->speed, finesine[exact]);
+    }
     
     // change slope
     dist = P_AproxDistance (dest->x - actor->x,

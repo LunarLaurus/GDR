@@ -23,13 +23,11 @@
 
 #include "doomdef.h"
 #include "d_event.h"
-
 #include "p_local.h"
-
 #include "doomstat.h"
-
 #include "s_sound.h"
 #include "sounds.h"
+#include "g_status.h"
 
 
 
@@ -156,7 +154,19 @@ void P_MovePlayer (player_t* player)
     if (player->mo->freeze_tics > 0)
     {
         player->mo->freeze_tics--;
-        // Reduce movement speed by 50% when frozen
+    }
+
+    // Goblin Dice Rollaz: Apply status effect movement slowdown
+    // Use g_status framework for frozen effect with configurable speed reduction
+    if (G_StatusEffectIsActive(player->mo, st_frozen))
+    {
+        G_StatusEffectTick(player->mo);
+        forward_scale = (forward_scale * G_StatusEffectGetMoveSpeedMultiplier(player->mo)) / 100;
+        side_scale = (side_scale * G_StatusEffectGetMoveSpeedMultiplier(player->mo)) / 100;
+    }
+    else if (player->mo->freeze_tics > 0)
+    {
+        // Legacy freeze_tics: reduce movement speed by 50%
         forward_scale = 1024;
         side_scale = 1024;
     }
