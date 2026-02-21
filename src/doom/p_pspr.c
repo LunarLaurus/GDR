@@ -319,7 +319,73 @@ void P_FireAltWeapon (player_t* player)
         break;
     }
     case wp_d12:
-	break;
+    {
+        // Goblin Dice Rollaz: d12 Charged Smash
+        // Long windup with bonus crit chance based on charge time
+        int damage;
+        int critRoll;
+        int guaranteedCrit = 0;
+        int chargeBonus = player->weaponcharge;
+        
+        // Consume ammo
+        DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
+        
+        // Check for guaranteed crit from Dice Fortune powerup
+        if (player->powers[pw_dicefortune])
+        {
+            guaranteedCrit = 1;
+            player->powers[pw_dicefortune] = 0;
+            player->message = "CRITICAL SMASH!";
+        }
+        
+        // Calculate base damage
+        damage = P_CalculateDiceDamage(wp_d12, guaranteedCrit, &critRoll);
+        
+        // Apply charge bonus: up to +100% damage at max charge
+        // weaponcharge ranges from 0-35 (about 1 second at 35fps)
+        if (chargeBonus > 0)
+        {
+            int bonusPct = (chargeBonus * 100) / 35;  // 0-100%
+            damage += (damage * bonusPct) / 100;
+            
+            // Bonus crit chance: up to +25% at max charge
+            // Base crit is 8%, max charge adds 25% = up to 33% crit chance
+            if (chargeBonus >= 35 && critRoll == 12)
+            {
+                damage *= 2;  // Apply crit multiplier
+                player->message = "MAX CHARGE CRIT!";
+            }
+        }
+        
+        // Reset charge
+        player->weaponcharge = 0;
+        
+        // Play sound based on charge level
+        if (chargeBonus >= 35)
+            S_StartSound(player->mo, sfx_dbopn);  // Heavy impact sound
+        else if (chargeBonus >= 20)
+            S_StartSound(player->mo, sfx_dshtgn);
+        else
+            S_StartSound(player->mo, sfx_pistol);
+        
+        // Show appropriate flash
+        if (chargeBonus >= 20)
+            P_SetPsprite(player, ps_flash, weaponinfo[player->readyweapon].flashstate);
+        
+        // Fire the attack
+        P_BulletSlope(player->mo);
+        P_GunShotWithDamage(player->mo, true, damage);
+        
+        // Apply knockback for charged attack
+        if (chargeBonus >= 20 && player->mo->target)
+        {
+            angle_t pushAngle = R_PointToAngle2(player->mo->x, player->mo->y,
+                                                player->mo->target->x, player->mo->target->y);
+            player->mo->target->momx += FixedMul(chargeBonus * 20, cos(pushAngle));
+            player->mo->target->momy += FixedMul(chargeBonus * 20, sin(pushAngle));
+        }
+        break;
+    }
     case wp_percentile:
 	break;
     default:
@@ -402,13 +468,39 @@ A_WeaponReady
     {
 	if (!player->altattackdown)
 	{
+	    // Button just pressed - start charging for d12
+	    if (player->readyweapon == wp_d12)
+	    {
+		player->altattackdown = true;
+		player->weaponcharge = 0;
+		// Show charging state - don't fire yet
+		player->message = "Charging...";
+		return;
+	    }
 	    player->altattackdown = true;
 	    P_FireAltWeapon (player);
 	    return;
 	}
+	else
+	{
+	    // Button is being held - increment charge for d12
+	    if (player->readyweapon == wp_d12 && player->weaponcharge < 35)
+	    {
+		player->weaponcharge++;
+	    }
+	}
     }
     else
+    {
+	// Button released - fire charged attack
+	if (player->altattackdown && player->readyweapon == wp_d12 && player->weaponcharge > 0)
+	{
+	    player->altattackdown = false;
+	    P_FireAltWeapon (player);
+	    return;
+	}
 	player->altattackdown = false;
+    }
     
     // bob the weapon based on movement speed
     angle = (128*leveltime)&FINEMASK;

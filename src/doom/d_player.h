@@ -162,6 +162,9 @@ typedef struct player_s
     // True if secret level has been done.
     boolean		didsecret;	
 
+    // Goblin Dice Rollaz: Weapon charging for charged attacks
+    int			weaponcharge;
+
 } player_t;
 
 
