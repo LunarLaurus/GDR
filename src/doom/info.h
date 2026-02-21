@@ -1307,6 +1307,7 @@ typedef enum {
     MT_DWARF_MINER,
     MT_DWARF_CAPTAIN,
     MT_DWARF_BOMBARDIER,
+    MT_DWARF_ARMORED,
     MT_MARKSMAN_BOLT,
     MT_GOBLIN_SHAMAN,
     MT_SHAMAN_FIREBOLT,
@@ -1466,6 +1467,7 @@ typedef struct
     int	crit_resistance;   // Goblin Dice Rollaz: Reduces crit chance (0-100)
     int	aggression;        // Goblin Dice Rollaz: AI aggression level (0-100)
     int	shield_reduction;  // Goblin Dice Rollaz: Frontal damage reduction % (0-100)
+    int	rear_weakness;    // Goblin Dice Rollaz: Rear damage bonus % (0-100)
 
 } mobjinfo_t;
 

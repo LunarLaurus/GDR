@@ -1058,6 +1058,30 @@ P_DamageMobj
             }
         }
     }
+
+    // Goblin Dice Rollaz: Rear weakness damage bonus
+    if (target && target->info && target->info->rear_weakness > 0)
+    {
+        int rearWeakness = target->info->rear_weakness;
+        
+        // Check if attacker is behind target
+        if (source)
+        {
+            angle_t targetAngle = R_PointToAngle2(target->x, target->y, source->x, source->y);
+            angle_t targetFacing = target->angle;
+            angle_t angleDiff = targetAngle - targetFacing;
+            
+            // If attacker is behind (within ~60 degrees of rear)
+            if (angleDiff > ANG240 && angleDiff < ANG120)
+            {
+                int bonusDamage = (damage * rearWeakness) / 100;
+                if (bonusDamage > 0)
+                {
+                    damage += bonusDamage;
+                }
+            }
+        }
+    }
 	
     player = target->player;
     if (player && gameskill == sk_baby)

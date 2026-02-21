@@ -2090,8 +2090,39 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
        	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
        	S_SPOS_RAISE1,		// raisestate
        	15,		// crit_resistance (low - volatile target)
-       	60,		// aggression (medium-high - aggressive bomber)
-       	0		// shield_reduction (none - wears explosive harness)
+        	60,		// aggression (medium-high - aggressive bomber)
+        	0,		// shield_reduction (none - wears explosive harness)
+       	0		// rear_weakness (none)
+       },
+
+       {		// MT_DWARF_ARMORED
+       	8106,		// doomednum (custom mapthing number)
+       	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations)
+       	120,		// spawnhealth (very high HP - heavily armored)
+       	S_SPOS_RUN1,		// seestate
+       	sfx_posit2,		// seesound (dwarf battle grunt)
+       	8,		// reactiontime
+       	sfx_pistol,		// attacksound
+       	S_SPOS_PAIN,		// painstate
+       	30,		// painchance (very tough - rarely flinches)
+       	sfx_popain,		// painsound
+       	0,		// meleestate (no melee - relies on armor)
+       	S_SPOS_ATK1,		// missilestate (ranged crossbow)
+       	S_SPOS_DIE1,		// deathstate
+       	S_SPOS_XDIE1,		// xdeathstate
+       	sfx_podth2,		// deathsound
+       	4,		// speed (slow - heavily weighted down)
+       	20*FRACUNIT,		// radius (bulky armored frame)
+       	56*FRACUNIT,		// height
+       	400,		// mass (very heavy - full plate armor)
+       	0,		// damage (melee - not primary)
+       	sfx_posact,		// activesound
+       	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+       	S_SPOS_RAISE1,		// raisestate
+       	40,		// crit_resistance (very high - thick armor)
+       	20,		// aggression (defensive - holds position)
+       	25,		// shield_reduction (25% front reduction - heavy plate)
+       	50		// rear_weakness (50% extra damage from behind!)
        },
 
        {		// MT_GOBLIN_SHAMAN

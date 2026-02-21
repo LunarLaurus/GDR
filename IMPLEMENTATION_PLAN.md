@@ -163,7 +163,7 @@
 - [x] Dwarf Miner (throws pickaxes, medium range)
 - [x] Elite Dwarf Captain (buffs nearby dwarves)
 - [x] Dwarf Bombardier (engineer subclass with timed explosives)
-- [ ] Armored Dwarf (high HP, weak rear hitbox)
+- [x] Armored Dwarf (high HP, weak rear hitbox)
 - [ ] Goblin Scout (low HP, high mobility)
 - [ ] Goblin Sneak (ambush behavior, delayed aggro)
 - [ ] Goblin Alchemist (throws volatile potion projectiles)
