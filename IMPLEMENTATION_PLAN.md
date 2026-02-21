@@ -190,7 +190,7 @@
 - [x] Implement generic status effect framework (duration-based effects in thinker loop)
 - [x] Add "Burning" effect (damage over time, fire visuals)
 - [x] Add "Frozen" effect (movement speed reduction)
-- [ ] Add "Stunned" effect (temporary attack suppression)
+- [x] Add "Stunned" effect (temporary attack suppression)
 - [ ] Add "Dice Curse" effect (randomized stat variance)
 - [x] Add HUD status effect indicators
 - [ ] Expose status parameters via configurable constants

@@ -209,6 +209,13 @@ void G_StatusEffectTick(mobj_t* target)
                         players[consoleplayer].message = "You break free from the ice!";
                     }
                 }
+                else if (i == st_stunned)
+                {
+                    if (target == &players[consoleplayer].mo)
+                    {
+                        players[consoleplayer].message = "You recover your senses!";
+                    }
+                }
             }
 
             if ((se->flags & STATUSEFFECT_FLAG_DAMAGE) && (leveltime % TICRATE == 0))

@@ -1034,6 +1034,15 @@ P_DamageMobj
                 players[consoleplayer].message = "DOUBLE DAMAGE!";
             }
         }
+
+        // Goblin Dice Rollaz: Apply stun on critical hits (20% chance)
+        if (was_critical && target && !target->player && target->health > 0)
+        {
+            if ((P_Random() % 100) < 20)
+            {
+                G_StatusEffectApply(target, st_stunned, STUNNED_TICS);
+            }
+        }
     }
 
     // Goblin Dice Rollaz: Shield frontal damage reduction

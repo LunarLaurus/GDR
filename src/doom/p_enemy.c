@@ -1070,6 +1070,18 @@ void A_Chase (mobj_t*	actor)
         if (actor->freeze_tics <= 0)
             actor->movecount = 0;  // Reset movement when unfrozen
     }
+
+    // Goblin Dice Rollaz: Stunned enemies cannot move
+    if (!G_StatusEffectCanAttack(actor))
+    {
+        // Enemies can only turn in place when stunned
+        // Skip movement and attack logic
+        if (actor->target)
+        {
+            A_FaceTarget(actor);
+        }
+        return;
+    }
 				
 				
 
