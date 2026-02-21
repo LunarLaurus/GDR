@@ -423,4 +423,335 @@ Sector configuration:
 
 # Treasure Chamber Map Theme
 
-*(Document continues in map-themes-treasure.md)*
+## Theme Identity
+
+The Treasure Chamber theme represents the legendary vaults of the dwarven kingdoms—opulent chambers filled with gold, precious gems, and ancient artifacts. These are the most dangerous rooms in the game, serving as both the ultimate reward and the ultimate challenge for adventurers.
+
+## Texture Palette
+
+### Floor Textures
+
+| Texture | Name | Description |
+|---------|------|-------------|
+| GOLD1 | Polished Gold | Shiny golden floor tiles |
+| GOLD2 | Coin Carpet | Floor covered in scattered coins |
+| GEM1 | Crystal Floor | Semi-transparent gem-embedded stone |
+| GEM2 | Emerald Tile | Deep green emerald mosaic |
+| TREASURE1 | Rich Carpet | Red velvet floor covering |
+| TREASURE2 | Marble Inlay | White and grey marble pattern |
+
+### Wall Textures
+
+| Texture | Name | Description |
+|---------|------|-------------|
+| VAULT1 | Gold Wall | Solid gold plate decoration |
+| VAULT2 | Gem Encrusted | Wall with embedded gems |
+| VAULT3 | Ancient Stone | Weathered but ornate stone |
+| PILLAR1 | Gold Pillar | Cylindrical gold support |
+| PILLAR2 | Gem Pillar | Crystal-embedded column |
+| DOOR_GOLD | Treasure Door | Ornate golden door |
+| CHEST | Treasure Chest | Large chest graphic texture |
+
+### Ceiling Textures
+
+| Texture | Name | Description |
+|---------|------|-------------|
+| VAULT_C1 | Dome Ceiling | Curved gold dome |
+| VAULT_C2 | Beam Ceiling | Crossed golden beams |
+| VAULT_C3 | Mosaic Ceiling | Artistically tiled ceiling |
+
+## Lighting Rules
+
+- **Base light level**: 128 (bright, celebratory atmosphere)
+- **Gold reflection**: +32 light near gold surfaces
+- **Gem glow**: +48 light radius around gem formations, multi-color tint
+- **Ambient warmth**: Golden yellow bias (RGB: 255, 220, 150)
+- **Highlight spots**: 192 light level on treasure displays
+- **Shadow corners**: 64 light level (still brighter than other themes)
+- **Chandelier**: Point light radius 384, intensity 1.5, warm white
+
+### Light Source Types
+
+1. **Chandelier** (point light): Radius 384, intensity 1.5, warm white
+2. **Gem Formation** (point light): Radius 128, multi-color based on gem type
+3. **Treasure Glow** (point light): Radius 96, golden yellow
+4. **Torch Sconce** (point light): Radius 192, orange (less common here)
+
+## Environmental Hazards
+
+### Pressure Plate Trap
+- Trigger: Player enters tagged sector
+- Effect: Arrow projectiles from walls (8 directions)
+- Damage: 10% per hit, 3-second cooldown
+- Visual: Floor tile depression animation
+- Audio: Click/whoosh sound
+- Counter: Disarm via switch in adjacent alcove
+
+### Pit Drop Trap
+- Trigger: Floor sector with tag activation
+- Effect: Floor collapses, player falls (sector below)
+- Damage: 25% fall damage + trap damage
+- Visual: Crumbling floor animation
+- Recovery: Climb out via side ledges or respawn
+- Counter: Detect via switch that reveals safe path
+
+### Treasure Curse
+- Trigger: Picking up high-value treasure (tagged special item)
+- Effect: Random status effect (Burning, Frozen, or Dice Curse)
+- Duration: 15 seconds
+- Visual: Purple particle effect around player
+- Audio: Mysterious cackle/curse sound
+- Counter: None (accept risk for reward)
+
+### Gas Chamber
+- Trigger: Sector activation via switch
+- Effect: Knockback + 5% damage per second
+- Visual: Green gas sprite filling sector
+- Audio: Hissing sound
+- Counter: Exit before full fill (2-second window)
+
+## Ambient Sound Profile
+
+### Continuous
+- Echoing footsteps: When player moves, reverb 1.0s decay
+- Distant dripping: Water in distant caves, 10-second interval
+- Gem hum: Subtle magical resonance, constant low tone
+
+### Triggered
+- Treasure pickup: Satisfying chime
+- Trap activation: Mechanical click/mechanism sound
+- Curse trigger: Evil laugh/eerie whoosh
+
+### Background
+- Grand ambience: Deep, resonant echo
+- Subtle magical drone: Mystical undertone
+- No heavy music (vaults should feel still and silent)
+
+## Enemy Weighting
+
+### Primary (40% spawn rate)
+
+| Enemy | Spawn Weight |
+|-------|-------------|
+| Dwarf Defender | 20% |
+| Armored Dwarf | 20% |
+
+### Secondary (40% spawn rate)
+
+| Enemy | Spawn Weight |
+|-------|-------------|
+| Dwarf Captain | 15% |
+| Dwarf Marksman | 15% |
+| Dwarf Miner | 10% |
+
+### Rare (20% spawn rate)
+
+| Enemy | Spawn Weight |
+|-------|-------------|
+| Dwarf Bombardier | 8% |
+| Goblin Sneak (invader) | 7% |
+| Goblin King (mini-boss) | 5% |
+
+### Elite Encounters
+- Treasure chambers always spawn at least 1 elite enemy
+- 50% chance of mini-boss (Goblin King or Dwarf Captain)
+- Boss variant appears in chambers with 3+ elite spawn points
+
+### Encounter Density
+- Small vault: 2-4 enemies (guarding specific treasure)
+- Medium vault: 5-8 enemies (standard treasure room)
+- Grand vault: 10-15 enemies (major loot location)
+- legendary vault: 15-25 enemies + boss (end-game reward)
+
+## Powerup Spawn Weighting
+
+### Guaranteed Drops
+- Every treasure chamber contains at least 1 powerup
+- Small vault: 1 guaranteed (common)
+- Medium vault: 2 guaranteed (1 common, 1 uncommon)
+- Grand vault: 3 guaranteed (1 common, 1 uncommon, 1 rare)
+- Legendary vault: 4 guaranteed (1 of each tier)
+
+### Rarity Tiers
+
+| Tier | Powerups | Spawn Rate |
+|------|----------|------------|
+| Common | Ammo, Health, Armor | 60% |
+| Uncommon | Double Damage, Critical Hit | 30% |
+| Rare | Dice Fortune, Max Health, Max Armor | 9% |
+| Legendary | All Rare + Boss Key | 1% |
+
+### Special Treasure Items
+- Goblin Crown: Triggers boss fight, spawns Goblin King
+- Dwarven Crown: Triggers boss fight, spawns Dwarven War Machine
+- These replace powerups in standard legendary vaults Archetypes
+
+
+
+## Example Room### Small Vault
+```
+Sector configuration:
+- Floor: 0 height
+- Ceiling: 96 height
+- Size: 256x256
+- Features: Single treasure display, 1-2 guardians
+- Enemy placement: Guards near treasure
+- Light: Chandelier center (radius 384), bright
+- Special: Guaranteed 1 common powerup
+```
+
+### Standard Treasure Room
+```
+Sector configuration:
+- Floor: 0 height (varied platforms)
+- Ceiling: 128 height
+- Size: 512x512
+- Features: Multiple treasure piles, ornate pillars
+- Enemy placement: 5-8 guards, formation
+- Light: Multiple chandeliers, gem glow
+- Special: 2 powerups, pressure plate trap
+```
+
+### Grand Vault
+```
+Sector configuration:
+- Floor: -64 to 32 height (varied)
+- Ceiling: 192 height
+- Size: 512x512 to 1024x1024
+- Features: Central massive treasure, multiple chambers
+- Enemy placement: 10-15 guards, wave spawns
+- Light: Massive chandelier, golden glow throughout
+- Special: 3 powerups, multiple trap types
+```
+
+### Legendary Vault
+```
+Sector configuration:
+- Floor: Multiple levels (-128 to 64)
+- Ceiling: 256 height (dome)
+- Size: 768x768 to 1024x1024
+- Features: Crown pedestals, boss arena
+- Enemy placement: 15-25 enemies + boss
+- Light: Intense golden glow, pulsing gem light
+- Special: Boss encounter, 4 powerups, crown treasure
+```
+
+### Treasure Alcove
+```
+Sector configuration:
+- Floor: 0 height
+- Ceiling: 64 height
+- Size: 128x128
+- Features: Single treasure item on pedestal
+- Enemy placement: None (optional challenge)
+- Light: Spot light on treasure
+- Special: Quick grab and go, escape required
+```
+
+## Shared Theme Documentation Template
+
+For future theme expansion, use this template:
+
+```
+# [Theme Name] Map Theme
+
+## Theme Identity
+[One paragraph describing the theme's atmosphere and story]
+
+## Texture Palette
+### Floor/Wall/Ceiling Tables
+[Include at least 3 variants of each]
+
+## Lighting Rules
+- Base: [number]
+- Ambient bias: [RGB values]
+- Special effects: [descriptions]
+
+## Environmental Hazards
+### [Hazard Name]
+- Trigger: [what activates it]
+- Effect: [what happens]
+- Counter: [how to avoid]
+
+## Enemy Weighting
+[Primary/Secondary/Rare tables]
+
+## Room Archetypes
+[At least 3 example room types]
+
+## Mapper Checklist
+[5-10 verification items]
+```
+
+## Example WAD Structure
+
+To demonstrate all themes, an example WAD should include:
+
+```
+TREASURE.WAD
+├── MAP01: Mine Entrance (tutorial)
+├── MAP02-MAP05: Mine/Cavern levels
+├── MAP06-MAP09: Forge/Lava levels
+├── MAP10: Grand Vault (treasure)
+├── MAP11-MAP14: Mixed themes
+├── MAP15: Legendary Vault (finale)
+├── SNDINFO: Theme ambient sounds
+├── ACS: Trap and hazard scripts
+└── DECORATE: Custom actors
+```
+
+## Encounter Pacing Guidelines
+
+### Per Theme
+
+| Theme | Combat Pacing | Rest Opportunities |
+|-------|---------------|---------------------|
+| Mine/Cavern | Medium (ambushes) | Many alcoves |
+| Forge/Lava | Fast (formations) | Limited |
+| Treasure Chamber | Intense (waves) | After clear |
+
+### Treasure Chamber Specific
+- Wave-based spawning (2-3 waves per room)
+- 5-second delay between waves
+- Treasure becomes accessible after final wave
+- No respawning once all enemies cleared
+
+### Flow Between Themes
+- Mine → Forge: Descend deeper
+- Forge → Treasure: Find vault door
+- Treasure → Mine: Escape sequence
+
+## Internal Review Checklist for Map Consistency
+
+### General
+- [ ] All sectors properly textured (no gaps)
+- [ ] No floating or intersecting geometry
+- [ ] All doors and switches functional
+- [ ] Path connectivity verified (all areas reachable)
+- [ ] Proper line-of-sight for combat
+
+### Treasure Chamber Specific
+- [ ] Lighting consistent with theme (bright, golden)
+- [ ] Treasure display areas properly lit (spotlights)
+- [ ] Trap triggers tested and working
+- [ ] Powerup spawns match weighting rules
+- [ ] Elite/boss encounters properly configured
+- [ ] Sound environment has proper echo
+- [ ] Minimum enemy count per vault size met
+- [ ] Difficulty scaling applied per skill level
+
+### Theme Transitions
+- [ ] Visual transition between themes feels natural
+- [ ] No abrupt lighting changes without context
+- [ ] Enemy type changes match new theme
+
+### Balance Verification
+- [ ] Powerup value matches room difficulty
+- [ ] Ammo drops sufficient for encounter length
+- [ ] Health pickups placed after major fights
+- [ ] No impossible encounters without options
+
+### Performance
+- [ ] No excessive sector/line counts
+- [ ] Texture usage within limits
+- [ ] Lighting calculations performant

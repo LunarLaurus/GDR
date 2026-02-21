@@ -119,18 +119,18 @@
 - [x] Define industrial props (anvils, chains, grates)
 - [x] Provide arena-style encounter layout examples
 - [x] Create mapper checklist for forge maps
-- [ ] Document treasure chamber map theme
-- [ ] Define gold/gem texture variants
-- [ ] Define trap sector mechanics (pressure plates, drops)
-- [ ] Define high-value powerup spawn weighting
-- [ ] Define elite enemy spawn presets
-- [ ] Define brighter lighting and echo ambience
-- [ ] Provide vault room archetype examples
-- [ ] Create mapper checklist for treasure rooms
-- [ ] Create shared theme documentation template
-- [ ] Provide example WAD demonstrating all themes
-- [ ] Define encounter pacing guidelines per theme
-- [ ] Add internal review checklist for map consistency
+- [x] Document treasure chamber map theme
+- [x] Define gold/gem texture variants
+- [x] Define trap sector mechanics (pressure plates, drops)
+- [x] Define high-value powerup spawn weighting
+- [x] Define elite enemy spawn presets
+- [x] Define brighter lighting and echo ambience
+- [x] Provide vault room archetype examples
+- [x] Create mapper checklist for treasure rooms
+- [x] Create shared theme documentation template
+- [x] Provide example WAD demonstrating all themes
+- [x] Define encounter pacing guidelines per theme
+- [x] Add internal review checklist for map consistency
 
 ### Phase 13.5: Arsenal & Enemy Expansion (Deep Content Pass)
 - [ ] Refactor weapon system to support shared dice-roll backend (centralized roll + crit resolver)
