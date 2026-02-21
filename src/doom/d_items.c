@@ -47,7 +47,7 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
     },	
     {
 	// d6 blaster
-	am_clip,
+	am_lightdice,
 	S_D6BLASTUP,
 	S_D6BLASTDOWN,
 	S_D6BLAST,
@@ -56,7 +56,7 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
     },
     {
 	// d20 cannon
-	am_cell,
+	am_heavydice,
 	S_D20CANNONUP,
 	S_D20CANNONDOWN,
 	S_D20CANNON,
@@ -65,7 +65,7 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
     },
     {
 	// d12 heavy impact
-	am_shell,
+	am_heavydice,
 	S_D12UP,
 	S_D12DOWN,
 	S_D12,
@@ -137,7 +137,7 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
     },	
     {
 	// percentile dice
-	am_cell,
+	am_heavydice,
 	S_PERCENTILEUP,
 	S_PERCENTILEDOWN,
 	S_PERCENTILE,
@@ -146,7 +146,7 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
     },
     {
 	// d4 throwing knives
-	am_clip,
+	am_lightdice,
 	S_D4UP,
 	S_D4DOWN,
 	S_D4,

@@ -134,9 +134,12 @@ typedef enum
     am_shell,	// Shotgun / double barreled shotgun.
     am_cell,	// Plasma rifle, BFG.
     am_misl,	// Missile launcher.
+    am_lightdice,    // Light dice: d4, d6, d8
+    am_heavydice,    // Heavy dice: d10, d12, d20, percentile
+    am_arcanedice,   // Arcane dice: magic/dice spells
     NUMAMMO,
     am_noammo	// Unlimited for chainsaw / fist.	
-
+	
 } ammotype_t;
 
 

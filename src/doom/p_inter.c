@@ -54,8 +54,8 @@ int	crit_boost_bonus = 15;
 
 // a weapon is found with two clip loads,
 // a big item has five clip loads
-int	maxammo[NUMAMMO] = {200, 50, 300, 50};
-int	clipammo[NUMAMMO] = {10, 4, 20, 1};
+int	maxammo[NUMAMMO] = {200, 50, 300, 50, 100, 50, 50};
+int	clipammo[NUMAMMO] = {10, 4, 20, 1, 6, 3, 2};
 
 
 //
