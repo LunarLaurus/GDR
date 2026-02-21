@@ -119,6 +119,8 @@ typedef struct player_s
 
     // True if button down last tic.
     int			attackdown;
+    // Goblin Dice Rollaz: True if alternate attack button down last tic
+    int			altattackdown;
     int			usedown;
 
     // Bit flags, for cheats and debug.

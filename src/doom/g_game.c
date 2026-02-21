@@ -486,7 +486,11 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
     if (gamekeydown[key_fire] || mousebuttons[mousebfire] 
 	|| joybuttons[joybfire]) 
 	cmd->buttons |= BT_ATTACK; 
- 
+
+    // Goblin Dice Rollaz: Alternate fire button
+    if (mousebuttons[mousebaltfire])
+	cmd->buttons |= BT_ALTATTACK;
+  
     if (gamekeydown[key_use]
      || joybuttons[joybuse]
      || mousebuttons[mousebuse])
@@ -1152,7 +1156,7 @@ void G_PlayerReborn (int player)
     players[player].itemcount = itemcount; 
     players[player].secretcount = secretcount; 
  
-    p->usedown = p->attackdown = true;	// don't do anything immediately 
+    p->usedown = p->attackdown = p->altattackdown = true;	// don't do anything immediately 
     p->playerstate = PST_LIVE;       
     p->health = deh_initial_health;     // Use dehacked value
     p->readyweapon = p->pendingweapon = wp_pistol; 

@@ -85,6 +85,8 @@ typedef enum
 {
     // Press "Fire".
     BT_ATTACK		= 1,
+    // Alternate Fire - Goblin Dice Rollaz: used for special weapon modes
+    BT_ALTATTACK	= 64,
     // Use button, to open doors, activate switches.
     BT_USE		= 2,
 

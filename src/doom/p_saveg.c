@@ -717,6 +717,9 @@ static void saveg_read_player_t(player_t *str)
     // int attackdown;
     str->attackdown = saveg_read32();
 
+    // Goblin Dice Rollaz: int altattackdown;
+    str->altattackdown = saveg_read32();
+
     // int usedown;
     str->usedown = saveg_read32();
 
@@ -847,6 +850,9 @@ static void saveg_write_player_t(player_t *str)
 
     // int attackdown;
     saveg_write32(str->attackdown);
+
+    // Goblin Dice Rollaz: int altattackdown;
+    saveg_write32(str->altattackdown);
 
     // int usedown;
     saveg_write32(str->usedown);

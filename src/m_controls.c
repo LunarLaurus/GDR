@@ -118,6 +118,9 @@ int mousebturnright = -1;
 int mousebbackward = -1;
 int mousebuse = -1;
 
+// Goblin Dice Rollaz: Alternate fire button (right mouse button by default)
+int mousebaltfire = 1;
+
 int mousebprevweapon = -1;
 int mousebnextweapon = -1;
 int mousebinvleft = -1;
@@ -241,6 +244,7 @@ void M_BindBaseControls(void)
     M_BindIntVariable("key_speed",          &key_speed);
 
     M_BindIntVariable("mouseb_fire",        &mousebfire);
+    M_BindIntVariable("mouseb_altfire",     &mousebaltfire);
     M_BindIntVariable("mouseb_strafe",      &mousebstrafe);
     M_BindIntVariable("mouseb_forward",     &mousebforward);
     M_BindIntVariable("mouseb_speed",       &mousebspeed);

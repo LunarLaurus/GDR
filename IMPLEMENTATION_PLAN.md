@@ -136,7 +136,7 @@
 - [x] Refactor weapon system to support shared dice-roll backend (centralized roll + crit resolver)
 - [x] Add unique firing animations per die type (distinct silhouettes and recoil timing)
 - [x] Implement per-weapon crit modifiers (e.g., d4 high crit chance, d12 high crit multiplier)
-- [ ] Add alternate fire modes (if engine constraints allow)
+- [x] Add alternate fire modes (if engine constraints allow)
 - [ ] d4: rapid burst throw
 - [ ] d12: charged smash (long windup, bonus crit chance)
 - [ ] d100: “Gamble Shot” (wider roll variance)

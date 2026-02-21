@@ -71,5 +71,6 @@ typedef struct
 
 extern fixed_t bulletslope;
 
+void P_FireAltWeapon(player_t *player);
 
 #endif

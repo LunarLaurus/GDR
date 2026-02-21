@@ -147,6 +147,9 @@ extern int mousebturnright;
 extern int mousebbackward;
 extern int mousebuse;
 
+// Goblin Dice Rollaz: Alternate fire button
+extern int mousebaltfire;
+
 extern int mousebprevweapon;
 extern int mousebnextweapon;
 extern int mousebinvleft;

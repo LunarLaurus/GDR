@@ -251,6 +251,34 @@ void P_FireWeapon (player_t* player)
 
 
 //
+// P_FireAltWeapon - Goblin Dice Rollaz: Alternate fire mode
+// Handles special attack modes for dice weapons
+//
+void P_FireAltWeapon (player_t* player)
+{
+    if (!P_CheckAmmo (player))
+	return;
+
+    P_SetMobjState (player->mo, S_PLAY_ATK1);
+    P_NoiseAlert (player->mo, player->mo);
+
+    // Switch based on weapon type for alternate fire modes
+    switch (player->readyweapon)
+    {
+    case wp_d4:
+	break;
+    case wp_d12:
+	break;
+    case wp_percentile:
+	break;
+    default:
+	break;
+    }
+}
+
+
+
+//
 // P_DropWeapon
 // Player died, so put the weapon away.
 //
@@ -317,6 +345,19 @@ A_WeaponReady
     }
     else
 	player->attackdown = false;
+
+    // Goblin Dice Rollaz: Check for alternate fire
+    if (player->cmd.buttons & BT_ALTATTACK)
+    {
+	if (!player->altattackdown)
+	{
+	    player->altattackdown = true;
+	    P_FireAltWeapon (player);
+	    return;
+	}
+    }
+    else
+	player->altattackdown = false;
     
     // bob the weapon based on movement speed
     angle = (128*leveltime)&FINEMASK;
