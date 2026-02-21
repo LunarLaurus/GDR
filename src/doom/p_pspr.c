@@ -266,7 +266,58 @@ void P_FireAltWeapon (player_t* player)
     switch (player->readyweapon)
     {
     case wp_d4:
-	break;
+    {
+        // Goblin Dice Rollaz: d4 Rapid Burst Throw
+        // Fire 3 d4 projectiles in quick succession with slight spread
+        int i;
+        int damage;
+        int critRoll;
+        int guaranteedCrit = 0;
+        
+        S_StartSound (player->mo, sfx_pistol);
+        
+        // Check for guaranteed crit from Dice Fortune powerup
+        if (player->powers[pw_dicefortune])
+        {
+            guaranteedCrit = 1;
+            player->powers[pw_dicefortune] = 0;
+            player->message = "CRITICAL BURST!";
+        }
+        
+        // Fire 3 projectiles in rapid succession
+        for (i = 0; i < 3; i++)
+        {
+            // Calculate damage for each projectile
+            damage = P_CalculateDiceDamage(wp_d4, guaranteedCrit, &critRoll);
+            
+            // Add slight spread for burst inaccuracy
+            if (i == 0)
+            {
+                // First shot - accurate
+                P_BulletSlope(player->mo);
+                P_GunShotWithDamage(player->mo, true, damage);
+            }
+            else if (i == 1)
+            {
+                // Second shot - slightly off
+                P_BulletSlope(player->mo);
+                P_GunShotWithDamage(player->mo, false, damage);
+            }
+            else
+            {
+                // Third shot - more spread
+                P_BulletSlope(player->mo);
+                P_GunShotWithDamage(player->mo, false, damage);
+            }
+        }
+        
+        // Consume 3 ammo for the burst
+        DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 3);
+        
+        // Show flash
+        P_SetPsprite(player, ps_flash, weaponinfo[player->readyweapon].flashstate);
+        break;
+    }
     case wp_d12:
 	break;
     case wp_percentile:

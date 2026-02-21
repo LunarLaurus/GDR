@@ -137,7 +137,7 @@
 - [x] Add unique firing animations per die type (distinct silhouettes and recoil timing)
 - [x] Implement per-weapon crit modifiers (e.g., d4 high crit chance, d12 high crit multiplier)
 - [x] Add alternate fire modes (if engine constraints allow)
-- [ ] d4: rapid burst throw
+- [x] d4: rapid burst throw
 - [ ] d12: charged smash (long windup, bonus crit chance)
 - [ ] d100: “Gamble Shot” (wider roll variance)
 - [ ] Add ammo types per die category (Light Dice, Heavy Dice, Arcane Dice)
