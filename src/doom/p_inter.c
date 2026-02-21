@@ -1034,6 +1034,30 @@ P_DamageMobj
             }
         }
     }
+
+    // Goblin Dice Rollaz: Shield frontal damage reduction
+    if (target && target->info && target->info->shield_reduction > 0)
+    {
+        int shieldReduction = target->info->shield_reduction;
+        
+        // Check if attacker is in front of target (facing shield)
+        if (source)
+        {
+            angle_t targetAngle = R_PointToAngle2(target->x, target->y, source->x, source->y);
+            angle_t targetFacing = target->angle;
+            angle_t angleDiff = targetAngle - targetFacing;
+            
+            // If attacker is in front (within ~60 degrees either side)
+            if (angleDiff < ANG60 || angleDiff > ANG300)
+            {
+                int reducedDamage = (damage * (100 - shieldReduction)) / 100;
+                if (reducedDamage < damage)
+                {
+                    damage = reducedDamage;
+                }
+            }
+        }
+    }
 	
     player = target->player;
     if (player && gameskill == sk_baby)

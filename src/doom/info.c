@@ -1249,11 +1249,12 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
  	sfx_posact,		// activesound
  	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
  	S_POSS_RAISE1,		// raisestate
- 	0,		// crit_resistance (default: no resistance)
- 	50		// aggression (default: medium)
-    },
+  	0,		// crit_resistance (default: no resistance)
+  	50,		// aggression (default: medium)
+  	0		// shield_reduction (default: none)
+     },
 
-    {		// MT_SHOTGUY
+     {		// MT_SHOTGUY
  	9,		// doomednum
  	S_SPOS_STND,		// spawnstate
  	30,		// spawnhealth
@@ -1276,12 +1277,13 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
  	0,		// damage
  	sfx_posact,		// activesound
  	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
- 	S_SPOS_RAISE1,		// raisestate
- 	0,		// crit_resistance
- 	55		// aggression
-    },
+  S_SPOS_RAISE1,		// raisestate
+  0,		// crit_resistance
+  55,		// aggression
+  0		// shield_reduction
+     },
 
-    {		// MT_VILE
+     {		// MT_VILE
  	64,		// doomednum
  	S_VILE_STND,		// spawnstate
  	700,		// spawnhealth
@@ -1303,13 +1305,14 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
  	500,		// mass
  	0,		// damage
  	sfx_vilact,		// activesound
- 	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
- 	S_NULL,		// raisestate
- 	20,		// crit_resistance (tough against crits)
- 	80		// aggression (very aggressive)
-    },
+  MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+  S_NULL,		// raisestate
+  20,		// crit_resistance (tough against crits)
+  80,		// aggression (very aggressive)
+  0		// shield_reduction
+     },
 
-    {		// MT_FIRE
+     {		// MT_FIRE
 	-1,		// doomednum
 	S_FIRE1,		// spawnstate
 	1000,		// spawnhealth
@@ -1852,12 +1855,13 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
   	0,		// damage
   	sfx_posact,		// activesound
   	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
-  	S_SPOS_RAISE1,		// raisestate
-  	15,		// crit_resistance (dwarves are tough)
-  	45		// aggression (defensive)
-    },
+   S_SPOS_RAISE1,		// raisestate
+   15,		// crit_resistance (dwarves are tough)
+   45,		// aggression (defensive)
+   0		// shield_reduction (none)
+     },
 
-    {		// MT_DWARF_BERSERKER
+     {		// MT_DWARF_BERSERKER
   	8021,		// doomednum (custom mapthing number)
   	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations)
   	50,		// spawnhealth (tougher)
@@ -1880,12 +1884,13 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
    	3*15,		// damage (3d10 berserker rage damage = 30)
    	sfx_posact,		// activesound
    	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL|MF_JUSTHIT,		// flags (aggressive)
-    	S_SPOS_RAISE1,		// raisestate
-    	25,		// crit_resistance (very tough)
-    	95		// aggression (extremely aggressive)
+     S_SPOS_RAISE1,		// raisestate
+     25,		// crit_resistance (very tough)
+     95,		// aggression (extremely aggressive)
+     0		// shield_reduction (none - berserker has no shield)
      },
 
-    {		// MT_DWARF_ENGINEER
+     {		// MT_DWARF_ENGINEER
    	8022,		// doomednum (custom mapthing number)
    	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations)
    	60,		// spawnhealth (tougher than basic dwarf)
@@ -1907,9 +1912,10 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
    	0,		// damage (melee - not used)
    	sfx_posact,		// activesound
    	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
-   	S_SPOS_RAISE1,		// raisestate
-   	20,		// crit_resistance (armored)
-   	35		// aggression (defensive, retreats)
+    S_SPOS_RAISE1,		// raisestate
+    20,		// crit_resistance (armored)
+    35,		// aggression (defensive, retreats)
+    0		// shield_reduction (none - engineer has no shield)
      },
 
     {		// MT_DWARF_BOMB
@@ -1935,10 +1941,39 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
    	40,		// damage (higher damage on direct hit)
    	sfx_None,		// activesound
    	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_NOGRAVITY,		// flags
-   	S_NULL		// raisestate
+    	S_NULL		// raisestate
      },
 
-    {		// MT_GOBLIN_SHAMAN
+     {		// MT_DWARF_DEFENDER
+    	8024,		// doomednum (custom mapthing number)
+    	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations)
+    	80,		// spawnhealth (very tough - shielded)
+    	S_SPOS_RUN1,		// seestate
+    	sfx_posit2,		// seesound
+    	8,		// reactiontime
+    	sfx_pistol,		// attacksound
+    	S_SPOS_PAIN,		// painstate
+    	50,		// painchance (tough, doesn't flinch easily)
+    	sfx_popain,		// painsound
+    	0,		// meleestate (shield bash - not implemented yet)
+    	S_SPOS_ATK1,		// missilestate (uses crossbow)
+    	S_SPOS_DIE1,		// deathstate
+    	S_SPOS_XDIE1,		// xdeathstate
+    	sfx_podth2,		// deathsound
+    	3,		// speed (slow - defensive)
+    	20*FRACUNIT,		// radius (larger - bulkier with shield)
+    	44*FRACUNIT,		// height
+    	300,		// mass (heavy - stocky)
+    	0,		// damage (melee - not primary attack)
+    	sfx_posact,		// activesound
+    	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+    	S_SPOS_RAISE1,		// raisestate
+    	30,		// crit_resistance (highly armored)
+    	25,		// aggression (defensive stance)
+    	50		// shield_reduction (50% damage reduction from front)
+     },
+
+     {		// MT_GOBLIN_SHAMAN
    	8023,		// doomednum (custom mapthing number)
    	S_SPOS_STND,		// spawnstate (reuses Imp animations as base)
    	45,		// spawnhealth (glass cannon - low HP but dangerous)
@@ -1961,9 +1996,10 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
    	0,		// damage (melee - not used)
    	sfx_posact,		// activesound
    	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
-   	S_SPOS_RAISE1,		// raisestate
-   	5,		// crit_resistance (low - fragile caster)
-   	70		// aggression (attacks from range)
+    S_SPOS_RAISE1,		// raisestate
+    5,		// crit_resistance (low - fragile caster)
+    70,		// aggression (attacks from range)
+    0		// shield_reduction (none)
      },
 
     {		// MT_SHAMAN_FIREBOLT

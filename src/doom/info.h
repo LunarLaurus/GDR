@@ -1298,6 +1298,7 @@ typedef enum {
     MT_DWARF_BERSERKER,
     MT_DWARF_ENGINEER,
     MT_DWARF_BOMB,
+    MT_DWARF_DEFENDER,
     MT_GOBLIN_SHAMAN,
     MT_SHAMAN_FIREBOLT,
     MT_SHAMAN_HEAL,
@@ -1455,6 +1456,7 @@ typedef struct
     int	raisestate;
     int	crit_resistance;   // Goblin Dice Rollaz: Reduces crit chance (0-100)
     int	aggression;        // Goblin Dice Rollaz: AI aggression level (0-100)
+    int	shield_reduction;  // Goblin Dice Rollaz: Frontal damage reduction % (0-100)
 
 } mobjinfo_t;
 
