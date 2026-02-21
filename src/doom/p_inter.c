@@ -16,6 +16,8 @@
 //	Handling interactions (i.e., collisions).
 //
 
+// Goblin Dice Rollaz: Freeze duration constant
+#define SHAMAN_FREEZE_DURATION 180
 
 
 
@@ -1173,6 +1175,12 @@ P_DamageMobj
     
     // do the damage	
     target->health -= damage;	
+    
+    // Goblin Dice Rollaz: Apply freeze effect from shaman freeze projectile
+    if (inflictor && inflictor->type == MT_SHAMAN_FREEZE && target->health > 0)
+    {
+        target->freeze_tics = SHAMAN_FREEZE_DURATION;
+    }
     
     if (damage > 0 && target->health > 0)
     {

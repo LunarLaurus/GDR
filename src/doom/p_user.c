@@ -146,9 +146,20 @@ void P_CalcHeight (player_t* player)
 //
 void P_MovePlayer (player_t* player)
 {
-    ticcmd_t*		cmd;
-	
+    ticcmd_t*	cmd;
+    fixed_t	forward_scale = 2048;
+    fixed_t	side_scale = 2048;
+    
     cmd = &player->cmd;
+    
+    // Goblin Dice Rollaz: Apply freeze/slow effect to player
+    if (player->mo->freeze_tics > 0)
+    {
+        player->mo->freeze_tics--;
+        // Reduce movement speed by 50% when frozen
+        forward_scale = 1024;
+        side_scale = 1024;
+    }
 	
     player->mo->angle += (cmd->angleturn<<FRACBITS);
 
@@ -157,16 +168,17 @@ void P_MovePlayer (player_t* player)
     onground = (player->mo->z <= player->mo->floorz);
 	
     if (cmd->forwardmove && onground)
-	P_Thrust (player, player->mo->angle, cmd->forwardmove*2048);
+	P_Thrust (player, player->mo->angle, cmd->forwardmove*forward_scale);
     
     if (cmd->sidemove && onground)
-	P_Thrust (player, player->mo->angle-ANG90, cmd->sidemove*2048);
+	P_Thrust (player, player->mo->angle-ANG90, cmd->sidemove*side_scale);
 
     if ( (cmd->forwardmove || cmd->sidemove) 
 	 && player->mo->state == &states[S_PLAY] )
     {
 	P_SetMobjState (player->mo, S_PLAY_RUN1);
     }
+}	
 }	
 
 

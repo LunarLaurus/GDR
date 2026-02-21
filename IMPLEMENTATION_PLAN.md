@@ -168,13 +168,13 @@
 - [x] Goblin Sneak (ambush behavior, delayed aggro)
 - [x] Goblin Alchemist (throws volatile potion projectiles)
 - [x] Goblin Totemist (deploys buff/debuff totems)
-- [ ] Goblin Shaman (complete spell kit)
-- [ ] Firebolt projectile
-- [ ] Freeze hex (slow effect)
-- [ ] Minor heal on allies
-- [ ] Randomized “Chaos Spell” ability
-- [ ] Teleport reposition logic
-- [ ] Spell cooldown system
+- [x] Goblin Shaman (complete spell kit)
+- [x] Firebolt projectile
+- [x] Freeze hex (slow effect)
+- [x] Minor heal on allies
+- [x] Randomized "Chaos Spell" ability
+- [x] Teleport reposition logic
+- [x] Spell cooldown system
 - [ ] Add faction coordination (goblins prioritize flanking, dwarves hold formation)
 - [ ] Add morale system (retreat if leader dies)
 - [ ] Add crit resistance values per enemy type

@@ -413,6 +413,9 @@ static void saveg_read_mobj_t(mobj_t *str)
 
     // struct mobj_s* tracer;
     str->tracer = saveg_readp();
+    
+    // Goblin Dice Rollaz: freeze_tics
+    str->freeze_tics = saveg_read32();
 }
 
 static void saveg_write_mobj_t(mobj_t *str)
@@ -528,6 +531,9 @@ static void saveg_write_mobj_t(mobj_t *str)
 
     // struct mobj_s* tracer;
     saveg_writep(str->tracer);
+    
+    // Goblin Dice Rollaz: freeze_tics
+    saveg_write32(str->freeze_tics);
 }
 
 

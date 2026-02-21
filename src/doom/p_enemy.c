@@ -275,6 +275,13 @@ boolean P_Move (mobj_t*	actor)
     // are all C++ reserved words
     boolean	try_ok;
     boolean	good;
+    
+    // Goblin Dice Rollaz: Check for freeze effect
+    if (actor->freeze_tics > 0)
+    {
+        // Frozen enemies don't move - they can only turn
+        return false;
+    }
 		
     if (actor->movedir == DI_NODIR)
 	return false;
@@ -667,6 +674,16 @@ void A_Chase (mobj_t*	actor)
 
     if (actor->reactiontime)
 	actor->reactiontime--;
+    
+    // Goblin Dice Rollaz: Handle freeze effect
+    if (actor->freeze_tics > 0)
+    {
+        actor->freeze_tics--;
+        // Still let them turn but don't move as fast
+        if (actor->freeze_tics <= 0)
+            actor->movecount = 0;  // Reset movement when unfrozen
+    }
+				
 				
 
     // modify target threshold
@@ -1737,6 +1754,276 @@ void A_PainDie (mobj_t* actor)
     A_PainShootSkull (actor, actor->angle+ANG180);
     A_PainShootSkull (actor, actor->angle+ANG270);
 }
+
+#define SHAMAN_COOLDOWN_TICS 140
+#define SHAMAN_HEAL_AMOUNT 15
+#define SHAMAN_FREEZE_DURATION 180
+
+typedef struct {
+    int cooldown_tics;
+} shaman_cooldown_t;
+
+static void P_SetShamanCooldown(mobj_t* actor, int tics)
+{
+    if (!actor->player)
+    {
+        actor->reactiontime = tics;
+    }
+}
+
+static int P_GetShamanCooldown(mobj_t* actor)
+{
+    if (!actor->player)
+    {
+        return actor->reactiontime;
+    }
+    return 0;
+}
+
+void A_ShamanSpell (mobj_t* actor)
+{
+    int spell_roll;
+
+    if (!actor->target)
+	return;
+
+    if (P_GetShamanCooldown(actor) > 0)
+    {
+        P_SetShamanCooldown(actor, P_GetShamanCooldown(actor) - 1);
+        return;
+    }
+
+    A_FaceTarget (actor);
+
+    spell_roll = P_Random ();
+
+    if (spell_roll < 85)
+    {
+        P_SpawnMissile (actor, actor->target, MT_SHAMAN_FIREBOLT);
+    }
+    else if (spell_roll < 170)
+    {
+        mobj_t* target;
+        int best_dist = 0;
+        mobj_t* best_ally = NULL;
+        
+        target = actor->subsector->sector->thinglist;
+        while (target)
+        {
+            if (target != actor && 
+                target->type >= MT_DWARF_DEFENDER && 
+                target->type <= MT_GOBLIN_ALCHEMIST &&
+                target->health < target->info->spawnhealth &&
+                target->flags & MF_SOLID)
+            {
+                int dist = P_AproximalDistance (actor->x - target->x, actor->y - target->y);
+                if (!best_ally || dist < best_dist)
+                {
+                    best_dist = dist;
+                    best_ally = target;
+                }
+            }
+            target = target->next;
+        }
+
+        if (best_ally && best_dist < 512*FRACUNIT)
+        {
+            P_SetMobjState (actor, S_SHAMAN_CAST1);
+            if (best_ally->health + SHAMAN_HEAL_AMOUNT < best_ally->info->spawnhealth)
+            {
+                P_DamageMobj (best_ally, actor, actor, -SHAMAN_HEAL_AMOUNT);
+                S_StartSound (best_ally, sfx_itemup);
+            }
+            P_SetShamanCooldown(actor, SHAMAN_COOLDOWN_TICS);
+            return;
+        }
+        else
+        {
+            P_SpawnMissile (actor, actor->target, MT_SHAMAN_FIREBOLT);
+        }
+    }
+    else if (spell_roll < 210)
+    {
+        P_SpawnMissile (actor, actor->target, MT_SHAMAN_FREEZE);
+    }
+    else
+    {
+        P_SetMobjState (actor, S_SHAMAN_TELEPORT1);
+    }
+
+    P_SetShamanCooldown(actor, SHAMAN_COOLDOWN_TICS);
+}
+
+void A_ShamanFirebolt (mobj_t* actor)
+{
+    if (!actor->target)
+	return;
+
+    P_SpawnMissile (actor, actor->target, MT_SHAMAN_FIREBOLT);
+}
+
+void A_ShamanHeal (mobj_t* actor)
+{
+    mobj_t* target;
+    int best_dist = 0;
+    mobj_t* best_ally = NULL;
+    
+    target = actor->subsector->sector->thinglist;
+    while (target)
+    {
+        if (target != actor && 
+            target->type >= MT_DWARF_DEFENDER && 
+            target->type <= MT_GOBLIN_ALCHEMIST &&
+            target->health < target->info->spawnhealth &&
+            (target->flags & MF_SOLID) && !(target->flags & MF_COUNTKILL))
+        {
+            int dist = P_AproximalDistance (actor->x - target->x, actor->y - target->y);
+            if (!best_ally || dist < best_dist)
+            {
+                best_dist = dist;
+                best_ally = target;
+            }
+        }
+        target = target->next;
+    }
+
+    if (best_ally && best_dist < 512*FRACUNIT)
+    {
+        if (best_ally->health + SHAMAN_HEAL_AMOUNT < best_ally->info->spawnhealth)
+        {
+            P_DamageMobj (best_ally, actor, actor, -SHAMAN_HEAL_AMOUNT);
+            S_StartSound (best_ally, sfx_itemup);
+        }
+    }
+}
+
+void A_ShamanFreeze (mobj_t* actor)
+{
+    if (!actor->target)
+	return;
+
+    P_SpawnMissile (actor, actor->target, MT_SHAMAN_FREEZE);
+}
+
+void A_ShamanTeleport (mobj_t* actor)
+{
+    angle_t an;
+    fixed_t dist;
+    fixed_t x;
+    fixed_t y;
+    fixed_t z;
+    int i;
+    int valid_position = 0;
+
+    if (!actor->target)
+        return;
+
+    for (i = 0; i < 16; i++)
+    {
+        an = P_Random () << 24;
+        dist = (P_Random () & 7) + 1;
+        dist <<= FRACBITS;
+        dist = dist * 128 + 128*FRACUNIT;
+
+        x = actor->x + FixedMul (finecosine[an>>ANGLETOFINESHIFT], dist);
+        y = actor->y + FixedMul (finesine[an>>ANGLETOFINESHIFT], dist);
+        z = actor->z;
+
+        if (P_CheckPosition (actor, x, y))
+        {
+            valid_position = 1;
+            break;
+        }
+    }
+
+    if (valid_position)
+    {
+        P_UnsetThingPosition (actor);
+        actor->x = x;
+        actor->y = y;
+        actor->z = z;
+        P_SetThingPosition (actor);
+        S_StartSound (actor, sfx_telept);
+    }
+}
+
+void A_ShamanChaos (mobj_t* actor)
+{
+    int chaos_roll;
+
+    if (!actor->target)
+        return;
+
+    chaos_roll = P_Random () % 6;
+
+    switch (chaos_roll)
+    {
+        case 0:
+        case 1:
+            P_SpawnMissile (actor, actor->target, MT_SHAMAN_FIREBOLT);
+            break;
+        case 2:
+            P_SpawnMissile (actor, actor->target, MT_SHAMAN_FREEZE);
+            break;
+        case 3:
+        {
+            mobj_t* target;
+            int best_dist = 0;
+            mobj_t* best_ally = NULL;
+            
+            target = actor->subsector->sector->thinglist;
+            while (target)
+            {
+                if (target != actor && 
+                    target->type >= MT_DWARF_DEFENDER && 
+                    target->type <= MT_GOBLIN_ALCHEMIST &&
+                    target->health < target->info->spawnhealth &&
+                    target->flags & MF_SOLID)
+                {
+                    int dist = P_AproximalDistance (actor->x - target->x, actor->y - target->y);
+                    if (!best_ally || dist < best_dist)
+                    {
+                        best_dist = dist;
+                        best_ally = target;
+                    }
+                }
+                target = target->next;
+            }
+
+            if (best_ally && best_dist < 512*FRACUNIT)
+            {
+                if (best_ally->health + SHAMAN_HEAL_AMOUNT < best_ally->info->spawnhealth)
+                {
+                    P_DamageMobj (best_ally, actor, actor, -SHAMAN_HEAL_AMOUNT);
+                    S_StartSound (best_ally, sfx_itemup);
+                }
+            }
+            break;
+        }
+        case 4:
+        {
+            angle_t an = P_Random () << 24;
+            int j;
+            for (j = 0; j < 3; j++)
+            {
+                angle_t offset = (P_Random () - 128) << 23;
+                fixed_t shoot_angle = actor->angle + offset;
+                P_SpawnMissileAngle (actor, MT_SHAMAN_FIREBOLT, shoot_angle, 0);
+            }
+            break;
+        }
+        case 5:
+            if (actor->health < actor->info->spawnhealth)
+            {
+                P_DamageMobj (actor, actor, actor, -SHAMAN_HEAL_AMOUNT);
+                S_StartSound (actor, sfx_itemup);
+            }
+            break;
+    }
+}
+
+
+
 
 
 

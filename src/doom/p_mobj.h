@@ -280,6 +280,9 @@ typedef struct mobj_s
     // Thing being chased/attacked for tracers.
     struct mobj_s*	tracer;	
     
+    // Freeze/slow effect duration (in tics)
+    int			freeze_tics;
+    
 } mobj_t;
 
 
