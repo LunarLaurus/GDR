@@ -84,4 +84,44 @@ goblin-doom -merge aoddoom1.wad -deh aoddoom1.deh  (Army of Darkness Doom)
    present; see the NOT-BUGS file for more information.
 
  * Goblin Dice Rollaz is distributed under the GNU GPL. See the COPYING
-   file for more information.
+    file for more information.
+
+## Bestiary
+
+Goblin Dice Rollaz features dice-themed combat against dwarf and goblin enemies.
+
+### Dwarf Enemies
+
+| Enemy | Description |
+|-------|-------------|
+| **Dwarf** | Standard dwarf soldier. Uses ranged attacks. |
+| **Dwarf Berserker** | Fast, melee-focused dwarf. Charges at player. |
+| **Dwarf Engineer** | Uses explosive devices. Watch for timed charges. |
+| **Dwarf Defender** | Shielded dwarf with frontal damage reduction. Attack from rear. |
+| **Dwarf Marksman** | Slow but deadly accurate. High damage per shot. |
+| **Dwarf Miner** | Throws pickaxes at medium range. |
+| **Dwarf Captain** | Elite dwarf that buffs nearby allies. Priority target. |
+| **Dwarf Bombardier** | Deploys timed explosives. Keep moving. |
+| **Armored Dwarf** | Heavily armored. Weaker from behind. |
+
+### Goblin Enemies
+
+| Enemy | Description |
+|-------|-------------|
+| **Goblin Scout** | Low health but very fast. Flanks aggressively. |
+| **Goblin Sneak** | Ambush predator. Delays aggro until player is close. |
+| **Goblin Alchemist** | Throws volatile potions. Explosive on impact. |
+| **Goblin Totemist** | Deploys buff and debuff totems. Destroy totems first. |
+| **Goblin Shaman** | Spellcaster with varied abilities: |
+
+#### Goblin Shaman Spells
+
+- **Firebolt**: Ranged fire projectile
+- **Freeze Hex**: Slows movement speed
+- **Minor Heal**: Restores health to nearby allies
+- **Chaos Spell**: Randomized unpredictable effect
+- **Teleport**: Repositions to new location
+
+### Critical Hits
+
+All weapons roll dice for damage. Rolling high (percentile-based crit check) triggers critical hits with bonus damage. Watch for the critical hit indicator on the HUD!
