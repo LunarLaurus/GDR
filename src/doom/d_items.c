@@ -180,6 +180,15 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
     	S_TWIND6_1,
     	S_TWIND6FLASH
     },
+    {
+    	// arcane d20 beam weapon
+    	am_arcanedice,
+    	S_ARCANED20UP,
+    	S_ARCANED20DOWN,
+    	S_ARCANED20,
+    	S_ARCANED20_1,
+    	S_ARCANED20FLASH
+    },
 };
 
 // Goblin Dice Rollaz: Dice weapon configuration table
@@ -292,6 +301,18 @@ dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
         0,      // ricochet_bounces: no
         0, 0,   // No misfire
         SPF_EARLY_GAME | SPF_RARE, 20  // Close-range, early game, rare
+    },
+    {   // wp_arcaned20 - arcane d20 beam (continuous roll tick damage)
+        20,     // die_type: d20
+        5,      // crit_chance: 5% (roll of 20)
+        2,      // crit_multiplier: 2x on crit
+        2,      // min_damage: tick damage
+        20,     // crit_roll: 20
+        {2, 3, 4, 5, 7, 10, 20},  // Continuous beam: 1-3=2, 4-6=3, 7-10=4, 11-14=5, 15-17=7, 18-19=10, 20=crit(20)
+        0,      // gamble_shot: no
+        0,      // ricochet_bounces: no
+        0, 0,   // No misfire
+        SPF_NONE, 25  // Arcane mid-tier weapon
     },
 };
 

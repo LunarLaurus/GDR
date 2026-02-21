@@ -63,6 +63,7 @@ void A_FireD4();
 void A_FireD8();
 void A_FireD10();
 void A_FireTwinD6();
+void A_FireArcaneD20();
 void A_Light1();
 void A_FireShotgun();
 void A_Light2();
@@ -215,6 +216,14 @@ state_t	states[NUMSTATES] = {
     {SPR_D6B1,2,3,{NULL},S_TWIND6_4,0,0},	// S_TWIND6_3
     {SPR_D6B1,1,4,{A_ReFire},S_TWIND6,0,0},	// S_TWIND6_4
     {SPR_D6BF,32768,5,{A_Light1},S_LIGHTDONE,0,0},	// S_TWIND6FLASH
+    {SPR_D20A1,0,1,{A_WeaponReady},S_ARCANED20,0,0},	// S_ARCANED20 - arcane d20 beam ready
+    {SPR_D20A1,0,1,{A_Lower},S_ARCANED20DOWN,0,0},	// S_ARCANED20DOWN
+    {SPR_D20A1,0,1,{A_Raise},S_ARCANED20UP,0,0},	// S_ARCANED20UP
+    {SPR_D20A1,0,3,{NULL},S_ARCANED20_2,0,0},	// S_ARCANED20_1 - hold beam
+    {SPR_D20A1,1,3,{A_FireArcaneD20},S_ARCANED20_3,0,0},	// S_ARCANED20_2 - fire tick
+    {SPR_D20A1,1,3,{A_Light2},S_ARCANED20_4,0,0},	// S_ARCANED20_3 - flash
+    {SPR_D20A1,0,3,{A_ReFire},S_ARCANED20,0,0},	// S_ARCANED20_4 - refire
+    {SPR_D20F,32768,4,{A_Light1},S_LIGHTDONE,0,0},	// S_ARCANED20FLASH
     {SPR_SHTG,0,1,{A_WeaponReady},S_SGUN,0,0},	// S_SGUN
     {SPR_SHTG,0,1,{A_Lower},S_SGUNDOWN,0,0},	// S_SGUNDOWN
     {SPR_SHTG,0,1,{A_Raise},S_SGUNUP,0,0},	// S_SGUNUP
@@ -2269,6 +2278,32 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 	10,		// damage (will be modified by dice roll)
 	sfx_None,		// activesound
 	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_NOGRAVITY,		// flags
+	S_NULL		// raisestate
+    },
+
+    {		// MT_ARCANED20BEAM - Goblin Dice Rollaz arcane d20 beam projectile
+	-1,		// doomednum
+	S_PLASBALL,		// spawnstate (reuse plasma ball sprite)
+	1000,		// spawnhealth
+	S_NULL,		// seestate
+	sfx_dice_d20,		// seesound (arcane roll sound)
+	8,		// reactiontime
+	sfx_None,		// attacksound
+	S_NULL,		// painstate
+	0,		// painchance
+	sfx_None,		// painsound
+	S_NULL,		// meleestate
+	S_NULL,		// missilestate
+	S_PLASEXP,		// deathstate
+	S_NULL,		// xdeathstate
+	sfx_firxpl,		// deathsound
+	28*FRACUNIT,		// speed (faster than plasma for beam feel)
+	8*FRACUNIT,		// radius
+	8*FRACUNIT,		// height
+	100,		// mass
+	5,		// damage (modified by dice roll at fire time)
+	sfx_None,		// activesound
+	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_NOGRAVITY|MF_ALWAYSPUFF,		// flags (always show puff)
 	S_NULL		// raisestate
     },
 

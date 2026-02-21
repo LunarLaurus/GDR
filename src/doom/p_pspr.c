@@ -1115,6 +1115,46 @@ A_FireTwinD6
 
 
 //
+// A_FireArcaneD20 - Goblin Dice Rollaz arcane d20 beam weapon
+// Fires a continuous beam projectile that rolls d20 for damage each hit
+//
+void
+A_FireArcaneD20
+( player_t*	player,
+  pspdef_t*	psp ) 
+{
+    int damage;
+    int guaranteedCrit = 0;
+    int critRoll = 0;
+    mobj_t* missile;
+    
+    S_StartSound (player->mo, sfx_dice_d20);
+
+    P_SetMobjState (player->mo, S_PLAY_ATK2);
+    DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
+
+    P_SetPsprite (player,
+		  ps_flash,
+		  weaponinfo[player->readyweapon].flashstate+(P_Random ()&1));
+
+    if (player->powers[pw_dicefortune])
+    {
+        guaranteedCrit = 1;
+        player->powers[pw_dicefortune] = 0;
+        player->message = "CRITICAL!";
+    }
+
+    damage = P_CalculateDiceDamage(wp_arcaned20, guaranteedCrit, &critRoll, NULL);
+
+    missile = P_SpawnPlayerMissile (player->mo, MT_ARCANED20BEAM);
+    if (missile)
+    {
+        missile->damage = damage;
+    }
+}
+
+
+//
 // ?
 //
 void A_Light0 (player_t *player, pspdef_t *psp)
