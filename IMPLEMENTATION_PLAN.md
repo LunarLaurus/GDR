@@ -21,6 +21,7 @@
 ### Phase 4: GitHub Actions CI/CD
 - [x] Fix build.yml workflow - ensure it builds correctly
 - [ ] Test that Linux build job works (blocked: requires git push)
+- [ ] Resolve blocker: Push to main branch to trigger CI workflow
 - [ ] Test that Windows build job works (blocked: requires git push)
 - [ ] Test that Docker build works (blocked: requires git push)
 - [ ] Fix any CI failures (blocked: requires git push)
@@ -96,7 +97,7 @@
 - [x] Add audio cue when guaranteed crit triggers
 - [x] Add balance pass for rarity and placement
 - [x] Implement shared powerup framework for future buffs
-- [ ] Add global powerup HUD slot system
+- [x] Add global powerup HUD slot system
 - [ ] Add powerup debug command for testing
 - [ ] Add powerup-only test map for tuning
 

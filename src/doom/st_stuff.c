@@ -40,6 +40,8 @@
 #include "st_stuff.h"
 #include "st_lib.h"
 #include "r_local.h"
+#include "r_state.h"
+#include "r_things.h"
 
 #include "p_local.h"
 #include "p_inter.h"
@@ -54,10 +56,9 @@
 
 // State.
 #include "doomstat.h"
-
-// Data.
 #include "dstrings.h"
 #include "sounds.h"
+#include "g_powerup.h"
 
 //
 // STATUS BAR DATA
@@ -158,6 +159,14 @@
 #define ST_CRITTIMERWIDTH	2
 #define ST_CRITTIMERX		155
 #define ST_CRITTIMERY		179
+
+// Global powerup HUD slot system
+#define ST_POWERUP_SLOTS		4
+#define ST_POWERUP_SLOT_WIDTH	16
+#define ST_POWERUP_SLOT_HEIGHT	12
+#define ST_POWERUP_SLOT_X	143
+#define ST_POWERUP_SLOT_Y	191
+#define ST_POWERUP_SLOT_SPACING	18
 
 // Key icon positions.
 #define ST_KEY0WIDTH		8
@@ -297,6 +306,11 @@ static st_percent_t	w_armor;
 static st_number_t	w_crit;
 static st_number_t	w_critboost_timer;
 static st_number_t	w_doubledamage_timer;
+
+// Global powerup HUD slot system
+static st_multicon_t	w_powerup_slots[ST_POWERUP_SLOTS];
+static int		st_powerup_slot_ids[ST_POWERUP_SLOTS];
+static int		st_powerup_slot_timers[ST_POWERUP_SLOTS];
 
 // ammo widgets
 static st_number_t	w_ammo[4];
@@ -1006,6 +1020,82 @@ void ST_doPaletteStuff(void)
 
 }
 
+void ST_updatePowerupSlots(void)
+{
+    int i;
+    int slot_idx = 0;
+    player_t *plyr = &players[displayplayer];
+
+    // Reset all slots
+    for (i = 0; i < ST_POWERUP_SLOTS; i++)
+    {
+        st_powerup_slot_ids[i] = -1;
+        st_powerup_slot_timers[i] = 0;
+    }
+
+    // Find active timed powerups and assign to slots
+    for (i = 0; i < NUMPOWERS && slot_idx < ST_POWERUP_SLOTS; i++)
+    {
+        if (G_PowerupIsActive(plyr, i))
+        {
+            powerup_info_t *pu = &powerups[i];
+            // Only show timed powerups that have a defined sprite
+            if ((pu->flags & POWERUP_FLAG_TIMED) && pu->sprite != 0)
+            {
+                st_powerup_slot_ids[slot_idx] = i;
+                st_powerup_slot_timers[slot_idx] = G_PowerupTimeRemaining(plyr, i) / 35; // Convert to seconds
+                slot_idx++;
+            }
+        }
+    }
+}
+
+void ST_drawPowerupSlots(boolean refresh)
+{
+    int i;
+    int x, y;
+    patch_t *patch;
+    spritedef_t *sprdef;
+    spriteframe_t *sprframe;
+    int lump;
+
+    // Draw active powerup icons in slots
+    for (i = 0; i < ST_POWERUP_SLOTS; i++)
+    {
+        if (st_powerup_slot_ids[i] >= 0 && st_powerup_slot_ids[i] < NUMPOWERS)
+        {
+            powerup_info_t *pu = &powerups[st_powerup_slot_ids[i]];
+            
+            // Get sprite definition and first frame
+            if (pu->sprite >= numsprites)
+                continue;
+                
+            sprdef = &sprites[pu->sprite];
+            if (sprdef->numframes == 0)
+                continue;
+                
+            sprframe = &sprdef->spriteframes[0];
+            lump = sprframe->lump[0];
+            
+            // Cache the lump
+            patch = W_CacheLumpNum(lump, PU_CACHE);
+            
+            x = ST_POWERUP_SLOT_X + (i * ST_POWERUP_SLOT_SPACING);
+            y = ST_POWERUP_SLOT_Y;
+            
+            // Draw the powerup icon with its color tint if defined
+            if (pu->color != 0)
+            {
+                V_DrawPatchTranslated(x, y, pu->color, patch);
+            }
+            else
+            {
+                V_DrawPatch(x, y, patch);
+            }
+        }
+    }
+}
+
 void ST_drawWidgets(boolean refresh)
 {
     int		i;
@@ -1029,16 +1119,11 @@ void ST_drawWidgets(boolean refresh)
 
     STlib_updateNum(&w_crit, refresh);
 
-    // Only update timer display when powerup is active
-    if (st_critboost_timer > 0)
+    // Update and draw global powerup HUD slots
+    ST_updatePowerupSlots();
+    if (st_statusbaron)
     {
-	STlib_updateNum(&w_critboost_timer, refresh);
-    }
-
-    // Only update timer display when powerup is active
-    if (st_doubledamage_timer > 0)
-    {
-	STlib_updateNum(&w_doubledamage_timer, refresh);
+        ST_drawPowerupSlots(refresh);
     }
 
     STlib_updateBinIcon(&w_armsbg, refresh);
@@ -1346,6 +1431,16 @@ void ST_createWidgets(void)
 		  &st_doubledamage_timer,
 		  &st_statusbaron,
 		  ST_CRITTIMERWIDTH);
+
+    // Global powerup HUD slots - initialize tracking arrays
+    {
+        int i;
+        for (i = 0; i < ST_POWERUP_SLOTS; i++)
+        {
+            st_powerup_slot_ids[i] = -1;
+            st_powerup_slot_timers[i] = 0;
+        }
+    }
 
     // keyboxes 0-2
     STlib_initMultIcon(&w_keyboxes[0],

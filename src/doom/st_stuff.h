@@ -51,6 +51,8 @@ void ST_Start (void);
 // Called by startup code.
 void ST_Init (void);
 
+// Global powerup HUD slot system
+void ST_drawPowerupSlots(boolean refresh);
 
 
 extern pixel_t *st_backing_screen;
