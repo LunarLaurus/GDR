@@ -71,6 +71,61 @@ dirtype_t diags[] =
     DI_NORTHWEST, DI_NORTHEAST, DI_SOUTHWEST, DI_SOUTHEAST
 };
 
+// Goblin Dice Rollaz: Faction system for coordinated AI behavior
+typedef enum
+{
+    FACTION_NONE,
+    FACTION_GOBLIN,
+    FACTION_DWARF
+} faction_t;
+
+typedef enum
+{
+    TACTIC_DEFAULT,
+    TACTIC_FLANK,      // Goblins: try to get to player's side/rear
+    TACTIC_HOLD        // Dwarves: hold position, advance in formation
+} tactic_t;
+
+// Returns the faction for a given mobjtype
+static faction_t P_GetFaction(mobjtype_t type)
+{
+    // Goblin faction
+    if (type == MT_GOBLIN_SHAMAN ||
+        type == MT_GOBLIN_SCOUT ||
+        type == MT_GOBLIN_SNEAK ||
+        type == MT_GOBLIN_ALCHEMIST ||
+        type == MT_GOBLIN_TOTEMIST)
+        return FACTION_GOBLIN;
+
+    // Dwarf faction
+    if (type == MT_DWARF ||
+        type == MT_DWARF_BERSERKER ||
+        type == MT_DWARF_ENGINEER ||
+        type == MT_DWARF_DEFENDER ||
+        type == MT_DWARF_MARKSMAN ||
+        type == MT_DWARF_MINER ||
+        type == MT_DWARF_CAPTAIN ||
+        type == MT_DWARF_BOMBARDIER ||
+        type == MT_DWARF_ARMORED)
+        return FACTION_DWARF;
+
+    return FACTION_NONE;
+}
+
+// Returns the preferred tactic for a given mobjtype
+static tactic_t P_GetTactic(mobjtype_t type)
+{
+    faction_t fac = P_GetFaction(type);
+
+    if (fac == FACTION_GOBLIN)
+        return TACTIC_FLANK;  // Goblins flank
+
+    if (fac == FACTION_DWARF)
+        return TACTIC_HOLD;  // Dwarves hold formation
+
+    return TACTIC_DEFAULT;
+}
+
 
 
 
@@ -373,9 +428,13 @@ void P_NewChaseDir (mobj_t*	actor)
     dirtype_t	olddir;
     
     dirtype_t	turnaround;
+    tactic_t	tactic;
 
     if (!actor->target)
 	I_Error ("P_NewChaseDir: called with no target");
+
+    // Goblin Dice Rollaz: Get faction tactic
+    tactic = P_GetTactic(actor->type);
 		
     olddir = actor->movedir;
     turnaround=opposite[olddir];
@@ -383,19 +442,99 @@ void P_NewChaseDir (mobj_t*	actor)
     deltax = actor->target->x - actor->x;
     deltay = actor->target->y - actor->y;
 
-    if (deltax>10*FRACUNIT)
-	d[1]= DI_EAST;
-    else if (deltax<-10*FRACUNIT)
-	d[1]= DI_WEST;
-    else
-	d[1]=DI_NODIR;
+    // Goblin Dice Rollaz: Flanking logic for goblins
+    // Instead of going directly at player, try to go to the side
+    if (tactic == TACTIC_FLANK)
+    {
+        // Calculate perpendicular directions (flanking paths)
+        // If player is to the east, try north or south first (side paths)
+        if (deltax > 10*FRACUNIT && abs(deltay) < abs(deltax))
+        {
+            // Player is east, try flanking from north/south
+            if (deltay > 10*FRACUNIT)
+            {
+                d[1] = DI_NORTH;
+                d[2] = DI_SOUTH;
+            }
+            else if (deltay < -10*FRACUNIT)
+            {
+                d[1] = DI_SOUTH;
+                d[2] = DI_NORTH;
+            }
+            else
+            {
+                // Equal - pick random side
+                d[1] = (P_Random() & 1) ? DI_NORTH : DI_SOUTH;
+                d[2] = (P_Random() & 1) ? DI_SOUTH : DI_NORTH;
+            }
+            // Still include forward as third option
+            if (deltay > 10*FRACUNIT)
+                d[0] = DI_NORTHEAST;
+            else if (deltay < -10*FRACUNIT)
+                d[0] = DI_SOUTHEAST;
+            else
+                d[0] = DI_EAST;
+        }
+        else if (deltax < -10*FRACUNIT && abs(deltay) < abs(deltax))
+        {
+            // Player is west, try flanking from north/south
+            if (deltay > 10*FRACUNIT)
+            {
+                d[1] = DI_NORTH;
+                d[2] = DI_SOUTH;
+            }
+            else if (deltay < -10*FRACUNIT)
+            {
+                d[1] = DI_SOUTH;
+                d[2] = DI_NORTH;
+            }
+            else
+            {
+                d[1] = (P_Random() & 1) ? DI_NORTH : DI_SOUTH;
+                d[2] = (P_Random() & 1) ? DI_SOUTH : DI_NORTH;
+            }
+            if (deltay > 10*FRACUNIT)
+                d[0] = DI_NORTHWEST;
+            else if (deltay < -10*FRACUNIT)
+                d[0] = DI_SOUTHWEST;
+            else
+                d[0] = DI_WEST;
+        }
+        else
+        {
+            // Direct the directions normally for diagonal/near cases
+            if (deltax>10*FRACUNIT)
+                d[1]= DI_EAST;
+            else if (deltax<-10*FRACUNIT)
+                d[1]= DI_WEST;
+            else
+                d[1]=DI_NODIR;
 
-    if (deltay<-10*FRACUNIT)
-	d[2]= DI_SOUTH;
-    else if (deltay>10*FRACUNIT)
-	d[2]= DI_NORTH;
+            if (deltay<-10*FRACUNIT)
+                d[2]= DI_SOUTH;
+            else if (deltay>10*FRACUNIT)
+                d[2]= DI_NORTH;
+            else
+                d[2]=DI_NODIR;
+        }
+    }
     else
-	d[2]=DI_NODIR;
+    {
+        // Default movement direction calculation
+        if (deltax>10*FRACUNIT)
+    	    d[1]= DI_EAST;
+        else if (deltax<-10*FRACUNIT)
+    	    d[1]= DI_WEST;
+        else
+    	    d[1]=DI_NODIR;
+
+        if (deltay<-10*FRACUNIT)
+    	    d[2]= DI_SOUTH;
+        else if (deltay>10*FRACUNIT)
+    	    d[2]= DI_NORTH;
+        else
+    	    d[2]=DI_NODIR;
+    }
 
     // try direct route
     if (d[1] != DI_NODIR
@@ -404,6 +543,34 @@ void P_NewChaseDir (mobj_t*	actor)
 	actor->movedir = diags[((deltay<0)<<1)+(deltax>0)];
 	if (actor->movedir != (int) turnaround && P_TryWalk(actor))
 	    return;
+    }
+
+    // Goblin Dice Rollaz: Dwarf hold formation logic
+    // Dwarves are more conservative - only advance if target is far
+    if (tactic == TACTIC_HOLD)
+    {
+        fixed_t dist_to_target = P_AproxDistance(deltax, deltay);
+        // Only advance if target is more than 16*64 units away (about 2x normal engagement range)
+        if (dist_to_target < 1024*FRACUNIT && olddir != DI_NODIR)
+        {
+            // Hold position - try to keep current direction or stand ground
+            actor->movedir = olddir;
+            if (P_TryWalk(actor))
+                return;
+            // If can't move forward, try to strafe but prefer not moving toward target
+            for (tdir = DI_NORTH; tdir <= DI_SOUTHEAST; tdir++)
+            {
+                if (tdir != (int)turnaround && tdir != (int)olddir)
+                {
+                    actor->movedir = tdir;
+                    if (P_TryWalk(actor))
+                        return;
+                }
+            }
+            // If all else fails, just stay put (don't advance)
+            actor->movedir = DI_NODIR;
+            return;
+        }
     }
 
     // try other directions
