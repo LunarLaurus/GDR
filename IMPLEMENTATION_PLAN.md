@@ -144,8 +144,8 @@
 - [x] Implement ammo pickup sprites themed to carved bone / rune dice
 - [x] Add weapon tier balancing pass (DPS, ammo efficiency, crit frequency)
 - [x] Add weapon selection UI icons for each die type
-- [ ] Add weapon-specific sound profiles (distinct roll sounds per die)
-- [ ] Add misfire mechanic for high-risk weapons (low percentile roll penalty)
+- [x] Add weapon-specific sound profiles (distinct roll sounds per die)
+- [x] Add misfire mechanic for high-risk weapons (low percentile roll penalty)
 - [ ] Add “Exploding Max Roll” support (optional rule toggle)
 - [ ] Add weapon stat debug overlay (damage range, crit %, average roll)
 - [ ] Add weapon spawn flags for map balancing
