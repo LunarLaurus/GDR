@@ -585,7 +585,47 @@ P_SpawnMobj
 	
     P_AddThinker (&mobj->thinker);
 
+    if (!(mobj->flags & MF_SPECIAL))
+    {
+        P_ApplyDifficultyScaling(mobj);
+    }
+
     return mobj;
+}
+
+
+//
+// P_ApplyDifficultyScaling
+// Applies HP and stat multipliers based on game skill level
+//
+void P_ApplyDifficultyScaling(mobj_t *mobj)
+{
+    extern int difficulty_hp_scale[5];
+
+    if (!mobj || !mobj->info)
+        return;
+
+    if (mobj->flags & MF_CORPSE)
+        return;
+
+    if (!(mobj->flags & MF_SHOOTABLE))
+        return;
+
+    if (mobj->type == MT_PLAYER)
+        return;
+
+    int skillIndex = gameskill;
+    if (skillIndex < 0 || skillIndex > 4)
+        skillIndex = 2;
+
+    int hpMultiplier = difficulty_hp_scale[skillIndex];
+
+    if (hpMultiplier != 100)
+    {
+        mobj->health = (mobj->health * hpMultiplier) / 100;
+        if (mobj->health < 1)
+            mobj->health = 1;
+    }
 }
 
 

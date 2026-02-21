@@ -110,6 +110,8 @@ P_SpawnMobj
   fixed_t	z,
   mobjtype_t	type );
 
+void P_ApplyDifficultyScaling(mobj_t *mobj);
+
 void 	P_RemoveMobj (mobj_t* th);
 mobj_t* P_SubstNullMobj (mobj_t* th);
 boolean	P_SetMobjState (mobj_t* mobj, statenum_t state);

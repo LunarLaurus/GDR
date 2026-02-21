@@ -134,6 +134,9 @@ extern int      critboost_spawn_rate;
 extern int      doubledamage_spawn_rate;
 extern int      dicefortune_spawn_rate;
 
+// Goblin Dice Rollaz: difficulty scaling
+extern int      difficulty_hp_scale[5];
+
 // Goblin Dice Rollaz: multiplayer sync debug
 int             debug_sync_check = 0;
 
@@ -392,6 +395,13 @@ void D_BindVariables(void)
 
     // Goblin Dice Rollaz: multiplayer sync debug
     M_BindIntVariable("debug_sync_check",         &debug_sync_check);
+
+    // Goblin Dice Rollaz: difficulty scaling
+    M_BindIntVariable("difficulty_hp_baby",       &difficulty_hp_scale[0]);
+    M_BindIntVariable("difficulty_hp_easy",     &difficulty_hp_scale[1]);
+    M_BindIntVariable("difficulty_hp_medium",   &difficulty_hp_scale[2]);
+    M_BindIntVariable("difficulty_hp_hard",    &difficulty_hp_scale[3]);
+    M_BindIntVariable("difficulty_hp_nightmare",&difficulty_hp_scale[4]);
 
     // Goblin Dice Rollaz: weapon stat debug overlay
     M_BindIntVariable("show_weapon_stats",        &show_weapon_stats);
