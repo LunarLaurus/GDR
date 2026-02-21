@@ -746,6 +746,11 @@ static void DecreaseAmmo(player_t *player, int ammonum, int amount)
 
 
 //
+// Goblin Dice Rollaz: exploding dice global toggle
+//
+extern int exploding_dice_enabled;
+
+//
 // P_RollDice - Goblin Dice Rollaz: Centralized dice roll function
 // Uses deterministic Doom RNG for netplay compatibility
 //
@@ -839,9 +844,10 @@ P_CalculateDiceDamage (int weapon, int guaranteedCrit, int *outCritRoll, int *ou
             damage = dwi->min_damage;
     }
     
-    // Goblin Dice Rollaz: Gamble Shot - exploding roll mechanic
-    // For gamble_shot weapons, rolls >= 95 trigger additional rolls
-    if (dwi->gamble_shot && diceRoll >= 95 && diceRoll < dwi->crit_roll)
+    // Goblin Dice Rollaz: Exploding Max Roll mechanic
+    // For gamble_shot weapons OR when exploding_dice_enabled is set globally,
+    // rolls >= 95 trigger additional rolls
+    if ((dwi->gamble_shot || exploding_dice_enabled) && diceRoll >= 95 && diceRoll < dwi->crit_roll)
     {
         int explodeRolls = 0;
         int additionalDamage = 0;

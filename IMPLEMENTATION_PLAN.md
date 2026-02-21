@@ -146,7 +146,7 @@
 - [x] Add weapon selection UI icons for each die type
 - [x] Add weapon-specific sound profiles (distinct roll sounds per die)
 - [x] Add misfire mechanic for high-risk weapons (low percentile roll penalty)
-- [ ] Add “Exploding Max Roll” support (optional rule toggle)
+- [x] Add "Exploding Max Roll" support (optional rule toggle)
 - [ ] Add weapon stat debug overlay (damage range, crit %, average roll)
 - [ ] Add weapon spawn flags for map balancing
 - [ ] Document all dice weapons in DESIGN.md with damage math breakdown

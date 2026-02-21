@@ -48,6 +48,7 @@
 #define CRIT_CHANCE	10
 #define CRIT_MULTIPLIER	2
 int	crit_boost_bonus = 15;
+int	exploding_dice_enabled = 0;
 
 
 
