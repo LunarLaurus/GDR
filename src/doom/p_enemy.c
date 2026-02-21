@@ -817,9 +817,34 @@ void A_SPosAttack (mobj_t* actor)
     int		bangle;
     int		damage;
     int		slope;
-	
+    mobj_t* mo;
+    
     if (!actor->target)
 	return;
+
+    if (actor->type == MT_DWARF_MARKSMAN)
+    {
+        A_FaceTarget (actor);
+        S_StartSound (actor, sfx_shotgn);
+        mo = P_SpawnMissile (actor, actor->target, MT_MARKSMAN_BOLT);
+        if (mo)
+        {
+            mo->special1 = 0;
+        }
+        return;
+    }
+
+    if (actor->type == MT_DWARF_ENGINEER)
+    {
+        A_FaceTarget (actor);
+        S_StartSound (actor, sfx_rlaunc);
+        mo = P_SpawnMissile (actor, actor->target, MT_DWARF_BOMB);
+        if (mo)
+        {
+            mo->special1 = 0;
+        }
+        return;
+    }
 
     S_StartSound (actor, sfx_shotgn);
     A_FaceTarget (actor);
@@ -964,6 +989,22 @@ void A_HeadAttack (mobj_t* actor)
     
     // launch a missile
     P_SpawnMissile (actor, actor->target, MT_HEADSHOT);
+}
+
+void A_MarksmanAttack (mobj_t* actor)
+{
+    mobj_t* mo;
+    
+    if (!actor->target)
+        return;
+        
+    A_FaceTarget (actor);
+    S_StartSound (actor, sfx_shotgn);
+    mo = P_SpawnMissile (actor, actor->target, MT_MARKSMAN_BOLT);
+    if (mo)
+    {
+        mo->special1 = 0;
+    }
 }
 
 void A_CyberAttack (mobj_t* actor)

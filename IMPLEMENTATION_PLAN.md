@@ -158,8 +158,8 @@
 - [x] Refactor enemy definition templates for easier expansion (shared dwarf base struct)
 - [x] Implement per-enemy stat table (HP, speed, aggression, crit resistance)
 - [x] Add difficulty scaling hooks per enemy
-- [ ] Dwarf Defender (shielded, frontal damage reduction)
-- [ ] Dwarf Marksman (slow, high-damage ranged unit)
+- [x] Dwarf Defender (shielded, frontal damage reduction)
+- [x] Dwarf Marksman (slow, high-damage ranged unit)
 - [ ] Dwarf Miner (throws pickaxes, medium range)
 - [ ] Elite Dwarf Captain (buffs nearby dwarves)
 - [ ] Dwarf Bombardier (engineer subclass with timed explosives)

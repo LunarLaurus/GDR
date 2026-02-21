@@ -113,6 +113,7 @@ void A_CPosRefire();
 void A_TroopAttack();
 void A_SargAttack();
 void A_HeadAttack();
+void A_MarksmanAttack();
 void A_BruisAttack();
 void A_SkullAttack();
 void A_Metal();
@@ -1971,7 +1972,36 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
     	30,		// crit_resistance (highly armored)
     	25,		// aggression (defensive stance)
     	50		// shield_reduction (50% damage reduction from front)
-     },
+      },
+
+     {		// MT_DWARF_MARKSMAN
+    	8025,		// doomednum (custom mapthing number)
+    	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations)
+    	50,		// spawnhealth (moderate - not as tough as defender)
+    	S_SPOS_RUN1,		// seestate
+    	sfx_posit2,		// seesound
+    	12,		// reactiontime (slower - takes time to aim)
+    	0,		// attacksound (will use custom - bow twang)
+    	S_SPOS_PAIN,		// painstate
+    	80,		// painchance (medium - can be disrupted)
+    	sfx_popain,		// painsound
+    	0,		// meleestate (no melee - purely ranged)
+    	S_SPOS_ATK1,		// missilestate (fires deadly bolt)
+    	S_SPOS_DIE1,		// deathstate
+    	S_SPOS_XDIE1,		// xdeathstate
+    	sfx_podth2,		// deathsound
+    	2,		// speed (very slow - stationary sniper)
+    	18*FRACUNIT,		// radius (slender build)
+    	56*FRACUNIT,		// height
+    	80,		// mass (light but tough)
+    	0,		// damage (melee - not used)
+    	sfx_posact,		// activesound
+    	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+    	S_SPOS_RAISE1,		// raisestate
+    	20,		// crit_resistance (medium - light armor)
+    	90,		// aggression (highly aggressive when target spotted)
+    	0		// shield_reduction (none - no shield)
+      },
 
      {		// MT_GOBLIN_SHAMAN
    	8023,		// doomednum (custom mapthing number)
@@ -2024,11 +2054,37 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
   	100,		// mass
   	15,		// damage (d8 fire damage)
   	sfx_None,		// activesound
-  	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_NOGRAVITY,		// flags
-  	S_NULL		// raisestate
-     },
+   	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_NOGRAVITY,		// flags
+   	S_NULL		// raisestate
+      },
 
-    {		// MT_SHAMAN_HEAL
+     {		// MT_MARKSMAN_BOLT
+   	-1,		// doomednum (not spawned via mapthing)
+   	S_TRACER,		// spawnstate (reuses tracer animation - straight shot)
+   	1000,		// spawnhealth
+   	S_NULL,		// seestate
+   	sfx_None,		// seesound
+   	8,		// reactiontime
+   	sfx_None,		// attacksound
+   	S_NULL,		// painstate
+   	0,		// painchance
+   	sfx_None,		// painsound
+   	S_NULL,		// meleestate
+   	S_NULL,		// missilestate
+   	S_TRACEEXP1,		// deathstate (explodes on impact)
+   	S_NULL,		// xdeathstate
+   	sfx_barexp,		// deathsound
+   	14*FRACUNIT,		// speed (faster than firebolt, precise)
+   	8*FRACUNIT,		// radius
+   	8*FRACUNIT,		// height
+   	100,		// mass
+   	35,		// damage (high damage - d20 roll + bonus)
+   	sfx_None,		// activesound
+   	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_NOGRAVITY,		// flags
+   	S_NULL		// raisestate
+      },
+
+     {		// MT_SHAMAN_HEAL
   	-1,		// doomednum (not spawned via mapthing)
   	S_IFOG00,		// spawnstate (reuses item fog)
   	1000,		// spawnhealth
