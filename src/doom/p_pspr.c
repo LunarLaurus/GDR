@@ -285,11 +285,12 @@ void P_FireAltWeapon (player_t* player)
             player->message = "CRITICAL BURST!";
         }
         
-        // Fire 3 projectiles in rapid succession
+            // Fire 3 projectiles in rapid succession
         for (i = 0; i < 3; i++)
         {
+            int misfire = 0;
             // Calculate damage for each projectile
-            damage = P_CalculateDiceDamage(wp_d4, guaranteedCrit, &critRoll);
+            damage = P_CalculateDiceDamage(wp_d4, guaranteedCrit, &critRoll, &misfire);
             
             // Add slight spread for burst inaccuracy
             if (i == 0)
@@ -340,7 +341,8 @@ void P_FireAltWeapon (player_t* player)
         }
         
         // Calculate base damage
-        damage = P_CalculateDiceDamage(wp_d12, guaranteedCrit, &critRoll);
+        int misfire = 0;
+        damage = P_CalculateDiceDamage(wp_d12, guaranteedCrit, &critRoll, &misfire);
         
         // Apply charge bonus: up to +100% damage at max charge
         // weaponcharge ranges from 0-35 (about 1 second at 35fps)
@@ -772,16 +774,20 @@ P_WeaponCanCrit (int weapon)
 // P_CalculateDiceDamage - Goblin Dice Rollaz: Centralized damage calculation
 // Handles guaranteed crit, dice rolling, and damage mapping
 // Supports Gamble Shot mode for wider variance
+// Supports Misfire mechanic for high-risk weapons
 //
 int
-P_CalculateDiceDamage (int weapon, int guaranteedCrit, int *outCritRoll)
+P_CalculateDiceDamage (int weapon, int guaranteedCrit, int *outCritRoll, int *outMisfire)
 {
     int diceRoll;
     int damage = 0;
+    int misfired = 0;
     dice_weapon_info_t *dwi;
     
     if (outCritRoll)
         *outCritRoll = 0;
+    if (outMisfire)
+        *outMisfire = 0;
     
     if (weapon < 0 || weapon >= NUMWEAPONS)
         return 1;
@@ -862,6 +868,26 @@ P_CalculateDiceDamage (int weapon, int guaranteedCrit, int *outCritRoll)
         
         damage += additionalDamage;
     }
+    
+    // Goblin Dice Rollaz: Misfire mechanic for high-risk weapons
+    // Check if roll triggers misfire - only if not guaranteed crit (don't punish success)
+    if (!guaranteedCrit && dwi->misfire_roll > 0 && diceRoll <= dwi->misfire_roll)
+    {
+        misfired = 1;
+        // Apply misfire penalty - reduce damage based on weapon's penalty setting
+        if (dwi->misfire_penalty > 0 && dwi->misfire_penalty < 100)
+        {
+            damage = (damage * dwi->misfire_penalty) / 100;
+        }
+        else
+        {
+            // Complete misfire - no damage
+            damage = 0;
+        }
+    }
+    
+    if (outMisfire)
+        *outMisfire = misfired;
     
     return damage;
 }
@@ -1035,7 +1061,7 @@ A_FireD6Blast
         player->message = "CRITICAL!";
     }
 
-    damage = P_CalculateDiceDamage(wp_d6blaster, guaranteedCrit, &critRoll);
+    damage = P_CalculateDiceDamage(wp_d6blaster, guaranteedCrit, &critRoll, NULL);
 
     P_BulletSlope (player->mo);
     P_GunShotWithDamage (player->mo, !player->refire, damage);
@@ -1163,7 +1189,7 @@ A_FireD20Cannon
         player->message = "CRITICAL!";
     }
 
-    damage = P_CalculateDiceDamage(wp_d20cannon, guaranteedCrit, &critRoll);
+    damage = P_CalculateDiceDamage(wp_d20cannon, guaranteedCrit, &critRoll, NULL);
 
     P_BulletSlope (player->mo);
     P_GunShotWithDamage (player->mo, !player->refire, damage);
@@ -1199,7 +1225,7 @@ A_FireD12
         player->message = "CRITICAL!";
     }
 
-    damage = P_CalculateDiceDamage(wp_d12, guaranteedCrit, &critRoll);
+    damage = P_CalculateDiceDamage(wp_d12, guaranteedCrit, &critRoll, NULL);
 
     P_BulletSlope (player->mo);
     P_GunShotWithDamage (player->mo, !player->refire, damage);
@@ -1235,7 +1261,7 @@ A_FirePercentile
         player->message = "CRITICAL!";
     }
 
-    damage = P_CalculateDiceDamage(wp_percentile, guaranteedCrit, &critRoll);
+    damage = P_CalculateDiceDamage(wp_percentile, guaranteedCrit, &critRoll, NULL);
 
     P_BulletSlope (player->mo);
     P_GunShotWithDamage (player->mo, !player->refire, damage);
@@ -1271,7 +1297,7 @@ A_FireD4
         player->message = "CRITICAL!";
     }
 
-    damage = P_CalculateDiceDamage(wp_d4, guaranteedCrit, &critRoll);
+    damage = P_CalculateDiceDamage(wp_d4, guaranteedCrit, &critRoll, NULL);
 
     P_BulletSlope (player->mo);
     P_GunShotWithDamage (player->mo, !player->refire, damage);

@@ -46,6 +46,8 @@ typedef struct
     int crit_roll;          // Roll value that triggers crit
     int damage_table[7];    // Damage mapping for roll ranges
     int gamble_shot;       // Wide variance mode (exploding rolls, misfire chance)
+    int misfire_roll;      // Roll at or below this triggers misfire (0 = no misfire)
+    int misfire_penalty;   // Damage multiplier on misfire (e.g., 25 = quarter damage)
 } dice_weapon_info_t;
 
 extern  weaponinfo_t    weaponinfo[NUMWEAPONS];
@@ -53,7 +55,7 @@ extern  dice_weapon_info_t dice_weapon_info[NUMWEAPONS];
 
 // Dice roll backend functions
 int P_RollDice(int sides);
-int P_CalculateDiceDamage(int weapon, int guaranteedCrit, int *outCritRoll);
+int P_CalculateDiceDamage(int weapon, int guaranteedCrit, int *outCritRoll, int *outMisfire);
 int P_WeaponCanCrit(int weapon);
 
 #endif
