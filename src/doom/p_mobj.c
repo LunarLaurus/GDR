@@ -590,6 +590,14 @@ P_SpawnMobj
         P_ApplyDifficultyScaling(mobj);
     }
 
+    // Goblin Dice Rollaz: Initialize morale system for enemies
+    P_InitMorale(mobj);
+    // Leaders get special initialization
+    if (P_CanBeLeader(mobj->type))
+    {
+        P_InitLeader(mobj);
+    }
+
     return mobj;
 }
 

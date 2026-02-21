@@ -283,6 +283,11 @@ typedef struct mobj_s
     // Freeze/slow effect duration (in tics)
     int			freeze_tics;
     
+    // Morale system: leader-follower behavior
+    struct mobj_s*	leader;      // pointer to squad leader (can be NULL)
+    int			morale;       // current morale level (0-100, 0 = broken)
+    int			morale_flags; // morale state flags
+
 } mobj_t;
 
 

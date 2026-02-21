@@ -112,6 +112,11 @@ P_SpawnMobj
 
 void P_ApplyDifficultyScaling(mobj_t *mobj);
 
+// Goblin Dice Rollaz: Morale system
+void P_InitMorale(mobj_t *actor);
+void P_InitLeader(mobj_t *actor);
+boolean P_MoraleBroken(mobj_t *actor);
+
 void 	P_RemoveMobj (mobj_t* th);
 mobj_t* P_SubstNullMobj (mobj_t* th);
 boolean	P_SetMobjState (mobj_t* mobj, statenum_t state);

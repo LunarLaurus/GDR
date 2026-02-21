@@ -126,11 +126,213 @@ static tactic_t P_GetTactic(mobjtype_t type)
     return TACTIC_DEFAULT;
 }
 
+// Goblin Dice Rollaz: Morale system flags
+#define MORALE_FLAG_LEADER     0x01  // This mobj can be a leader
+#define MORALE_FLAG_FOLLOWER  0x02  // This mobj follows a leader
+#define MORALE_FLAG_BROKEN     0x04  // Morale has broken, will flee
+#define MORALE_FLAG_RETREATING 0x08  // Currently retreating
+
+// Returns true if this mobj type can be a leader
+static boolean P_CanBeLeader(mobjtype_t type)
+{
+    // Captains and certain elite units can be leaders
+    if (type == MT_DWARF_CAPTAIN ||
+        type == MT_DWARF_BOMBARDIER ||
+        type == MT_GOBLIN_SHAMAN ||
+        type == MT_GOBLIN_TOTEMIST)
+        return true;
+    return false;
+}
+
+// Returns true if this mobj type follows a leader
+static boolean P_CanFollow(mobjtype_t type)
+{
+    // Regular soldiers follow leaders
+    if (type == MT_DWARF ||
+        type == MT_DWARF_BERSERKER ||
+        type == MT_DWARF_ENGINEER ||
+        type == MT_DWARF_DEFENDER ||
+        type == MT_DWARF_MARKSMAN ||
+        type == MT_DWARF_MINER ||
+        type == MT_DWARF_ARMORED ||
+        type == MT_GOBLIN_SCOUT ||
+        type == MT_GOBLIN_SNEAK ||
+        type == MT_GOBLIN_ALCHEMIST)
+        return true;
+    return false;
+}
+
+// Initialize morale when spawning a follower
+void P_InitMorale(mobj_t* actor)
+{
+    if (!P_CanFollow(actor->type))
+    {
+        actor->morale = 100;
+        actor->morale_flags = 0;
+        actor->leader = NULL;
+        return;
+    }
+
+    actor->morale = 100;
+    actor->morale_flags = MORALE_FLAG_FOLLOWER;
+    actor->leader = NULL;
+}
+
+// Check if leader is dead and handle morale break
+void P_UpdateMorale(mobj_t* actor)
+{
+    // Only followers need morale tracking
+    if (!(actor->morale_flags & MORALE_FLAG_FOLLOWER))
+        return;
+
+    // Already broken
+    if (actor->morale_flags & MORALE_FLAG_BROKEN)
+        return;
+
+    // If we have a leader, check if they're alive
+    if (actor->leader != NULL)
+    {
+        // Leader is dead - break morale!
+        if (actor->leader->health <= 0)
+        {
+            actor->morale = 0;
+            actor->morale_flags |= MORALE_FLAG_BROKEN;
+            actor->leader = NULL;
+        }
+        return;
+    }
+
+    // Try to find a leader in the area
+    // Look for nearby leader of same faction
+    mobj_t* mo;
+    sector_t* sec = actor->subsector->sector;
+    thinker_t* th;
+
+    for (th = thinkercap.next; th != &thinkercap; th = th->next)
+    {
+        if (th->function.acp1 != (actionf_p1)P_MobjThinker)
+            continue;
+
+        mo = (mobj_t*)th;
+
+        if (mo == actor)
+            continue;
+
+        if (mo->health <= 0)
+            continue;
+
+        if (!P_CanBeLeader(mo->type))
+            continue;
+
+        // Must be same faction
+        if (P_GetFaction(mo->type) != P_GetFaction(actor->type))
+            continue;
+
+        // Check distance - leaders must be within 512 units
+        if (P_AproxDistance(mo->x - actor->x, mo->y - actor->y) < 512*FRACUNIT)
+        {
+            actor->leader = mo;
+            // Gain morale from having a leader
+            actor->morale = 100;
+            return;
+        }
+    }
+
+    // No leader found nearby - morale slowly degrades
+    // Only degrade if we've been alive for a bit
+    if (actor->reactiontime > 0)
+    {
+        actor->reactiontime--;
+    }
+    else
+    {
+        // Every few seconds, morale drops a bit without a leader
+        actor->morale -= 5;
+        actor->reactiontime = 35 * 5; // 5 seconds
+
+        if (actor->morale <= 0)
+        {
+            actor->morale = 0;
+            actor->morale_flags |= MORALE_FLAG_BROKEN;
+        }
+    }
+}
+
+// Check if actor should retreat due to broken morale
+// Returns true if retreating behavior should occur
+boolean P_MoraleBroken(mobj_t* actor)
+{
+    return (actor->morale_flags & MORALE_FLAG_BROKEN) != 0;
+}
+
+// Initialize a mobj as a leader
+void P_InitLeader(mobj_t* actor)
+{
+    if (!P_CanBeLeader(actor->type))
+    {
+        actor->morale = 100;
+        actor->morale_flags = 0;
+        return;
+    }
+
+    actor->morale = 100;
+    actor->morale_flags = MORALE_FLAG_LEADER;
+}
+
+// A_Flee - Enemy flees when morale is broken
+// Runs away from the player instead of attacking
+void A_Flee(mobj_t* actor)
+{
+    angle_t ang;
+    fixed_t dist;
+
+    if (!actor->target)
+        return;
+
+    // Get angle AWAY from player
+    ang = R_PointToAngle2(actor->y, actor->x,
+                          actor->target->y, actor->target->x);
+
+    // Add some randomness to the retreat direction
+    if (P_Random() < 128)
+        ang += ANG45;
+    else
+        ang -= ANG45;
+
+    // Set movement direction based on retreat angle
+    if (ang >= 0 && ang < ANG45 * 2)
+        actor->movedir = DI_EAST;
+    else if (ang >= ANG45 * 2 && ang < ANG45 * 4)
+        actor->movedir = DI_NORTH;
+    else if (ang >= ANG45 * 4 && ang < ANG45 * 6)
+        actor->movedir = DI_WEST;
+    else
+        actor->movedir = DI_SOUTH;
+
+    // Move faster when fleeing
+    actor->movecount = 10;
+
+    // Try to move in retreat direction
+    if (P_Move(actor))
+    {
+        // Successfully moved - play flee sound occasionally
+        if (actor->info->activesound && P_Random() < 30)
+        {
+            S_StartSound(actor, actor->info->activesound);
+        }
+        return;
+    }
+
+    // Can't move - try random direction
+    P_NewChaseDir(actor);
+}
+
 
 
 
 
 void A_Fall (mobj_t *actor);
+void A_Flee (mobj_t *actor);
 
 
 //
@@ -841,6 +1043,17 @@ void A_Chase (mobj_t*	actor)
 
     if (actor->reactiontime)
 	actor->reactiontime--;
+    
+    // Goblin Dice Rollaz: Handle morale system
+    P_UpdateMorale(actor);
+    
+    // If morale is broken, flee instead of chase!
+    if (P_MoraleBroken(actor))
+    {
+        // Run away from player
+        A_Flee(actor);
+        return;
+    }
     
     // Goblin Dice Rollaz: Handle freeze effect
     if (actor->freeze_tics > 0)
