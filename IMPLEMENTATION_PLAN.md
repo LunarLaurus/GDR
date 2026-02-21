@@ -178,7 +178,7 @@
 - [x] Add faction coordination (goblins prioritize flanking, dwarves hold formation)
 - [x] Add morale system (retreat if leader dies)
 - [x] Add crit resistance values per enemy type
-- [ ] Add weak point logic (headshot or rear bonus multiplier)
+- [x] Add weak point logic (headshot or rear bonus multiplier)
 - [ ] Add spawn group presets for map designers
 - [ ] Unique death animations per elite unit
 - [ ] Critical hit reaction animations
