@@ -115,6 +115,7 @@ void A_SargAttack();
 void A_HeadAttack();
 void A_MarksmanAttack();
 void A_CaptainBuff();
+void A_TotemistDeploy();
 void A_BruisAttack();
 void A_SkullAttack();
 void A_Metal();
@@ -2393,8 +2394,89 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
   	100,		// mass
   	20,		// damage (d12 freeze damage)
   	sfx_None,		// activesound
-  	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_NOGRAVITY,		// flags
-  	S_NULL		// raisestate
+   	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_NOGRAVITY,		// flags
+   	S_NULL		// raisestate
+      },
+
+    {		// MT_GOBLIN_TOTEMIST - Deploys buff/debuff totems
+    	8025,		// doomednum (custom mapthing number)
+    	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations)
+    	35,		// spawnhealth (moderate HP - support unit)
+    	S_SPOS_RUN1,		// seestate
+    	sfx_posit2,		// seesound (goblin cackle)
+    	8,		// reactiontime
+    	0,		// attacksound (none - deploys totems)
+    	S_SPOS_PAIN,		// painstate
+    	100,		// painchance (somewhat resilient)
+    	sfx_popain,		// painsound
+    	0,		// meleestate (no melee)
+    	S_SPOS_ATK1,		// missilestate (deploys totems)
+    	S_SPOS_DIE1,		// deathstate
+    	S_SPOS_XDIE1,		// xdeathstate
+    	sfx_podth2,		// deathsound
+    	5,		// speed (slow - support unit)
+    	16*FRACUNIT,		// radius
+    	44*FRACUNIT,		// height
+    	100,		// mass
+    	0,		// damage (not used - deploys totems instead)
+    	sfx_posact,		// activesound
+    	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+    	S_SPOS_RAISE1,		// raisestate
+    	15,		// crit_resistance (moderate)
+    	60,		// aggression (deploys support from mid-range)
+    	0		// shield_reduction (none)
+     },
+
+    {		// MT_BUFF_TOTEM - Increases nearby enemy damage
+    	-1,		// doomednum (not spawned via mapthing)
+    	S_BAR1,		// spawnstate (reuses barrel - stationary)
+    	50,		// spawnhealth (destructible)
+    	S_NULL,		// seestate
+    	sfx_None,		// seesound
+    	8,		// reactiontime
+    	sfx_None,		// attacksound
+    	S_NULL,		// painstate
+    	0,		// painchance
+    	sfx_None,		// painsound
+    	S_NULL,		// meleestate
+    	S_NULL,		// missilestate
+    	S_BAR1,		// deathstate
+    	S_NULL,		// xdeathstate
+    	sfx_barexp,		// deathsound
+    	0,		// speed (stationary)
+    	8*FRACUNIT,		// radius (small totem)
+    	40*FRACUNIT,		// height (tall totem)
+    	100,		// mass
+    	0,		// damage (none - aura effect)
+    	sfx_None,		// activesound
+    	MF_SOLID|MF_SHOOTABLE|MF_NOGRAVITY|MF_TELESTICK,		// flags (floats, stick to pos)
+    	S_NULL		// raisestate
+     },
+
+    {		// MT_DEBUFF_TOTEM - Slows and weakens nearby players
+    	-1,		// doomednum (not spawned via mapthing)
+    	S_BAR1,		// spawnstate (reuses barrel - stationary)
+    	50,		// spawnhealth (destructible)
+    	S_NULL,		// seestate
+    	sfx_None,		// seesound
+    	8,		// reactiontime
+    	sfx_None,		// attacksound
+    	S_NULL,		// painstate
+    	0,		// painchance
+    	sfx_None,		// painsound
+    	S_NULL,		// meleestate
+    	S_NULL,		// missilestate
+    	S_BAR1,		// deathstate
+    	S_NULL,		// xdeathstate
+    	sfx_barexp,		// deathsound
+    	0,		// speed (stationary)
+    	8*FRACUNIT,		// radius (small totem)
+    	40*FRACUNIT,		// height (tall totem)
+    	100,		// mass
+    	0,		// damage (none - aura effect)
+    	sfx_None,		// activesound
+    	MF_SOLID|MF_SHOOTABLE|MF_NOGRAVITY|MF_TELESTICK,		// flags (floats, stick to pos)
+    	S_NULL		// raisestate
      },
 
     {		// MT_KEEN

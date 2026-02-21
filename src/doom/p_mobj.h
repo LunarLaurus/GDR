@@ -186,6 +186,9 @@ typedef enum
     //  in death match mode (e.g. key cards).
     MF_NOTDMATCH    	= 0x2000000,
 
+    // Goblin Dice Rollaz: Totem sticks to spawn position (doesn't follow player)
+    MF_TELESTICK        = 0x4000000,
+
     // Player sprites in multiplayer modes are modified
     //  using an internal color lookup table for re-indexing.
     // If 0x4 0x8 or 0xc,

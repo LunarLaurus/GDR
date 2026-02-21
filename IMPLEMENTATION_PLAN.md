@@ -167,7 +167,7 @@
 - [x] Goblin Scout (low HP, high mobility)
 - [x] Goblin Sneak (ambush behavior, delayed aggro)
 - [x] Goblin Alchemist (throws volatile potion projectiles)
-- [ ] Goblin Totemist (deploys buff/debuff totems)
+- [x] Goblin Totemist (deploys buff/debuff totems)
 - [ ] Goblin Shaman (complete spell kit)
 - [ ] Firebolt projectile
 - [ ] Freeze hex (slow effect)

@@ -916,6 +916,50 @@ void A_CPosAttack (mobj_t* actor)
     P_LineAttack (actor, angle, MISSILERANGE, slope, damage);
 }
 
+void A_TotemistDeploy(mobj_t* actor)
+{
+    mobj_t* mo;
+    int numTotems;
+    
+    if (!actor->target)
+        return;
+    
+    A_FaceTarget(actor);
+    
+    numTotems = P_Random() % 2;
+    
+    if (numTotems == 0)
+    {
+        mo = P_SpawnMobj(actor->x + 24*FRACUNIT, actor->y, actor->z - 20*FRACUNIT, MT_BUFF_TOTEM);
+        if (mo)
+        {
+            mo->angle = actor->angle;
+            mo->flags |= MF_TELESTICK;
+            S_StartSound(actor, sfx_itmbk);
+        }
+    }
+    else
+    {
+        mo = P_SpawnMobj(actor->x - 24*FRACUNIT, actor->y, actor->z - 20*FRACUNIT, MT_DEBUFF_TOTEM);
+        if (mo)
+        {
+            mo->angle = actor->angle;
+            mo->flags |= MF_TELESTICK;
+            S_StartSound(actor, sfx_itmbk);
+        }
+    }
+    
+    if (P_Random() < 128)
+    {
+        mo = P_SpawnMobj(actor->x, actor->y + 24*FRACUNIT, actor->z - 20*FRACUNIT, MT_BUFF_TOTEM);
+        if (mo)
+        {
+            mo->angle = actor->angle;
+            mo->flags |= MF_TELESTICK;
+        }
+    }
+}
+
 void A_CPosRefire (mobj_t* actor)
 {	
     // keep firing unless target got out of sight
@@ -978,6 +1022,31 @@ void A_TroopAttack (mobj_t* actor)
 	damage = (P_Random()%8+1)*3;
 	P_DamageMobj (actor->target, actor, actor, damage);
 	return;
+    }
+
+    if (actor->type == MT_GOBLIN_TOTEMIST)
+    {
+        mobj_t* mo;
+        
+        if (P_Random() < 128)
+        {
+            mo = P_SpawnMobj(actor->x + 24*FRACUNIT, actor->y, actor->z - 20*FRACUNIT, MT_BUFF_TOTEM);
+            if (mo)
+            {
+                mo->flags |= MF_TELESTICK;
+                S_StartSound(actor, sfx_itmbk);
+            }
+        }
+        else
+        {
+            mo = P_SpawnMobj(actor->x - 24*FRACUNIT, actor->y, actor->z - 20*FRACUNIT, MT_DEBUFF_TOTEM);
+            if (mo)
+            {
+                mo->flags |= MF_TELESTICK;
+                S_StartSound(actor, sfx_itmbk);
+            }
+        }
+        return;
     }
 
     
