@@ -141,7 +141,7 @@
 - [x] d12: charged smash (long windup, bonus crit chance)
 - [x] d100: “Gamble Shot” (wider roll variance)
 - [x] Add ammo types per die category (Light Dice, Heavy Dice, Arcane Dice)
-- [ ] Implement ammo pickup sprites themed to carved bone / rune dice
+- [x] Implement ammo pickup sprites themed to carved bone / rune dice
 - [ ] Add weapon tier balancing pass (DPS, ammo efficiency, crit frequency)
 - [ ] Add weapon selection UI icons for each die type
 - [ ] Add weapon-specific sound profiles (distinct roll sounds per die)

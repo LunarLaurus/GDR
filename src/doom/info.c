@@ -3077,6 +3077,84 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 	S_NULL		// raisestate
     },
 
+    {		// MT_AMMO_LIGHTDICE - Goblin Dice Rollaz: Light dice ammo pickup
+	-1,		// doomednum (not in map editor)
+	S_CLIP,		// spawnstate (placeholder - needs custom sprite)
+	1000,		// spawnhealth
+	S_NULL,		// seestate
+	sfx_None,		// seesound
+	8,		// reactiontime
+	sfx_None,		// attacksound
+	S_NULL,		// painstate
+	0,		// painchance
+	sfx_None,		// painsound
+	S_NULL,		// meleestate
+	S_NULL,		// missilestate
+	S_NULL,		// deathstate
+	S_NULL,		// xdeathstate
+	sfx_None,		// deathsound
+	0,		// speed
+	20*FRACUNIT,		// radius
+	16*FRACUNIT,		// height
+	100,		// mass
+	0,		// damage
+	sfx_None,		// activesound
+	MF_SPECIAL|MF_COUNTITEM,		// flags
+	S_NULL		// raisestate
+    },
+
+    {		// MT_AMMO_HEAVYDICE - Goblin Dice Rollaz: Heavy dice ammo pickup
+	-1,		// doomednum (not in map editor)
+	S_CLIP,		// spawnstate (placeholder - needs custom sprite)
+	1000,		// spawnhealth
+	S_NULL,		// seestate
+	sfx_None,		// seesound
+	8,		// reactiontime
+	sfx_None,		// attacksound
+	S_NULL,		// painstate
+	0,		// painchance
+	sfx_None,		// painsound
+	S_NULL,		// meleestate
+	S_NULL,		// missilestate
+	S_NULL,		// deathstate
+	S_NULL,		// xdeathstate
+	sfx_None,		// deathsound
+	0,		// speed
+	20*FRACUNIT,		// radius
+	16*FRACUNIT,		// height
+	100,		// mass
+	0,		// damage
+	sfx_None,		// activesound
+	MF_SPECIAL|MF_COUNTITEM,		// flags
+	S_NULL		// raisestate
+    },
+
+    {		// MT_AMMO_ARCANEDICE - Goblin Dice Rollaz: Arcane dice ammo pickup
+	-1,		// doomednum (not in map editor)
+	S_CLIP,		// spawnstate (placeholder - needs custom sprite)
+	1000,		// spawnhealth
+	S_NULL,		// seestate
+	sfx_None,		// seesound
+	8,		// reactiontime
+	sfx_None,		// attacksound
+	S_NULL,		// painstate
+	0,		// painchance
+	sfx_None,		// painsound
+	S_NULL,		// meleestate
+	S_NULL,		// missilestate
+	S_NULL,		// deathstate
+	S_NULL,		// xdeathstate
+	sfx_None,		// deathsound
+	0,		// speed
+	20*FRACUNIT,		// radius
+	16*FRACUNIT,		// height
+	100,		// mass
+	0,		// damage
+	sfx_None,		// activesound
+	MF_SPECIAL|MF_COUNTITEM,		// flags
+	S_NULL		// raisestate
+    },
+
     {		// MT_MISC17
 	2048,		// doomednum
 	S_AMMO,		// spawnstate

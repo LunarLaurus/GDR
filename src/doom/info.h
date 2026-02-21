@@ -1375,6 +1375,9 @@ typedef enum {
     MT_MISC84,
     MT_MISC85,
     MT_MISC86,
+    MT_AMMO_LIGHTDICE,      // Goblin Dice Rollaz: Light dice ammo (d4, d6, d8)
+    MT_AMMO_HEAVYDICE,      // Goblin Dice Rollaz: Heavy dice ammo (d10, d12, d20)
+    MT_AMMO_ARCANEDICE,     // Goblin Dice Rollaz: Arcane dice ammo (magic dice)
     NUMMOBJTYPES
 
 } mobjtype_t;

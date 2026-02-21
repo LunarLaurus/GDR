@@ -165,6 +165,31 @@ Engine loads PWAD sprites **overriding** IWAD sprites with matching names.
 - Health: 200
 - Attack: Dynamite throwing
 
+### Dice Ammo Pickups
+
+#### Light Dice Ammo (d4, d6, d8)
+- Replace: CLIP ammo
+- Sprite prefix: `DLIG` (Dice LIGHT)
+- Frames: DLIGA0-DLIGD0 (idle animation, 4 frames)
+- Pickup gives: 5 light dice ammo
+- Uses existing MT_AMMO_LIGHTDICE mobj type
+
+#### Heavy Dice Ammo (d10, d12, d20, percentile)
+- Replace: SHELL ammo
+- Sprite prefix: `DHEAVY` (truncated to DHEA as 4-char)
+- Frames: DHEAA0-DHEAD0 (idle animation, 4 frames)
+- Pickup gives: 3 heavy dice ammo
+- Uses existing MT_AMMO_HEAVYDICE mobj type
+
+#### Arcane Dice Ammo (magic dice)
+- Replace: CELL ammo  
+- Sprite prefix: `DARC` (Dice ARCANE)
+- Frames: DARCA0-DARCD0 (idle animation, 4 frames)
+- Pickup gives: 10 arcane dice ammo
+- Uses existing MT_AMMO_ARCANEDICE mobj type
+
+> **Note**: The ammo mobj types are defined in the engine (info.h/info.c) and use placeholder sprites (S_CLIP) until custom sprites are created. The actual sprite assets need to be created and added to a WAD file.
+
 ## Implementation Notes
 
 1. Sprite compatibility: Use standard Doom palette (doom.pal)

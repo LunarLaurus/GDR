@@ -108,6 +108,12 @@
 #define GOTCELLBOX	"Picked up an energy cell pack."
 #define GOTSHELLS	"Picked up 4 shotgun shells."
 #define GOTSHELLBOX	"Picked up a box of shotgun shells."
+
+// Goblin Dice Rollaz: Dice ammo pickup strings
+#define GOTLIGHTDICE	"Picked up light dice ammo!"
+#define GOTHEAVYDICE	"Picked up heavy dice ammo!"
+#define GOTARCANEDICE	"Picked up arcane dice!"
+
 #define GOTBACKPACK	"Picked up a backpack full of ammo!"
 
 #define GOTBFG9000	"You got the BFG9000!  Oh, yes."

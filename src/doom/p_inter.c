@@ -151,6 +151,37 @@ P_GiveAmmo
 	    if (player->weaponowned[wp_missile])
 		player->pendingweapon = wp_missile;
 	}
+	break;
+
+      // Goblin Dice Rollaz: Auto-switch to dice weapons when picking up ammo
+      case am_lightdice:
+	if (player->readyweapon == wp_fist
+	    || player->readyweapon == wp_pistol)
+	{
+	    if (player->weaponowned[wp_d6blaster])
+		player->pendingweapon = wp_d6blaster;
+	    else if (player->weaponowned[wp_d4])
+		player->pendingweapon = wp_d4;
+	}
+	break;
+
+      case am_heavydice:
+	if (player->readyweapon == wp_fist
+	    || player->readyweapon == wp_pistol)
+	{
+	    if (player->weaponowned[wp_d20cannon])
+		player->pendingweapon = wp_d20cannon;
+	    else if (player->weaponowned[wp_d12])
+		player->pendingweapon = wp_d12;
+	    else if (player->weaponowned[wp_percentile])
+		player->pendingweapon = wp_percentile;
+	}
+	break;
+
+      case am_arcanedice:
+	// Arcane dice weapons (future implementation)
+	break;
+
       default:
 	break;
     }
@@ -394,6 +425,56 @@ P_TouchSpecialThing
     // Can happen with a sliding player corpse.
     if (toucher->health <= 0)
 	return;
+
+    // Goblin Dice Rollaz: Handle dice ammo pickups by type (before sprite check)
+    // These use placeholder sprites, so we check type first
+    switch (special->type)
+    {
+      case MT_AMMO_LIGHTDICE:
+	if (special->flags & MF_DROPPED)
+	{
+	    if (!P_GiveAmmo (player, am_lightdice, 0))
+		return;
+	}
+	else
+	{
+	    if (!P_GiveAmmo (player, am_lightdice, 5))
+		return;
+	}
+	player->message = DEH_String(GOTLIGHTDICE);
+	sound = sfx_itemup;
+	goto pickup_success;
+
+      case MT_AMMO_HEAVYDICE:
+	if (special->flags & MF_DROPPED)
+	{
+	    if (!P_GiveAmmo (player, am_heavydice, 0))
+		return;
+	}
+	else
+	{
+	    if (!P_GiveAmmo (player, am_heavydice, 3))
+		return;
+	}
+	player->message = DEH_String(GOTHEAVYDICE);
+	sound = sfx_itemup;
+	goto pickup_success;
+
+      case MT_AMMO_ARCANEDICE:
+	if (special->flags & MF_DROPPED)
+	{
+	    if (!P_GiveAmmo (player, am_arcanedice, 0))
+		return;
+	}
+	else
+	{
+	    if (!P_GiveAmmo (player, am_arcanedice, 10))
+		return;
+	}
+	player->message = DEH_String(GOTARCANEDICE);
+	sound = sfx_getpow;
+	goto pickup_success;
+    }
 
     // Identify by sprite.
     switch (special->sprite)
@@ -720,6 +801,7 @@ P_TouchSpecialThing
 	I_Error ("P_SpecialThing: Unknown gettable thing");
     }
 	
+pickup_success:
     if (special->flags & MF_COUNTITEM)
 	player->itemcount++;
     P_RemoveMobj (special);
