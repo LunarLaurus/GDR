@@ -131,6 +131,12 @@ static const dwarf_base_stats_t dwarf_marksman = {
     12
 };
 
+static const dwarf_base_stats_t dwarf_captain = {
+    {150, 5, 40, 20*FRACUNIT, 60*FRACUNIT, 200, 0},
+    30,
+    8
+};
+
 static const goblin_base_stats_t goblin_standard = {
     {20, 8, 200, 16*FRACUNIT, 44*FRACUNIT, 60, 0},
     0,

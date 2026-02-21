@@ -1019,6 +1019,59 @@ void A_MarksmanAttack (mobj_t* actor)
     }
 }
 
+void A_CaptainBuff (mobj_t* actor)
+{
+    thinker_t* th;
+    mobj_t* mo;
+    fixed_t dist;
+    fixed_t buff_radius = 256*FRACUNIT;
+
+    if (!actor->target)
+        return;
+
+    A_FaceTarget (actor);
+    S_StartSound (actor, sfx_posact);
+
+    for (th = thinkercap.next; th != &thinkercap; th = th->next)
+    {
+        if (th->function.acp1 != (actionf_p1)P_MobjThinker)
+            continue;
+
+        mo = (mobj_t*)th;
+
+        if (!(mo->flags & MF_SHOOTABLE))
+            continue;
+
+        if (mo->flags & MF_CORPSE)
+            continue;
+
+        if (!mo->target)
+            continue;
+
+        dist = P_AproxDistance(mo->x - actor->x, mo->y - actor->y);
+
+        if (dist > buff_radius)
+            continue;
+
+        if (mo->type == MT_DWARF ||
+            mo->type == MT_DWARF_BERSERKER ||
+            mo->type == MT_DWARF_ENGINEER ||
+            mo->type == MT_DWARF_DEFENDER ||
+            mo->type == MT_DWARF_MARKSMAN ||
+            mo->type == MT_DWARF_MINER)
+        {
+            if (mo->health > 0)
+            {
+                mo->special2 = 150;
+                if (mo->info->speed < 12*FRACUNIT)
+                {
+                    mo->speed += 2*FRACUNIT;
+                }
+            }
+        }
+    }
+}
+
 void A_CyberAttack (mobj_t* actor)
 {	
     if (!actor->target)

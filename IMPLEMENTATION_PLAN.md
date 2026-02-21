@@ -161,7 +161,7 @@
 - [x] Dwarf Defender (shielded, frontal damage reduction)
 - [x] Dwarf Marksman (slow, high-damage ranged unit)
 - [x] Dwarf Miner (throws pickaxes, medium range)
-- [ ] Elite Dwarf Captain (buffs nearby dwarves)
+- [x] Elite Dwarf Captain (buffs nearby dwarves)
 - [ ] Dwarf Bombardier (engineer subclass with timed explosives)
 - [ ] Armored Dwarf (high HP, weak rear hitbox)
 - [ ] Goblin Scout (low HP, high mobility)

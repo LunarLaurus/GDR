@@ -114,6 +114,7 @@ void A_TroopAttack();
 void A_SargAttack();
 void A_HeadAttack();
 void A_MarksmanAttack();
+void A_CaptainBuff();
 void A_BruisAttack();
 void A_SkullAttack();
 void A_Metal();
@@ -457,6 +458,9 @@ state_t	states[NUMSTATES] = {
     {SPR_SPOS,9,5,{NULL},S_SPOS_RAISE4,0,0},	// S_SPOS_RAISE3
     {SPR_SPOS,8,5,{NULL},S_SPOS_RAISE5,0,0},	// S_SPOS_RAISE4
     {SPR_SPOS,7,5,{NULL},S_SPOS_RUN1,0,0},	// S_SPOS_RAISE5
+    {SPR_SPOS,4,15,{A_FaceTarget},S_CAPTAIN_ATK2,0,0},	// S_CAPTAIN_ATK1 (Captain buffs nearby dwarves)
+    {SPR_SPOS,5,15,{A_CaptainBuff},S_CAPTAIN_ATK3,0,0},	// S_CAPTAIN_ATK2 (apply buff)
+    {SPR_SPOS,4,10,{NULL},S_SPOS_RUN1,0,0},	// S_CAPTAIN_ATK3 (return to chase)
     {SPR_VILE,0,10,{A_Look},S_VILE_STND2,0,0},	// S_VILE_STND
     {SPR_VILE,1,10,{A_Look},S_VILE_STND,0,0},	// S_VILE_STND2
     {SPR_VILE,0,2,{A_VileChase},S_VILE_RUN2,0,0},	// S_VILE_RUN1
@@ -2027,10 +2031,39 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
     	sfx_posact,		// activesound
     	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
     	S_SPOS_RAISE1,		// raisestate
-    	15,		// crit_resistance (low-medium - light armor)
-    	80,		// aggression (medium-high - attacks when spotted)
-    	0		// shield_reduction (none - no shield)
+	15,		// crit_resistance (low-medium - light armor)
+     	80,		// aggression (medium-high - attacks when spotted)
+     	0		// shield_reduction (none - no shield)
        },
+
+      {		// MT_DWARF_CAPTAIN
+    	8104,		// doomednum (custom mapthing number)
+    	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations)
+    	150,		// spawnhealth (elite - high HP commander)
+    	S_SPOS_RUN1,		// seestate
+    	sfx_posit2,		// seesound (battle cry)
+    	8,		// reactiontime
+    	0,		// attacksound (uses buff ability, not weapon)
+    	S_SPOS_PAIN,		// painstate
+    	40,		// painchance (low - tough commander)
+    	sfx_popain,		// painsound
+    	0,		// meleestate (no melee - buffs from range)
+    	S_CAPTAIN_ATK1,		// missilestate (buffs nearby dwarves)
+    	S_SPOS_DIE1,		// deathstate
+    	S_SPOS_XDIE1,		// xdeathstate
+    	sfx_podth2,		// deathsound
+    	5,		// speed (slow - commander stays back)
+    	20*FRACUNIT,		// radius (slightly larger)
+    	60*FRACUNIT,		// height
+    	200,		// mass
+    	0,		// damage (buff - not direct damage)
+    	sfx_posact,		// activesound
+    	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+    	S_SPOS_RAISE1,		// raisestate
+    	30,		// crit_resistance (high - armored commander)
+    	95,		// aggression (very high - leads from front)
+    	15		// shield_reduction (moderate - has armor)
+      },
 
       {		// MT_GOBLIN_SHAMAN
    	8023,		// doomednum (custom mapthing number)
