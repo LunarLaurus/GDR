@@ -162,7 +162,7 @@
 - [x] Dwarf Marksman (slow, high-damage ranged unit)
 - [x] Dwarf Miner (throws pickaxes, medium range)
 - [x] Elite Dwarf Captain (buffs nearby dwarves)
-- [ ] Dwarf Bombardier (engineer subclass with timed explosives)
+- [x] Dwarf Bombardier (engineer subclass with timed explosives)
 - [ ] Armored Dwarf (high HP, weak rear hitbox)
 - [ ] Goblin Scout (low HP, high mobility)
 - [ ] Goblin Sneak (ambush behavior, delayed aggro)

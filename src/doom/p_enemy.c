@@ -858,6 +858,19 @@ void A_SPosAttack (mobj_t* actor)
         return;
     }
 
+    if (actor->type == MT_DWARF_BOMBARDIER)
+    {
+        A_FaceTarget (actor);
+        S_StartSound (actor, sfx_rlaunc);
+        mo = P_SpawnMissile (actor, actor->target, MT_DWARF_BOMB);
+        if (mo)
+        {
+            mo->special1 = 0;
+            mo->damage = 50;
+        }
+        return;
+    }
+
     S_StartSound (actor, sfx_shotgn);
     A_FaceTarget (actor);
     bangle = actor->angle;

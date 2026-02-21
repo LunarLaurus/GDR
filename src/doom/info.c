@@ -2063,9 +2063,38 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
     	30,		// crit_resistance (high - armored commander)
     	95,		// aggression (very high - leads from front)
     	15		// shield_reduction (moderate - has armor)
-      },
+       },
 
-      {		// MT_GOBLIN_SHAMAN
+       {		// MT_DWARF_BOMBARDIER
+       	8105,		// doomednum (custom mapthing number)
+       	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations)
+       	55,		// spawnhealth (less HP than engineer - carries explosives)
+       	S_SPOS_RUN1,		// seestate
+       	sfx_posit2,		// seesound (battle cry)
+       	6,		// reactiontime (fast - quick to throw)
+       	0,		// attacksound (uses bombs)
+       	S_SPOS_PAIN,		// painstate
+       	120,		// painchance (high - volatile, easily disrupted)
+       	sfx_popain,		// painsound
+       	0,		// meleestate (no melee - throws bombs)
+       	S_SPOS_ATK1,		// missilestate (throws timed explosives)
+       	S_SPOS_DIE1,		// deathstate
+       	S_SPOS_XDIE1,		// xdeathstate
+       	sfx_podth2,		// deathsound
+       	6,		// speed (moderate - stays mobile)
+       	18*FRACUNIT,		// radius (stocky build)
+       	50*FRACUNIT,		// height
+       	150,		// mass
+       	0,		// damage (melee - not used)
+       	sfx_posact,		// activesound
+       	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+       	S_SPOS_RAISE1,		// raisestate
+       	15,		// crit_resistance (low - volatile target)
+       	60,		// aggression (medium-high - aggressive bomber)
+       	0		// shield_reduction (none - wears explosive harness)
+       },
+
+       {		// MT_GOBLIN_SHAMAN
    	8023,		// doomednum (custom mapthing number)
    	S_SPOS_STND,		// spawnstate (reuses Imp animations as base)
    	45,		// spawnhealth (glass cannon - low HP but dangerous)
