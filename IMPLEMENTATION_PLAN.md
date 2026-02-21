@@ -156,7 +156,7 @@
 - [x] Add arcane d20 beam (continuous roll tick damage)
 - [x] Add cursed die weapon (high damage, self-risk mechanic)
 - [x] Refactor enemy definition templates for easier expansion (shared dwarf base struct)
-- [ ] Implement per-enemy stat table (HP, speed, aggression, crit resistance)
+- [x] Implement per-enemy stat table (HP, speed, aggression, crit resistance)
 - [ ] Add difficulty scaling hooks per enemy
 - [ ] Dwarf Defender (shielded, frontal damage reduction)
 - [ ] Dwarf Marksman (slow, high-damage ranged unit)

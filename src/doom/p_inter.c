@@ -986,7 +986,7 @@ P_DamageMobj
             }
         }
 
-        if (guaranteed_crit || (P_Random() % 100) < effectiveCritChance)
+        if (guaranteed_crit)
         {
             damage *= effectiveCritMultiplier;
             was_critical = true;
@@ -998,6 +998,28 @@ P_DamageMobj
             if (target == &players[consoleplayer].mo)
             {
                 players[consoleplayer].message = guaranteed_crit ? "GUARANTEED CRITICAL!" : "CRITICAL HIT!";
+            }
+        }
+        else
+        {
+            int targetCritResistance = 0;
+            if (target && target->info)
+            {
+                targetCritResistance = target->info->crit_resistance;
+            }
+
+            int adjustedCritChance = effectiveCritChance - targetCritResistance;
+            if (adjustedCritChance < 0) adjustedCritChance = 0;
+
+            if ((P_Random() % 100) < adjustedCritChance)
+            {
+                damage *= effectiveCritMultiplier;
+                was_critical = true;
+                crit_roll = (P_Random() % 20) + 1;
+                if (target == &players[consoleplayer].mo)
+                {
+                    players[consoleplayer].message = "CRITICAL HIT!";
+                }
             }
         }
 

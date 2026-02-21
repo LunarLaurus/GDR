@@ -1226,81 +1226,87 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
     },
 
     {		// MT_POSSESSED
-	3004,		// doomednum
-	S_POSS_STND,		// spawnstate
-	20,		// spawnhealth
-	S_POSS_RUN1,		// seestate
-	sfx_posit1,		// seesound
-	8,		// reactiontime
-	sfx_pistol,		// attacksound
-	S_POSS_PAIN,		// painstate
-	200,		// painchance
-	sfx_popain,		// painsound
-	0,		// meleestate
-	S_POSS_ATK1,		// missilestate
-	S_POSS_DIE1,		// deathstate
-	S_POSS_XDIE1,		// xdeathstate
-	sfx_podth1,		// deathsound
-	8,		// speed
-	20*FRACUNIT,		// radius
-	56*FRACUNIT,		// height
-	100,		// mass
-	0,		// damage
-	sfx_posact,		// activesound
-	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
-	S_POSS_RAISE1		// raisestate
+ 	3004,		// doomednum
+ 	S_POSS_STND,		// spawnstate
+ 	20,		// spawnhealth
+ 	S_POSS_RUN1,		// seestate
+ 	sfx_posit1,		// seesound
+ 	8,		// reactiontime
+ 	sfx_pistol,		// attacksound
+ 	S_POSS_PAIN,		// painstate
+ 	200,		// painchance
+ 	sfx_popain,		// painsound
+ 	0,		// meleestate
+ 	S_POSS_ATK1,		// missilestate
+ 	S_POSS_DIE1,		// deathstate
+ 	S_POSS_XDIE1,		// xdeathstate
+ 	sfx_podth1,		// deathsound
+ 	8,		// speed
+ 	20*FRACUNIT,		// radius
+ 	56*FRACUNIT,		// height
+ 	100,		// mass
+ 	0,		// damage
+ 	sfx_posact,		// activesound
+ 	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+ 	S_POSS_RAISE1,		// raisestate
+ 	0,		// crit_resistance (default: no resistance)
+ 	50		// aggression (default: medium)
     },
 
     {		// MT_SHOTGUY
-	9,		// doomednum
-	S_SPOS_STND,		// spawnstate
-	30,		// spawnhealth
-	S_SPOS_RUN1,		// seestate
-	sfx_posit2,		// seesound
-	8,		// reactiontime
-	0,		// attacksound
-	S_SPOS_PAIN,		// painstate
-	170,		// painchance
-	sfx_popain,		// painsound
-	0,		// meleestate
-	S_SPOS_ATK1,		// missilestate
-	S_SPOS_DIE1,		// deathstate
-	S_SPOS_XDIE1,		// xdeathstate
-	sfx_podth2,		// deathsound
-	8,		// speed
-	20*FRACUNIT,		// radius
-	56*FRACUNIT,		// height
-	100,		// mass
-	0,		// damage
-	sfx_posact,		// activesound
-	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
-	S_SPOS_RAISE1		// raisestate
+ 	9,		// doomednum
+ 	S_SPOS_STND,		// spawnstate
+ 	30,		// spawnhealth
+ 	S_SPOS_RUN1,		// seestate
+ 	sfx_posit2,		// seesound
+ 	8,		// reactiontime
+ 	0,		// attacksound
+ 	S_SPOS_PAIN,		// painstate
+ 	170,		// painchance
+ 	sfx_popain,		// painsound
+ 	0,		// meleestate
+ 	S_SPOS_ATK1,		// missilestate
+ 	S_SPOS_DIE1,		// deathstate
+ 	S_SPOS_XDIE1,		// xdeathstate
+ 	sfx_podth2,		// deathsound
+ 	8,		// speed
+ 	20*FRACUNIT,		// radius
+ 	56*FRACUNIT,		// height
+ 	100,		// mass
+ 	0,		// damage
+ 	sfx_posact,		// activesound
+ 	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+ 	S_SPOS_RAISE1,		// raisestate
+ 	0,		// crit_resistance
+ 	55		// aggression
     },
 
     {		// MT_VILE
-	64,		// doomednum
-	S_VILE_STND,		// spawnstate
-	700,		// spawnhealth
-	S_VILE_RUN1,		// seestate
-	sfx_vilsit,		// seesound
-	8,		// reactiontime
-	0,		// attacksound
-	S_VILE_PAIN,		// painstate
-	10,		// painchance
-	sfx_vipain,		// painsound
-	0,		// meleestate
-	S_VILE_ATK1,		// missilestate
-	S_VILE_DIE1,		// deathstate
-	S_NULL,		// xdeathstate
-	sfx_vildth,		// deathsound
-	15,		// speed
-	20*FRACUNIT,		// radius
-	56*FRACUNIT,		// height
-	500,		// mass
-	0,		// damage
-	sfx_vilact,		// activesound
-	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
-	S_NULL		// raisestate
+ 	64,		// doomednum
+ 	S_VILE_STND,		// spawnstate
+ 	700,		// spawnhealth
+ 	S_VILE_RUN1,		// seestate
+ 	sfx_vilsit,		// seesound
+ 	8,		// reactiontime
+ 	0,		// attacksound
+ 	S_VILE_PAIN,		// painstate
+ 	10,		// painchance
+ 	sfx_vipain,		// painsound
+ 	0,		// meleestate
+ 	S_VILE_ATK1,		// missilestate
+ 	S_VILE_DIE1,		// deathstate
+ 	S_NULL,		// xdeathstate
+ 	sfx_vildth,		// deathsound
+ 	15,		// speed
+ 	20*FRACUNIT,		// radius
+ 	56*FRACUNIT,		// height
+ 	500,		// mass
+ 	0,		// damage
+ 	sfx_vilact,		// activesound
+ 	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+ 	S_NULL,		// raisestate
+ 	20,		// crit_resistance (tough against crits)
+ 	80		// aggression (very aggressive)
     },
 
     {		// MT_FIRE
@@ -1824,81 +1830,87 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
     },
 
     {		// MT_DWARF
- 	8020,		// doomednum (custom mapthing number)
- 	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations)
- 	35,		// spawnhealth (tougher than zombie)
- 	S_SPOS_RUN1,		// seestate
- 	sfx_posit2,		// seesound
- 	8,		// reactiontime
- 	sfx_pistol,		// attacksound
- 	S_SPOS_PAIN,		// painstate
- 	150,		// painchance (less likely to flee)
- 	sfx_popain,		// painsound
- 	0,		// meleestate
- 	S_SPOS_ATK1,		// missilestate
- 	S_SPOS_DIE1,		// deathstate
- 	S_SPOS_XDIE1,		// xdeathstate
- 	sfx_podth2,		// deathsound
- 	6,		// speed (slower than human)
- 	16*FRACUNIT,		// radius (thinner)
- 	40*FRACUNIT,		// height (shorter)
- 	200,		// mass (stocky)
- 	0,		// damage
- 	sfx_posact,		// activesound
- 	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
- 	S_SPOS_RAISE1		// raisestate
-    },
-
-    {		// MT_DWARF_BERSERKER
- 	8021,		// doomednum (custom mapthing number)
- 	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations)
- 	50,		// spawnhealth (tougher)
- 	S_SPOS_RUN1,		// seestate
- 	sfx_posit2,		// seesound
- 	8,		// reactiontime
- 	0,		// attacksound (melee only)
- 	S_SPOS_PAIN,		// painstate
- 	100,		// painchance (harder to stop)
- 	sfx_popain,		// painsound
- 	S_SPOS_ATK1,		// meleestate (charges when close)
- 	0,		// missilestate
- 	S_SPOS_DIE1,		// deathstate
- 	S_SPOS_XDIE1,		// xdeathstate
- 	sfx_podth2,		// deathsound
- 	10,		// speed (faster - berserker charge)
- 	18*FRACUNIT,		// radius
- 	44*FRACUNIT,		// height 
-  	250,		// mass (very stocky)
-  	3*15,		// damage (3d10 berserker rage damage = 30)
-  	sfx_posact,		// activesound
-  	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL|MF_JUSTHIT,		// flags (aggressive)
-   	S_SPOS_RAISE1		// raisestate
-    },
-
-    {		// MT_DWARF_ENGINEER
-  	8022,		// doomednum (custom mapthing number)
+  	8020,		// doomednum (custom mapthing number)
   	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations)
-  	60,		// spawnhealth (tougher than basic dwarf)
+  	35,		// spawnhealth (tougher than zombie)
   	S_SPOS_RUN1,		// seestate
   	sfx_posit2,		// seesound
   	8,		// reactiontime
-  	0,		// attacksound (uses bombs)
+  	sfx_pistol,		// attacksound
   	S_SPOS_PAIN,		// painstate
-  	200,		// painchance (more likely to flee when hurt)
-  	0,		// meleestate (no melee - uses bombs)
-  	S_SPOS_ATK1,		// missilestate (throws bombs)
+  	150,		// painchance (less likely to flee)
+  	sfx_popain,		// painsound
+  	0,		// meleestate
+  	S_SPOS_ATK1,		// missilestate
   	S_SPOS_DIE1,		// deathstate
   	S_SPOS_XDIE1,		// xdeathstate
   	sfx_podth2,		// deathsound
-  	5,		// speed (slower movement)
-  	16*FRACUNIT,		// radius
-  	40*FRACUNIT,		// height
-  	200,		// mass
-  	0,		// damage (melee - not used)
+  	6,		// speed (slower than human)
+  	16*FRACUNIT,		// radius (thinner)
+  	40*FRACUNIT,		// height (shorter)
+  	200,		// mass (stocky)
+  	0,		// damage
   	sfx_posact,		// activesound
   	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
-  	S_SPOS_RAISE1		// raisestate
+  	S_SPOS_RAISE1,		// raisestate
+  	15,		// crit_resistance (dwarves are tough)
+  	45		// aggression (defensive)
     },
+
+    {		// MT_DWARF_BERSERKER
+  	8021,		// doomednum (custom mapthing number)
+  	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations)
+  	50,		// spawnhealth (tougher)
+  	S_SPOS_RUN1,		// seestate
+  	sfx_posit2,		// seesound
+  	8,		// reactiontime
+  	0,		// attacksound (melee only)
+  	S_SPOS_PAIN,		// painstate
+  	100,		// painchance (harder to stop)
+  	sfx_popain,		// painsound
+  	S_SPOS_ATK1,		// meleestate (charges when close)
+  	0,		// missilestate
+  	S_SPOS_DIE1,		// deathstate
+  	S_SPOS_XDIE1,		// xdeathstate
+  	sfx_podth2,		// deathsound
+  	10,		// speed (faster - berserker charge)
+  	18*FRACUNIT,		// radius
+  	44*FRACUNIT,		// height 
+   	250,		// mass (very stocky)
+   	3*15,		// damage (3d10 berserker rage damage = 30)
+   	sfx_posact,		// activesound
+   	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL|MF_JUSTHIT,		// flags (aggressive)
+    	S_SPOS_RAISE1,		// raisestate
+    	25,		// crit_resistance (very tough)
+    	95		// aggression (extremely aggressive)
+     },
+
+    {		// MT_DWARF_ENGINEER
+   	8022,		// doomednum (custom mapthing number)
+   	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations)
+   	60,		// spawnhealth (tougher than basic dwarf)
+   	S_SPOS_RUN1,		// seestate
+   	sfx_posit2,		// seesound
+   	8,		// reactiontime
+   	0,		// attacksound (uses bombs)
+   	S_SPOS_PAIN,		// painstate
+   	200,		// painchance (more likely to flee when hurt)
+   	0,		// meleestate (no melee - uses bombs)
+   	S_SPOS_ATK1,		// missilestate (throws bombs)
+   	S_SPOS_DIE1,		// deathstate
+   	S_SPOS_XDIE1,		// xdeathstate
+   	sfx_podth2,		// deathsound
+   	5,		// speed (slower movement)
+   	16*FRACUNIT,		// radius
+   	40*FRACUNIT,		// height
+   	200,		// mass
+   	0,		// damage (melee - not used)
+   	sfx_posact,		// activesound
+   	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+   	S_SPOS_RAISE1,		// raisestate
+   	20,		// crit_resistance (armored)
+   	35		// aggression (defensive, retreats)
+     },
 
     {		// MT_DWARF_BOMB
    	-1,		// doomednum (not spawned via mapthing)
@@ -1927,29 +1939,31 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
      },
 
     {		// MT_GOBLIN_SHAMAN
-  	8023,		// doomednum (custom mapthing number)
-  	S_SPOS_STND,		// spawnstate (reuses Imp animations as base)
-  	45,		// spawnhealth (glass cannon - low HP but dangerous)
-  	S_SPOS_RUN1,		// seestate
-  	sfx_posit2,		// seesound (goblin cackle)
-  	8,		// reactiontime
-  	0,		// attacksound (uses spells)
-  	S_SPOS_PAIN,		// painstate
-  	150,		// painchance (easily disrupted)
-  	sfx_popain,		// painsound
-  	0,		// meleestate (no melee)
-  	S_SPOS_ATK1,		// missilestate (casts spells)
-  	S_SPOS_DIE1,		// deathstate
-  	S_SPOS_XDIE1,		// xdeathstate
-  	sfx_podth2,		// deathsound
-  	7,		// speed (moderate movement)
-  	16*FRACUNIT,		// radius
-  	44*FRACUNIT,		// height
-  	150,		// mass
-  	0,		// damage (melee - not used)
-  	sfx_posact,		// activesound
-  	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
-  	S_SPOS_RAISE1		// raisestate
+   	8023,		// doomednum (custom mapthing number)
+   	S_SPOS_STND,		// spawnstate (reuses Imp animations as base)
+   	45,		// spawnhealth (glass cannon - low HP but dangerous)
+   	S_SPOS_RUN1,		// seestate
+   	sfx_posit2,		// seesound (goblin cackle)
+   	8,		// reactiontime
+   	0,		// attacksound (uses spells)
+   	S_SPOS_PAIN,		// painstate
+   	150,		// painchance (easily disrupted)
+   	sfx_popain,		// painsound
+   	0,		// meleestate (no melee)
+   	S_SPOS_ATK1,		// missilestate (casts spells)
+   	S_SPOS_DIE1,		// deathstate
+   	S_SPOS_XDIE1,		// xdeathstate
+   	sfx_podth2,		// deathsound
+   	7,		// speed (moderate movement)
+   	16*FRACUNIT,		// radius
+   	44*FRACUNIT,		// height
+   	150,		// mass
+   	0,		// damage (melee - not used)
+   	sfx_posact,		// activesound
+   	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+   	S_SPOS_RAISE1,		// raisestate
+   	5,		// crit_resistance (low - fragile caster)
+   	70		// aggression (attacks from range)
      },
 
     {		// MT_SHAMAN_FIREBOLT

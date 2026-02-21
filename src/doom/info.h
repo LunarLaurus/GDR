@@ -1453,6 +1453,8 @@ typedef struct
     int	activesound;
     int	flags;
     int	raisestate;
+    int	crit_resistance;   // Goblin Dice Rollaz: Reduces crit chance (0-100)
+    int	aggression;        // Goblin Dice Rollaz: AI aggression level (0-100)
 
 } mobjinfo_t;
 
