@@ -376,6 +376,10 @@ cheatseq_t cheat_clev = CHEAT("idclev", 2);
 cheatseq_t cheat_mypos = CHEAT("idmypos", 0);
 cheatseq_t cheat_infammo = CHEAT("idinfammo", 0);
 
+// Goblin Dice Rollaz: Powerup debug cheat - gives specified powerup
+// idpow[0-8]: 0=Invuln, 1=Strength, 2=Invis, 3=IronFeet, 4=Allmap, 5=Infrared, 6=CritBoost, 7=DoubleDmg, 8=DiceFortune
+cheatseq_t cheat_powerup_debug = CHEAT("idpow", 1);
+
 
 //
 // STATUS BAR CODE
@@ -579,6 +583,31 @@ ST_Responder (event_t* ev)
                    players[consoleplayer].mo->x,
                    players[consoleplayer].mo->y);
         plyr->message = buf;
+      }
+      // Goblin Dice Rollaz: 'idpow' debug powerup cheat
+      // Usage: idpow[0-8] gives powerups
+      else if (cht_CheckCheat(&cheat_powerup_debug, ev->data2))
+      {
+        char buf[2];
+        int powerup_id;
+        cht_GetParam(&cheat_powerup_debug, buf);
+        powerup_id = buf[0] - '0';
+        
+        if (powerup_id >= 0 && powerup_id < NUMPOWERS)
+        {
+          static char msg[ST_MSGWIDTH];
+          powerup_info_t *pu = &powerups[powerup_id];
+          int duration = (pu->flags & POWERUP_FLAG_PERMANENT) ? 1 : pu->default_duration;
+          
+          G_PowerupActivate(plyr, powerup_id, duration);
+          
+          M_snprintf(msg, sizeof(msg), "Gave: %s", pu->name);
+          plyr->message = msg;
+        }
+        else
+        {
+          plyr->message = "Powerup: 0-Inv, 1-Str, 2-Invs, 3-Feet, 4-Map, 5-IR, 6-Crit, 7-Dbl, 8-Fort";
+        }
       }
     }
     

@@ -98,7 +98,7 @@
 - [x] Add balance pass for rarity and placement
 - [x] Implement shared powerup framework for future buffs
 - [x] Add global powerup HUD slot system
-- [ ] Add powerup debug command for testing
+- [x] Add powerup debug command for testing
 - [ ] Add powerup-only test map for tuning
 
 ### Phase 13: Map Themes
