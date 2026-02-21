@@ -2179,7 +2179,36 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
     MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL|MF_AMBUSH,		// flags
      S_SPOS_RAISE1,		// raisestate
      2,		// crit_resistance (very low - fragile)
-    30,		// aggression (low initially, increases after detecting player)
+     30,		// aggression (low initially, increases after detecting player)
+     0		// shield_reduction (none)
+      },
+
+    {		// MT_GOBLIN_SCOUT - Fast scout with high mobility
+   	8025,		// doomednum (custom mapthing number)
+   	S_POSS_STND,		// spawnstate (reuses Zombie/Shotgunguy animations)
+   	15,		// spawnhealth (very low HP - fragile)
+   	S_POSS_RUN1,		// seestate
+   	sfx_posit1,		// seesound (goblin yelp)
+   	8,		// reactiontime (standard - no ambush delay)
+   	0,		// attacksound
+   	S_POSS_PAIN,		// painstate
+   	200,		// painchance (high - easily startled)
+   	sfx_popain,		// painsound
+   	S_POSS_ATK1,		// meleestate (quick melee)
+   	0,		// missilestate (no ranged attack)
+   	S_POSS_DIE1,		// deathstate
+   	S_POSS_XDIE1,		// xdeathstate
+   	sfx_podth1,		// deathsound
+   	12,		// speed (very fast - highest mobility)
+   	14*FRACUNIT,		// radius (small target)
+   	40*FRACUNIT,		// height (shorter)
+   	40,		// mass (light)
+   	0,		// damage (melee uses weapon damage)
+   	sfx_posact,		// activesound
+    MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags (no AMBUSH - scout, not sneak)
+     S_POSS_RAISE1,		// raisestate
+     3,		// crit_resistance (low - fragile)
+    20,		// aggression (moderate - quick to engage)
     0		// shield_reduction (none)
      },
 
