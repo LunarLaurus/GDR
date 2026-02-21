@@ -176,6 +176,8 @@ P_GiveAmmo
 		player->pendingweapon = wp_d12;
 	    else if (player->weaponowned[wp_percentile])
 		player->pendingweapon = wp_percentile;
+	    else if (player->weaponowned[wp_cursed])
+		player->pendingweapon = wp_cursed;
 	}
 	break;
 

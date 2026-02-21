@@ -64,6 +64,7 @@ void A_FireD8();
 void A_FireD10();
 void A_FireTwinD6();
 void A_FireArcaneD20();
+void A_FireCursed();
 void A_Light1();
 void A_FireShotgun();
 void A_Light2();
@@ -224,6 +225,14 @@ state_t	states[NUMSTATES] = {
     {SPR_D20A1,1,3,{A_Light2},S_ARCANED20_4,0,0},	// S_ARCANED20_3 - flash
     {SPR_D20A1,0,3,{A_ReFire},S_ARCANED20,0,0},	// S_ARCANED20_4 - refire
     {SPR_D20F,32768,4,{A_Light1},S_LIGHTDONE,0,0},	// S_ARCANED20FLASH
+    {SPR_D6B1,0,1,{A_WeaponReady},S_CURSED,0,0},	// S_CURSED - cursed die ready
+    {SPR_D6B1,0,1,{A_Lower},S_CURSEDDOWN,0,0},	// S_CURSEDDOWN
+    {SPR_D6B1,0,1,{A_Raise},S_CURSEDUP,0,0},	// S_CURSEDUP
+    {SPR_D6B1,0,4,{NULL},S_CURSED_2,0,0},	// S_CURSED_1 - windup
+    {SPR_D6B1,1,6,{A_FireCursed},S_CURSED_3,0,0},	// S_CURSED_2 - fire
+    {SPR_D6B1,2,5,{NULL},S_CURSED_4,0,0},	// S_CURSED_3 - follow through
+    {SPR_D6B1,1,6,{A_ReFire},S_CURSED,0,0},	// S_CURSED_4 - refire
+    {SPR_D6BF,32768,6,{A_Light1},S_LIGHTDONE,0,0},	// S_CURSEDFLASH
     {SPR_SHTG,0,1,{A_WeaponReady},S_SGUN,0,0},	// S_SGUN
     {SPR_SHTG,0,1,{A_Lower},S_SGUNDOWN,0,0},	// S_SGUNDOWN
     {SPR_SHTG,0,1,{A_Raise},S_SGUNUP,0,0},	// S_SGUNUP
@@ -2304,6 +2313,32 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 	5,		// damage (modified by dice roll at fire time)
 	sfx_None,		// activesound
 	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_NOGRAVITY|MF_ALWAYSPUFF,		// flags (always show puff)
+	S_NULL		// raisestate
+    },
+
+    {		// MT_CURSEDDIE - Goblin Dice Rollaz cursed die projectile
+	-1,		// doomednum
+	S_PLASBALL,		// spawnstate (reuse plasma ball sprite)
+	1000,		// spawnhealth
+	S_NULL,		// seestate
+	sfx_dice_d6,		// seesound (cursed die roll sound)
+	8,		// reactiontime
+	sfx_None,		// attacksound
+	S_NULL,		// painstate
+	0,		// painchance
+	sfx_None,		// painsound
+	S_NULL,		// meleestate
+	S_NULL,		// missilestate
+	S_PLASEXP,		// deathstate
+	S_NULL,		// xdeathstate
+	sfx_firxpl,		// deathsound
+	25*FRACUNIT,		// speed (standard projectile speed)
+	8*FRACUNIT,		// radius
+	8*FRACUNIT,		// height
+	100,		// mass
+	5,		// damage (modified by dice roll at fire time)
+	sfx_None,		// activesound
+	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF,		// flags
 	S_NULL		// raisestate
     },
 

@@ -885,6 +885,13 @@ P_CalculateDiceDamage (int weapon, int guaranteedCrit, int *outCritRoll, int *ou
         {
             damage = (damage * dwi->misfire_penalty) / 100;
         }
+        else if (dwi->misfire_penalty == -1)
+        {
+            // Self-damage mode: damage stays the same but flag for player self-harm
+            // Return -1 to indicate self-damage should be applied
+            if (outMisfire)
+                *outMisfire = -1;
+        }
         else
         {
             // Complete misfire - no damage
@@ -1150,6 +1157,59 @@ A_FireArcaneD20
     if (missile)
     {
         missile->damage = damage;
+    }
+}
+
+
+//
+// A_FireCursed - Goblin Dice Rollaz cursed die weapon
+// High damage weapon with self-risk mechanic - player takes damage on low rolls
+//
+void
+A_FireCursed
+( player_t*	player,
+  pspdef_t*	psp ) 
+{
+    int damage;
+    int guaranteedCrit = 0;
+    int critRoll = 0;
+    int misfire = 0;
+    mobj_t* missile;
+    
+    S_StartSound (player->mo, sfx_dice_d6);
+
+    P_SetMobjState (player->mo, S_PLAY_ATK2);
+    DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
+
+    P_SetPsprite (player,
+		  ps_flash,
+		  weaponinfo[player->readyweapon].flashstate+(P_Random ()&1));
+
+    if (player->powers[pw_dicefortune])
+    {
+        guaranteedCrit = 1;
+        player->powers[pw_dicefortune] = 0;
+        player->message = "CRITICAL!";
+    }
+
+    damage = P_CalculateDiceDamage(wp_cursed, guaranteedCrit, &critRoll, &misfire);
+
+    missile = P_SpawnPlayerMissile (player->mo, MT_CURSEDDIE);
+    if (missile)
+    {
+        missile->damage = damage;
+    }
+
+    // Goblin Dice Rollaz: Self-damage mechanic for cursed die
+    // If misfire is -1, player takes damage equal to the damage they would have dealt
+    if (misfire == -1)
+    {
+        player->health -= damage;
+        player->message = "CURSED!";
+        if (player->health <= 0)
+        {
+            P_KillMobj(player->mo, player->mo, player->mo, true);
+        }
     }
 }
 

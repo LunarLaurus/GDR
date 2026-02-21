@@ -189,6 +189,15 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
     	S_ARCANED20_1,
     	S_ARCANED20FLASH
     },
+    {
+    	// cursed die weapon (high damage, self-risk)
+    	am_heavydice,
+    	S_CURSEDDOWN,
+    	S_CURSEDUP,
+    	S_CURSED,
+    	S_CURSED_1,
+    	S_CURSEDFLASH
+    },
 };
 
 // Goblin Dice Rollaz: Dice weapon configuration table
@@ -313,6 +322,19 @@ dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
         0,      // ricochet_bounces: no
         0, 0,   // No misfire
         SPF_NONE, 25  // Arcane mid-tier weapon
+    },
+    {   // wp_cursed - cursed die (high damage, self-risk mechanic)
+        6,      // die_type: d6
+        16,     // crit_chance: 16% (roll of 6)
+        3,      // crit_multiplier: 3x on crit (higher for cursed)
+        2,      // min_damage
+        6,      // crit_roll: 6
+        {2, 4, 6, 8, 12, 18, 30},  // Cursed: 1=2, 2=4, 3=6, 4=8, 5=12, 6=crit(18*3=54)
+        0,      // gamble_shot: no
+        0,      // ricochet_bounces: no
+        2,      // misfire_roll: roll 1-2 triggers self-damage (33% chance)
+        -1,     // misfire_penalty: -1 means self-damage instead of damage penalty
+        SPF_RARE | SPF_LATE_GAME, 15  // Rare, high-risk weapon for late game
     },
 };
 

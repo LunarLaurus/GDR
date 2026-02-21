@@ -122,6 +122,7 @@ typedef enum
     wp_d10,           // d10 ricochet weapon (projectiles bounce once)
     wp_twind6,        // twin d6 scatter weapon (close-range burst)
     wp_arcaned20,     // arcane d20 beam (continuous roll tick damage)
+    wp_cursed,        // cursed die (high damage, self-risk mechanic)
 
     NUMWEAPONS,
     
