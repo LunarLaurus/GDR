@@ -147,8 +147,8 @@
 - [x] Add weapon-specific sound profiles (distinct roll sounds per die)
 - [x] Add misfire mechanic for high-risk weapons (low percentile roll penalty)
 - [x] Add "Exploding Max Roll" support (optional rule toggle)
-- [ ] Add weapon stat debug overlay (damage range, crit %, average roll)
-- [ ] Add weapon spawn flags for map balancing
+- [x] Add weapon stat debug overlay (damage range, crit %, average roll)
+- [x] Add weapon spawn flags for map balancing
 - [ ] Document all dice weapons in DESIGN.md with damage math breakdown
 - [ ] Add d8 mid-tier weapon (balanced fire rate and crit rate)
 - [ ] Add d10 ricochet weapon (projectiles bounce once)
