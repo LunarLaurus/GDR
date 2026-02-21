@@ -871,6 +871,18 @@ void A_SPosAttack (mobj_t* actor)
         return;
     }
 
+    if (actor->type == MT_GOBLIN_ALCHEMIST)
+    {
+        A_FaceTarget (actor);
+        S_StartSound (actor, sfx_pistol);
+        mo = P_SpawnMissile (actor, actor->target, MT_ALCHEMIST_POTION);
+        if (mo)
+        {
+            mo->special1 = 0;
+        }
+        return;
+    }
+
     S_StartSound (actor, sfx_shotgn);
     A_FaceTarget (actor);
     bangle = actor->angle;

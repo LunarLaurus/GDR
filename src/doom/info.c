@@ -2209,7 +2209,36 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
      S_POSS_RAISE1,		// raisestate
      3,		// crit_resistance (low - fragile)
     20,		// aggression (moderate - quick to engage)
-    0		// shield_reduction (none)
+     0		// shield_reduction (none)
+      },
+
+    {		// MT_GOBLIN_ALCHEMIST - Throws volatile potion projectiles
+    	8026,		// doomednum (custom mapthing number)
+    	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations)
+    	35,		// spawnhealth (moderate HP - fragile for ranged)
+    	S_SPOS_RUN1,		// seestate
+    	sfx_posit2,		// seesound (goblin cackle)
+    	8,		// reactiontime
+    	sfx_pistol,		// attacksound (potion throw)
+    	S_SPOS_PAIN,		// painstate
+    	180,		// painchance (moderate - disruptible)
+    	sfx_popain,		// painsound
+    	0,		// meleestate (no melee)
+    	S_SPOS_ATK1,		// missilestate (throws potions)
+    	S_SPOS_DIE1,		// deathstate
+    	S_SPOS_XDIE1,		// xdeathstate
+    	sfx_podth2,		// deathsound
+    	8,		// speed (moderate movement)
+    	16*FRACUNIT,		// radius
+    	44*FRACUNIT,		// height
+    	100,		// mass
+    	0,		// damage (ranged - uses potion)
+    	sfx_posact,		// activesound
+    	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+    	S_SPOS_RAISE1,		// raisestate
+    	5,		// crit_resistance (low - fragile caster)
+    	60,		// aggression (attacks from range)
+    	0		// shield_reduction (none)
      },
 
     {		// MT_SHAMAN_FIREBOLT
@@ -2234,11 +2263,37 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
   	100,		// mass
   	15,		// damage (d8 fire damage)
   	sfx_None,		// activesound
-   	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_NOGRAVITY,		// flags
-   	S_NULL		// raisestate
-      },
+    	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_NOGRAVITY,		// flags
+    	S_NULL		// raisestate
+       },
 
-     {		// MT_MARKSMAN_BOLT
+    {		// MT_ALCHEMIST_POTION - Volatile potion projectile
+    	-1,		// doomednum (not spawned via mapthing)
+    	S_TBALL1,		// spawnstate (reuses imp fireball animation)
+    	1000,		// spawnhealth
+    	S_NULL,		// seestate
+    	sfx_firsht,		// seesound (whoosh)
+    	8,		// reactiontime
+    	sfx_None,		// attacksound
+    	S_NULL,		// painstate
+    	0,		// painchance
+    	sfx_None,		// painsound
+    	S_NULL,		// meleestate
+    	S_NULL,		// missilestate
+    	S_TBALLX1,		// deathstate (explodes on impact)
+    	S_NULL,		// xdeathstate
+    	sfx_firxpl,		// deathsound (explosion)
+    	10*FRACUNIT,		// speed (moderate arc)
+    	6*FRACUNIT,		// radius
+    	8*FRACUNIT,		// height
+    	100,		// mass
+    	20,		// damage (volatile potion - high damage + splash)
+    	sfx_None,		// activesound
+    	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_NOGRAVITY,		// flags
+    	S_NULL		// raisestate
+     },
+
+      {		// MT_MARKSMAN_BOLT
    	-1,		// doomednum (not spawned via mapthing)
    	S_TRACER,		// spawnstate (reuses tracer animation - straight shot)
    	1000,		// spawnhealth

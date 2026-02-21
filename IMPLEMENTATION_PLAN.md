@@ -164,9 +164,9 @@
 - [x] Elite Dwarf Captain (buffs nearby dwarves)
 - [x] Dwarf Bombardier (engineer subclass with timed explosives)
 - [x] Armored Dwarf (high HP, weak rear hitbox)
-- [ ] Goblin Scout (low HP, high mobility)
+- [x] Goblin Scout (low HP, high mobility)
 - [x] Goblin Sneak (ambush behavior, delayed aggro)
-- [ ] Goblin Alchemist (throws volatile potion projectiles)
+- [x] Goblin Alchemist (throws volatile potion projectiles)
 - [ ] Goblin Totemist (deploys buff/debuff totems)
 - [ ] Goblin Shaman (complete spell kit)
 - [ ] Firebolt projectile
