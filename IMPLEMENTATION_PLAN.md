@@ -150,7 +150,7 @@
 - [x] Add weapon stat debug overlay (damage range, crit %, average roll)
 - [x] Add weapon spawn flags for map balancing
 - [x] Document all dice weapons in DESIGN.md with damage math breakdown
-- [ ] Add d8 mid-tier weapon (balanced fire rate and crit rate)
+- [x] Add d8 mid-tier weapon (balanced fire rate and crit rate)
 - [ ] Add d10 ricochet weapon (projectiles bounce once)
 - [ ] Add twin d6 scatter weapon (close-range burst)
 - [ ] Add arcane d20 beam (continuous roll tick damage)
