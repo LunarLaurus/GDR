@@ -99,7 +99,7 @@
 - [x] Implement shared powerup framework for future buffs
 - [x] Add global powerup HUD slot system
 - [x] Add powerup debug command for testing
-- [ ] Add powerup-only test map for tuning
+- [x] Add powerup-only test map for tuning
 
 ### Phase 13: Map Themes
 - [x] Document mine/cavern map theme
