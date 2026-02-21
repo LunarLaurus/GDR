@@ -274,7 +274,8 @@ void P_FireAltWeapon (player_t* player)
         int critRoll;
         int guaranteedCrit = 0;
         
-        S_StartSound (player->mo, sfx_pistol);
+        // d4 Rapid Burst Throw - quick whoosh sound
+        S_StartSound (player->mo, sfx_dice_d4);
         
         // Check for guaranteed crit from Dice Fortune powerup
         if (player->powers[pw_dicefortune])
@@ -360,13 +361,13 @@ void P_FireAltWeapon (player_t* player)
         // Reset charge
         player->weaponcharge = 0;
         
-        // Play sound based on charge level
+        // Play sound based on charge level - use d12 heavy impact sounds
         if (chargeBonus >= 35)
-            S_StartSound(player->mo, sfx_dbopn);  // Heavy impact sound
+            S_StartSound(player->mo, sfx_dice_d12);  // Full charged - thunderous throw
         else if (chargeBonus >= 20)
-            S_StartSound(player->mo, sfx_dshtgn);
+            S_StartSound(player->mo, sfx_dice_d12);  // Partial charge - solid hit
         else
-            S_StartSound(player->mo, sfx_pistol);
+            S_StartSound(player->mo, sfx_dice_d12);  // Light charge - light toss
         
         // Show appropriate flash
         if (chargeBonus >= 20)
@@ -1018,7 +1019,7 @@ A_FireD6Blast
     int guaranteedCrit = 0;
     int critRoll = 0;
     
-    S_StartSound (player->mo, sfx_pistol);
+    S_StartSound (player->mo, sfx_dice_d6);
 
     P_SetMobjState (player->mo, S_PLAY_ATK2);
     DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
@@ -1113,7 +1114,7 @@ A_FireCGun
 ( player_t*	player,
   pspdef_t*	psp ) 
 {
-    S_StartSound (player->mo, sfx_pistol);
+    S_StartSound (player->mo, sfx_chgun);
 
     if (!player->ammo[weaponinfo[player->readyweapon].ammo])
 	return;
@@ -1146,7 +1147,7 @@ A_FireD20Cannon
     int guaranteedCrit = 0;
     int critRoll = 0;
     
-    S_StartSound (player->mo, sfx_plasma);
+    S_StartSound (player->mo, sfx_dice_d20);
 
     P_SetMobjState (player->mo, S_PLAY_ATK2);
     DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
@@ -1182,7 +1183,7 @@ A_FireD12
     int guaranteedCrit = 0;
     int critRoll = 0;
     
-    S_StartSound (player->mo, sfx_dshtgn);
+    S_StartSound (player->mo, sfx_dice_d12);
 
     P_SetMobjState (player->mo, S_PLAY_ATK2);
     DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
@@ -1218,7 +1219,7 @@ A_FirePercentile
     int guaranteedCrit = 0;
     int critRoll = 0;
     
-    S_StartSound (player->mo, sfx_plasma);
+    S_StartSound (player->mo, sfx_dice_percent);
 
     P_SetMobjState (player->mo, S_PLAY_ATK2);
     DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
@@ -1254,7 +1255,7 @@ A_FireD4
     int guaranteedCrit = 0;
     int critRoll = 0;
     
-    S_StartSound (player->mo, sfx_pistol);
+    S_StartSound (player->mo, sfx_dice_d4);
 
     P_SetMobjState (player->mo, S_PLAY_ATK1);
     DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);

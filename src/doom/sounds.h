@@ -224,6 +224,14 @@ typedef enum
     sfx_critup,       // Goblin Dice Rollaz: crit boost powerup pickup
     sfx_doubup,       // Goblin Dice Rollaz: double damage powerup pickup
     sfx_fortcrit,     // Goblin Dice Rollaz: guaranteed crit triggered (dice fortune consumed)
+    // Goblin Dice Rollaz: Dice weapon sounds
+    sfx_dice_d4,      // d4 throwing knives throw sound
+    sfx_dice_d6,      // d6 blaster roll/fire sound
+    sfx_dice_d12,     // d12 heavy impact sound
+    sfx_dice_d20,     // d20 cannon roll sound
+    sfx_dice_percent, // d100 percentile gamble shot
+    sfx_dice_roll,    // Generic dice roll for powerups/pickups
+    sfx_dice_crit,    // Critical hit dice sound (satisfaction)
     NUMSFX
 } sfxenum_t;
 

@@ -228,5 +228,13 @@ sfxinfo_t S_sfx[] =
   SOUND("critup", 80),   // Goblin Dice Rollaz: crit boost powerup pickup (high priority for impact)
   SOUND("doubup", 80),   // Goblin Dice Rollaz: double damage powerup pickup
   SOUND("fortcrt", 80),  // Goblin Dice Rollaz: guaranteed crit triggered (dice fortune consumed)
+  // Goblin Dice Rollaz: Dice weapon sounds
+  SOUND("dsroll", 64),   // d4 throwing knives - quick throw whoosh
+  SOUND("dsd6bl", 64),   // d6 blaster - dice roll clatter
+  SOUND("dsd12", 70),    // d12 heavy impact - thunderous throw
+  SOUND("dsd20", 68),    // d20 cannon - deep rolling thunder
+  SOUND("dsperc", 60),   // d100 percentile gamble - tense rattle
+  SOUND("dicpick", 78),  // Generic dice pickup/roll sound
+  SOUND("cricrit", 85),  // Critical hit satisfaction sound - satisfying crack
 };
 
