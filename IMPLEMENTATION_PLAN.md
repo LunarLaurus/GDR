@@ -191,9 +191,9 @@
 - [x] Add "Burning" effect (damage over time, fire visuals)
 - [x] Add "Frozen" effect (movement speed reduction)
 - [x] Add "Stunned" effect (temporary attack suppression)
-- [ ] Add "Dice Curse" effect (randomized stat variance)
+- [x] Add "Dice Curse" effect (randomized stat variance)
 - [x] Add HUD status effect indicators
-- [ ] Expose status parameters via configurable constants
+- [x] Expose status parameters via configurable constants
 
 ## Phase 15: Advanced Enemy AI Behaviors
 - [ ] Add tactical retreat logic for ranged dwarves

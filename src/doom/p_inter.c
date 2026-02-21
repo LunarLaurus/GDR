@@ -1035,6 +1035,22 @@ P_DamageMobj
             }
         }
 
+        // Goblin Dice Rollaz: Apply Dice Curse damage variance
+        if (source && G_StatusEffectIsActive(source, st_dicecurse))
+        {
+            int curseMultiplier = G_GetDiceCurseDamageMultiplier(source);
+            damage = (damage * curseMultiplier) / 100;
+            if (source == &players[consoleplayer].mo && curseMultiplier != 100)
+            {
+                static char curemsg[64];
+                if (curseMultiplier < 100)
+                    snprintf(curemsg, sizeof(curemsg), "CURSED! %d%% damage", curseMultiplier);
+                else
+                    snprintf(curemsg, sizeof(curemsg), "FORTUNATE! %d%% damage", curseMultiplier);
+                players[consoleplayer].message = curemsg;
+            }
+        }
+
         // Goblin Dice Rollaz: Apply stun on critical hits (20% chance)
         if (was_critical && target && !target->player && target->health > 0)
         {

@@ -60,6 +60,7 @@
 #include "i_video.h"
 
 #include "g_game.h"
+#include "g_status.h"
 
 #include "hu_stuff.h"
 #include "wi_stuff.h"
@@ -405,6 +406,16 @@ void D_BindVariables(void)
 
     // Goblin Dice Rollaz: weapon stat debug overlay
     M_BindIntVariable("show_weapon_stats",        &show_weapon_stats);
+
+    // Goblin Dice Rollaz: status effect configuration
+    M_BindIntVariable("burn_damage",              &burn_damage);
+    M_BindIntVariable("burn_tics",               &burn_tics);
+    M_BindIntVariable("frozen_speed_mul",        &frozen_speed_mul);
+    M_BindIntVariable("frozen_tics",             &frozen_tics);
+    M_BindIntVariable("stunned_tics",            &stunned_tics);
+    M_BindIntVariable("dice_curse_tics",         &dice_curse_tics);
+    M_BindIntVariable("dice_curse_variance_min", &dice_curse_variance_min);
+    M_BindIntVariable("dice_curse_variance_max", &dice_curse_variance_max);
 
     // Multiplayer chat macros
 
@@ -1524,6 +1535,7 @@ void D_DoomMain (void)
     M_SetConfigFilenames("default.cfg", PROGRAM_PREFIX "doom.cfg");
     D_BindVariables();
     M_LoadDefaults();
+    G_UpdateStatusEffectInfo();
 
     // Save configuration at exit.
     I_AtExit(M_SaveDefaults, false);

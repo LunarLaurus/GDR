@@ -26,6 +26,15 @@
 
 extern status_info_t status_effects[NUMSTATUSEFFECTS];
 
+extern int burn_damage;
+extern int burn_tics;
+extern int frozen_speed_mul;
+extern int frozen_tics;
+extern int stunned_tics;
+extern int dice_curse_tics;
+extern int dice_curse_variance_min;
+extern int dice_curse_variance_max;
+
 boolean G_StatusEffectIsActive(mobj_t* target, int effect_id);
 int     G_StatusEffectTimeRemaining(mobj_t* target, int effect_id);
 void    G_StatusEffectApply(mobj_t* target, int effect_id, int duration);
@@ -35,6 +44,8 @@ int     G_StatusEffectGetMoveSpeedMultiplier(mobj_t* target);
 boolean G_StatusEffectCanAttack(mobj_t* target);
 void    G_StatusEffectTick(mobj_t* target);
 boolean G_StatusEffectDamageTarget(mobj_t* target, int damage);
+int     G_GetDiceCurseDamageMultiplier(mobj_t* target);
+void    G_UpdateStatusEffectInfo(void);
 
 #define STATUS(c) status_effects[c]
 
