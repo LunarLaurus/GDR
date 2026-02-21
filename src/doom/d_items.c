@@ -145,13 +145,22 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
 	S_PERCENTILEFLASH
     },
     {
-	// d4 throwing knives
-	am_lightdice,
-	S_D4UP,
-	S_D4DOWN,
-	S_D4,
-	S_D4_1,
-	S_D4FLASH
+ 	// d4 throwing knives
+ 	am_lightdice,
+ 	S_D4UP,
+ 	S_D4DOWN,
+ 	S_D4,
+ 	S_D4_1,
+ 	S_D4FLASH
+    },
+    {
+ 	// d8 balanced mid-tier
+ 	am_lightdice,
+ 	S_D8UP,
+ 	S_D8DOWN,
+ 	S_D8,
+ 	S_D8_1,
+ 	S_D8FLASH
     },
 };
 
@@ -231,6 +240,15 @@ dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
         4,      // crit_roll: 4
         {1, 2, 3, 4, 0, 0, 8}, 0, 0, 0,  // Fixed: 1=1, 2=2, 3=3, 4=crit(8), no zeros in main table
         SPF_EARLY_GAME, 60  // Fast-firing early game weapon
+    },
+    {   // wp_d8 - d8 balanced mid-tier
+        8,      // die_type: d8
+        12,     // crit_chance: 12.5% (roll of 8)
+        2,      // crit_multiplier: 2x on crit
+        2,      // min_damage
+        8,      // crit_roll: 8
+        {1, 2, 3, 4, 5, 6, 16}, 0, 0, 0,  // 1=1, 2-3=2, 4=3, 5=4, 6=5, 7=6, 8=crit(16)
+        SPF_NONE, 45  // Mid-tier weapon, moderate spawn weight
     },
 };
 

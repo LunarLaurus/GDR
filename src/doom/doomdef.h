@@ -118,6 +118,7 @@ typedef enum
     wp_supershotgun,
     wp_percentile,    // Percentile dice (rolls 1-100)
     wp_d4,            // d4 throwing knives
+    wp_d8,            // d8 balanced mid-tier weapon
 
     NUMWEAPONS,
     

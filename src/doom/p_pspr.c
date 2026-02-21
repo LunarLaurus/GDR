@@ -1310,6 +1310,42 @@ A_FireD4
 }
 
 
+//
+// A_FireD8 - Goblin Dice Rollaz d8 balanced mid-tier weapon
+// Uses shared dice-roll backend
+//
+void
+A_FireD8
+( player_t*	player,
+  pspdef_t*	psp ) 
+{
+    int damage;
+    int guaranteedCrit = 0;
+    int critRoll = 0;
+    
+    S_StartSound (player->mo, sfx_dice_d6);
+
+    P_SetMobjState (player->mo, S_PLAY_ATK1);
+    DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
+
+    P_SetPsprite (player,
+		  ps_flash,
+		  weaponinfo[player->readyweapon].flashstate);
+
+    if (player->powers[pw_dicefortune])
+    {
+        guaranteedCrit = 1;
+        player->powers[pw_dicefortune] = 0;
+        player->message = "CRITICAL!";
+    }
+
+    damage = P_CalculateDiceDamage(wp_d8, guaranteedCrit, &critRoll, NULL);
+
+    P_BulletSlope (player->mo);
+    P_GunShotWithDamage (player->mo, !player->refire, damage);
+}
+
+
 
 //
 // ?

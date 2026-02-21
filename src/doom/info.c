@@ -60,6 +60,7 @@ void A_FireD20Cannon();
 void A_FireD12();
 void A_FirePercentile();
 void A_FireD4();
+void A_FireD8();
 void A_Light1();
 void A_FireShotgun();
 void A_Light2();
@@ -188,6 +189,14 @@ state_t	states[NUMSTATES] = {
     {SPR_D4A1,2,4,{NULL},S_D4_4,0,0},	// S_D4_3
     {SPR_D4A1,1,5,{A_ReFire},S_D4,0,0},	// S_D4_4
     {SPR_D4F,32768,6,{A_Light1},S_LIGHTDONE,0,0},	// S_D4FLASH
+    {SPR_D6B1,0,1,{A_WeaponReady},S_D8,0,0},	// S_D8
+    {SPR_D6B1,0,1,{A_Lower},S_D8DOWN,0,0},	// S_D8DOWN
+    {SPR_D6B1,0,1,{A_Raise},S_D8UP,0,0},	// S_D8UP
+    {SPR_D8A1,0,4,{NULL},S_D8_2,0,0},	// S_D8_1
+    {SPR_D8A1,1,6,{A_FireD8},S_D8_3,0,0},	// S_D8_2
+    {SPR_D8A1,2,4,{NULL},S_D8_4,0,0},	// S_D8_3
+    {SPR_D8A1,1,5,{A_ReFire},S_D8,0,0},	// S_D8_4
+    {SPR_D8F,32768,6,{A_Light1},S_LIGHTDONE,0,0},	// S_D8FLASH
     {SPR_SHTG,0,1,{A_WeaponReady},S_SGUN,0,0},	// S_SGUN
     {SPR_SHTG,0,1,{A_Lower},S_SGUNDOWN,0,0},	// S_SGUNDOWN
     {SPR_SHTG,0,1,{A_Raise},S_SGUNUP,0,0},	// S_SGUNUP
