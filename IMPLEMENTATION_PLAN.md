@@ -139,7 +139,7 @@
 - [x] Add alternate fire modes (if engine constraints allow)
 - [x] d4: rapid burst throw
 - [x] d12: charged smash (long windup, bonus crit chance)
-- [ ] d100: “Gamble Shot” (wider roll variance)
+- [x] d100: “Gamble Shot” (wider roll variance)
 - [ ] Add ammo types per die category (Light Dice, Heavy Dice, Arcane Dice)
 - [ ] Implement ammo pickup sprites themed to carved bone / rune dice
 - [ ] Add weapon tier balancing pass (DPS, ammo efficiency, crit frequency)

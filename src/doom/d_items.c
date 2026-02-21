@@ -161,7 +161,7 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
 dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
 {
     {   // wp_fist - no dice
-        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}
+        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}, 0
     },
     {   // wp_d6blaster - d6
         6,      // die_type: d6
@@ -169,7 +169,7 @@ dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
         2,      // crit_multiplier: 2x on crit
         1,      // min_damage
         6,      // crit_roll: 6
-        {1, 1, 2, 2, 3, 5, 5}  // damage table: 1-2=1, 3-4=2, 5=3, 6=crit(5*2=10)
+        {1, 1, 2, 2, 3, 5, 5}, 0  // damage table: 1-2=1, 3-4=2, 5=3, 6=crit(5*2=10)
     },
     {   // wp_d20cannon - d20
         20,     // die_type: d20
@@ -177,7 +177,7 @@ dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
         2,      // crit_multiplier: 2x on crit
         5,      // min_damage
         20,     // crit_roll: 20
-        {5, 5, 10, 10, 15, 25, 25}  // 1-5=5, 6-10=10, 11-15=15, 16-19=25, 20=crit(25*2=50)
+        {5, 5, 10, 10, 15, 25, 25}, 0  // 1-5=5, 6-10=10, 11-15=15, 16-19=25, 20=crit(25*2=50)
     },
     {   // wp_d12 - d12
         12,     // die_type: d12
@@ -185,36 +185,37 @@ dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
         2,      // crit_multiplier: 2x on crit
         3,      // min_damage
         12,     // crit_roll: 12
-        {3, 3, 6, 6, 9, 12, 12}  // 1-3=3, 4-6=6, 7-9=9, 10-12=12, 12=crit(12*2=24)
+        {3, 3, 6, 6, 9, 12, 12}, 0  // 1-3=3, 4-6=6, 7-9=9, 10-12=12, 12=crit(12*2=24)
     },
     {   // wp_shotgun - shotgun (not dice)
-        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}
+        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}, 0
     },
     {   // wp_chaingun - chaingun (not dice)
-        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}
+        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}, 0
     },
     {   // wp_missile - missile launcher (not dice)
-        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}
+        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}, 0
     },
     {   // wp_plasma - plasma rifle (not dice)
-        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}
+        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}, 0
     },
     {   // wp_bfg - bfg 9000 (not dice)
-        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}
+        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}, 0
     },
     {   // wp_chainsaw - chainsaw (not dice)
-        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}
+        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}, 0
     },
     {   // wp_supershotgun - super shotgun (not dice)
-        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}
+        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}, 0
     },
-    {   // wp_percentile - d100 percentile
+    {   // wp_percentile - d100 percentile (Gamble Shot - wide variance)
         100,    // die_type: d100
         1,      // crit_chance: 1% (roll of 100)
-        2,      // crit_multiplier: 2x on crit
-        5,      // min_damage
+        3,      // crit_multiplier: 3x on crit (higher for gamble)
+        1,      // min_damage: 1 (can roll very low)
         100,    // crit_roll: 100
-        {5, 5, 10, 20, 40, 50, 50}  // 1-50=5, 51-75=10, 76-90=20, 91-99=40, 100=crit(50*2=100)
+        {1, 3, 5, 15, 35, 75, 100},  // Gamble Shot: 1-15=1, 16-35=3, 36-55=5, 56-75=15, 76-90=35, 91-99=75, 100=crit(100*3=300)
+        1       // gamble_shot: wide variance with exploding roll mechanic
     },
     {   // wp_d4 - d4 throwing knives
         4,      // die_type: d4
@@ -222,7 +223,7 @@ dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
         2,      // crit_multiplier: 2x on crit
         1,      // min_damage
         4,      // crit_roll: 4
-        {1, 2, 3, 0, 0, 0, 4}  // 1=1, 2=2, 3=3, 4=crit(4*2=8)
+        {1, 2, 3, 0, 0, 0, 4}, 0  // 1=1, 2=2, 3=3, 4=crit(4*2=8)
     },
 };
 

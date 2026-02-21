@@ -45,6 +45,7 @@ typedef struct
     int min_damage;         // Minimum roll that deals damage
     int crit_roll;          // Roll value that triggers crit
     int damage_table[7];    // Damage mapping for roll ranges
+    int gamble_shot;       // Wide variance mode (exploding rolls, misfire chance)
 } dice_weapon_info_t;
 
 extern  weaponinfo_t    weaponinfo[NUMWEAPONS];

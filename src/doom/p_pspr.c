@@ -770,6 +770,7 @@ P_WeaponCanCrit (int weapon)
 //
 // P_CalculateDiceDamage - Goblin Dice Rollaz: Centralized damage calculation
 // Handles guaranteed crit, dice rolling, and damage mapping
+// Supports Gamble Shot mode for wider variance
 //
 int
 P_CalculateDiceDamage (int weapon, int guaranteedCrit, int *outCritRoll)
@@ -829,6 +830,36 @@ P_CalculateDiceDamage (int weapon, int guaranteedCrit, int *outCritRoll)
         damage = dwi->damage_table[bucket];
         if (damage == 0)
             damage = dwi->min_damage;
+    }
+    
+    // Goblin Dice Rollaz: Gamble Shot - exploding roll mechanic
+    // For gamble_shot weapons, rolls >= 95 trigger additional rolls
+    if (dwi->gamble_shot && diceRoll >= 95 && diceRoll < dwi->crit_roll)
+    {
+        int explodeRolls = 0;
+        int additionalDamage = 0;
+        
+        // Roll again for each point above 95 (up to 3 extra rolls)
+        while (diceRoll >= 95 && explodeRolls < 3)
+        {
+            explodeRolls++;
+            diceRoll = P_RollDice(dwi->die_type);
+            
+            // Add damage from explosion
+            if (diceRoll == dwi->crit_roll)
+            {
+                additionalDamage += dwi->damage_table[6] * dwi->crit_multiplier / 2;
+            }
+            else
+            {
+                int bucket = ((diceRoll - 1) * 6) / dwi->die_type;
+                if (bucket > 5) bucket = 5;
+                if (bucket < 0) bucket = 0;
+                additionalDamage += dwi->damage_table[bucket];
+            }
+        }
+        
+        damage += additionalDamage;
     }
     
     return damage;
