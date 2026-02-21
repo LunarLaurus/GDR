@@ -1281,8 +1281,8 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
  	100,		// mass
  	0,		// damage
  	sfx_posact,		// activesound
- 	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
-  S_SPOS_RAISE1,		// raisestate
+    MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL|MF_AMBUSH,		// flags
+     S_SPOS_RAISE1,		// raisestate
   0,		// crit_resistance
   55,		// aggression
   0		// shield_reduction
@@ -1310,7 +1310,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
  	500,		// mass
  	0,		// damage
  	sfx_vilact,		// activesound
-  MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+    MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL|MF_AMBUSH,		// flags
   S_NULL,		// raisestate
   20,		// crit_resistance (tough against crits)
   80,		// aggression (very aggressive)
@@ -2151,6 +2151,35 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
     S_SPOS_RAISE1,		// raisestate
     5,		// crit_resistance (low - fragile caster)
     70,		// aggression (attacks from range)
+    0		// shield_reduction (none)
+     },
+
+    {		// MT_GOBLIN_SNEAK - Goblin Scout with ambush behavior
+   	8024,		// doomednum (custom mapthing number)
+   	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations)
+   	15,		// spawnhealth (very low HP - fragile scout)
+   	S_SPOS_RUN1,		// seestate
+   	sfx_posit2,		// seesound (goblin chatter)
+   	15,		// reactiontime (delayed aggro - ambush behavior)
+   	0,		// attacksound (no ranged attack)
+   	S_SPOS_PAIN,		// painstate
+   	250,		// painchance (high - startled easily)
+   	sfx_popain,		// painsound
+   	S_SPOS_ATK1,		// meleestate (ambush attack when close)
+   	0,		// missilestate (no ranged attack)
+   	S_SPOS_DIE1,		// deathstate
+   	S_SPOS_XDIE1,		// xdeathstate
+   	sfx_podth1,		// deathsound
+   	12,		// speed (fast - high mobility)
+   	16*FRACUNIT,		// radius
+   	44*FRACUNIT,		// height
+   	60,		// mass
+   	0,		// damage (melee uses weapon damage)
+   	sfx_posact,		// activesound
+    MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL|MF_AMBUSH,		// flags
+     S_SPOS_RAISE1,		// raisestate
+     2,		// crit_resistance (very low - fragile)
+    30,		// aggression (low initially, increases after detecting player)
     0		// shield_reduction (none)
      },
 
