@@ -60,6 +60,145 @@
 #include "sounds.h"
 #include "g_powerup.h"
 
+#include "d_items.h"
+
+// Goblin Dice Rollaz: Weapon stat debug overlay
+int show_weapon_stats = 0;
+static patch_t *st_weaponstat_font[HU_FONTSIZE];
+
+static int ST_CalculateAvgDamage(int weapon)
+{
+    dice_weapon_info_t *dwi;
+    int i;
+    int total = 0;
+    int count = 0;
+    int avg_damage;
+    
+    if (weapon < 0 || weapon >= NUMWEAPONS)
+        return 0;
+    
+    dwi = &dice_weapon_info[weapon];
+    
+    if (dwi->die_type == 0)
+        return 0;
+    
+    for (i = 0; i < 7; i++)
+    {
+        if (dwi->damage_table[i] > 0)
+        {
+            total += dwi->damage_table[i];
+            count++;
+        }
+    }
+    
+    if (count == 0)
+        return 0;
+    
+    avg_damage = total / count;
+    
+    if (dwi->die_type == 100)
+    {
+        if (dwi->gamble_shot)
+        {
+            avg_damage = (avg_damage * (100 - dwi->misfire_roll)) / 100;
+        }
+    }
+    
+    return avg_damage;
+}
+
+static void ST_DrawWeaponStats(int x, int y)
+{
+    player_t *plyr;
+    int weapon;
+    dice_weapon_info_t *dwi;
+    int min_dmg, max_dmg, avg_dmg, crit_pct;
+    char buf[64];
+    int i;
+    char namebuf[9];
+    
+    if (!players)
+        return;
+    
+    plyr = &players[consoleplayer];
+    if (!plyr)
+        return;
+    
+    weapon = plyr->readyweapon;
+    
+    if (weapon < 0 || weapon >= NUMWEAPONS)
+        return;
+    
+    dwi = &dice_weapon_info[weapon];
+    
+    if (dwi->die_type == 0)
+        return;
+    
+    for (i = 0; i < HU_FONTSIZE; i++)
+    {
+        DEH_snprintf(namebuf, 9, "STCFN%.3d", i);
+        st_weaponstat_font[i] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
+    }
+    
+    min_dmg = dwi->damage_table[0];
+    max_dmg = dwi->damage_table[6];
+    avg_dmg = ST_CalculateAvgDamage(weapon);
+    crit_pct = dwi->crit_chance;
+    
+    DEH_snprintf(buf, sizeof(buf), "%dd%d", 1, dwi->die_type);
+    for (i = 0; buf[i]; i++)
+    {
+        int c = buf[i];
+        if (c >= ' ' && c < HU_FONTSIZE)
+            V_DrawPatchDirect(x, y, st_weaponstat_font[c]);
+        x += SHORT(st_weaponstat_font[c]->width);
+    }
+    
+    y += 12;
+    
+    DEH_snprintf(buf, sizeof(buf), "DMG:%d-%d", min_dmg, max_dmg);
+    for (i = 0; buf[i]; i++)
+    {
+        int c = buf[i];
+        if (c >= ' ' && c < HU_FONTSIZE)
+            V_DrawPatchDirect(x, y, st_weaponstat_font[c]);
+        x += SHORT(st_weaponstat_font[c]->width);
+    }
+    
+    y += 12;
+    
+    DEH_snprintf(buf, sizeof(buf), "AVG:%d", avg_dmg);
+    for (i = 0; buf[i]; i++)
+    {
+        int c = buf[i];
+        if (c >= ' ' && c < HU_FONTSIZE)
+            V_DrawPatchDirect(x, y, st_weaponstat_font[c]);
+        x += SHORT(st_weaponstat_font[c]->width);
+    }
+    
+    y += 12;
+    
+    DEH_snprintf(buf, sizeof(buf), "CRIT:%d%%", crit_pct);
+    for (i = 0; buf[i]; i++)
+    {
+        int c = buf[i];
+        if (c >= ' ' && c < HU_FONTSIZE)
+            V_DrawPatchDirect(x, y, st_weaponstat_font[c]);
+        x += SHORT(st_weaponstat_font[c]->width);
+    }
+    
+    y += 12;
+    
+    DEH_snprintf(buf, sizeof(buf), "x%d", dwi->crit_multiplier);
+    for (i = 0; buf[i]; i++)
+    {
+        int c = buf[i];
+        if (c >= ' ' && c < HU_FONTSIZE)
+            V_DrawPatchDirect(x, y, st_weaponstat_font[c]);
+        x += SHORT(st_weaponstat_font[c]->width);
+    }
+}
+
 //
 // STATUS BAR DATA
 //
@@ -1206,6 +1345,12 @@ void ST_Drawer (boolean fullscreen, boolean refresh)
     if (st_firsttime) ST_doRefresh();
     // Otherwise, update as little as possible
     else ST_diffDraw();
+
+    // Goblin Dice Rollaz: Draw weapon stat debug overlay if enabled
+    if (show_weapon_stats)
+    {
+        ST_DrawWeaponStats(280, 20);
+    }
 
 }
 

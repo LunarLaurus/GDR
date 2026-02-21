@@ -393,6 +393,9 @@ void D_BindVariables(void)
     // Goblin Dice Rollaz: multiplayer sync debug
     M_BindIntVariable("debug_sync_check",         &debug_sync_check);
 
+    // Goblin Dice Rollaz: weapon stat debug overlay
+    M_BindIntVariable("show_weapon_stats",        &show_weapon_stats);
+
     // Multiplayer chat macros
 
     for (i=0; i<10; ++i)

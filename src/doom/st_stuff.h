@@ -54,6 +54,8 @@ void ST_Init (void);
 // Global powerup HUD slot system
 void ST_drawPowerupSlots(boolean refresh);
 
+// Goblin Dice Rollaz: Weapon stat debug overlay
+extern int show_weapon_stats;
 
 extern pixel_t *st_backing_screen;
 extern cheatseq_t cheat_mus;
