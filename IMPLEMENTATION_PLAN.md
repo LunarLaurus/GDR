@@ -160,7 +160,7 @@
 - [x] Add difficulty scaling hooks per enemy
 - [x] Dwarf Defender (shielded, frontal damage reduction)
 - [x] Dwarf Marksman (slow, high-damage ranged unit)
-- [ ] Dwarf Miner (throws pickaxes, medium range)
+- [x] Dwarf Miner (throws pickaxes, medium range)
 - [ ] Elite Dwarf Captain (buffs nearby dwarves)
 - [ ] Dwarf Bombardier (engineer subclass with timed explosives)
 - [ ] Armored Dwarf (high HP, weak rear hitbox)

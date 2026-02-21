@@ -834,6 +834,18 @@ void A_SPosAttack (mobj_t* actor)
         return;
     }
 
+    if (actor->type == MT_DWARF_MINER)
+    {
+        A_FaceTarget (actor);
+        S_StartSound (actor, sfx_tink);
+        mo = P_SpawnMissile (actor, actor->target, MT_MINER_PICKAXE);
+        if (mo)
+        {
+            mo->special1 = 0;
+        }
+        return;
+    }
+
     if (actor->type == MT_DWARF_ENGINEER)
     {
         A_FaceTarget (actor);

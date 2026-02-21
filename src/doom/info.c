@@ -2001,9 +2001,38 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
     	20,		// crit_resistance (medium - light armor)
     	90,		// aggression (highly aggressive when target spotted)
     	0		// shield_reduction (none - no shield)
-      },
+     },
 
-     {		// MT_GOBLIN_SHAMAN
+     {		// MT_DWARF_MINER
+    	8103,		// doomednum (custom mapthing number - from spawn-tuning.md)
+    	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations)
+    	45,		// spawnhealth (moderate HP - tougher than worker)
+    	S_SPOS_RUN1,		// seestate
+    	sfx_posit2,		// seesound (mining yell)
+    	10,		// reactiontime (medium - quick to throw)
+    	0,		// attacksound (will use custom - pickaxe whoosh)
+    	S_SPOS_PAIN,		// painstate
+    	100,		// painchance (high - easily disrupted)
+    	sfx_popain,		// painsound
+    	0,		// meleestate (no melee - throws from range)
+    	S_SPOS_ATK1,		// missilestate (throws pickaxe)
+    	S_SPOS_DIE1,		// deathstate
+    	S_SPOS_XDIE1,		// xdeathstate
+    	sfx_podth2,		// deathsound
+    	8,		// speed (moderate - mobile ranged)
+    	16*FRACUNIT,		// radius
+    	56*FRACUNIT,		// height
+    	90,		// mass
+    	0,		// damage (melee - not used)
+    	sfx_posact,		// activesound
+    	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+    	S_SPOS_RAISE1,		// raisestate
+    	15,		// crit_resistance (low-medium - light armor)
+    	80,		// aggression (medium-high - attacks when spotted)
+    	0		// shield_reduction (none - no shield)
+       },
+
+      {		// MT_GOBLIN_SHAMAN
    	8023,		// doomednum (custom mapthing number)
    	S_SPOS_STND,		// spawnstate (reuses Imp animations as base)
    	45,		// spawnhealth (glass cannon - low HP but dangerous)
@@ -2080,11 +2109,37 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
    	100,		// mass
    	35,		// damage (high damage - d20 roll + bonus)
    	sfx_None,		// activesound
-   	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_NOGRAVITY,		// flags
-   	S_NULL		// raisestate
-      },
+    	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_NOGRAVITY,		// flags
+    	S_NULL		// raisestate
+       },
 
-     {		// MT_SHAMAN_HEAL
+     {		// MT_MINER_PICKAXE
+    	-1,		// doomednum (not spawned via mapthing)
+    	S_TRACER,		// spawnstate (reuses tracer animation)
+    	1000,		// spawnhealth
+    	S_NULL,		// seestate
+    	sfx_None,		// seesound
+    	8,		// reactiontime
+    	sfx_None,		// attacksound
+    	S_NULL,		// painstate
+    	0,		// painchance
+    	sfx_None,		// painsound
+    	S_NULL,		// meleestate
+    	S_NULL,		// missilestate
+    	S_TRACEEXP1,		// deathstate (explodes on impact)
+    	S_NULL,		// xdeathstate
+    	sfx_barexp,		// deathsound
+    	10*FRACUNIT,		// speed (moderate - thrown weapon arcs)
+    	6*FRACUNIT,		// radius (small - pickaxe size)
+    	6*FRACUNIT,		// height
+    	20,		// mass (light - thrown)
+    	20,		// damage (d6-d8 roll - medium damage)
+    	sfx_None,		// activesound
+    	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF,		// flags (no MF_NOGRAVITY - arcs)
+    	S_NULL		// raisestate
+       },
+
+      {		// MT_SHAMAN_HEAL
   	-1,		// doomednum (not spawned via mapthing)
   	S_IFOG00,		// spawnstate (reuses item fog)
   	1000,		// spawnhealth
