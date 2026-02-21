@@ -815,6 +815,112 @@ void P_SpawnPlayer (mapthing_t* mthing)
 }
 
 
+#define MAX_GROUP_MEMBERS 8
+
+typedef struct {
+    short type;
+    short count;
+    short enemy_type;
+    short offset_x[MAX_GROUP_MEMBERS];
+    short offset_y[MAX_GROUP_MEMBERS];
+    boolean ambush;
+} spawn_group_t;
+
+static const spawn_group_t spawn_groups[] = {
+    { 9000, 4, 8020, { 0, -32, 32, 0 }, { 0, 32, 32, -48 }, false },
+    { 9001, 2, 8020, { 0, 64 }, { 0, 0 }, false },
+    { 9002, 3, 8021, { 0, -40, 40 }, { 0, 40, 40 }, true },
+    { 9010, 3, 8100, { 0, -32, 32 }, { 0, 32, 32 }, false },
+    { 9011, 2, 8100, { 0, 64 }, { 0, 0 }, false },
+    { 9012, 3, 8101, { 0, -48, 48 }, { 0, 0, 0 }, false },
+    { 9020, 4, 8020, { 0, 32, -32, 0 }, { 0, 32, 32, -48 }, false },
+    { 9021, 3, 8104, { 0, -40, 40 }, { 0, 40, 40 }, false },
+};
+
+static const int num_spawn_groups = sizeof(spawn_groups) / sizeof(spawn_groups[0]);
+
+static void P_SpawnGroup(mapthing_t* mthing)
+{
+    int i, j;
+    int angle;
+    fixed_t base_x, base_y;
+    mobj_t* mobj;
+    int mobjtype;
+    int bit;
+
+    for (i = 0; i < num_spawn_groups; i++)
+    {
+	if (spawn_groups[i].type == mthing->type)
+	    break;
+    }
+
+    if (i == num_spawn_groups)
+    {
+	I_Error("P_SpawnGroup: Unknown group type %i at (%i, %i)",
+		 mthing->type, mthing->x, mthing->y);
+    }
+
+    if (!netgame && (mthing->options & 16))
+	return;
+
+    if (gameskill == sk_baby)
+	bit = 1;
+    else if (gameskill == sk_nightmare)
+	bit = 4;
+    else
+	bit = (int)(1U << ((gameskill - 1) & 0x1F));
+
+    if (!(mthing->options & bit))
+	return;
+
+    base_x = mthing->x << FRACBITS;
+    base_y = mthing->y << FRACBITS;
+    angle = (mthing->angle / 45) * ANG45;
+
+    for (j = 0; j < spawn_groups[i].count; j++)
+    {
+	mobjtype = -1;
+
+	for (int k = 0; k < NUMMOBJTYPES; k++)
+	{
+	    if (mobjinfo[k].doomednum == spawn_groups[i].enemy_type)
+	    {
+		mobjtype = k;
+		break;
+	    }
+	}
+
+	if (mobjtype == -1)
+	    continue;
+
+	fixed_t offset_x = spawn_groups[i].offset_x[j] << FRACBITS;
+	fixed_t offset_y = spawn_groups[i].offset_y[j] << FRACBITS;
+
+	fixed_t rot_x = (offset_x * finecosine[angle >> ANGLETOFINESHIFT]) -
+			(offset_y * finesine[angle >> ANGLETOFINESHIFT]);
+	fixed_t rot_y = (offset_x * finesine[angle >> ANGLETOFINESHIFT]) +
+			offset_y * finecosine[angle >> ANGLETOFINESHIFT];
+
+	fixed_t spawn_x = base_x + rot_x;
+	fixed_t spawn_y = base_y + rot_y;
+
+	mobj = P_SpawnMobj(spawn_x, spawn_y, ONFLOORZ, mobjtype);
+	mobj->spawnpoint = *mthing;
+
+	if (mobj->tics > 0)
+	    mobj->tics = 1 + (P_Random() % mobj->tics);
+
+	if (mobj->flags & MF_COUNTKILL)
+	    totalkills++;
+
+	mobj->angle = angle;
+
+	if (spawn_groups[i].ambush || (mthing->options & MTF_AMBUSH))
+	    mobj->flags |= MF_AMBUSH;
+    }
+}
+
+
 //
 // P_SpawnMapThing
 // The fields of the mapthing should
@@ -860,6 +966,13 @@ void P_SpawnMapThing (mapthing_t* mthing)
 	return;
     }
 
+    // Goblin Dice Rollaz: Check for group spawner things (9000-9099)
+    if (mthing->type >= 9000 && mthing->type <= 9099)
+    {
+	P_SpawnGroup(mthing);
+	return;
+    }
+	
     // check for appropriate skill level
     if (!netgame && (mthing->options & 16) )
 	return;
