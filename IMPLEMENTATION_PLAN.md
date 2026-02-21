@@ -175,7 +175,7 @@
 - [x] Randomized "Chaos Spell" ability
 - [x] Teleport reposition logic
 - [x] Spell cooldown system
-- [ ] Add faction coordination (goblins prioritize flanking, dwarves hold formation)
+- [x] Add faction coordination (goblins prioritize flanking, dwarves hold formation)
 - [ ] Add morale system (retreat if leader dies)
 - [ ] Add crit resistance values per enemy type
 - [ ] Add weak point logic (headshot or rear bonus multiplier)
