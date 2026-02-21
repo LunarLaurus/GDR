@@ -188,11 +188,11 @@
 
 ## Phase 14: Spell & Status Effect System
 - [x] Implement generic status effect framework (duration-based effects in thinker loop)
-- [ ] Add “Burning” effect (damage over time, fire visuals)
-- [ ] Add “Frozen” effect (movement speed reduction)
-- [ ] Add “Stunned” effect (temporary attack suppression)
-- [ ] Add “Dice Curse” effect (randomized stat variance)
-- [ ] Add HUD status effect indicators
+- [x] Add "Burning" effect (damage over time, fire visuals)
+- [ ] Add "Frozen" effect (movement speed reduction)
+- [ ] Add "Stunned" effect (temporary attack suppression)
+- [ ] Add "Dice Curse" effect (randomized stat variance)
+- [x] Add HUD status effect indicators
 - [ ] Expose status parameters via configurable constants
 
 ## Phase 15: Advanced Enemy AI Behaviors

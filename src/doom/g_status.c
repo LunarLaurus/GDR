@@ -190,10 +190,29 @@ void G_StatusEffectTick(mobj_t* target)
     {
         if (target->status_effects[i] > 0)
         {
+            status_info_t* se = &status_effects[i];
             target->status_effects[i]--;
 
             if (target->status_effects[i] == 0)
             {
+                if (i == st_burning)
+                {
+                    if (target == &players[consoleplayer].mo)
+                    {
+                        players[consoleplayer].message = "The flames subside.";
+                    }
+                }
+            }
+
+            if ((se->flags & STATUSEFFECT_FLAG_DAMAGE) && (leveltime % TICRATE == 0))
+            {
+                P_DamageMobj(target, NULL, NULL, se->damage_per_second);
+                if (target == &players[consoleplayer].mo && target->health > 0)
+                {
+                    static char burnmsg[64];
+                    snprintf(burnmsg, sizeof(burnmsg), "BURNING! -%d", se->damage_per_second);
+                    players[consoleplayer].message = burnmsg;
+                }
             }
         }
     }

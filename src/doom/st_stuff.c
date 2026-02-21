@@ -59,6 +59,7 @@
 #include "dstrings.h"
 #include "sounds.h"
 #include "g_powerup.h"
+#include "g_status.h"
 
 #include "d_items.h"
 
@@ -1268,6 +1269,83 @@ void ST_drawPowerupSlots(boolean refresh)
     }
 }
 
+#define ST_STATUSEFFECT_MAX 4
+
+void ST_UpdateStatusEffectSlots(void)
+{
+    int slot_idx = 0;
+    int i;
+    player_t *plyr;
+
+    if (!players)
+        return;
+
+    plyr = &players[consoleplayer];
+    if (!plyr->mo)
+        return;
+
+    for (i = 1; i < NUMSTATUSEFFECTS && slot_idx < ST_STATUSEFFECT_MAX; i++)
+    {
+        if (G_StatusEffectIsActive(plyr->mo, i))
+        {
+            status_info_t *se = &status_effects[i];
+            // Store effect ID and remaining time in seconds
+            st_powerup_slot_ids[slot_idx] = i;
+            st_powerup_slot_timers[slot_idx] = G_StatusEffectTimeRemaining(plyr->mo, i) / 35;
+            slot_idx++;
+        }
+    }
+
+    // Clear remaining slots
+    for (i = slot_idx; i < ST_STATUSEFFECT_MAX; i++)
+    {
+        st_powerup_slot_ids[i] = -1;
+        st_powerup_slot_timers[i] = 0;
+    }
+}
+
+void ST_drawStatusEffectWidgets(boolean refresh)
+{
+    int i;
+    int x, y;
+    player_t *plyr;
+
+    if (!players)
+        return;
+
+    plyr = &players[consoleplayer];
+    if (!plyr->mo || !st_statusbaron)
+        return;
+
+    ST_UpdateStatusEffectSlots();
+
+    for (i = 0; i < ST_STATUSEFFECT_MAX; i++)
+    {
+        if (st_powerup_slot_ids[i] >= 1 && st_powerup_slot_ids[i] < NUMSTATUSEFFECTS)
+        {
+            status_info_t *se = &status_effects[st_powerup_slot_ids[i]];
+            int time_remaining = st_powerup_slot_timers[i];
+
+            x = ST_POWERUP_SLOT_X + (i * ST_POWERUP_SLOT_SPACING);
+            y = ST_POWERUP_SLOT_Y + 40;
+
+            // Draw status effect indicator
+            if (se->name)
+            {
+                // Draw a colored indicator based on effect type
+                if (se->color != 0)
+                {
+                    V_DrawFilledBox(x, y, 24, 24, se->color);
+                }
+                else
+                {
+                    V_DrawFilledBox(x, y, 24, 24, 0x888888);
+                }
+            }
+        }
+    }
+}
+
 void ST_drawWidgets(boolean refresh)
 {
     int		i;
@@ -1296,6 +1374,7 @@ void ST_drawWidgets(boolean refresh)
     if (st_statusbaron)
     {
         ST_drawPowerupSlots(refresh);
+        ST_drawStatusEffectWidgets(refresh);
     }
 
     STlib_updateBinIcon(&w_armsbg, refresh);
