@@ -120,6 +120,7 @@ typedef enum
     wp_d4,            // d4 throwing knives
     wp_d8,            // d8 balanced mid-tier weapon
     wp_d10,           // d10 ricochet weapon (projectiles bounce once)
+    wp_twind6,        // twin d6 scatter weapon (close-range burst)
 
     NUMWEAPONS,
     

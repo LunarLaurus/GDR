@@ -152,7 +152,7 @@
 - [x] Document all dice weapons in DESIGN.md with damage math breakdown
 - [x] Add d8 mid-tier weapon (balanced fire rate and crit rate)
 - [x] Add d10 ricochet weapon (projectiles bounce once)
-- [ ] Add twin d6 scatter weapon (close-range burst)
+- [x] Add twin d6 scatter weapon (close-range burst)
 - [ ] Add arcane d20 beam (continuous roll tick damage)
 - [ ] Add cursed die weapon (high damage, self-risk mechanic)
 - [ ] Refactor enemy definition templates for easier expansion (shared dwarf base struct)

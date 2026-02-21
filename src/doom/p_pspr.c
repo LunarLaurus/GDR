@@ -1075,119 +1075,29 @@ A_FireD6Blast
 
 
 //
-// A_FireShotgun
+// A_FireTwinD6 - Goblin Dice Rollaz twin d6 scatter weapon
+// Fires two d6 dice in quick succession for close-range burst
 //
 void
-A_FireShotgun
+A_FireTwinD6
 ( player_t*	player,
   pspdef_t*	psp ) 
 {
-    int		i;
-	
-    S_StartSound (player->mo, sfx_shotgn);
+    int damage1;
+    int damage2;
+    int guaranteedCrit = 0;
+    int critRoll1 = 0;
+    int critRoll2 = 0;
+    
+    S_StartSound (player->mo, sfx_dice_d6);
+
     P_SetMobjState (player->mo, S_PLAY_ATK2);
-
-    DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
-
-    P_SetPsprite (player,
-		  ps_flash,
-		  weaponinfo[player->readyweapon].flashstate);
-
-    P_BulletSlope (player->mo);
-	
-    for (i=0 ; i<7 ; i++)
-	P_GunShot (player->mo, false);
-}
-
-
-
-//
-// A_FireShotgun2
-//
-void
-A_FireShotgun2
-( player_t*	player,
-  pspdef_t*	psp ) 
-{
-    int		i;
-    angle_t	angle;
-    int		damage;
-		
-	
-    S_StartSound (player->mo, sfx_dshtgn);
-    P_SetMobjState (player->mo, S_PLAY_ATK2);
-
     DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 2);
 
     P_SetPsprite (player,
 		  ps_flash,
 		  weaponinfo[player->readyweapon].flashstate);
 
-    P_BulletSlope (player->mo);
-	
-    for (i=0 ; i<20 ; i++)
-    {
-	damage = 5*(P_Random ()%3+1);
-	angle = player->mo->angle;
-	angle += P_SubRandom() << ANGLETOFINESHIFT;
-	P_LineAttack (player->mo,
-		      angle,
-		      MISSILERANGE,
-		      bulletslope + (P_SubRandom() << 5), damage);
-    }
-}
-
-
-//
-// A_FireCGun
-//
-void
-A_FireCGun
-( player_t*	player,
-  pspdef_t*	psp ) 
-{
-    S_StartSound (player->mo, sfx_chgun);
-
-    if (!player->ammo[weaponinfo[player->readyweapon].ammo])
-	return;
-		
-    P_SetMobjState (player->mo, S_PLAY_ATK2);
-    DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
-
-    P_SetPsprite (player,
-		  ps_flash,
-		  weaponinfo[player->readyweapon].flashstate
-		  + psp->state
-		  - &states[S_CHAIN1] );
-
-    P_BulletSlope (player->mo);
-	
-    P_GunShot (player->mo, !player->refire);
-}
-
-
-//
-// A_FireD20Cannon - Goblin Dice Rollaz d20 cannon
-// Uses shared dice-roll backend
-//
-void
-A_FireD20Cannon
-( player_t*	player,
-  pspdef_t*	psp ) 
-{
-    int damage;
-    int guaranteedCrit = 0;
-    int critRoll = 0;
-    
-    S_StartSound (player->mo, sfx_dice_d20);
-
-    P_SetMobjState (player->mo, S_PLAY_ATK2);
-    DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
-
-    P_SetPsprite (player,
-		  ps_flash,
-		  weaponinfo[player->readyweapon].flashstate);
-
     if (player->powers[pw_dicefortune])
     {
         guaranteedCrit = 1;
@@ -1195,196 +1105,12 @@ A_FireD20Cannon
         player->message = "CRITICAL!";
     }
 
-    damage = P_CalculateDiceDamage(wp_d20cannon, guaranteedCrit, &critRoll, NULL);
+    damage1 = P_CalculateDiceDamage(wp_twind6, guaranteedCrit, &critRoll1, NULL);
+    damage2 = P_CalculateDiceDamage(wp_twind6, guaranteedCrit, &critRoll2, NULL);
 
     P_BulletSlope (player->mo);
-    P_GunShotWithDamage (player->mo, !player->refire, damage);
-}
-
-
-//
-// A_FireD12 - Goblin Dice Rollaz d12 heavy impact weapon
-// Uses shared dice-roll backend
-//
-void
-A_FireD12
-( player_t*	player,
-  pspdef_t*	psp ) 
-{
-    int damage;
-    int guaranteedCrit = 0;
-    int critRoll = 0;
-    
-    S_StartSound (player->mo, sfx_dice_d12);
-
-    P_SetMobjState (player->mo, S_PLAY_ATK2);
-    DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
-
-    P_SetPsprite (player,
-		  ps_flash,
-		  weaponinfo[player->readyweapon].flashstate);
-
-    if (player->powers[pw_dicefortune])
-    {
-        guaranteedCrit = 1;
-        player->powers[pw_dicefortune] = 0;
-        player->message = "CRITICAL!";
-    }
-
-    damage = P_CalculateDiceDamage(wp_d12, guaranteedCrit, &critRoll, NULL);
-
-    P_BulletSlope (player->mo);
-    P_GunShotWithDamage (player->mo, !player->refire, damage);
-}
-
-
-//
-// A_FirePercentile - Goblin Dice Rollaz percentile dice weapon
-// Uses shared dice-roll backend
-//
-void
-A_FirePercentile
-( player_t*	player,
-  pspdef_t*	psp ) 
-{
-    int damage;
-    int guaranteedCrit = 0;
-    int critRoll = 0;
-    
-    S_StartSound (player->mo, sfx_dice_percent);
-
-    P_SetMobjState (player->mo, S_PLAY_ATK2);
-    DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
-
-    P_SetPsprite (player,
-		  ps_flash,
-		  weaponinfo[player->readyweapon].flashstate);
-
-    if (player->powers[pw_dicefortune])
-    {
-        guaranteedCrit = 1;
-        player->powers[pw_dicefortune] = 0;
-        player->message = "CRITICAL!";
-    }
-
-    damage = P_CalculateDiceDamage(wp_percentile, guaranteedCrit, &critRoll, NULL);
-
-    P_BulletSlope (player->mo);
-    P_GunShotWithDamage (player->mo, !player->refire, damage);
-}
-
-
-//
-// A_FireD4 - Goblin Dice Rollaz d4 throwing knives
-// Uses shared dice-roll backend
-//
-void
-A_FireD4
-( player_t*	player,
-  pspdef_t*	psp ) 
-{
-    int damage;
-    int guaranteedCrit = 0;
-    int critRoll = 0;
-    
-    S_StartSound (player->mo, sfx_dice_d4);
-
-    P_SetMobjState (player->mo, S_PLAY_ATK1);
-    DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
-
-    P_SetPsprite (player,
-		  ps_flash,
-		  weaponinfo[player->readyweapon].flashstate);
-
-    if (player->powers[pw_dicefortune])
-    {
-        guaranteedCrit = 1;
-        player->powers[pw_dicefortune] = 0;
-        player->message = "CRITICAL!";
-    }
-
-    damage = P_CalculateDiceDamage(wp_d4, guaranteedCrit, &critRoll, NULL);
-
-    P_BulletSlope (player->mo);
-    P_GunShotWithDamage (player->mo, !player->refire, damage);
-}
-
-
-//
-// A_FireD8 - Goblin Dice Rollaz d8 balanced mid-tier weapon
-// Uses shared dice-roll backend
-//
-void
-A_FireD8
-( player_t*	player,
-  pspdef_t*	psp ) 
-{
-    int damage;
-    int guaranteedCrit = 0;
-    int critRoll = 0;
-    
-    S_StartSound (player->mo, sfx_dice_d6);
-
-    P_SetMobjState (player->mo, S_PLAY_ATK1);
-    DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
-
-    P_SetPsprite (player,
-		  ps_flash,
-		  weaponinfo[player->readyweapon].flashstate);
-
-    if (player->powers[pw_dicefortune])
-    {
-        guaranteedCrit = 1;
-        player->powers[pw_dicefortune] = 0;
-        player->message = "CRITICAL!";
-    }
-
-    damage = P_CalculateDiceDamage(wp_d8, guaranteedCrit, &critRoll, NULL);
-
-    P_BulletSlope (player->mo);
-    P_GunShotWithDamage (player->mo, !player->refire, damage);
-}
-
-
-//
-// A_FireD10 - Goblin Dice Rollaz d10 ricochet weapon
-// Fires a projectile that bounces once off walls
-//
-void
-A_FireD10
-( player_t*	player,
-  pspdef_t*	psp ) 
-{
-    int damage;
-    int guaranteedCrit = 0;
-    int critRoll = 0;
-    mobj_t* mo;
-    
-    S_StartSound (player->mo, sfx_rlaunc);
-
-    P_SetMobjState (player->mo, S_PLAY_ATK1);
-    DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
-
-    P_SetPsprite (player,
-		  ps_flash,
-		  weaponinfo[player->readyweapon].flashstate);
-
-    if (player->powers[pw_dicefortune])
-    {
-        guaranteedCrit = 1;
-        player->powers[pw_dicefortune] = 0;
-        player->message = "CRITICAL!";
-    }
-
-    damage = P_CalculateDiceDamage(wp_d10, guaranteedCrit, &critRoll, NULL);
-
-    mo = P_SpawnPlayerMissile (player->mo, MT_D10PROJECTILE);
-    
-    if (mo)
-    {
-        mo->damage = damage;
-        mo->threshold = 1;
-    }
+    P_GunShotWithDamage (player->mo, true, damage1);
+    P_GunShotWithDamage (player->mo, false, damage2);
 }
 
 

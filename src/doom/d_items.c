@@ -171,6 +171,15 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
     	S_D10_1,
     	S_D10FLASH
     },
+    {
+    	// twin d6 scatter weapon
+    	am_lightdice,
+    	S_TWIND6UP,
+    	S_TWIND6DOWN,
+    	S_TWIND6,
+    	S_TWIND6_1,
+    	S_TWIND6FLASH
+    },
 };
 
 // Goblin Dice Rollaz: Dice weapon configuration table
@@ -271,6 +280,18 @@ dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
         1,      // ricochet_bounces: 1 bounce
         0, 0,   // No gamble/misfire
         SPF_NONE, 35  // Mid-tier heavy weapon
+    },
+    {   // wp_twind6 - twin d6 scatter weapon (close-range burst)
+        6,      // die_type: d6 (two dice fired)
+        16,     // crit_chance: 16% per die (roll of 6 on each die)
+        2,      // crit_multiplier: 2x on crit per die
+        1,      // min_damage
+        6,      // crit_roll: 6
+        {1, 1, 2, 2, 3, 5, 10},  // 1-2=1, 3-4=2, 5=3, 6=crit(10)
+        0,      // gamble_shot: no
+        0,      // ricochet_bounces: no
+        0, 0,   // No misfire
+        SPF_EARLY_GAME | SPF_RARE, 20  // Close-range, early game, rare
     },
 };
 
