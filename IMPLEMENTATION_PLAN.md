@@ -102,7 +102,7 @@
 - [ ] Add powerup-only test map for tuning
 
 ### Phase 13: Map Themes
-- [ ] Document mine/cavern map theme
+- [x] Document mine/cavern map theme
 - [ ] Define texture palette (rock, timber supports, rails)
 - [ ] Define lighting rules (low light, warm torches)
 - [ ] Define ambient sound profile (drips, rumble)
