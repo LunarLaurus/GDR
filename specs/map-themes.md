@@ -212,7 +212,212 @@ Sector configuration:
 
 # Forge / Lava Map Theme
 
-*(Document continues in map-themes-forge.md)*
+## Theme Identity
+
+The Forge/Lava theme represents the deep dwarven forges and volcanic chambers where molten metal flows and ancient war machines are constructed—a harsh, fiery environment of industrial machinery and natural geothermal power.
+
+## Texture Palette
+
+### Floor Textures
+
+| Texture | Name | Description |
+|---------|------|-------------|
+| FLAOR1 | Molten Rock | Glowing red-orange cracked stone |
+| FLAOR2 | Iron Grate | Metal floor with gaps |
+| FLAOR3 | Cooled Lava | Dark red/black hardened lava |
+| FLAOR4 | Metal Plate | Industrial steel flooring |
+| FLAOR5 | Ash Floor | Grey powdery volcanic ash |
+
+### Wall Textures
+
+| Texture | Name | Description |
+|---------|------|-------------|
+| LAVA1 | Magma Wall | Glowing lava flow on vertical surface |
+| LAVA2 | Cooling Rock | Dark red cooling basalt |
+| FORGE1 | Stone Forge | Heat-stained grey stone |
+| FORGE2 | Brick Forge | Firebrick red industrial brick |
+| ANVIL | Anvil Block | Black iron anvil surface |
+| CHAIN | Hanging Chain | Vertical chain texture |
+| GEAR | Large Gear | Bronze/copper gear decoration |
+| COOLER | Cooling Rack | Water-cooled metal bars |
+
+### Ceiling Textures
+
+| Texture | Name | Description |
+|---------|------|-------------|
+| FORGE_C1 | Smoke Ceiling | Dark with soot stains |
+| FORGE_C2 | Beam Ceiling | Exposed iron support beams |
+| FORGE_C3 | Vent Ceiling | Industrial ventilation grates |
+
+## Lighting Rules
+
+- **Base light level**: 96 (forge glow provides ambient light)
+- **Lava glow**: +48 light radius around lava sectors, red tint (RGB: 255, 100, 50)
+- **Forge light**: +64 light radius around active forges, orange tint (RGB: 255, 180, 100)
+- **Ambient orange bias**: All lighting in forge theme shifted warm
+- **Shadow zones**: 32 light level in corners (still brighter than caverns)
+- **Heat shimmer**: Visual distortion effect near lava (future)
+
+### Light Source Types
+
+1. **Molten Lava** (sector light): Radius variable, intensity based on sector size, red-orange
+2. **Forge Fire** (point light): Radius 256, intensity 1.4, orange-yellow
+3. **Lantern** (point light): Radius 192, intensity 1.0, warm yellow
+4. **Ember** (point light): Radius 64, intensity 0.6, flickering red
+
+## Environmental Hazards
+
+### Lava Floor
+- Trigger: Sector with lava texture, floor height < 0
+- Damage: 10% health per second
+- Visual: Animated lava texture, rising heat particles
+- Prevention: Only crossable via bridges, platforms, or with powerup
+- Note: Player cannot stand on lava sectors
+
+### Steam Vent
+- Trigger: Periodic linedef action
+- Cycle: 2 seconds active, 4 seconds dormant
+- Damage: 5% per second while active
+- Visual: White steam sprite, obscuration effect
+- Audio: Hissing sound
+
+### Molten Splash
+- Trigger: Random timed event in lava-adjacent sectors
+- Damage: 15% (one-time hit)
+- Visual: Projectile sprite from lava surface
+- Warning: Subtle screen flash before launch
+
+### Hot Metal
+- Trigger: Sector with "heated floor" flag
+- Damage: 2% per second (persistent)
+- Visual: Orange glow on floor texture
+- Mitigation: Move quickly through affected areas
+
+## Ambient Sound Profile
+
+### Continuous
+- Forge hammering: Rhythmic, 1-3 second intervals
+- Lava bubbling: Constant low rumble
+- Bellows/fan: Periodic whooshing, 5-second cycle
+
+### Triggered
+- Steam hiss: On vent activation
+- Metal clanging: On mover object movement
+- Dwarf voice: Combat chatter when enemies present
+
+### Background
+- Factory ambience: Mechanical drone, echoes
+- No ambient music (industrial soundscape)
+
+## Enemy Weighting
+
+### Primary (60% spawn rate)
+
+| Enemy | Spawn Weight |
+|-------|-------------|
+| Dwarf Miner | 25% |
+| Armored Dwarf | 20% |
+| Dwarf Marksman | 15% |
+
+### Secondary (30% spawn rate)
+
+| Enemy | Spawn Weight |
+|-------|-------------|
+| Dwarf Engineer | 15% |
+| Dwarf Defender | 10% |
+| Dwarf Berserker | 5% |
+
+### Rare (10% spawn rate)
+
+| Enemy | Spawn Weight |
+|-------|-------------|
+| Dwarf Captain | 5% |
+| Dwarf Bombardier | 3% |
+| Goblin Alchemist (invader) | 2% |
+
+### Encounter Density
+- Small rooms: 2-4 enemies (dwarves hold formation)
+- Medium rooms: 5-10 enemies
+- Large chambers: 12-25 enemies
+- Arena fights: Up to 30 enemies
+
+## Example Room Archetypes
+
+### Main Forge
+```
+Sector configuration:
+- Floor: 0 height
+- Ceiling: 192 height
+- Size: 512x512 to 1024x1024
+- Features: Central anvil, magma pit, storage barrels
+- Enemy placement: 6-15 enemies, formation positions
+- Light: Multiple forge fires, lava glow
+- Special: Destructible props (barrels explode)
+```
+
+### Lava River
+```
+Sector configuration:
+- Floor: -32 height (lava)
+- Ceiling: 128 height
+- Size: 128x512 (corridor)
+- Features: Bridge platform (solid), lava sides
+- Enemy placement: Defenders on bridge
+- Light: Lava glow from below, embers rising
+- Special: Fall = death, bridge = only path
+```
+
+### Armory
+```
+Sector configuration:
+- Floor: 0 height
+- Ceiling: 96 height
+- Size: 256x256 to 512x256
+- Features: Weapon racks, armor stands
+- Enemy placement: 4-8 guards, stationary posts
+- Light: Lanterns, warm orange tint
+- Special: High-tier weapon pickup spawn
+```
+
+### magma Chamber
+```
+Sector configuration:
+- Floor: -64 height (deep lava pool)
+- Ceiling: 256 height
+- Size: 512x512
+- Features: Central island, lava falls
+- Enemy placement: Boss arena setup
+- Light: Intense lava glow, pulsing
+- Special: Boss encounter space
+```
+
+### Cooling Room
+```
+Sector configuration:
+- Floor: 0 height (water layer)
+- Ceiling: 128 height
+- Size: 256x256
+- Features: Cooling racks, steam vents
+- Enemy placement: 3-5 enemies
+- Light: Dim, blue-white tint
+- Special: Steam provides concealment
+```
+
+## Mapper Checklist for Forge Maps
+
+- [ ] All floor sectors use appropriate forge/lava textures
+- [ ] Lava sectors properly tagged for damage (no standing allowed)
+- [ ] Light levels verified: base 96, forge zones 160+, lava 144
+- [ ] Lava animations present on all lava textures
+- [ ] Steam vent linedefs configured with timing
+- [ ] Forge fire objects placed in working forges
+- [ ] Metal hazard sectors marked in sector notes
+- [ ] Enemy spawn weights follow dwarf-heavy ratios
+- [ ] Ambient sound linedefs placed (hammer, bubble)
+- [ ] No untextured sectors remaining
+- [ ] Minimum 2 exits from any forge room
+- [ ] Exploding barrel placements noted
+- [ ] Boss arena check if room > 768x768
 
 ---
 

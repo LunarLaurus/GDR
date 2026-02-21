@@ -103,22 +103,22 @@
 
 ### Phase 13: Map Themes
 - [x] Document mine/cavern map theme
-- [ ] Define texture palette (rock, timber supports, rails)
-- [ ] Define lighting rules (low light, warm torches)
-- [ ] Define ambient sound profile (drips, rumble)
-- [ ] Define primary enemy weighting (goblin-heavy)
-- [ ] Define environmental hazards (cave-ins, pits)
-- [ ] Provide example room archetypes (shafts, tunnels, chambers)
-- [ ] Create mapper checklist for cavern layouts
-- [ ] Document forge/lava map theme
-- [ ] Define lava floor damage sector rules
-- [ ] Define animated lava textures
-- [ ] Define red/orange lighting bias
-- [ ] Define dwarf-heavy enemy weighting
-- [ ] Define environmental hazards (steam vents, molten spills)
-- [ ] Define industrial props (anvils, chains, grates)
-- [ ] Provide arena-style encounter layout examples
-- [ ] Create mapper checklist for forge maps
+- [x] Define texture palette (rock, timber supports, rails)
+- [x] Define lighting rules (low light, warm torches)
+- [x] Define ambient sound profile (drips, rumble)
+- [x] Define primary enemy weighting (goblin-heavy)
+- [x] Define environmental hazards (cave-ins, pits)
+- [x] Provide example room archetypes (shafts, tunnels, chambers)
+- [x] Create mapper checklist for cavern layouts
+- [x] Document forge/lava map theme
+- [x] Define lava floor damage sector rules
+- [x] Define animated lava textures
+- [x] Define red/orange lighting bias
+- [x] Define dwarf-heavy enemy weighting
+- [x] Define environmental hazards (steam vents, molten spills)
+- [x] Define industrial props (anvils, chains, grates)
+- [x] Provide arena-style encounter layout examples
+- [x] Create mapper checklist for forge maps
 - [ ] Document treasure chamber map theme
 - [ ] Define gold/gem texture variants
 - [ ] Define trap sector mechanics (pressure plates, drops)
