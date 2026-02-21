@@ -40,6 +40,7 @@
 
 #include "p_inter.h"
 #include "dmg_ovl.h"
+#include "d_items.h"
 
 
 #define BONUSADD	6
@@ -876,6 +877,7 @@ P_DamageMobj
     if (source && source->player && damage > 0)
     {
         int effectiveCritChance = CRIT_CHANCE;
+        int effectiveCritMultiplier = CRIT_MULTIPLIER;
         boolean guaranteed_crit = false;
 
         if (source->player->powers[pw_dicefortune])
@@ -889,9 +891,19 @@ P_DamageMobj
             effectiveCritChance += crit_boost_bonus;
         }
 
+        if (source->player->readyweapon >= 0 && source->player->readyweapon < NUMWEAPONS)
+        {
+            dice_weapon_info_t *dwi = &dice_weapon_info[source->player->readyweapon];
+            if (dwi->die_type > 0)
+            {
+                effectiveCritChance = dwi->crit_chance;
+                effectiveCritMultiplier = dwi->crit_multiplier;
+            }
+        }
+
         if (guaranteed_crit || (P_Random() % 100) < effectiveCritChance)
         {
-            damage *= CRIT_MULTIPLIER;
+            damage *= effectiveCritMultiplier;
             was_critical = true;
             crit_roll = (P_Random() % 20) + 1;
             if (guaranteed_crit)

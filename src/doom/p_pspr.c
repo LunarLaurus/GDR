@@ -747,6 +747,26 @@ P_GunShot
     P_LineAttack (mo, angle, MISSILERANGE, bulletslope, damage);
 }
 
+//
+// P_GunShotWithDamage - Goblin Dice Rollaz
+// Variant that accepts custom damage (for dice weapons)
+//
+void
+P_GunShotWithDamage
+( mobj_t*	mo,
+  boolean	accurate,
+  int		damage )
+{
+    angle_t	angle;
+	
+    angle = mo->angle;
+
+    if (!accurate)
+	angle += P_SubRandom() << 18;
+
+    P_LineAttack (mo, angle, MISSILERANGE, bulletslope, damage);
+}
+
 
 //
 // A_FirePistol
@@ -802,7 +822,7 @@ A_FireD6Blast
     damage = P_CalculateDiceDamage(wp_d6blaster, guaranteedCrit, &critRoll);
 
     P_BulletSlope (player->mo);
-    P_GunShot (player->mo, !player->refire);
+    P_GunShotWithDamage (player->mo, !player->refire, damage);
 }
 
 
@@ -930,7 +950,7 @@ A_FireD20Cannon
     damage = P_CalculateDiceDamage(wp_d20cannon, guaranteedCrit, &critRoll);
 
     P_BulletSlope (player->mo);
-    P_GunShot (player->mo, !player->refire);
+    P_GunShotWithDamage (player->mo, !player->refire, damage);
 }
 
 
@@ -966,7 +986,7 @@ A_FireD12
     damage = P_CalculateDiceDamage(wp_d12, guaranteedCrit, &critRoll);
 
     P_BulletSlope (player->mo);
-    P_GunShot (player->mo, !player->refire);
+    P_GunShotWithDamage (player->mo, !player->refire, damage);
 }
 
 
@@ -1002,7 +1022,7 @@ A_FirePercentile
     damage = P_CalculateDiceDamage(wp_percentile, guaranteedCrit, &critRoll);
 
     P_BulletSlope (player->mo);
-    P_GunShot (player->mo, !player->refire);
+    P_GunShotWithDamage (player->mo, !player->refire, damage);
 }
 
 
@@ -1038,7 +1058,7 @@ A_FireD4
     damage = P_CalculateDiceDamage(wp_d4, guaranteedCrit, &critRoll);
 
     P_BulletSlope (player->mo);
-    P_GunShot (player->mo, !player->refire);
+    P_GunShotWithDamage (player->mo, !player->refire, damage);
 }
 
 
