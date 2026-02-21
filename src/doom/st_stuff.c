@@ -132,7 +132,9 @@
 #define ST_HEALTHX			90
 #define ST_HEALTHY			171
 
-// Weapon pos.
+// Goblin Dice Rollaz: Expanded weapon slots for dice weapons
+// Supports up to 10 weapons in the arms display (indices 1-10)
+#define ST_ARMSLOTS 10
 #define ST_ARMSX			111
 #define ST_ARMSY			172
 #define ST_ARMSBGX			104
@@ -275,7 +277,8 @@ static patch_t*		faceback;
 static patch_t*		armsbg;
 
 // weapon ownership patches
-static patch_t*		arms[6][2]; 
+// Goblin Dice Rollaz: Expanded from 6 to 10 weapon slots for dice weapons
+static patch_t*		arms[ST_ARMSLOTS][2]; 
 
 // ready-weapon widget
 static st_number_t	w_ready;
@@ -291,7 +294,8 @@ static st_binicon_t	w_armsbg;
 
 
 // weapon ownership widgets
-static st_multicon_t	w_arms[6];
+// Goblin Dice Rollaz: Expanded from 6 to 10 weapon slots for dice weapons
+static st_multicon_t	w_arms[ST_ARMSLOTS];
 
 // face status widget
 static st_multicon_t	w_faces; 
@@ -1157,7 +1161,8 @@ void ST_drawWidgets(boolean refresh)
 
     STlib_updateBinIcon(&w_armsbg, refresh);
 
-    for (i=0;i<6;i++)
+    // Goblin Dice Rollaz: expanded to support dice weapons
+    for (i=0;i<ST_ARMSLOTS;i++)
 	STlib_updateMultIcon(&w_arms[i], refresh);
 
     STlib_updateMultIcon(&w_faces, refresh);
@@ -1243,8 +1248,8 @@ static void ST_loadUnloadGraphics(load_callback_t callback)
     // arms background
     callback(DEH_String("STARMS"), &armsbg);
 
-    // arms ownership widgets
-    for (i=0; i<6; i++)
+    // arms ownership widgets - Goblin Dice Rollaz: expanded to support dice weapons
+    for (i=0; i<ST_ARMSLOTS; i++)
     {
 	DEH_snprintf(namebuf, 9, "STGNUM%d", i+2);
 
@@ -1398,12 +1403,12 @@ void ST_createWidgets(void)
 		      &st_notdeathmatch,
 		      &st_statusbaron);
 
-    // weapons owned
-    for(i=0;i<6;i++)
+    // weapons owned - Goblin Dice Rollaz: expanded to support dice weapons
+    for(i=0;i<ST_ARMSLOTS;i++)
     {
         STlib_initMultIcon(&w_arms[i],
-                           ST_ARMSX+(i%3)*ST_ARMSXSPACE,
-                           ST_ARMSY+(i/3)*ST_ARMSYSPACE,
+                           ST_ARMSX+(i%4)*ST_ARMSXSPACE,  // 4 columns for more weapons
+                           ST_ARMSY+(i/4)*ST_ARMSYSPACE,
                            arms[i],
                            &plyr->weaponowned[i+1],
                            &st_armson);
