@@ -25,6 +25,7 @@
 
 #include "m_random.h"
 #include "p_local.h"
+#include "d_items.h"
 #include "s_sound.h"
 
 // State.
@@ -558,6 +559,99 @@ static void DecreaseAmmo(player_t *player, int ammonum, int amount)
 
 
 //
+// P_RollDice - Goblin Dice Rollaz: Centralized dice roll function
+// Uses deterministic Doom RNG for netplay compatibility
+//
+int
+P_RollDice (int sides)
+{
+    if (sides <= 0)
+        return 0;
+    return (P_Random() % sides) + 1;
+}
+
+
+//
+// P_WeaponCanCrit - Check if weapon can score critical hits
+//
+int
+P_WeaponCanCrit (int weapon)
+{
+    if (weapon < 0 || weapon >= NUMWEAPONS)
+        return 0;
+    return dice_weapon_info[weapon].die_type > 0 ? 1 : 0;
+}
+
+
+//
+// P_CalculateDiceDamage - Goblin Dice Rollaz: Centralized damage calculation
+// Handles guaranteed crit, dice rolling, and damage mapping
+//
+int
+P_CalculateDiceDamage (int weapon, int guaranteedCrit, int *outCritRoll)
+{
+    int diceRoll;
+    int damage = 0;
+    dice_weapon_info_t *dwi;
+    
+    if (outCritRoll)
+        *outCritRoll = 0;
+    
+    if (weapon < 0 || weapon >= NUMWEAPONS)
+        return 1;
+    
+    dwi = &dice_weapon_info[weapon];
+    
+    if (dwi->die_type == 0)
+        return 1;
+    
+    if (guaranteedCrit)
+    {
+        diceRoll = dwi->die_type;
+    }
+    else
+    {
+        diceRoll = P_RollDice(dwi->die_type);
+    }
+    
+    if (diceRoll == dwi->crit_roll)
+    {
+        if (outCritRoll)
+            *outCritRoll = diceRoll;
+        damage = dwi->damage_table[6] * dwi->crit_multiplier;
+    }
+    else
+    {
+        int bucket;
+        if (dwi->die_type <= 6)
+        {
+            bucket = diceRoll - 1;
+        }
+        else if (dwi->die_type <= 12)
+        {
+            bucket = ((diceRoll - 1) * 6) / dwi->die_type;
+        }
+        else if (dwi->die_type <= 20)
+        {
+            bucket = ((diceRoll - 1) * 6) / dwi->die_type;
+        }
+        else
+        {
+            bucket = ((diceRoll - 1) * 6) / dwi->die_type;
+        }
+        if (bucket > 5) bucket = 5;
+        if (bucket < 0) bucket = 0;
+        
+        damage = dwi->damage_table[bucket];
+        if (damage == 0)
+            damage = dwi->min_damage;
+    }
+    
+    return damage;
+}
+
+
+//
 // A_FireMissile
 //
 void
@@ -678,16 +772,16 @@ A_FirePistol
 
 //
 // A_FireD6Blast - Goblin Dice Rollaz d6 blaster
-// Rolls a d6 to determine damage: 1-2=1 dmg, 3-4=2 dmg, 5=3 dmg, 6=critical (5 dmg)
+// Uses shared dice-roll backend
 //
 void
 A_FireD6Blast
 ( player_t*	player,
   pspdef_t*	psp ) 
 {
-    int diceRoll;
     int damage;
-    int guaranteedCrit = false;
+    int guaranteedCrit = 0;
+    int critRoll = 0;
     
     S_StartSound (player->mo, sfx_pistol);
 
@@ -700,36 +794,12 @@ A_FireD6Blast
 
     if (player->powers[pw_dicefortune])
     {
-        guaranteedCrit = true;
+        guaranteedCrit = 1;
         player->powers[pw_dicefortune] = 0;
         player->message = "CRITICAL!";
     }
 
-    if (guaranteedCrit)
-    {
-        diceRoll = 6;
-    }
-    else
-    {
-        diceRoll = (P_Random() % 6) + 1;
-    }
-    
-    if (diceRoll >= 5)
-    {
-        damage = 3;
-        if (diceRoll == 6)
-        {
-            damage = 5;
-        }
-    }
-    else if (diceRoll >= 3)
-    {
-        damage = 2;
-    }
-    else
-    {
-        damage = 1;
-    }
+    damage = P_CalculateDiceDamage(wp_d6blaster, guaranteedCrit, &critRoll);
 
     P_BulletSlope (player->mo);
     P_GunShot (player->mo, !player->refire);
@@ -830,16 +900,16 @@ A_FireCGun
 
 //
 // A_FireD20Cannon - Goblin Dice Rollaz d20 cannon
-// Rolls a d20 to determine damage: 1-5=5 dmg, 6-10=10 dmg, 11-15=15 dmg, 16-19=25 dmg, 20=CRITICAL (50 dmg)
+// Uses shared dice-roll backend
 //
 void
 A_FireD20Cannon
 ( player_t*	player,
   pspdef_t*	psp ) 
 {
-    int diceRoll;
     int damage;
-    int guaranteedCrit = false;
+    int guaranteedCrit = 0;
+    int critRoll = 0;
     
     S_StartSound (player->mo, sfx_plasma);
 
@@ -852,40 +922,12 @@ A_FireD20Cannon
 
     if (player->powers[pw_dicefortune])
     {
-        guaranteedCrit = true;
+        guaranteedCrit = 1;
         player->powers[pw_dicefortune] = 0;
         player->message = "CRITICAL!";
     }
 
-    if (guaranteedCrit)
-    {
-        diceRoll = 20;
-    }
-    else
-    {
-        diceRoll = (P_Random() % 20) + 1;
-    }
-    
-    if (diceRoll == 20)
-    {
-        damage = 50;
-    }
-    else if (diceRoll >= 16)
-    {
-        damage = 25;
-    }
-    else if (diceRoll >= 11)
-    {
-        damage = 15;
-    }
-    else if (diceRoll >= 6)
-    {
-        damage = 10;
-    }
-    else
-    {
-        damage = 5;
-    }
+    damage = P_CalculateDiceDamage(wp_d20cannon, guaranteedCrit, &critRoll);
 
     P_BulletSlope (player->mo);
     P_GunShot (player->mo, !player->refire);
@@ -894,16 +936,16 @@ A_FireD20Cannon
 
 //
 // A_FireD12 - Goblin Dice Rollaz d12 heavy impact weapon
-// Rolls a d12 to determine damage: 1-3=3 dmg, 4-6=6 dmg, 7-9=9 dmg, 10-11=15 dmg, 12=CRITICAL (24 dmg)
+// Uses shared dice-roll backend
 //
 void
 A_FireD12
 ( player_t*	player,
   pspdef_t*	psp ) 
 {
-    int diceRoll;
     int damage;
-    int guaranteedCrit = false;
+    int guaranteedCrit = 0;
+    int critRoll = 0;
     
     S_StartSound (player->mo, sfx_dshtgn);
 
@@ -916,40 +958,12 @@ A_FireD12
 
     if (player->powers[pw_dicefortune])
     {
-        guaranteedCrit = true;
+        guaranteedCrit = 1;
         player->powers[pw_dicefortune] = 0;
         player->message = "CRITICAL!";
     }
 
-    if (guaranteedCrit)
-    {
-        diceRoll = 12;
-    }
-    else
-    {
-        diceRoll = (P_Random() % 12) + 1;
-    }
-    
-    if (diceRoll == 12)
-    {
-        damage = 24;
-    }
-    else if (diceRoll >= 10)
-    {
-        damage = 15;
-    }
-    else if (diceRoll >= 7)
-    {
-        damage = 9;
-    }
-    else if (diceRoll >= 4)
-    {
-        damage = 6;
-    }
-    else
-    {
-        damage = 3;
-    }
+    damage = P_CalculateDiceDamage(wp_d12, guaranteedCrit, &critRoll);
 
     P_BulletSlope (player->mo);
     P_GunShot (player->mo, !player->refire);
@@ -958,16 +972,16 @@ A_FireD12
 
 //
 // A_FirePercentile - Goblin Dice Rollaz percentile dice weapon
-// Rolls 1-100 to determine damage: 1-50=5 dmg, 51-75=10 dmg, 76-90=20 dmg, 91-99=40 dmg, 100=CRITICAL (100 dmg)
+// Uses shared dice-roll backend
 //
 void
 A_FirePercentile
 ( player_t*	player,
   pspdef_t*	psp ) 
 {
-    int diceRoll;
     int damage;
-    int guaranteedCrit = false;
+    int guaranteedCrit = 0;
+    int critRoll = 0;
     
     S_StartSound (player->mo, sfx_plasma);
 
@@ -980,40 +994,12 @@ A_FirePercentile
 
     if (player->powers[pw_dicefortune])
     {
-        guaranteedCrit = true;
+        guaranteedCrit = 1;
         player->powers[pw_dicefortune] = 0;
         player->message = "CRITICAL!";
     }
 
-    if (guaranteedCrit)
-    {
-        diceRoll = 100;
-    }
-    else
-    {
-        diceRoll = (P_Random() % 100) + 1;
-    }
-    
-    if (diceRoll == 100)
-    {
-        damage = 100;
-    }
-    else if (diceRoll >= 91)
-    {
-        damage = 40;
-    }
-    else if (diceRoll >= 76)
-    {
-        damage = 20;
-    }
-    else if (diceRoll >= 51)
-    {
-        damage = 10;
-    }
-    else
-    {
-        damage = 5;
-    }
+    damage = P_CalculateDiceDamage(wp_percentile, guaranteedCrit, &critRoll);
 
     P_BulletSlope (player->mo);
     P_GunShot (player->mo, !player->refire);
@@ -1022,17 +1008,16 @@ A_FirePercentile
 
 //
 // A_FireD4 - Goblin Dice Rollaz d4 throwing knives
-// Quick attack weapon, low damage but fast fire rate
-// Rolls d4: 1=1 dmg, 2=2 dmg, 3=3 dmg, 4=CRITICAL (8 dmg)
+// Uses shared dice-roll backend
 //
 void
 A_FireD4
 ( player_t*	player,
   pspdef_t*	psp ) 
 {
-    int diceRoll;
     int damage;
-    int guaranteedCrit = false;
+    int guaranteedCrit = 0;
+    int critRoll = 0;
     
     S_StartSound (player->mo, sfx_pistol);
 
@@ -1045,28 +1030,12 @@ A_FireD4
 
     if (player->powers[pw_dicefortune])
     {
-        guaranteedCrit = true;
+        guaranteedCrit = 1;
         player->powers[pw_dicefortune] = 0;
         player->message = "CRITICAL!";
     }
 
-    if (guaranteedCrit)
-    {
-        diceRoll = 4;
-    }
-    else
-    {
-        diceRoll = (P_Random() % 4) + 1;
-    }
-    
-    if (diceRoll == 4)
-    {
-        damage = 8;
-    }
-    else
-    {
-        damage = diceRoll;
-    }
+    damage = P_CalculateDiceDamage(wp_d4, guaranteedCrit, &critRoll);
 
     P_BulletSlope (player->mo);
     P_GunShot (player->mo, !player->refire);

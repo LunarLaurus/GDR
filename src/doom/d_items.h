@@ -36,6 +36,23 @@ typedef struct
 
 } weaponinfo_t;
 
+// Goblin Dice Rollaz: Dice weapon configuration
+typedef struct
+{
+    int die_type;           // Number of sides (4, 6, 10, 12, 20, 100)
+    int crit_chance;        // Base crit chance (percent)
+    int crit_multiplier;    // Damage multiplier on crit
+    int min_damage;         // Minimum roll that deals damage
+    int crit_roll;          // Roll value that triggers crit
+    int damage_table[7];    // Damage mapping for roll ranges
+} dice_weapon_info_t;
+
 extern  weaponinfo_t    weaponinfo[NUMWEAPONS];
+extern  dice_weapon_info_t dice_weapon_info[NUMWEAPONS];
+
+// Dice roll backend functions
+int P_RollDice(int sides);
+int P_CalculateDiceDamage(int weapon, int guaranteedCrit, int *outCritRoll);
+int P_WeaponCanCrit(int weapon);
 
 #endif

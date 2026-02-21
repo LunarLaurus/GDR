@@ -133,7 +133,7 @@
 - [x] Add internal review checklist for map consistency
 
 ### Phase 13.5: Arsenal & Enemy Expansion (Deep Content Pass)
-- [ ] Refactor weapon system to support shared dice-roll backend (centralized roll + crit resolver)
+- [x] Refactor weapon system to support shared dice-roll backend (centralized roll + crit resolver)
 - [ ] Add unique firing animations per die type (distinct silhouettes and recoil timing)
 - [ ] Implement per-weapon crit modifiers (e.g., d4 high crit chance, d12 high crit multiplier)
 - [ ] Add alternate fire modes (if engine constraints allow)
