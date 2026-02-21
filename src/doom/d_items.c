@@ -154,13 +154,22 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
  	S_D4FLASH
     },
     {
- 	// d8 balanced mid-tier
- 	am_lightdice,
- 	S_D8UP,
- 	S_D8DOWN,
- 	S_D8,
- 	S_D8_1,
- 	S_D8FLASH
+    	// d8 balanced mid-tier
+    	am_lightdice,
+    	S_D8UP,
+    	S_D8DOWN,
+    	S_D8,
+    	S_D8_1,
+    	S_D8FLASH
+    },
+    {
+    	// d10 ricochet weapon
+    	am_heavydice,
+    	S_D10UP,
+    	S_D10DOWN,
+    	S_D10,
+    	S_D10_1,
+    	S_D10FLASH
     },
 };
 
@@ -170,7 +179,7 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
 dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
 {
     {   // wp_fist - no dice
-        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}, 0, 0, 0, SPF_NONE, 0
+        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}, 0, 0, 0, 0, SPF_NONE, 0
     },
     {   // wp_d6blaster - d6
         6,      // die_type: d6
@@ -178,7 +187,7 @@ dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
         2,      // crit_multiplier: 2x on crit
         1,      // min_damage
         6,      // crit_roll: 6
-        {1, 1, 2, 2, 3, 5, 10}, 0, 0, 0,   // Balanced: 1-2=1, 3-4=2, 5=3, 6=crit(10)
+        {1, 1, 2, 2, 3, 5, 10}, 0, 0, 0, 0,   // Balanced: 1-2=1, 3-4=2, 5=3, 6=crit(10)
         SPF_ALWAYS_SPAWN, 100  // Common starting weapon
     },
     {   // wp_d20cannon - d20
@@ -187,7 +196,7 @@ dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
         2,      // crit_multiplier: 2x on crit
         5,      // min_damage
         20,     // crit_roll: 20
-        {5, 5, 10, 10, 15, 25, 50}, 0, 0, 0,  // Balanced: 1-5=5, 6-10=10, 11-15=15, 16-19=25, 20=crit(50)
+        {5, 5, 10, 10, 15, 25, 50}, 0, 0, 0, 0,  // Balanced: 1-5=5, 6-10=10, 11-15=15, 16-19=25, 20=crit(50)
         SPF_LATE_GAME, 30  // Heavy weapon, later maps
     },
     {   // wp_d12 - d12
@@ -196,29 +205,29 @@ dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
         2,      // crit_multiplier: 2x on crit
         3,      // min_damage
         12,     // crit_roll: 12
-        {3, 3, 6, 6, 9, 12, 24}, 0, 0, 0,  // 1-3=3, 4-6=6, 7-9=9, 10-12=12, 12=crit(24)
+        {3, 3, 6, 6, 9, 12, 24}, 0, 0, 0, 0,  // 1-3=3, 4-6=6, 7-9=9, 10-12=12, 12=crit(24)
         SPF_EARLY_GAME | SPF_RARE, 25  // Rare early game weapon
     },
     {   // wp_shotgun - shotgun (not dice)
-        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}, 0, 0, 0, SPF_ALWAYS_SPAWN, 80
+        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}, 0, 0, 0, 0, SPF_ALWAYS_SPAWN, 80
     },
     {   // wp_chaingun - chaingun (not dice)
-        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}, 0, 0, 0, SPF_ALWAYS_SPAWN, 50
+        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}, 0, 0, 0, 0, SPF_ALWAYS_SPAWN, 50
     },
     {   // wp_missile - missile launcher (not dice)
-        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}, 0, 0, 0, SPF_NONE, 25
+        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}, 0, 0, 0, 0, SPF_NONE, 25
     },
     {   // wp_plasma - plasma rifle (not dice)
-        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}, 0, 0, 0, SPF_NONE, 30
+        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}, 0, 0, 0, 0, SPF_NONE, 30
     },
     {   // wp_bfg - bfg 9000 (not dice)
-        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}, 0, 0, 0, SPF_NONE, 15
+        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}, 0, 0, 0, 0, SPF_NONE, 15
     },
     {   // wp_chainsaw - chainsaw (not dice)
-        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}, 0, 0, 0, SPF_NONE, 20
+        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}, 0, 0, 0, 0, SPF_NONE, 20
     },
     {   // wp_supershotgun - super shotgun (not dice)
-        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}, 0, 0, 0, SPF_NONE, 10
+        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}, 0, 0, 0, 0, SPF_NONE, 10
     },
     {   // wp_percentile - d100 percentile (Gamble Shot - wide variance)
         100,    // die_type: d100
@@ -228,6 +237,7 @@ dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
         100,    // crit_roll: 100
         {1, 3, 5, 15, 35, 75, 100},  // Gamble Shot: 1-15=1, 16-35=3, 36-55=5, 56-75=15, 76-90=35, 91-99=75, 100=crit(100*3=300)
         1,      // gamble_shot: wide variance with exploding roll mechanic
+        0,      // ricochet_bounces: none
         5,      // misfire_roll: roll 1-5 triggers misfire (5% chance)
         25,     // misfire_penalty: 25% damage on misfire
         SPF_RARE | SPF_LATE_GAME, 20  // Rare, high-risk weapon for late game
@@ -238,7 +248,7 @@ dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
         2,      // crit_multiplier: 2x on crit
         1,      // min_damage
         4,      // crit_roll: 4
-        {1, 2, 3, 4, 0, 0, 8}, 0, 0, 0,  // Fixed: 1=1, 2=2, 3=3, 4=crit(8), no zeros in main table
+        {1, 2, 3, 4, 0, 0, 8}, 0, 0, 0, 0,  // Fixed: 1=1, 2=2, 3=3, 4=crit(8), no zeros in main table
         SPF_EARLY_GAME, 60  // Fast-firing early game weapon
     },
     {   // wp_d8 - d8 balanced mid-tier
@@ -247,8 +257,20 @@ dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
         2,      // crit_multiplier: 2x on crit
         2,      // min_damage
         8,      // crit_roll: 8
-        {1, 2, 3, 4, 5, 6, 16}, 0, 0, 0,  // 1=1, 2-3=2, 4=3, 5=4, 6=5, 7=6, 8=crit(16)
+        {1, 2, 3, 4, 5, 6, 16}, 0, 0, 0, 0,  // 1=1, 2-3=2, 4=3, 5=4, 6=5, 7=6, 8=crit(16)
         SPF_NONE, 45  // Mid-tier weapon, moderate spawn weight
+    },
+    {   // wp_d10 - d10 ricochet weapon
+        10,     // die_type: d10
+        10,     // crit_chance: 10% (roll of 10)
+        2,      // crit_multiplier: 2x on crit
+        2,      // min_damage
+        10,     // crit_roll: 10
+        {2, 2, 4, 4, 6, 8, 20},  // 1-2=2, 3-4=4, 5=6, 6-9=8, 10=crit(20)
+        0,      // gamble_shot: no
+        1,      // ricochet_bounces: 1 bounce
+        0, 0,   // No gamble/misfire
+        SPF_NONE, 35  // Mid-tier heavy weapon
     },
 };
 

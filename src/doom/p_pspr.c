@@ -1346,6 +1346,47 @@ A_FireD8
 }
 
 
+//
+// A_FireD10 - Goblin Dice Rollaz d10 ricochet weapon
+// Fires a projectile that bounces once off walls
+//
+void
+A_FireD10
+( player_t*	player,
+  pspdef_t*	psp ) 
+{
+    int damage;
+    int guaranteedCrit = 0;
+    int critRoll = 0;
+    mobj_t* mo;
+    
+    S_StartSound (player->mo, sfx_rlaunc);
+
+    P_SetMobjState (player->mo, S_PLAY_ATK1);
+    DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
+
+    P_SetPsprite (player,
+		  ps_flash,
+		  weaponinfo[player->readyweapon].flashstate);
+
+    if (player->powers[pw_dicefortune])
+    {
+        guaranteedCrit = 1;
+        player->powers[pw_dicefortune] = 0;
+        player->message = "CRITICAL!";
+    }
+
+    damage = P_CalculateDiceDamage(wp_d10, guaranteedCrit, &critRoll, NULL);
+
+    mo = P_SpawnPlayerMissile (player->mo, MT_D10PROJECTILE);
+    
+    if (mo)
+    {
+        mo->damage = damage;
+        mo->threshold = 1;
+    }
+}
+
 
 //
 // ?

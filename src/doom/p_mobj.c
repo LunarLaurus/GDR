@@ -178,16 +178,33 @@ void P_XYMovement (mobj_t* mo)
 	    }
 	    else if (mo->flags & MF_MISSILE)
 	    {
-		// explode a missile
 		if (ceilingline &&
 		    ceilingline->backsector &&
 		    ceilingline->backsector->ceilingpic == skyflatnum)
 		{
-		    // Hack to prevent missiles exploding
-		    // against the sky.
-		    // Does not handle sky floors.
 		    P_RemoveMobj (mo);
 		    return;
+		}
+
+		if (mo->type == MT_D10PROJECTILE && mo->threshold > 0)
+		{
+		    line_t* ld = ceilingline;
+		    fixed_t dx = mo->momx;
+		    fixed_t dy = mo->momy;
+		    fixed_t nx, ny;
+		    
+		    if (ld)
+		    {
+			fixed_t dot = (dx * ld->dx + dy * ld->dy) / (FRACUNIT * FRACUNIT);
+			nx = dx - 2 * dot * ld->dx;
+			ny = dy - 2 * dot * ld->dy;
+			
+			mo->momx = (nx >> 1);
+			mo->momy = (ny >> 1);
+			mo->threshold--;
+			
+			return;
+		    }
 		}
 		P_ExplodeMissile (mo);
 	    }

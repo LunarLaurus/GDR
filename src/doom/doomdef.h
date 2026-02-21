@@ -119,6 +119,7 @@ typedef enum
     wp_percentile,    // Percentile dice (rolls 1-100)
     wp_d4,            // d4 throwing knives
     wp_d8,            // d8 balanced mid-tier weapon
+    wp_d10,           // d10 ricochet weapon (projectiles bounce once)
 
     NUMWEAPONS,
     

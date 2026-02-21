@@ -61,6 +61,7 @@ void A_FireD12();
 void A_FirePercentile();
 void A_FireD4();
 void A_FireD8();
+void A_FireD10();
 void A_Light1();
 void A_FireShotgun();
 void A_Light2();
@@ -197,6 +198,14 @@ state_t	states[NUMSTATES] = {
     {SPR_D8A1,2,4,{NULL},S_D8_4,0,0},	// S_D8_3
     {SPR_D8A1,1,5,{A_ReFire},S_D8,0,0},	// S_D8_4
     {SPR_D8F,32768,6,{A_Light1},S_LIGHTDONE,0,0},	// S_D8FLASH
+    {SPR_D6B1,0,1,{A_WeaponReady},S_D10,0,0},	// S_D10
+    {SPR_D6B1,0,1,{A_Lower},S_D10DOWN,0,0},	// S_D10DOWN
+    {SPR_D6B1,0,1,{A_Raise},S_D10UP,0,0},	// S_D10UP
+    {SPR_D8A1,0,4,{NULL},S_D10_2,0,0},	// S_D10_1
+    {SPR_D8A1,1,6,{A_FireD10},S_D10_3,0,0},	// S_D10_2
+    {SPR_D8A1,2,4,{NULL},S_D10_4,0,0},	// S_D10_3
+    {SPR_D8A1,1,5,{A_ReFire},S_D10,0,0},	// S_D10_4
+    {SPR_D8F,32768,6,{A_Light1},S_LIGHTDONE,0,0},	// S_D10FLASH
     {SPR_SHTG,0,1,{A_WeaponReady},S_SGUN,0,0},	// S_SGUN
     {SPR_SHTG,0,1,{A_Lower},S_SGUNDOWN,0,0},	// S_SGUNDOWN
     {SPR_SHTG,0,1,{A_Raise},S_SGUNUP,0,0},	// S_SGUNUP
@@ -2223,6 +2232,32 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 	8*FRACUNIT,		// height
 	100,		// mass
 	20,		// damage
+	sfx_None,		// activesound
+	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_NOGRAVITY,		// flags
+	S_NULL		// raisestate
+    },
+
+    {		// MT_D10PROJECTILE - Goblin Dice Rollaz d10 ricochet projectile
+	-1,		// doomednum
+	S_ROCKET,		// spawnstate (reuse rocket sprite)
+	1000,		// spawnhealth
+	S_NULL,		// seestate
+	sfx_rlaunc,		// seesound
+	8,		// reactiontime
+	sfx_None,		// attacksound
+	S_NULL,		// painstate
+	0,		// painchance
+	sfx_None,		// painsound
+	S_NULL,		// meleestate
+	S_NULL,		// missilestate
+	S_EXPLODE1,		// deathstate
+	S_NULL,		// xdeathstate
+	sfx_barexp,		// deathsound
+	18*FRACUNIT,		// speed (slightly slower than rocket for control)
+	10*FRACUNIT,		// radius
+	8*FRACUNIT,		// height
+	100,		// mass
+	10,		// damage (will be modified by dice roll)
 	sfx_None,		// activesound
 	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_NOGRAVITY,		// flags
 	S_NULL		// raisestate
