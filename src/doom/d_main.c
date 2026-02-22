@@ -132,6 +132,10 @@ extern int      advantage_mode;
 extern int      luck;
 extern int      powerup_spawn_rate;
 
+// Goblin Dice Rollaz: crit scaling curve settings
+extern int      crit_scaling_default;
+extern int      crit_scaling_param;
+
 // Goblin Dice Rollaz: per-powerup rarity
 extern int      critboost_spawn_rate;
 extern int      doubledamage_spawn_rate;
@@ -396,6 +400,10 @@ void D_BindVariables(void)
     M_BindIntVariable("advantage_mode",         &advantage_mode);
     M_BindIntVariable("luck",                   &luck);
     M_BindIntVariable("powerup_spawn_rate",       &powerup_spawn_rate);
+
+    // Goblin Dice Rollaz: crit scaling curve settings
+    M_BindIntVariable("crit_scaling_default",   &crit_scaling_default);
+    M_BindIntVariable("crit_scaling_param",      &crit_scaling_param);
 
     // Goblin Dice Rollaz: per-powerup rarity settings
     M_BindIntVariable("critboost_spawn_rate",     &critboost_spawn_rate);

@@ -51,6 +51,17 @@ typedef enum
     SPF_DIFFICULTY_HARD = 128,   // Hard mode bonus
 } weapon_spawn_flags_t;
 
+// Goblin Dice Rollaz: Crit scaling curve types
+typedef enum
+{
+    CRIT_SCALING_LINEAR = 0,      // Simple multiplier (base behavior)
+    CRIT_SCALING_EXPONENTIAL,      // Multiplier increases with roll value
+    CRIT_SCALING_BONUS_FLAT,       // Flat bonus added to base damage
+    CRIT_SCALING_BONUS_PERCENT,    // Percentage bonus based on roll
+    CRIT_SCALING_CRIT_CHANCE,      // Crit chance affects multiplier
+    CRIT_SCALING_MAX               // Number of scaling types
+} crit_scaling_type_t;
+
 // Goblin Dice Rollaz: Dice weapon configuration
 typedef struct
 {
@@ -66,6 +77,8 @@ typedef struct
     int misfire_penalty;    // Damage multiplier on misfire (e.g., 25 = quarter damage)
     weapon_spawn_flags_t spawn_flags;  // Map balancing flags
     int spawn_weight;       // Relative spawn probability (higher = more common)
+    crit_scaling_type_t crit_scaling_type;   // Type of scaling curve
+    int crit_scaling_param; // Parameter for scaling curve (e.g., bonus damage, exponent)
 } dice_weapon_info_t;
 
 extern  weaponinfo_t    weaponinfo[NUMWEAPONS];
@@ -80,5 +93,8 @@ int P_WeaponCanCrit(int weapon);
 weapon_spawn_flags_t P_GetWeaponSpawnFlags(int weapon);
 int P_GetWeaponSpawnWeight(int weapon);
 int P_CanWeaponSpawn(int weapon, int mapNumber, int difficulty);
+
+// Crit scaling functions
+int P_ApplyCritScaling(int baseDamage, int critRoll, int dieType, crit_scaling_type_t scalingType, int scalingParam);
 
 #endif

@@ -63,6 +63,12 @@ extern int EV_DoArenaLock(int tag, boolean close);
 int	crit_boost_bonus = 15;
 int	exploding_dice_enabled = 0;
 
+// Goblin Dice Rollaz: Crit scaling curve settings
+// crit_scaling_default: 0=linear, 1=exponential, 2=bonus_flat, 3=bonus_percent, 4=crit_chance
+// crit_scaling_param: parameter for the scaling curve (multiplier, bonus, etc.)
+int	crit_scaling_default = 0;
+int	crit_scaling_param = 2;
+
 // Goblin Dice Rollaz: Advantage/Disadvantage system
 // 0 = normal, 1 = advantage (roll twice, take best), -1 = disadvantage (roll twice, take worst)
 int	advantage_mode = 0;

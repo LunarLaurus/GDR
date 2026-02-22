@@ -751,6 +751,8 @@ static void DecreaseAmmo(player_t *player, int ammonum, int amount)
 extern int exploding_dice_enabled;
 extern int advantage_mode;
 extern int luck;
+extern int crit_scaling_default;
+extern int crit_scaling_param;
 
 //
 // P_RollDice - Goblin Dice Rollaz: Centralized dice roll function
@@ -861,9 +863,23 @@ P_CalculateDiceDamage (int weapon, int guaranteedCrit, int *outCritRoll, int *ou
     
     if (diceRoll == dwi->crit_roll)
     {
+        int baseCritDamage;
+        crit_scaling_type_t scalingType;
+        
         if (outCritRoll)
             *outCritRoll = diceRoll;
-        damage = dwi->damage_table[6] * dwi->crit_multiplier;
+        
+        // Use weapon's scaling type if set, otherwise use global default
+        scalingType = (dwi->crit_scaling_type > 0 && dwi->crit_scaling_type < CRIT_SCALING_MAX) 
+                      ? dwi->crit_scaling_type 
+                      : (crit_scaling_type_t)crit_scaling_default;
+        
+        // Calculate base crit damage (before scaling)
+        baseCritDamage = dwi->damage_table[6] * dwi->crit_multiplier;
+        
+        // Apply scaling curve
+        damage = P_ApplyCritScaling(baseCritDamage, diceRoll, dwi->die_type, 
+                                    scalingType, dwi->crit_scaling_param > 0 ? dwi->crit_scaling_param : crit_scaling_param);
     }
     else
     {
@@ -909,7 +925,13 @@ P_CalculateDiceDamage (int weapon, int guaranteedCrit, int *outCritRoll, int *ou
             // Add damage from explosion
             if (diceRoll == dwi->crit_roll)
             {
-                additionalDamage += dwi->damage_table[6] * dwi->crit_multiplier / 2;
+                // Apply scaling for exploding crits (half damage of regular crit)
+                int baseExplodeCrit = dwi->damage_table[6] * dwi->crit_multiplier / 2;
+                crit_scaling_type_t scalingType = (dwi->crit_scaling_type > 0 && dwi->crit_scaling_type < CRIT_SCALING_MAX) 
+                                  ? dwi->crit_scaling_type 
+                                  : (crit_scaling_type_t)crit_scaling_default;
+                additionalDamage += P_ApplyCritScaling(baseExplodeCrit, diceRoll, dwi->die_type, 
+                                    scalingType, dwi->crit_scaling_param > 0 ? dwi->crit_scaling_param : crit_scaling_param);
             }
             else
             {
@@ -951,6 +973,69 @@ P_CalculateDiceDamage (int weapon, int guaranteedCrit, int *outCritRoll, int *ou
         *outMisfire = misfired;
     
     return damage;
+}
+
+
+//
+// P_ApplyCritScaling - Goblin Dice Rollaz: Apply configurable crit scaling curve
+// Calculates crit damage based on the selected scaling type and parameters
+//
+int
+P_ApplyCritScaling (int baseDamage, int critRoll, int dieType, crit_scaling_type_t scalingType, int scalingParam)
+{
+    int multiplier = 1;
+    
+    switch (scalingType)
+    {
+        case CRIT_SCALING_LINEAR:
+        default:
+            // Simple multiplier (original behavior)
+            multiplier = scalingParam > 0 ? scalingParam : 2;
+            break;
+            
+        case CRIT_SCALING_EXPONENTIAL:
+        {
+            // Multiplier increases based on how high the crit roll was
+            // Higher roll = exponentially higher multiplier
+            int rollBonus = critRoll;
+            // Base 2x, then add exponential bonus
+            multiplier = 2 + (rollBonus * rollBonus) / (dieType > 0 ? dieType : 1);
+            if (scalingParam > 0)
+                multiplier = (multiplier * scalingParam) / 100;
+            break;
+        }
+        
+        case CRIT_SCALING_BONUS_FLAT:
+        {
+            // Flat bonus added to base damage instead of multiplier
+            int bonus = scalingParam > 0 ? scalingParam : critRoll;
+            multiplier = 1;
+            baseDamage += bonus;
+            break;
+        }
+        
+        case CRIT_SCALING_BONUS_PERCENT:
+        {
+            // Percentage bonus based on the crit roll value
+            int percentBonus = (critRoll * 100) / (dieType > 0 ? dieType : 1);
+            if (scalingParam > 0)
+                percentBonus = (percentBonus * scalingParam) / 100;
+            multiplier = 1 + (percentBonus / 100);
+            break;
+        }
+        
+        case CRIT_SCALING_CRIT_CHANCE:
+        {
+            // Crit chance affects the multiplier - higher base chance = lower multiplier
+            // Implemented as: multiplier = baseMultiplier / (critChance / 10 + 1)
+            int critChance = scalingParam > 0 ? scalingParam : 10;
+            multiplier = 2 * 10 / (critChance + 10);
+            if (multiplier < 1) multiplier = 1;
+            break;
+        }
+    }
+    
+    return baseDamage * multiplier;
 }
 
 
