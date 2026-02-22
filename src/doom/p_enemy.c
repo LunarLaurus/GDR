@@ -322,6 +322,58 @@ void A_Flee(mobj_t* actor)
     P_NewChaseDir(actor);
 }
 
+// P_IsRangedEnemy - Check if enemy type is a ranged unit
+// Returns true for dwarves that prefer to keep distance
+boolean P_IsRangedEnemy(mobj_t* actor)
+{
+    return actor->type == MT_DWARF_MARKSMAN ||
+           actor->type == MT_DWARF_MINER ||
+           actor->type == MT_DWARF_ENGINEER ||
+           actor->type == MT_DWARF_BOMBARDIER;
+}
+
+// P_RetreatFromTarget - Ranged enemies retreat when player gets too close
+// Maintains optimal combat distance for ranged attacks
+void P_RetreatFromTarget(mobj_t* actor)
+{
+    angle_t ang;
+    fixed_t dist;
+
+    if (!actor->target)
+        return;
+
+    // Get angle AWAY from player
+    ang = R_PointToAngle2(actor->y, actor->x,
+                          actor->target->y, actor->target->x);
+
+    // Add slight randomness to make retreat less predictable
+    if (P_Random() < 100)
+        ang += (P_Random() - 128) >> 5;
+    else if (P_Random() < 50)
+        ang += ANG30;
+    else
+        ang -= ANG30;
+
+    // Set movement direction based on retreat angle
+    if (ang >= 0 && ang < ANG45 * 2)
+        actor->movedir = DI_EAST;
+    else if (ang >= ANG45 * 2 && ang < ANG45 * 4)
+        actor->movedir = DI_NORTH;
+    else if (ang >= ANG45 * 4 && ang < ANG45 * 6)
+        actor->movedir = DI_WEST;
+    else
+        actor->movedir = DI_SOUTH;
+
+    // Set movement timer for retreat
+    actor->movecount = 5 + (P_Random() >> 4);
+
+    // Try to move in retreat direction
+    if (P_Move(actor))
+        return;
+
+    // Can't move - try a different direction
+    P_NewChaseDir(actor);
+}
 
 
 
@@ -1082,8 +1134,31 @@ void A_Chase (mobj_t*	actor)
         }
         return;
     }
-				
-				
+
+    // Goblin Dice Rollaz: Tactical retreat for ranged enemies
+    // Ranged units retreat when player gets too close but not in melee range
+    if (P_IsRangedEnemy(actor) && actor->target)
+    {
+        fixed_t dist = P_AproxDistance(actor->x - actor->target->x,
+                                       actor->y - actor->target->y);
+
+        // Retreat if player is within missile range but outside melee range
+        // This gives ranged enemies time to fire and reposition
+        if (dist < MISSILERANGE && dist > MELEERANGE)
+        {
+            // Face the player to fire while retreating
+            A_FaceTarget(actor);
+
+            // Only retreat occasionally to avoid being too kitable
+            // Retreating every few frames creates a "kiting" behavior
+            if (P_Random() < 80)
+            {
+                P_RetreatFromTarget(actor);
+                return;
+            }
+        }
+    }
+
 
     // modify target threshold
     if  (actor->threshold)

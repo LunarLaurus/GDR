@@ -196,7 +196,7 @@
 - [x] Expose status parameters via configurable constants
 
 ## Phase 15: Advanced Enemy AI Behaviors
-- [ ] Add tactical retreat logic for ranged dwarves
+- [x] Add tactical retreat logic for ranged dwarves
 - [ ] Add group aggression triggers (pack behavior)
 - [ ] Add engineer turret deployment logic
 - [ ] Add shaman support logic (buff nearby enemies)
