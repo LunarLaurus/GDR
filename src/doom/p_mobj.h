@@ -189,6 +189,9 @@ typedef enum
     // Goblin Dice Rollaz: Totem sticks to spawn position (doesn't follow player)
     MF_TELESTICK        = 0x4000000,
 
+    // Goblin Dice Rollaz: Magic projectile has particle trail
+    MF_MAGICTRAIL       = 0x8000000,
+
     // Player sprites in multiplayer modes are modified
     //  using an internal color lookup table for re-indexing.
     // If 0x4 0x8 or 0xc,

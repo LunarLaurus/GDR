@@ -35,6 +35,8 @@
 
 #include "g_status.h"
 
+#include "p_particles.h"
+
 
 void G_PlayerReborn (int player);
 void P_SpawnMapThing (mapthing_t*	mthing);
@@ -486,11 +488,22 @@ void P_MobjThinker (mobj_t* mobj)
     if ( (mobj->z != mobj->floorz)
 	 || mobj->momz )
     {
-	P_ZMovement (mobj);
-	
-	// FIXME: decent NOP/NULL/Nil function pointer please.
-	if (mobj->thinker.function.acv == (actionf_v) (-1))
-	    return;		// mobj was removed
+ 	P_ZMovement (mobj);
+ 	
+ 	// FIXME: decent NOP/NULL/Nil function pointer please.
+ 	if (mobj->thinker.function.acv == (actionf_v) (-1))
+ 	    return;		// mobj was removed
+    }
+
+    if ((mobj->flags & MF_MISSILE) && (mobj->flags & MF_MAGICTRAIL))
+    {
+        static int trail_tic_counter = 0;
+        trail_tic_counter++;
+        if (trail_tic_counter >= 2)
+        {
+            trail_tic_counter = 0;
+            P_SpawnProjectileTrail(mobj->x, mobj->y, mobj->z + (mobj->height / 2), 144);
+        }
     }
 
     

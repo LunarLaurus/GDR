@@ -2815,7 +2815,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 	100,		// mass
 	10,		// damage (will be modified by dice roll)
 	sfx_None,		// activesound
-	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_NOGRAVITY,		// flags
+	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_NOGRAVITY|MF_MAGICTRAIL,		// flags
 	S_NULL		// raisestate
     },
 
@@ -2841,7 +2841,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 	100,		// mass
 	5,		// damage (modified by dice roll at fire time)
 	sfx_None,		// activesound
-	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_NOGRAVITY|MF_ALWAYSPUFF,		// flags (always show puff)
+	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_NOGRAVITY|MF_ALWAYSPUFF|MF_MAGICTRAIL,		// flags (always show puff)
 	S_NULL		// raisestate
     },
 
@@ -2867,7 +2867,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 	100,		// mass
 	5,		// damage (modified by dice roll at fire time)
 	sfx_None,		// activesound
-	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF,		// flags
+	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_MAGICTRAIL,		// flags
 	S_NULL		// raisestate
     },
 

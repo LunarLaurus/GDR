@@ -101,6 +101,44 @@ void P_SpawnCritParticles(fixed_t x, fixed_t y, fixed_t z, int damage, int crit_
     }
 }
 
+void P_SpawnProjectileTrail(fixed_t x, fixed_t y, fixed_t z, int color)
+{
+    int j;
+    int oldest = -1;
+    int oldest_time = 999;
+    int i;
+    
+    for (j = 0; j < MAX_PARTICLES; j++)
+    {
+        if (!particles[j].active)
+        {
+            oldest = j;
+            break;
+        }
+        if (particles[j].lifetime < oldest_time)
+        {
+            oldest_time = particles[j].lifetime;
+            oldest = j;
+        }
+    }
+    
+    if (oldest < 0)
+        return;
+    
+    particles[oldest].x = x + ((P_Random() - 128) * FRACUNIT / 64);
+    particles[oldest].y = y + ((P_Random() - 128) * FRACUNIT / 64);
+    particles[oldest].z = z + ((P_Random() - 128) * FRACUNIT / 64);
+    
+    particles[oldest].vx = 0;
+    particles[oldest].vy = 0;
+    particles[oldest].vz = 0;
+    
+    particles[oldest].lifetime = 10 + (P_Random() % 5);
+    particles[oldest].max_lifetime = particles[oldest].lifetime;
+    particles[oldest].color = color;
+    particles[oldest].active = true;
+}
+
 void P_TickerParticles(void)
 {
     int i;

@@ -36,6 +36,7 @@ typedef struct particle_s {
 
 void P_InitParticles(void);
 void P_SpawnCritParticles(fixed_t x, fixed_t y, fixed_t z, int damage, int crit_roll);
+void P_SpawnProjectileTrail(fixed_t x, fixed_t y, fixed_t z, int color);
 void P_TickerParticles(void);
 void P_DrawParticles(void);
 
