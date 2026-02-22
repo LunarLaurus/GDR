@@ -975,6 +975,50 @@ typedef enum
     S_CYBER_DIE8,
     S_CYBER_DIE9,
     S_CYBER_DIE10,
+    // Goblin Dice Rollaz: Goblin King boss states
+    S_GKNG_STND,
+    S_GKNG_RUN1,
+    S_GKNG_RUN2,
+    S_GKNG_RUN3,
+    S_GKNG_RUN4,
+    S_GKNG_RUN5,
+    S_GKNG_RUN6,
+    S_GKNG_ATK1,
+    S_GKNG_ATK2,
+    S_GKNG_ATK3,
+    S_GKNG_ATK4,
+    S_GKNG_PAIN,
+    S_GKNG_DIE1,
+    // Goblin Dice Rollaz: Goblin King Phase 2 states (enraged)
+    S_GKNG_P2_STND,
+    S_GKNG_P2_RUN1,
+    S_GKNG_P2_RUN2,
+    S_GKNG_P2_RUN3,
+    S_GKNG_P2_RUN4,
+    S_GKNG_P2_ATK1,
+    S_GKNG_P2_ATK2,
+    S_GKNG_P2_ATK3,
+    S_GKNG_P2_ATK4,
+    // Goblin Dice Rollaz: Dwarven War Machine boss states
+    S_DWM_STND,
+    S_DWM_RUN1,
+    S_DWM_RUN2,
+    S_DWM_RUN3,
+    S_DWM_ATK1,
+    S_DWM_ATK2,
+    S_DWM_ATK3,
+    S_DWM_ATK4,
+    S_DWM_PAIN,
+    S_DWM_DIE1,
+    // Goblin Dice Rollaz: Dwarven War Machine Phase 2 states (turbo mode)
+    S_DWM_P2_STND,
+    S_DWM_P2_RUN1,
+    S_DWM_P2_RUN2,
+    S_DWM_P2_RUN3,
+    S_DWM_P2_ATK1,
+    S_DWM_P2_ATK2,
+    S_DWM_P2_ATK3,
+    S_DWM_P2_ATK4,
     S_PAIN_STND,
     S_PAIN_RUN1,
     S_PAIN_RUN2,
@@ -1443,6 +1487,8 @@ typedef enum {
     MT_AMMO_LIGHTDICE,      // Goblin Dice Rollaz: Light dice ammo (d4, d6, d8)
     MT_AMMO_HEAVYDICE,      // Goblin Dice Rollaz: Heavy dice ammo (d10, d12, d20)
     MT_AMMO_ARCANEDICE,     // Goblin Dice Rollaz: Arcane dice ammo (magic dice)
+    MT_GOBLIN_KING,          // Goblin Dice Rollaz: Goblin King boss
+    MT_DWARVEN_WAR_MACHINE,  // Goblin Dice Rollaz: Dwarven War Machine boss
     NUMMOBJTYPES
 
 } mobjtype_t;
@@ -1476,6 +1522,7 @@ typedef struct
     int	aggression;        // Goblin Dice Rollaz: AI aggression level (0-100)
     int	shield_reduction;  // Goblin Dice Rollaz: Frontal damage reduction % (0-100)
     int	rear_weakness;    // Goblin Dice Rollaz: Rear damage bonus % (0-100)
+    int	phase2_health;    // Goblin Dice Rollaz: Health threshold for phase transition (0 = no phases)
 
 } mobjinfo_t;
 

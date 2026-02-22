@@ -26,6 +26,7 @@
 
 #include "doomdef.h"
 #include "p_local.h"
+#include "info.h"      // Goblin Dice Rollaz: for state enums
 #include "s_sound.h"
 #include "g_game.h"
 #include "doomstat.h"
@@ -1943,6 +1944,70 @@ void A_CyberAttack (mobj_t* actor)
 		
     A_FaceTarget (actor);
     P_SpawnMissile (actor, actor->target, MT_ROCKET);
+}
+
+
+//
+// A_GoblinKingAttack - Goblin Dice Rollaz
+// Goblin King throws dice projectiles at the player
+//
+void A_GoblinKingAttack (mobj_t* actor)
+{	
+    int damage;
+	
+    if (!actor->target)
+	return;
+		
+    A_FaceTarget (actor);
+
+    // Phase 2 (enraged) has faster attacks
+    if (actor->state == &states[S_GKNG_P2_ATK2] || 
+        actor->state == &states[S_GKNG_P2_ATK4])
+    {
+        // Enraged: throw multiple dice (d6 + d8 combo)
+        P_SpawnMissile (actor, actor->target, MT_D6PROJECTILE);
+        damage = (P_Random()%6+1) + (P_Random()%8+1);
+        P_DamageMobj (actor->target, actor, actor, damage);
+    }
+    else
+    {
+        // Phase 1: single heavy die throw (d12)
+        P_SpawnMissile (actor, actor->target, MT_D12PROJECTILE);
+        damage = (P_Random()%12+1) * 3; // Higher damage
+        P_DamageMobj (actor->target, actor, actor, damage);
+    }
+}
+
+
+//
+// A_DWMAttack - Goblin Dice Rollaz
+// Dwarven War Machine fires heavy cannon/dice blasts
+//
+void A_DWMAttack (mobj_t* actor)
+{	
+    int damage;
+    
+    if (!actor->target)
+	return;
+		
+    A_FaceTarget (actor);
+
+    // Phase 2 (turbo) has rapid fire
+    if (actor->state == &states[S_DWM_P2_ATK2] || 
+        actor->state == &states[S_DWM_P2_ATK4])
+    {
+        // Turbo mode: rapid fire percentile dice
+        P_SpawnMissile (actor, actor->target, MT_PERCENTILEPROJECTILE);
+        damage = (P_Random()%100+1);
+        P_DamageMobj (actor->target, actor, actor, damage);
+    }
+    else
+    {
+        // Phase 1: heavy d20 cannon shot
+        P_SpawnMissile (actor, actor->target, MT_D20PROJECTILE);
+        damage = (P_Random()%20+1) * 5; // Very high damage
+        P_DamageMobj (actor->target, actor, actor, damage);
+    }
 }
 
 

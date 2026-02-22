@@ -1211,6 +1211,46 @@ P_DamageMobj
     // do the damage	
     target->health -= damage;	
     
+    // Goblin Dice Rollaz: Boss phase transition
+    // If boss health drops below phase threshold and hasn't transitioned yet
+    if (target->health > 0 && target->info && target->info->phase2_health > 0)
+    {
+        // Check if boss should enter phase 2
+        // We use a flag to track if already in phase 2
+        // The flag is stored in a way compatible with the existing mobj structure
+        // using the special1 field as phase tracker (0 = phase 1, 1 = phase 2)
+        
+        if (target->health <= target->info->phase2_health && target->special1 == 0)
+        {
+            // Boss enters phase 2!
+            target->special1 = 1;  // Mark as phase 2
+            
+            // Trigger phase 2 state based on boss type
+            if (target->type == MT_GOBLIN_KING)
+            {
+                P_SetMobjState(target, S_GKNG_P2_STND);
+                // Play phase transition sound
+                S_StartSound(target, sfx_bossit);
+                // Show message to player
+                if (source && source->player == &players[consoleplayer])
+                {
+                    players[consoleplayer].message = "GOBLIN KING ENRAGED!";
+                }
+            }
+            else if (target->type == MT_DWARVEN_WAR_MACHINE)
+            {
+                P_SetMobjState(target, S_DWM_P2_STND);
+                // Play phase transition sound
+                S_StartSound(target, sfx_cybsit);
+                // Show message to player
+                if (source && source->player == &players[consoleplayer])
+                {
+                    players[consoleplayer].message = "Dwarven War Machine OVERDRIVE!";
+                }
+            }
+        }
+    }	
+    
     // Goblin Dice Rollaz: Apply freeze effect from shaman freeze projectile
     // Use both legacy freeze_tics and new g_status framework for compatibility
     if (inflictor && inflictor->type == MT_SHAMAN_FREEZE && target->health > 0)

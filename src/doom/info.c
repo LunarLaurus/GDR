@@ -135,6 +135,9 @@ void A_BrainSpit();
 void A_SpawnSound();
 void A_SpawnFly();
 void A_BrainExplode();
+void A_BossPhaseTransition();   // Goblin Dice Rollaz: Phase transition for bosses
+void A_GoblinKingAttack();      // Goblin Dice Rollaz: Goblin King attack
+void A_DWMAttack();             // Goblin Dice Rollaz: Dwarven War Machine attack
 
 
 state_t	states[NUMSTATES] = {
@@ -922,6 +925,55 @@ state_t	states[NUMSTATES] = {
     {SPR_CYBR,14,10,{NULL},S_CYBER_DIE9,0,0},	// S_CYBER_DIE8
     {SPR_CYBR,15,30,{NULL},S_CYBER_DIE10,0,0},	// S_CYBER_DIE9
     {SPR_CYBR,15,-1,{A_BossDeath},S_NULL,0,0},	// S_CYBER_DIE10
+
+    // Goblin Dice Rollaz: Goblin King boss states
+    {SPR_BOSS,0,10,{A_Look},S_GKNG_STND,0,0},	// S_GKNG_STND - Idle
+    {SPR_BOSS,0,3,{A_Chase},S_GKNG_RUN2,0,0},	// S_GKNG_RUN1 - Chase
+    {SPR_BOSS,1,3,{A_Chase},S_GKNG_RUN3,0,0},	// S_GKNG_RUN2
+    {SPR_BOSS,2,3,{A_Chase},S_GKNG_RUN4,0,0},	// S_GKNG_RUN3
+    {SPR_BOSS,3,3,{A_Chase},S_GKNG_RUN5,0,0},	// S_GKNG_RUN4
+    {SPR_BOSS,4,3,{A_Chase},S_GKNG_RUN6,0,0},	// S_GKNG_RUN5
+    {SPR_BOSS,5,3,{A_Chase},S_GKNG_RUN1,0,0},	// S_GKNG_RUN6
+    {SPR_BOSS,6,5,{A_FaceTarget},S_GKNG_ATK2,0,0},	// S_GKNG_ATK1 - Attack 1
+    {SPR_BOSS,7,5,{A_GoblinKingAttack},S_GKNG_ATK3,0,0},	// S_GKNG_ATK2
+    {SPR_BOSS,8,5,{A_FaceTarget},S_GKNG_ATK4,0,0},	// S_GKNG_ATK3
+    {SPR_BOSS,9,5,{A_GoblinKingAttack},S_GKNG_RUN1,0,0},	// S_GKNG_ATK4
+    {SPR_BOSS,10,10,{A_Pain},S_GKNG_RUN1,0,0},	// S_GKNG_PAIN
+    {SPR_BOSS,11,-1,{A_BossDeath},S_NULL,0,0},	// S_GKNG_DIE1 - Death (triggers phase check)
+
+    // Goblin Dice Rollaz: Goblin King Phase 2 states (enraged)
+    {SPR_BOSS,12,10,{A_Look},S_GKNG_P2_STND,0,0},	// S_GKNG_P2_STND
+    {SPR_BOSS,12,2,{A_Chase},S_GKNG_P2_RUN2,0,0},	// S_GKNG_P2_RUN1 - Faster chase
+    {SPR_BOSS,13,2,{A_Chase},S_GKNG_P2_RUN3,0,0},	// S_GKNG_P2_RUN2
+    {SPR_BOSS,14,2,{A_Chase},S_GKNG_P2_RUN4,0,0},	// S_GKNG_P2_RUN3
+    {SPR_BOSS,15,2,{A_Chase},S_GKNG_P2_RUN1,0,0},	// S_GKNG_P2_RUN4
+    {SPR_BOSS,6,3,{A_FaceTarget},S_GKNG_P2_ATK2,0,0},	// S_GKNG_P2_ATK1
+    {SPR_BOSS,7,3,{A_GoblinKingAttack},S_GKNG_P2_ATK3,0,0},	// S_GKNG_P2_ATK2
+    {SPR_BOSS,8,3,{A_FaceTarget},S_GKNG_P2_ATK4,0,0},	// S_GKNG_P2_ATK3
+    {SPR_BOSS,9,3,{A_GoblinKingAttack},S_GKNG_P2_RUN1,0,0},	// S_GKNG_P2_ATK4
+
+    // Goblin Dice Rollaz: Dwarven War Machine boss states
+    {SPR_CYBR,0,10,{A_Look},S_DWM_STND,0,0},	// S_DWM_STND - Idle
+    {SPR_CYBR,0,8,{A_Chase},S_DWM_RUN2,0,0},	// S_DWM_RUN1 - Slow heavy march
+    {SPR_CYBR,1,8,{A_Chase},S_DWM_RUN3,0,0},	// S_DWM_RUN2
+    {SPR_CYBR,2,8,{A_Chase},S_DWM_RUN1,0,0},	// S_DWM_RUN3
+    {SPR_CYBR,4,5,{A_FaceTarget},S_DWM_ATK2,0,0},	// S_DWM_ATK1 - Missile attack
+    {SPR_CYBR,5,5,{A_DWMAttack},S_DWM_ATK3,0,0},	// S_DWM_ATK2
+    {SPR_CYBR,6,5,{A_FaceTarget},S_DWM_ATK4,0,0},	// S_DWM_ATK3
+    {SPR_CYBR,7,5,{A_DWMAttack},S_DWM_RUN1,0,0},	// S_DWM_ATK4
+    {SPR_CYBR,8,10,{A_Pain},S_DWM_RUN1,0,0},	// S_DWM_PAIN
+    {SPR_CYBR,9,-1,{A_BossDeath},S_NULL,0,0},	// S_DWM_DIE1 - Death
+
+    // Goblin Dice Rollaz: Dwarven War Machine Phase 2 states (turbo mode)
+    {SPR_CYBR,0,5,{A_Look},S_DWM_P2_STND,0,0},	// S_DWM_P2_STND
+    {SPR_CYBR,0,4,{A_Chase},S_DWM_P2_RUN2,0,0},	// S_DWM_P2_RUN1 - Faster
+    {SPR_CYBR,1,4,{A_Chase},S_DWM_P2_RUN3,0,0},	// S_DWM_P2_RUN2
+    {SPR_CYBR,2,4,{A_Chase},S_DWM_P2_RUN1,0,0},	// S_DWM_P2_RUN3
+    {SPR_CYBR,4,3,{A_FaceTarget},S_DWM_P2_ATK2,0,0},	// S_DWM_P2_ATK1 - Rapid fire
+    {SPR_CYBR,5,3,{A_DWMAttack},S_DWM_P2_ATK3,0,0},	// S_DWM_P2_ATK2
+    {SPR_CYBR,6,3,{A_FaceTarget},S_DWM_P2_ATK4,0,0},	// S_DWM_P2_ATK3
+    {SPR_CYBR,7,3,{A_DWMAttack},S_DWM_P2_RUN1,0,0},	// S_DWM_P2_ATK4
+
     {SPR_PAIN,0,10,{A_Look},S_PAIN_STND,0,0},	// S_PAIN_STND
     {SPR_PAIN,0,3,{A_Chase},S_PAIN_RUN2,0,0},	// S_PAIN_RUN1
     {SPR_PAIN,0,3,{A_Chase},S_PAIN_RUN3,0,0},	// S_PAIN_RUN2
@@ -3753,6 +3805,68 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 	sfx_None,		// activesound
 	MF_SPECIAL|MF_COUNTITEM,		// flags
 	S_NULL		// raisestate
+    },
+
+    {		// MT_GOBLIN_KING - Goblin Dice Rollaz: Goblin King boss
+	9001,		// doomednum (custom map editor ID)
+	S_GKNG_STND,		// spawnstate
+	5000,		// spawnhealth (Phase 1)
+	S_GKNG_RUN1,		// seestate
+	sfx_bossit,		// seesound
+	8,		// reactiontime
+	sfx_None,		// attacksound
+	S_GKNG_PAIN,		// painstate
+	32,		// painchance (lower = less likely to show pain)
+	sfx_dmpain,		// painsound
+	S_GKNG_ATK1,		// meleestate (unused, uses missile)
+	S_GKNG_ATK1,		// missilestate
+	S_GKNG_DIE1,		// deathstate
+	S_NULL,		// xdeathstate
+	sfx_bossdth,		// deathsound
+	12,		// speed
+	64*FRACUNIT,		// radius (large target)
+	96*FRACUNIT,		// height
+	1500,		// mass
+	50,		// damage (high damage attacks)
+	sfx_bmact,		// activesound
+	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL|MF_BOSS,		// flags (BOSS flag for phase trigger)
+	S_NULL,		// raisestate
+	0,		// crit_resistance (50% crit reduction)
+	100,		// aggression (very aggressive)
+	0,		// shield_reduction
+	0,		// rear_weakness
+	3000		// phase2_health (health threshold for phase transition)
+    },
+
+    {		// MT_DWARVEN_WAR_MACHINE - Goblin Dice Rollaz: Dwarven War Machine boss
+	9002,		// doomednum (custom map editor ID)
+	S_DWM_STND,		// spawnstate
+	6000,		// spawnhealth (Phase 1)
+	S_DWM_RUN1,		// seestate
+	sfx_cybsit,		// seesound (use cyberdemon sound)
+	8,		// reactiontime
+	sfx_None,		// attacksound
+	S_DWM_PAIN,		// painstate
+	16,		// painchance (very tough, rarely shows pain)
+	sfx_dmpain,		// painsound
+	0,		// meleestate
+	S_DWM_ATK1,		// missilestate
+	S_DWM_DIE1,		// deathstate
+	S_NULL,		// xdeathstate
+	sfx_cybdth,		// deathsound
+	8,		// speed (slow heavy machine)
+	48*FRACUNIT,		// radius
+	100*FRACUNIT,		// height (tall)
+	2000,		// mass
+	100,		// damage (very high damage)
+	sfx_bmact,		// activesound
+	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL|MF_BOSS,		// flags
+	S_NULL,		// raisestate
+	75,		// crit_resistance (highly resistant to crits)
+	80,		// aggression
+	50,		// shield_reduction (50% frontal damage reduction)
+	0,		// rear_weakness
+	4000		// phase2_health (health threshold for phase transition)
     },
 
     {		// MT_MISC17
