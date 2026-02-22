@@ -346,7 +346,11 @@ void ST_DrawBossHealthBar(void)
 #define STATUSFROZENPAL		15
 #define STATUSSTUNNEDPAL	16
 #define STATUSCURSEDPAL		17
-#define NUMSTATUSPALS		4
+#define LOWHEALTHPAL		18
+#define NUMSTATUSPALS		5
+
+// Goblin Dice Rollaz: Low health threshold (percentage of max health)
+#define LOW_HEALTH_THRESHOLD	25
 
 // Location of status bar
 #define ST_X				0
@@ -1316,8 +1320,10 @@ void ST_doPaletteStuff(void)
         palette = STATUSSTUNNEDPAL;
     else if (plyr->mo && G_StatusEffectIsActive(plyr->mo, st_dicecurse))
         palette = STATUSCURSEDPAL;
+    else if (plyr->health > 0 && plyr->health <= LOW_HEALTH_THRESHOLD)
+        palette = LOWHEALTHPAL;
     else
-	palette = 0;
+        palette = 0;
 
     // In Chex Quest, the player never sees red.  Instead, the
     // radiation suit palette is used to tint the screen green,

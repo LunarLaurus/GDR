@@ -233,8 +233,8 @@
 - [x] Add dynamic screen shake on high rolls
 - [x] Add particle sparks for crit hits
 - [x] Add lava heat shimmer effect
-- [ ] Add magic projectile trail rendering
-- [ ] Add low-health screen tint
+- [x] Add magic projectile trail rendering
+- [x] Add low-health screen tint
 - [ ] Add optional modern FX toggle
 
 ## Phase 21: Multiplayer Enhancements
