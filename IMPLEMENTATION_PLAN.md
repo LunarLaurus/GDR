@@ -184,7 +184,7 @@
 - [ ] Resolve blocker: Commission or create sprite assets for death animations
 - [ ] Critical hit reaction animations (blocked: requires sprite assets)
 - [x] Elemental status visual overlays (burn/freeze/glow)
-- [ ] Add mini bestiary documentation in README or `/docs`
+- [x] Add mini bestiary documentation in README or `/docs`
 
 ## Phase 14: Spell & Status Effect System
 - [x] Implement generic status effect framework (duration-based effects in thinker loop)
