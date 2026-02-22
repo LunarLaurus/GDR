@@ -773,6 +773,12 @@ static void saveg_read_player_t(player_t *str)
 
     // boolean didsecret;
     str->didsecret = saveg_read32();
+
+    // Goblin Dice Rollaz: crit_combo
+    str->crit_combo = saveg_read32();
+
+    // Goblin Dice Rollaz: crit_combo_timer
+    str->crit_combo_timer = saveg_read32();
 }
 
 static void saveg_write_player_t(player_t *str)
@@ -907,6 +913,12 @@ static void saveg_write_player_t(player_t *str)
 
     // boolean didsecret;
     saveg_write32(str->didsecret);
+
+    // Goblin Dice Rollaz: crit_combo
+    saveg_write32(str->crit_combo);
+
+    // Goblin Dice Rollaz: crit_combo_timer
+    saveg_write32(str->crit_combo_timer);
 }
 
 

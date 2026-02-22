@@ -246,7 +246,12 @@ void P_DeathThink (player_t* player)
 	
 
     if (player->cmd.buttons & BT_USE)
-	player->playerstate = PST_REBORN;
+    {
+        // Goblin Dice Rollaz: Reset crit combo on death/respawn
+        player->crit_combo = 0;
+        player->crit_combo_timer = 0;
+        player->playerstate = PST_REBORN;
+    }
 }
 
 

@@ -53,6 +53,13 @@ extern int EV_DoArenaLock(int tag, boolean close);
 
 #define CRIT_CHANCE	10
 #define CRIT_MULTIPLIER	2
+
+// Goblin Dice Rollaz: Combo multiplier system
+// Combo increases damage for consecutive critical hits
+#define CRIT_COMBO_TIMEOUT	(TICRATE * 3)  // 3 seconds to maintain combo
+#define CRIT_COMBO_BONUS_PER HIT	15  // +15% damage per combo level
+#define CRIT_COMBO_MAX_MULTIPLIER	4  // Cap at 4x combo multiplier
+
 int	crit_boost_bonus = 15;
 int	exploding_dice_enabled = 0;
 
@@ -1077,6 +1084,54 @@ P_DamageMobj
             if ((P_Random() % 100) < 20)
             {
                 G_StatusEffectApply(target, st_stunned, STUNNED_TICS);
+            }
+        }
+
+        // Goblin Dice Rollaz: Crit combo system - track and apply combo multiplier
+        if (source && source->player)
+        {
+            // Update combo timer (decays over time)
+            if (source->player->crit_combo_timer > 0)
+            {
+                source->player->crit_combo_timer--;
+            }
+
+            if (was_critical)
+            {
+                // Increment combo on critical hit
+                source->player->crit_combo++;
+                // Reset combo timeout
+                source->player->crit_combo_timer = CRIT_COMBO_TIMEOUT;
+
+                // Apply combo bonus damage
+                int comboLevel = source->player->crit_combo;
+                if (comboLevel > 0)
+                {
+                    // Cap at max multiplier
+                    int bonusMultiplier = 1 + (comboLevel * CRIT_COMBO_BONUS_PER_HIT / 100);
+                    if (bonusMultiplier > CRIT_COMBO_MAX_MULTIPLIER)
+                    {
+                        bonusMultiplier = CRIT_COMBO_MAX_MULTIPLIER;
+                    }
+
+                    if (bonusMultiplier > 1)
+                    {
+                        damage *= bonusMultiplier;
+                        // Show combo message
+                        if (source == &players[consoleplayer].mo)
+                        {
+                            static char combomsg[64];
+                            snprintf(combomsg, sizeof(combomsg), "COMBO x%d!", bonusMultiplier);
+                            players[consoleplayer].message = combomsg;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                // Reset combo on non-crit hit
+                source->player->crit_combo = 0;
+                source->player->crit_combo_timer = 0;
             }
         }
     }

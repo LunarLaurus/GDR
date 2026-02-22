@@ -168,6 +168,11 @@ typedef struct player_s
     // Goblin Dice Rollaz: Boss target for health bar overlay
     struct mobj_s	*bosstarget;
 
+    // Goblin Dice Rollaz: Crit combo system - consecutive crit streak
+    int			crit_combo;
+    // Time remaining (in tics) before combo resets
+    int			crit_combo_timer;
+
 } player_t;
 
 
