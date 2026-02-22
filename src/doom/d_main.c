@@ -129,6 +129,7 @@ int             show_diskicon = 1;
 extern int      crit_boost_bonus;
 extern int      exploding_dice_enabled;
 extern int      advantage_mode;
+extern int      luck;
 extern int      powerup_spawn_rate;
 
 // Goblin Dice Rollaz: per-powerup rarity
@@ -393,6 +394,7 @@ void D_BindVariables(void)
     M_BindIntVariable("crit_boost_bonus",        &crit_boost_bonus);
     M_BindIntVariable("exploding_dice_enabled",  &exploding_dice_enabled);
     M_BindIntVariable("advantage_mode",         &advantage_mode);
+    M_BindIntVariable("luck",                   &luck);
     M_BindIntVariable("powerup_spawn_rate",       &powerup_spawn_rate);
 
     // Goblin Dice Rollaz: per-powerup rarity settings

@@ -750,11 +750,13 @@ static void DecreaseAmmo(player_t *player, int ammonum, int amount)
 //
 extern int exploding_dice_enabled;
 extern int advantage_mode;
+extern int luck;
 
 //
 // P_RollDice - Goblin Dice Rollaz: Centralized dice roll function
 // Uses deterministic Doom RNG for netplay compatibility
 // Supports advantage (roll twice, take best) and disadvantage (roll twice, take worst)
+// Supports luck stat affecting roll distribution
 //
 int
 P_RollDice (int sides)
@@ -766,17 +768,42 @@ P_RollDice (int sides)
     
     roll1 = (P_Random() % sides) + 1;
     
+    // Apply luck modifier - positive luck shifts roll higher, negative shifts lower
+    if (luck != 0)
+    {
+        int luck_modifier = luck;
+        int min_roll = 1;
+        int max_roll = sides;
+        
+        // Apply luck and clamp to valid range
+        roll1 += luck_modifier;
+        if (roll1 < min_roll) roll1 = min_roll;
+        if (roll1 > max_roll) roll1 = max_roll;
+    }
+    
     // Apply advantage/disadvantage system
     if (advantage_mode > 0)
     {
         // Advantage: roll twice, take best
         roll2 = (P_Random() % sides) + 1;
+        if (luck != 0)
+        {
+            roll2 += luck;
+            if (roll2 < 1) roll2 = 1;
+            if (roll2 > sides) roll2 = sides;
+        }
         return roll1 > roll2 ? roll1 : roll2;
     }
     else if (advantage_mode < 0)
     {
         // Disadvantage: roll twice, take worst
         roll2 = (P_Random() % sides) + 1;
+        if (luck != 0)
+        {
+            roll2 += luck;
+            if (roll2 < 1) roll2 = 1;
+            if (roll2 > sides) roll2 = sides;
+        }
         return roll1 < roll2 ? roll1 : roll2;
     }
     

@@ -67,6 +67,11 @@ int	exploding_dice_enabled = 0;
 // 0 = normal, 1 = advantage (roll twice, take best), -1 = disadvantage (roll twice, take worst)
 int	advantage_mode = 0;
 
+// Goblin Dice Rollaz: Luck stat affecting roll distribution
+// Positive values shift rolls higher, negative values shift rolls lower
+// Range: -5 to +5 (clamped to prevent invalid roll results)
+int	luck = 0;
+
 int	difficulty_hp_scale[5] = {75, 90, 100, 120, 150};
 
 
