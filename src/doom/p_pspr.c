@@ -274,6 +274,7 @@ void P_FireAltWeapon (player_t* player)
         int i;
         int damage;
         int critRoll;
+        int highestRollInBurst = 0;
         int guaranteedCrit = 0;
         
         // d4 Rapid Burst Throw - quick whoosh sound
@@ -291,8 +292,13 @@ void P_FireAltWeapon (player_t* player)
         for (i = 0; i < 3; i++)
         {
             int misfire = 0;
+            int diceRoll = 0;
             // Calculate damage for each projectile
-            damage = P_CalculateDiceDamage(wp_d4, guaranteedCrit, &critRoll, &misfire, player);
+            damage = P_CalculateDiceDamage(wp_d4, guaranteedCrit, &critRoll, &misfire, &diceRoll, player);
+            
+            // Track highest roll in burst for screen shake
+            if (diceRoll > highestRollInBurst)
+                highestRollInBurst = diceRoll;
             
             // Add slight spread for burst inaccuracy
             if (i == 0)
@@ -321,10 +327,11 @@ void P_FireAltWeapon (player_t* player)
         // Show flash
         P_SetPsprite(player, ps_flash, weaponinfo[player->readyweapon].flashstate);
         
-        // Screen shake for burst crits
-        if (critRoll > 0)
+        // Screen shake for burst crits or high rolls (>= 75% of max die = 3 on d4)
+        if (critRoll > 0 || highestRollInBurst >= 3)
         {
-            R_TriggerScreenShake(FRACUNIT * 2, 4);
+            int shakeIntensity = (critRoll > 0) ? (FRACUNIT * 3) : (FRACUNIT * 2);
+            R_TriggerScreenShake(shakeIntensity, 4);
         }
         break;
     }
@@ -334,6 +341,7 @@ void P_FireAltWeapon (player_t* player)
         // Long windup with bonus crit chance based on charge time
         int damage;
         int critRoll;
+        int diceRoll;
         int guaranteedCrit = 0;
         int chargeBonus = player->weaponcharge;
         
@@ -350,7 +358,7 @@ void P_FireAltWeapon (player_t* player)
         
         // Calculate base damage
         int misfire = 0;
-        damage = P_CalculateDiceDamage(wp_d12, guaranteedCrit, &critRoll, &misfire, player);
+        damage = P_CalculateDiceDamage(wp_d12, guaranteedCrit, &critRoll, &misfire, &diceRoll, player);
         
         // Apply charge bonus: up to +100% damage at max charge
         // weaponcharge ranges from 0-35 (about 1 second at 35fps)
@@ -396,10 +404,11 @@ void P_FireAltWeapon (player_t* player)
             player->mo->target->momy += FixedMul(chargeBonus * 20, sin(pushAngle));
         }
         
-        // Screen shake for charged attack crits
-        if (critRoll > 0 || chargeBonus >= 35)
+        // Screen shake for charged attack crits or high rolls (>= 75% = 9 on d12)
+        if (critRoll > 0 || diceRoll >= 9)
         {
-            R_TriggerScreenShake(FRACUNIT * 3, 6);
+            int shakeIntensity = (critRoll > 0 || chargeBonus >= 35) ? (FRACUNIT * 4) : (FRACUNIT * 2);
+            R_TriggerScreenShake(shakeIntensity, 6);
         }
         break;
     }
@@ -845,9 +854,10 @@ P_WeaponCanCrit (int weapon)
 // Supports Gamble Shot mode for wider variance
 // Supports Misfire mechanic for high-risk weapons
 // Applies weapon mastery bonuses if player is provided
+// outDiceRoll: returns the actual dice roll value for effects like screen shake
 //
 int
-P_CalculateDiceDamage (int weapon, int guaranteedCrit, int *outCritRoll, int *outMisfire, player_t* player)
+P_CalculateDiceDamage (int weapon, int guaranteedCrit, int *outCritRoll, int *outMisfire, int *outDiceRoll, player_t* player)
 {
     int diceRoll;
     int damage = 0;
@@ -860,6 +870,8 @@ P_CalculateDiceDamage (int weapon, int guaranteedCrit, int *outCritRoll, int *ou
         *outCritRoll = 0;
     if (outMisfire)
         *outMisfire = 0;
+    if (outDiceRoll)
+        *outDiceRoll = 0;
     
     if (weapon < 0 || weapon >= NUMWEAPONS)
         return 1;
@@ -877,6 +889,10 @@ P_CalculateDiceDamage (int weapon, int guaranteedCrit, int *outCritRoll, int *ou
     {
         diceRoll = P_RollDice(dwi->die_type);
     }
+    
+    // Store dice roll for effects like screen shake
+    if (outDiceRoll)
+        *outDiceRoll = diceRoll;
     
     if (diceRoll == dwi->crit_roll)
     {
@@ -1214,6 +1230,7 @@ A_FireD6Blast
     int damage;
     int guaranteedCrit = 0;
     int critRoll = 0;
+    int diceRoll = 0;
     
     S_StartSound (player->mo, sfx_dice_d6);
 
@@ -1231,15 +1248,16 @@ A_FireD6Blast
         player->message = "CRITICAL!";
     }
 
-    damage = P_CalculateDiceDamage(wp_d6blaster, guaranteedCrit, &critRoll, NULL, player);
+    damage = P_CalculateDiceDamage(wp_d6blaster, guaranteedCrit, &critRoll, NULL, &diceRoll, player);
 
     P_BulletSlope (player->mo);
     P_GunShotWithDamage (player->mo, !player->refire, damage);
     
-    // Goblin Dice Rollaz: Screen shake on critical hits
-    if (critRoll > 0)
+    // Goblin Dice Rollaz: Screen shake on critical hits or high rolls (>= 5 on d6)
+    if (critRoll > 0 || diceRoll >= 5)
     {
-        R_TriggerScreenShake(FRACUNIT * 2, 4);
+        int shakeIntensity = (critRoll > 0) ? (FRACUNIT * 3) : (FRACUNIT * 2);
+        R_TriggerScreenShake(shakeIntensity, 4);
     }
 }
 
@@ -1258,6 +1276,9 @@ A_FireTwinD6
     int guaranteedCrit = 0;
     int critRoll1 = 0;
     int critRoll2 = 0;
+    int diceRoll1 = 0;
+    int diceRoll2 = 0;
+    int highestRoll = 0;
     
     S_StartSound (player->mo, sfx_dice_d6);
 
@@ -1275,16 +1296,23 @@ A_FireTwinD6
         player->message = "CRITICAL!";
     }
 
-    damage1 = P_CalculateDiceDamage(wp_twind6, guaranteedCrit, &critRoll1, NULL, player);
-    damage2 = P_CalculateDiceDamage(wp_twind6, guaranteedCrit, &critRoll2, NULL, player);
+    damage1 = P_CalculateDiceDamage(wp_twind6, guaranteedCrit, &critRoll1, NULL, &diceRoll1, player);
+    damage2 = P_CalculateDiceDamage(wp_twind6, guaranteedCrit, &critRoll2, NULL, &diceRoll2, player);
+
+    // Track highest roll for screen shake
+    highestRoll = (diceRoll1 > diceRoll2) ? diceRoll1 : diceRoll2;
+    if (diceRoll1 == 0) highestRoll = diceRoll2;
+    if (diceRoll2 == 0) highestRoll = diceRoll1;
 
     P_BulletSlope (player->mo);
     P_GunShotWithDamage (player->mo, true, damage1);
     P_GunShotWithDamage (player->mo, false, damage2);
     
-    if (critRoll1 > 0 || critRoll2 > 0)
+    // Screen shake on crits or high rolls (>= 5 on d6)
+    if (critRoll1 > 0 || critRoll2 > 0 || highestRoll >= 5)
     {
-        R_TriggerScreenShake(FRACUNIT * 2, 4);
+        int shakeIntensity = ((critRoll1 > 0 || critRoll2 > 0) ? FRACUNIT * 3 : FRACUNIT * 2);
+        R_TriggerScreenShake(shakeIntensity, 4);
     }
 }
 
@@ -1301,6 +1329,7 @@ A_FireArcaneD20
     int damage;
     int guaranteedCrit = 0;
     int critRoll = 0;
+    int diceRoll = 0;
     mobj_t* missile;
     
     S_StartSound (player->mo, sfx_dice_d20);
@@ -1319,7 +1348,7 @@ A_FireArcaneD20
         player->message = "CRITICAL!";
     }
 
-    damage = P_CalculateDiceDamage(wp_arcaned20, guaranteedCrit, &critRoll, NULL, player);
+    damage = P_CalculateDiceDamage(wp_arcaned20, guaranteedCrit, &critRoll, NULL, &diceRoll, player);
 
     missile = P_SpawnPlayerMissile (player->mo, MT_ARCANED20BEAM);
     if (missile)
@@ -1327,9 +1356,11 @@ A_FireArcaneD20
         missile->damage = damage;
     }
     
-    if (critRoll > 0)
+    // Screen shake on crits or high rolls (>= 15 on d20)
+    if (critRoll > 0 || diceRoll >= 15)
     {
-        R_TriggerScreenShake(FRACUNIT * 2, 4);
+        int shakeIntensity = (critRoll > 0) ? (FRACUNIT * 3) : (FRACUNIT * 2);
+        R_TriggerScreenShake(shakeIntensity, 4);
     }
 }
 
@@ -1346,6 +1377,7 @@ A_FireCursed
     int damage;
     int guaranteedCrit = 0;
     int critRoll = 0;
+    int diceRoll = 0;
     int misfire = 0;
     mobj_t* missile;
     
@@ -1365,7 +1397,7 @@ A_FireCursed
         player->message = "CRITICAL!";
     }
 
-    damage = P_CalculateDiceDamage(wp_cursed, guaranteedCrit, &critRoll, &misfire, player);
+    damage = P_CalculateDiceDamage(wp_cursed, guaranteedCrit, &critRoll, &misfire, &diceRoll, player);
 
     missile = P_SpawnPlayerMissile (player->mo, MT_CURSEDDIE);
     if (missile)
@@ -1385,9 +1417,11 @@ A_FireCursed
             P_KillMobj(player->mo, player->mo, player->mo, true);
         }
     }
-    else if (critRoll > 0)
+    // Screen shake on crits or high rolls (>= 5 on the base die type)
+    else if (critRoll > 0 || diceRoll >= 5)
     {
-        R_TriggerScreenShake(FRACUNIT * 3, 6);
+        int shakeIntensity = (critRoll > 0) ? (FRACUNIT * 4) : (FRACUNIT * 2);
+        R_TriggerScreenShake(shakeIntensity, 6);
     }
 }
 

@@ -89,7 +89,7 @@ extern  dice_weapon_info_t dice_weapon_info[NUMWEAPONS];
 
 // Dice roll backend functions
 int P_RollDice(int sides);
-int P_CalculateDiceDamage(int weapon, int guaranteedCrit, int *outCritRoll, int *outMisfire, player_t* player);
+int P_CalculateDiceDamage(int weapon, int guaranteedCrit, int *outCritRoll, int *outMisfire, int *outDiceRoll, player_t* player);
 int P_WeaponCanCrit(int weapon);
 
 // Weapon spawn flag functions for map balancing
