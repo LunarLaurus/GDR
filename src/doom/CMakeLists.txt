@@ -43,6 +43,7 @@ add_library(doom STATIC
             p_map.c
             p_maputl.c
             p_mobj.c        p_mobj.h
+            p_particles.c   p_particles.h
             p_plats.c
             p_pspr.c        p_pspr.h
             p_saveg.c       p_saveg.h

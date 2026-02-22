@@ -39,6 +39,7 @@
 #include "r_state.h"
 #include "s_sound.h"
 #include "p_inter.h"
+#include "p_particles.h"
 #include "dmg_ovl.h"
 #include "d_items.h"
 #include "g_status.h"
@@ -1372,6 +1373,10 @@ P_DamageMobj
             if (screen_x > 0 && screen_x < SCREENWIDTH && screen_y > 0 && screen_y < SCREENHEIGHT)
             {
                 DMG_AddDamage(screen_x, screen_y, damage, was_critical, crit_roll);
+                if (was_critical && target)
+                {
+                    P_SpawnCritParticles(target->x, target->y, target->z + (target->height / 2), damage, crit_roll);
+                }
             }
         }
     }
