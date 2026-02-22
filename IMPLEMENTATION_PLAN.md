@@ -217,7 +217,7 @@
 - [x] Add "Advantage/Disadvantage" system (roll twice, take best/worst)
 - [x] Add combo multiplier system for consecutive crits
 - [x] Add luck stat affecting roll distribution
-- [ ] Add configurable crit scaling curves
+- [x] Add configurable crit scaling curves
 
 ## Phase 18: Progression System (Optional Mode)
 - [ ] Add optional RPG progression mode toggle
