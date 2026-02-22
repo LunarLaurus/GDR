@@ -142,6 +142,10 @@ extern int      difficulty_hp_scale[5];
 // Goblin Dice Rollaz: multiplayer sync debug
 int             debug_sync_check = 0;
 
+// Goblin Dice Rollaz: arena lock system
+int             arena_lock_tag = 666;
+int             arena_locked = 0;
+
 
 void D_ConnectNetGame(void);
 void D_CheckNetGame(void);

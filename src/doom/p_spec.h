@@ -380,6 +380,8 @@ EV_DoLockedDoor
 void    T_VerticalDoor (vldoor_t* door);
 void    P_SpawnDoorCloseIn30 (sector_t* sec);
 
+int     EV_DoArenaLock(int tag, boolean close);
+
 void
 P_SpawnDoorRaiseIn5Mins
 ( sector_t*	sec,

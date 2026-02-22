@@ -34,6 +34,10 @@
 #include "dstrings.h"
 #include "sounds.h"
 
+// Goblin Dice Rollaz: Arena lock system globals
+extern int arena_lock_tag;
+extern int arena_locked;
+
 #if 0
 //
 // Sliding door frame information
@@ -562,6 +566,74 @@ P_SpawnDoorRaiseIn5Mins
     door->topheight -= 4*FRACUNIT;
     door->topwait = VDOORWAIT;
     door->topcountdown = 5 * 60 * TICRATE;
+}
+
+
+//
+// Goblin Dice Rollaz: Arena Lock System
+// Closes all doors with a specific tag (for boss arena locking)
+// Returns number of doors affected
+// Uses tag value to identify arena sectors (mappers use tag 666 for arena doors)
+//
+int EV_DoArenaLock(int tag, boolean close)
+{
+    int i;
+    int rtn = 0;
+    sector_t* sec;
+    vldoor_t* door;
+    
+    for (i = 0; i < numsectors; i++)
+    {
+        sec = &sectors[i];
+        
+        // Only process sectors with matching tag
+        if (sec->tag != tag)
+            continue;
+        
+        // If closing and door already closed, skip
+        if (close && sec->specialdata)
+            continue;
+            
+        // If opening and no door thinker, skip
+        if (!close && !sec->specialdata)
+            continue;
+        
+        // Create door thinker for closing
+        if (close)
+        {
+            door = Z_Malloc(sizeof(*door), PU_LEVSPEC, 0);
+            P_AddThinker(&door->thinker);
+            sec->specialdata = door;
+            
+            door->thinker.function.acp1 = (actionf_p1)T_VerticalDoor;
+            door->sector = sec;
+            door->type = vld_close;
+            door->topwait = VDOORWAIT;
+            door->speed = VDOORSPEED;
+            door->topheight = P_FindLowestCeilingSurrounding(sec);
+            door->topheight -= 4*FRACUNIT;
+            door->direction = -1;
+            S_StartSound(&door->sector->soundorg, sfx_dorcls);
+            rtn++;
+        }
+        else
+        {
+            // Find existing door and open it
+            door = sec->specialdata;
+            if (door && door->thinker.function.acp1 == (actionf_p1)T_VerticalDoor)
+            {
+                // If door is closed (direction -1 and at bottom), open it
+                if (door->direction == -1)
+                {
+                    door->direction = 1;
+                    S_StartSound(&door->sector->soundorg, sfx_doropn);
+                    rtn++;
+                }
+            }
+        }
+    }
+    
+    return rtn;
 }
 
 

@@ -43,6 +43,11 @@
 #include "d_items.h"
 #include "g_status.h"
 
+// Goblin Dice Rollaz: Arena lock system
+extern int arena_locked;
+extern int arena_lock_tag;
+extern int EV_DoArenaLock(int tag, boolean close);
+
 
 #define BONUSADD	6
 
@@ -1298,6 +1303,12 @@ P_DamageMobj
         if (target->type == MT_GOBLIN_KING || target->type == MT_DWARVEN_WAR_MACHINE)
         {
             S_ChangeMusic(mus_boss_victory, true);
+            // Goblin Dice Rollaz: Unlock arena when boss dies
+            if (arena_locked && arena_lock_tag > 0)
+            {
+                EV_DoArenaLock(arena_lock_tag, false);
+                arena_locked = 0;
+            }
         }
         
 	P_KillMobj (source, target);

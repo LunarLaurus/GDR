@@ -210,7 +210,7 @@
 - [x] Implement phase transition triggers
 - [x] Add boss-specific music cues
 - [x] Add boss health bar overlay
-- [ ] Add scripted arena lock system (vanilla-compatible)
+- [x] Add scripted arena lock system (vanilla-compatible)
 
 ## Phase 17: Dice Mechanics Expansion
 - [x] Add “Exploding Dice” mechanic (max roll triggers reroll)

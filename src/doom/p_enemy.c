@@ -34,6 +34,11 @@
 #include "sounds.h"
 #include "g_status.h"
 
+// Goblin Dice Rollaz: Arena lock system
+extern int arena_locked;
+extern int arena_lock_tag;
+extern int EV_DoArenaLock(int tag, boolean close);
+
 
 
 
@@ -1255,6 +1260,13 @@ void A_Look (mobj_t* actor)
     // Only trigger if not already playing boss music and not in melee range
     if (actor->type == MT_GOBLIN_KING || actor->type == MT_DWARVEN_WAR_MACHINE)
     {
+        // Lock arena when boss first sees player
+        if (!arena_locked && arena_lock_tag > 0)
+        {
+            arena_locked = 1;
+            EV_DoArenaLock(arena_lock_tag, true);
+        }
+        
         if (!P_CheckMeleeRange(actor))
         {
             if (actor->type == MT_GOBLIN_KING)
