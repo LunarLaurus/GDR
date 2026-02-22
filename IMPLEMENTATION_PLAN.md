@@ -235,14 +235,14 @@
 - [x] Add lava heat shimmer effect
 - [x] Add magic projectile trail rendering
 - [x] Add low-health screen tint
-- [ ] Add optional modern FX toggle
+- [x] Add optional modern FX toggle
 
 ## Phase 21: Multiplayer Enhancements
-- [ ] Ensure dice mechanics sync deterministically over netplay
-- [ ] Add crit event broadcast messages
+- [x] Ensure dice mechanics sync deterministically over netplay
+- [x] Add crit event broadcast messages
 - [ ] Add optional PvP dice arena mode
 - [ ] Add co-op shared crit buffs
-- [ ] Add net desync debug logging
+- [x] Add net desync debug logging
 
 ## Phase 22: Modding & Extensibility
 - [ ] Document dice weapon DEHACKED mappings

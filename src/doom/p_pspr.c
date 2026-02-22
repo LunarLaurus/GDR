@@ -776,6 +776,10 @@ extern int advantage_mode;
 extern int luck;
 extern int crit_scaling_default;
 extern int crit_scaling_param;
+extern int net_sync_debug;
+
+// Goblin Dice Rollaz: RNG sync validation
+void P_ValidateRNGState(const char *checkpoint);
 
 //
 // P_RollDice - Goblin Dice Rollaz: Centralized dice roll function
@@ -787,6 +791,8 @@ int
 P_RollDice (int sides)
 {
     int roll1, roll2;
+
+    P_ValidateRNGState("P_RollDice_start");
     
     if (sides <= 0)
         return 0;
@@ -817,6 +823,7 @@ P_RollDice (int sides)
             if (roll2 < 1) roll2 = 1;
             if (roll2 > sides) roll2 = sides;
         }
+        P_ValidateRNGState("P_RollDice_end_adv");
         return roll1 > roll2 ? roll1 : roll2;
     }
     else if (advantage_mode < 0)
@@ -829,9 +836,11 @@ P_RollDice (int sides)
             if (roll2 < 1) roll2 = 1;
             if (roll2 > sides) roll2 = sides;
         }
+        P_ValidateRNGState("P_RollDice_end_disadv");
         return roll1 < roll2 ? roll1 : roll2;
     }
     
+    P_ValidateRNGState("P_RollDice_end");
     return roll1;
 }
 

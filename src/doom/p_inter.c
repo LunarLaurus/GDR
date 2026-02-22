@@ -65,6 +65,61 @@ extern int EV_DoArenaLock(int tag, boolean close);
 int	crit_boost_bonus = 15;
 int	exploding_dice_enabled = 0;
 
+// Goblin Dice Rollaz: Net sync debug logging
+// When enabled, logs RNG state and desync warnings to console
+int net_sync_debug = 0;
+int net_desync_count = 0;
+
+// Goblin Dice Rollaz: Broadcast critical hit message to all netgame players
+// Ensures all players see the same critical hit notifications
+void P_BroadcastCritMessage(int player_num, const char *message, boolean is_crit, int damage)
+{
+    int i;
+    
+    if (!netgame)
+        return;
+    
+    for (i = 0; i < MAXPLAYERS; i++)
+    {
+        if (playeringame[i])
+        {
+            players[i].message = message;
+        }
+    }
+    
+    if (net_sync_debug)
+    {
+        DEH_printf("[NETSYNC] Crit broadcast: Player %d - %s (damage: %d)\n", 
+               player_num, is_crit ? "CRITICAL" : "hit", damage);
+    }
+}
+
+// Goblin Dice Rollaz: Log desync warning for debugging
+// Called when RNG state mismatch is detected
+void P_LogDesync(const char *context, int expected, int actual)
+{
+    net_desync_count++;
+    
+    if (net_sync_debug)
+    {
+        DEH_printf("[DESYNC] %s: expected RNG=%d, got=%d (total desyncs: %d)\n",
+               context, expected, actual, net_desync_count);
+    }
+}
+
+// Goblin Dice Rollaz: Validate RNG state at key points
+// Call this from critical code paths to verify sync
+void P_ValidateRNGState(const char *checkpoint)
+{
+    if (net_sync_debug && netgame)
+    {
+        extern int P_GetRNGState(void);
+        extern int M_GetRNGState(void);
+        DEH_printf("[NETSYNC] %s: prnd=%d, rnd=%d, gametic=%d\n",
+               checkpoint, P_GetRNGState(), M_GetRNGState(), gametic);
+    }
+}
+
 // Goblin Dice Rollaz: Crit scaling curve settings
 // crit_scaling_default: 0=linear, 1=exponential, 2=bonus_flat, 3=bonus_percent, 4=crit_chance
 // crit_scaling_param: parameter for the scaling curve (multiplier, bonus, etc.)
@@ -985,7 +1040,9 @@ P_DamageMobj
     boolean was_critical = false;
     int crit_roll = 0;
     int screen_x, screen_y;
-	
+
+    P_ValidateRNGState("P_DamageMobj_start");
+    
     if ( !(target->flags & MF_SHOOTABLE) )
 	return;	// shouldn't happen...
 		
@@ -1039,10 +1096,7 @@ P_DamageMobj
             {
                 S_StartSound(source, sfx_fortcrit);
             }
-            if (target == &players[consoleplayer].mo)
-            {
-                players[consoleplayer].message = guaranteed_crit ? "GUARANTEED CRITICAL!" : "CRITICAL HIT!";
-            }
+            P_BroadcastCritMessage(source->player - players, "GUARANTEED CRITICAL!", true, damage);
         }
         else
         {
@@ -1060,20 +1114,14 @@ P_DamageMobj
                 damage *= effectiveCritMultiplier;
                 was_critical = true;
                 crit_roll = (P_Random() % 20) + 1;
-                if (target == &players[consoleplayer].mo)
-                {
-                    players[consoleplayer].message = "CRITICAL HIT!";
-                }
+                P_BroadcastCritMessage(source->player - players, "CRITICAL HIT!", true, damage);
             }
         }
 
         if (source->player->powers[pw_doubledamage])
         {
             damage *= 2;
-            if (target == &players[consoleplayer].mo)
-            {
-                players[consoleplayer].message = "DOUBLE DAMAGE!";
-            }
+            P_BroadcastCritMessage(source->player - players, "DOUBLE DAMAGE!", false, damage);
         }
 
         // Goblin Dice Rollaz: Apply Dice Curse damage variance
