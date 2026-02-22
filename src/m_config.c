@@ -843,6 +843,12 @@ static default_t extra_defaults_list[] =
 
     CONFIG_VARIABLE_INT(show_diskicon),
 
+    // Goblin Dice Rollaz: Modern visual effects toggle
+    // If non-zero, modern effects like screen shake and particles are enabled.
+    // If zero, these effects are disabled for a classic experience.
+    //
+    CONFIG_VARIABLE_INT(usemodernfx),
+
     //!
     // If non-zero, save screenshots in PNG format. If zero, screenshots are
     // saved in PCX format, as Vanilla Doom does.

@@ -168,5 +168,8 @@ void R_ExecuteSetViewSize(void);
 // Goblin Dice Rollaz: Screen shake function
 void R_TriggerScreenShake(fixed_t intensity, int duration);
 
+// Goblin Dice Rollaz: Modern visual effects toggle
+extern int usemodernfx;
+
 
 #endif

@@ -74,6 +74,9 @@ fixed_t			viewshake_x;
 fixed_t			viewshake_y;
 int				viewshake_duration;
 
+// Goblin Dice Rollaz: Modern FX toggle (0 = off, 1 = on)
+int				usemodernfx;
+
 angle_t			viewangle;
 
 fixed_t			viewcos;
@@ -843,8 +846,8 @@ void R_SetupFrame (player_t* player)
     
     viewplayer = player;
     
-    // Apply screen shake if active
-    if (viewshake_duration > 0)
+    // Apply screen shake if active and modern FX are enabled
+    if (usemodernfx && viewshake_duration > 0)
     {
         // Random shake offset within range
         viewshake_x = (M_Random() * viewshake_x * 2) / 256 - viewshake_x;

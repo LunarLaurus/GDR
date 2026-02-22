@@ -147,6 +147,9 @@ extern int      difficulty_hp_scale[5];
 // Goblin Dice Rollaz: multiplayer sync debug
 int             debug_sync_check = 0;
 
+// Goblin Dice Rollaz: modern visual effects toggle
+extern int      usemodernfx;
+
 // Goblin Dice Rollaz: arena lock system
 int             arena_lock_tag = 666;
 int             arena_locked = 0;
@@ -412,6 +415,9 @@ void D_BindVariables(void)
 
     // Goblin Dice Rollaz: multiplayer sync debug
     M_BindIntVariable("debug_sync_check",         &debug_sync_check);
+
+    // Goblin Dice Rollaz: modern visual effects toggle
+    M_BindIntVariable("usemodernfx",             &usemodernfx);
 
     // Goblin Dice Rollaz: difficulty scaling
     M_BindIntVariable("difficulty_hp_baby",       &difficulty_hp_scale[0]);
