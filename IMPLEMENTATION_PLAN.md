@@ -199,9 +199,9 @@
 - [x] Add tactical retreat logic for ranged dwarves
 - [x] Add group aggression triggers (pack behavior)
 - [x] Add engineer turret deployment logic
-- [ ] Add shaman support logic (buff nearby enemies)
-- [ ] Add per-enemy reaction time variance
-- [ ] Implement difficulty-scaled AI parameters
+- [x] Add shaman support logic (buff nearby enemies)
+- [x] Add per-enemy reaction time variance
+- [x] Implement difficulty-scaled AI parameters
 
 ## Phase 16: Boss Encounters
 - [ ] Design Goblin King boss (multi-phase fight)

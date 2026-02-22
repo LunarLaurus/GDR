@@ -566,7 +566,18 @@ P_SpawnMobj
     mobj->health = info->spawnhealth;
 
     if (gameskill != sk_nightmare)
+    {
 	mobj->reactiontime = info->reactiontime;
+	// Goblin Dice Rollaz: Add per-enemy reaction time variance
+	// Varies by +/- 30% to make enemies feel more organic
+	if (mobj->reactiontime > 0)
+	{
+	    int variance = (mobj->reactiontime * 3) / 10;
+	    mobj->reactiontime += (P_Random() % (variance * 2 + 1)) - variance;
+	    if (mobj->reactiontime < 1)
+		mobj->reactiontime = 1;
+	}
+    }
     
     mobj->lastlook = P_Random () % MAXPLAYERS;
     // do not set the state with P_SetMobjState,

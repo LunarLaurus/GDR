@@ -415,6 +415,28 @@ void P_InitLeader(mobj_t* actor)
     actor->morale_flags = MORALE_FLAG_LEADER;
 }
 
+// Goblin Dice Rollaz: Get difficulty-scaled AI parameter
+// Returns a modifier based on current skill level
+// Higher difficulty = faster enemy decision making
+int P_GetDifficultyAIModifier(void)
+{
+    switch(gameskill)
+    {
+        case sk_baby:
+            return 2;    // Enemies are slower to react
+        case sk_easy:
+            return 1;   // Slightly slower
+        case sk_medium:
+            return 0;   // Normal
+        case sk_hard:
+            return -1;  // Slightly faster
+        case sk_nightmare:
+            return -2;  // Fastest reactions
+        default:
+            return 0;
+    }
+}
+
 // A_Flee - Enemy flees when morale is broken
 // Runs away from the player instead of attacking
 void A_Flee(mobj_t* actor)
@@ -1400,6 +1422,16 @@ void A_Chase (mobj_t*	actor)
     {
 	if (P_LookForPlayers(actor,true))
 	    return;	// got a new target
+    }
+    
+    // Goblin Dice Rollaz: Difficulty-scaled AI movement
+    // Higher difficulty = enemies change direction more frequently
+    {
+        int ai_mod = P_GetDifficultyAIModifier();
+        if (actor->movecount + ai_mod < 0)
+            actor->movecount = 0;
+        else
+            actor->movecount += ai_mod;
     }
     
     // chase towards player
