@@ -214,7 +214,7 @@
 
 ## Phase 17: Dice Mechanics Expansion
 - [x] Add “Exploding Dice” mechanic (max roll triggers reroll)
-- [ ] Add “Advantage/Disadvantage” system (roll twice, take best/worst)
+- [x] Add “Advantage/Disadvantage” system (roll twice, take best/worst)
 - [ ] Add combo multiplier system for consecutive crits
 - [ ] Add luck stat affecting roll distribution
 - [ ] Add configurable crit scaling curves

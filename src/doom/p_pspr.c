@@ -749,17 +749,38 @@ static void DecreaseAmmo(player_t *player, int ammonum, int amount)
 // Goblin Dice Rollaz: exploding dice global toggle
 //
 extern int exploding_dice_enabled;
+extern int advantage_mode;
 
 //
 // P_RollDice - Goblin Dice Rollaz: Centralized dice roll function
 // Uses deterministic Doom RNG for netplay compatibility
+// Supports advantage (roll twice, take best) and disadvantage (roll twice, take worst)
 //
 int
 P_RollDice (int sides)
 {
+    int roll1, roll2;
+    
     if (sides <= 0)
         return 0;
-    return (P_Random() % sides) + 1;
+    
+    roll1 = (P_Random() % sides) + 1;
+    
+    // Apply advantage/disadvantage system
+    if (advantage_mode > 0)
+    {
+        // Advantage: roll twice, take best
+        roll2 = (P_Random() % sides) + 1;
+        return roll1 > roll2 ? roll1 : roll2;
+    }
+    else if (advantage_mode < 0)
+    {
+        // Disadvantage: roll twice, take worst
+        roll2 = (P_Random() % sides) + 1;
+        return roll1 < roll2 ? roll1 : roll2;
+    }
+    
+    return roll1;
 }
 
 

@@ -51,6 +51,10 @@
 int	crit_boost_bonus = 15;
 int	exploding_dice_enabled = 0;
 
+// Goblin Dice Rollaz: Advantage/Disadvantage system
+// 0 = normal, 1 = advantage (roll twice, take best), -1 = disadvantage (roll twice, take worst)
+int	advantage_mode = 0;
+
 int	difficulty_hp_scale[5] = {75, 90, 100, 120, 150};
 
 
