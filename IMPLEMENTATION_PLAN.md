@@ -226,7 +226,7 @@
 - [x] Add level-up stat selection screen
 - [x] Add permanent crit chance scaling
 - [x] Add weapon mastery modifiers
-- [ ] Ensure vanilla mode remains unaffected
+- [x] Ensure vanilla mode remains unaffected
 
 ## Phase 19: Audio Overhaul
 - [x] Add dice roll sound library (per die type)
