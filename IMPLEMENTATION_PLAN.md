@@ -221,7 +221,7 @@
 
 ## Phase 18: Progression System (Optional Mode)
 - [x] Add optional RPG progression mode toggle
-- [ ] Implement experience tracking
+- [x] Implement experience tracking
 - [ ] Add level-up stat selection screen
 - [ ] Add permanent crit chance scaling
 - [ ] Add weapon mastery modifiers

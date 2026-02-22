@@ -173,6 +173,15 @@ typedef struct player_s
     // Time remaining (in tics) before combo resets
     int			crit_combo_timer;
 
+    // Goblin Dice Rollaz: RPG Progression System
+    int			experience;
+    int			level;
+    int			stat_points;
+    int			strength_bonus;
+    int			dexterity_bonus;
+    int			vitality_bonus;
+    int			luck_bonus;
+
 } player_t;
 
 

@@ -42,6 +42,7 @@
 #include "dmg_ovl.h"
 #include "d_items.h"
 #include "g_status.h"
+#include "g_rpg.h"
 
 // Goblin Dice Rollaz: Arena lock system
 extern int arena_locked;
@@ -871,6 +872,9 @@ P_KillMobj
 
 	if (target->player)
 	    source->player->frags[target->player-players]++;
+
+	// Goblin Dice Rollaz: Give XP for kills in RPG mode
+	G_AddPlayerXPForKill(target, source);
     }
     else if (!netgame && (target->flags & MF_COUNTKILL) )
     {

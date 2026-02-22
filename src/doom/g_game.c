@@ -63,6 +63,8 @@
 
 #include "s_sound.h"
 
+#include "g_rpg.h"
+
 // Data.
 #include "dstrings.h"
 #include "sounds.h"
@@ -1823,6 +1825,15 @@ G_InitNew
 {
     const char *skytexturename;
     int             i;
+
+    // Goblin Dice Rollaz: Initialize RPG stats for new game
+    for (i = 0; i < MAXPLAYERS; i++)
+    {
+        if (playeringame[i])
+        {
+            G_InitPlayerRPG(&players[i]);
+        }
+    }
 
     if (paused)
     {
