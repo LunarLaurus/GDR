@@ -205,7 +205,7 @@
 
 ## Phase 16: Boss Encounters
 - [x] Design Goblin King boss (multi-phase fight)
-- [ ] Design Dwarven War Machine boss (projectile-heavy)
+- [x] Design Dwarven War Machine boss (projectile-heavy)
 - [ ] Implement phase transition triggers
 - [ ] Add boss-specific music cues
 - [ ] Add boss health bar overlay
