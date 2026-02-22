@@ -231,8 +231,8 @@
 
 ## Phase 20: Visual Effects Layer
 - [x] Add dynamic screen shake on high rolls
-- [ ] Add particle sparks for crit hits
-- [ ] Add lava heat shimmer effect
+- [x] Add particle sparks for crit hits
+- [x] Add lava heat shimmer effect
 - [ ] Add magic projectile trail rendering
 - [ ] Add low-health screen tint
 - [ ] Add optional modern FX toggle

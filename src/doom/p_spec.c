@@ -1081,6 +1081,13 @@ void P_PlayerInSpecialSector (player_t* player)
 	if (player->health <= 10)
 	    G_ExitLevel();
 	break;
+
+      case 21:
+        // Goblin Dice Rollaz: LAVA DAMAGE (heat damage)
+        if (!player->powers[pw_ironfeet])
+            if (!(leveltime&0x1f))
+                P_DamageMobj (player->mo, NULL, NULL, 10);
+        break;
 			
       default:
 	I_Error ("P_PlayerInSpecialSector: "

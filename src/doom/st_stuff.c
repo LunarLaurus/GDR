@@ -345,7 +345,7 @@ void ST_DrawBossHealthBar(void)
 #define STATUSBURNINGPAL	14
 #define STATUSFROZENPAL		15
 #define STATUSSTUNNEDPAL	16
-#define STATUSCURSEDPAL	17
+#define STATUSCURSEDPAL		17
 #define NUMSTATUSPALS		4
 
 // Location of status bar
@@ -1304,6 +1304,10 @@ void ST_doPaletteStuff(void)
     else if ( plyr->powers[pw_ironfeet] > 4*32
 	      || plyr->powers[pw_ironfeet]&8)
 	palette = RADIATIONPAL;
+    else if (plyr->mo && plyr->mo->subsector && plyr->mo->subsector->sector &&
+             plyr->mo->subsector->sector->special == 21 &&
+             plyr->mo->z == plyr->mo->subsector->sector->floorheight)
+        palette = STATUSBURNINGPAL;
     else if (plyr->mo && G_StatusEffectIsActive(plyr->mo, st_burning))
         palette = STATUSBURNINGPAL;
     else if (plyr->mo && G_StatusEffectIsActive(plyr->mo, st_frozen))
