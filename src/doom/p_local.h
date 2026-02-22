@@ -117,6 +117,10 @@ void P_InitMorale(mobj_t *actor);
 void P_InitLeader(mobj_t *actor);
 boolean P_MoraleBroken(mobj_t *actor);
 
+// Goblin Dice Rollaz: Pack behavior system (group aggression triggers)
+int P_GetPackAggression(mobj_t *actor);
+fixed_t P_GetPackRetreatThreshold(mobj_t *actor);
+
 // Goblin Dice Rollaz: Tactical retreat for ranged enemies
 boolean P_IsRangedEnemy(mobj_t* actor);
 void P_RetreatFromTarget(mobj_t* actor);

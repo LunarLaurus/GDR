@@ -197,7 +197,7 @@
 
 ## Phase 15: Advanced Enemy AI Behaviors
 - [x] Add tactical retreat logic for ranged dwarves
-- [ ] Add group aggression triggers (pack behavior)
+- [x] Add group aggression triggers (pack behavior)
 - [ ] Add engineer turret deployment logic
 - [ ] Add shaman support logic (buff nearby enemies)
 - [ ] Add per-enemy reaction time variance

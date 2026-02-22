@@ -121,6 +121,133 @@ static tactic_t P_GetTactic(mobjtype_t type)
     return TACTIC_DEFAULT;
 }
 
+// Goblin Dice Rollaz: Pack behavior system
+// Group aggression triggers - enemies fight harder when near allies
+
+#define PACK_DETECT_RADIUS (512*FRACUNIT)  // Distance to detect pack members
+#define PACK_AGGRESSION_BONUS_PER_ALLY 10  // Extra aggression per nearby ally
+#define PACK_MAX_BONUS 40                  // Maximum aggression bonus from pack
+#define PACK_RETREAT_THRESHOLD_BASE 128    // Base distance threshold for retreat
+#define PACK_RETREAT_REDUCTION_PER_ALLY 16 // Retreat threshold reduced per ally
+
+// Forward declarations for pack behavior functions
+static int P_GetNearbyAllyCount(mobj_t* actor);
+static boolean P_IsAllyInDanger(mobj_t* actor);
+
+// P_GetNearbyAllyCount - Count allies of same faction within pack radius
+// Excludes self, counts only living enemies of same faction
+static int P_GetNearbyAllyCount(mobj_t* actor)
+{
+    mobj_t* mo;
+    sector_t* sec;
+    int count = 0;
+    faction_t my_faction;
+
+    if (!actor)
+        return 0;
+
+    my_faction = P_GetFaction(actor->type);
+    if (my_faction == FACTION_NONE)
+        return 0;
+
+    sec = actor->subsector->sector;
+
+    for (mo = sec->thinglist; mo; mo = mo->snext)
+    {
+        // Skip self
+        if (mo == actor)
+            continue;
+
+        // Skip dead or dying
+        if (mo->health <= 0)
+            continue;
+
+        // Check if same faction
+        if (P_GetFaction(mo->type) != my_faction)
+            continue;
+
+        // Check distance
+        if (P_AproxDistance(mo->x - actor->x, mo->y - actor->y) <= PACK_DETECT_RADIUS)
+            count++;
+    }
+
+    return count;
+}
+
+// P_GetPackAggression - Get effective aggression including pack bonus
+// Returns base aggression + bonus from nearby allies (capped at PACK_MAX_BONUS)
+int P_GetPackAggression(mobj_t* actor)
+{
+    int base_aggression;
+    int ally_bonus;
+    int ally_count;
+
+    if (!actor || !actor->info)
+        return 50;
+
+    base_aggression = actor->info->aggression;
+    if (base_aggression <= 0)
+        base_aggression = 50;
+
+    ally_count = P_GetNearbyAllyCount(actor);
+    ally_bonus = ally_count * PACK_AGGRESSION_BONUS_PER_ALLY;
+
+    if (ally_bonus > PACK_MAX_BONUS)
+        ally_bonus = PACK_MAX_BONUS;
+
+    return base_aggression + ally_bonus;
+}
+
+// P_GetPackRetreatThreshold - Get modified retreat threshold based on pack size
+fixed_t P_GetPackRetreatThreshold(mobj_t* actor)
+{
+    int ally_count;
+    int reduction;
+
+    ally_count = P_GetNearbyAllyCount(actor);
+    reduction = ally_count * PACK_RETREAT_REDUCTION_PER_ALLY;
+
+    if (reduction > PACK_RETREAT_THRESHOLD_BASE - 32)
+        reduction = PACK_RETREAT_THRESHOLD_BASE - 32;
+
+    return (PACK_RETREAT_THRESHOLD_BASE - reduction) * FRACUNIT;
+}
+
+// P_IsAllyInDanger - Check if any nearby allies are being attacked
+static boolean P_IsAllyInDanger(mobj_t* actor)
+{
+    mobj_t* mo;
+    sector_t* sec;
+    faction_t my_faction;
+
+    if (!actor)
+        return false;
+
+    my_faction = P_GetFaction(actor->type);
+    if (my_faction == FACTION_NONE)
+        return false;
+
+    sec = actor->subsector->sector;
+
+    for (mo = sec->thinglist; mo; mo = mo->snext)
+    {
+        if (mo == actor)
+            continue;
+        if (mo->health <= 0)
+            continue;
+        if (P_GetFaction(mo->type) != my_faction)
+            continue;
+        if (P_AproxDistance(mo->x - actor->x, mo->y - actor->y) > PACK_DETECT_RADIUS)
+            continue;
+        if (mo->target && mo->target == actor->target)
+            return true;
+        if (mo->health < mo->info->spawnhealth / 2)
+            return true;
+    }
+
+    return false;
+}
+
 // Goblin Dice Rollaz: Morale system flags
 #define MORALE_FLAG_LEADER     0x01  // This mobj can be a leader
 #define MORALE_FLAG_FOLLOWER  0x02  // This mobj follows a leader
@@ -241,8 +368,16 @@ void P_UpdateMorale(mobj_t* actor)
     }
     else
     {
+        // Goblin Dice Rollaz: Pack support slows morale degradation
+        // More allies = more support = morale drops slower
+        int morale_drop = 5;
+        int ally_count = P_GetNearbyAllyCount(actor);
+        morale_drop -= ally_count;  // Each ally reduces morale loss by 1
+        if (morale_drop < 1)
+            morale_drop = 1;  // Never drop more than 1 at a time
+
         // Every few seconds, morale drops a bit without a leader
-        actor->morale -= 5;
+        actor->morale -= morale_drop;
         actor->reactiontime = 35 * 5; // 5 seconds
 
         if (actor->morale <= 0)
@@ -1142,6 +1277,10 @@ void A_Chase (mobj_t*	actor)
         fixed_t dist = P_AproxDistance(actor->x - actor->target->x,
                                        actor->y - actor->target->y);
 
+        // Goblin Dice Rollaz: Pack behavior affects retreat threshold
+        // More allies = more confident = stay closer to player before retreating
+        fixed_t retreat_threshold = P_GetPackRetreatThreshold(actor);
+
         // Retreat if player is within missile range but outside melee range
         // This gives ranged enemies time to fire and reposition
         if (dist < MISSILERANGE && dist > MELEERANGE)
@@ -1150,13 +1289,27 @@ void A_Chase (mobj_t*	actor)
             A_FaceTarget(actor);
 
             // Only retreat occasionally to avoid being too kitable
-            // Retreating every few frames creates a "kiting" behavior
-            if (P_Random() < 80)
+            // But pack members retreat less often (more aggressive in groups)
+            int retreat_chance = 80;
+            int ally_count = P_GetNearbyAllyCount(actor);
+            retreat_chance -= ally_count * 5;  // Reduce retreat chance by 5% per ally
+
+            if (P_Random() < retreat_chance)
             {
                 P_RetreatFromTarget(actor);
                 return;
             }
         }
+    }
+
+    // Goblin Dice Rollaz: Pack bloodlust - fight harder when allies are in danger
+    // If pack member is being attacked, become more aggressive
+    if (actor->target && P_IsAllyInDanger(actor))
+    {
+        // Override retreat - rush to aid ally!
+        // Reduce reaction time to attack faster
+        if (actor->reactiontime > 2)
+            actor->reactiontime = 2;
     }
 
 
