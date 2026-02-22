@@ -165,5 +165,8 @@ void R_SetViewSize (int blocks, int detail);
 
 void R_ExecuteSetViewSize(void);
 
+// Goblin Dice Rollaz: Screen shake function
+void R_TriggerScreenShake(fixed_t intensity, int duration);
+
 
 #endif

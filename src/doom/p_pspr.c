@@ -28,6 +28,7 @@
 #include "d_items.h"
 #include "s_sound.h"
 #include "g_rpg.h"
+#include "r_main.h"
 
 // State.
 #include "doomstat.h"
@@ -319,6 +320,12 @@ void P_FireAltWeapon (player_t* player)
         
         // Show flash
         P_SetPsprite(player, ps_flash, weaponinfo[player->readyweapon].flashstate);
+        
+        // Screen shake for burst crits
+        if (critRoll > 0)
+        {
+            R_TriggerScreenShake(FRACUNIT * 2, 4);
+        }
         break;
     }
     case wp_d12:
@@ -387,6 +394,12 @@ void P_FireAltWeapon (player_t* player)
                                                 player->mo->target->x, player->mo->target->y);
             player->mo->target->momx += FixedMul(chargeBonus * 20, cos(pushAngle));
             player->mo->target->momy += FixedMul(chargeBonus * 20, sin(pushAngle));
+        }
+        
+        // Screen shake for charged attack crits
+        if (critRoll > 0 || chargeBonus >= 35)
+        {
+            R_TriggerScreenShake(FRACUNIT * 3, 6);
         }
         break;
     }
@@ -1222,6 +1235,12 @@ A_FireD6Blast
 
     P_BulletSlope (player->mo);
     P_GunShotWithDamage (player->mo, !player->refire, damage);
+    
+    // Goblin Dice Rollaz: Screen shake on critical hits
+    if (critRoll > 0)
+    {
+        R_TriggerScreenShake(FRACUNIT * 2, 4);
+    }
 }
 
 
@@ -1262,6 +1281,11 @@ A_FireTwinD6
     P_BulletSlope (player->mo);
     P_GunShotWithDamage (player->mo, true, damage1);
     P_GunShotWithDamage (player->mo, false, damage2);
+    
+    if (critRoll1 > 0 || critRoll2 > 0)
+    {
+        R_TriggerScreenShake(FRACUNIT * 2, 4);
+    }
 }
 
 
@@ -1301,6 +1325,11 @@ A_FireArcaneD20
     if (missile)
     {
         missile->damage = damage;
+    }
+    
+    if (critRoll > 0)
+    {
+        R_TriggerScreenShake(FRACUNIT * 2, 4);
     }
 }
 
@@ -1350,10 +1379,15 @@ A_FireCursed
     {
         player->health -= damage;
         player->message = "CURSED!";
+        R_TriggerScreenShake(FRACUNIT * 4, 8);
         if (player->health <= 0)
         {
             P_KillMobj(player->mo, player->mo, player->mo, true);
         }
+    }
+    else if (critRoll > 0)
+    {
+        R_TriggerScreenShake(FRACUNIT * 3, 6);
     }
 }
 

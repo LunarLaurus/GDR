@@ -70,6 +70,10 @@ fixed_t			viewx;
 fixed_t			viewy;
 fixed_t			viewz;
 
+fixed_t			viewshake_x;
+fixed_t			viewshake_y;
+int				viewshake_duration;
+
 angle_t			viewangle;
 
 fixed_t			viewcos;
@@ -814,6 +818,20 @@ R_PointInSubsector
     return &subsectors[nodenum & ~NF_SUBSECTOR];
 }
 
+//
+// R_TriggerScreenShake
+//
+// Goblin Dice Rollaz: Trigger screen shake effect
+// intensity: shake magnitude (in fixed-point units)
+// duration: number of frames to shake
+//
+void R_TriggerScreenShake(fixed_t intensity, int duration)
+{
+    viewshake_x = intensity;
+    viewshake_y = intensity;
+    viewshake_duration = duration;
+}
+
 
 
 //
@@ -824,8 +842,23 @@ void R_SetupFrame (player_t* player)
     int		i;
     
     viewplayer = player;
-    viewx = player->mo->x;
-    viewy = player->mo->y;
+    
+    // Apply screen shake if active
+    if (viewshake_duration > 0)
+    {
+        // Random shake offset within range
+        viewshake_x = (M_Random() * viewshake_x * 2) / 256 - viewshake_x;
+        viewshake_y = (M_Random() * viewshake_y * 2) / 256 - viewshake_y;
+        viewshake_duration--;
+    }
+    else
+    {
+        viewshake_x = 0;
+        viewshake_y = 0;
+    }
+    
+    viewx = player->mo->x + viewshake_x;
+    viewy = player->mo->y + viewshake_y;
     viewangle = player->mo->angle + viewangleoffset;
     extralight = player->extralight;
 

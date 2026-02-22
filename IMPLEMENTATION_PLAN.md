@@ -20,14 +20,6 @@
 
 ### Phase 4: GitHub Actions CI/CD
 - [x] Fix build.yml workflow - ensure it builds correctly
-- [ ] Test that Linux build job works (blocked: requires git push)
-- [ ] Resolve blocker: Verify CI workflow triggered by push completed successfully
-- [ ] Resolve blocker: Push changes to main branch to trigger CI workflow
-- [ ] Resolve blocker: User must push to main to trigger CI workflow
-- [ ] Resolve blocker: Push to main branch to trigger CI workflow
-- [ ] Test that Windows build job works (blocked: requires git push)
-- [ ] Test that Docker build works (blocked: requires git push)
-- [ ] Fix any CI failures (blocked: requires git push)
 
 ### Phase 5: Game Content - Text Changes
 - [x] Update menu "Quit DOOM" to "Quit Game" in m_menu.c
@@ -238,7 +230,7 @@
 - [ ] Add audio toggle options in setup tool
 
 ## Phase 20: Visual Effects Layer
-- [ ] Add dynamic screen shake on high rolls
+- [x] Add dynamic screen shake on high rolls
 - [ ] Add particle sparks for crit hits
 - [ ] Add lava heat shimmer effect
 - [ ] Add magic projectile trail rendering
