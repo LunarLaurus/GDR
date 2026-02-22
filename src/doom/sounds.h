@@ -102,6 +102,9 @@ typedef enum
     mus_read_m,
     mus_dm2ttl,
     mus_dm2int,
+    mus_goblin_boss,
+    mus_dwarf_boss,
+    mus_boss_victory,
     NUMMUSIC
 } musicenum_t;
 

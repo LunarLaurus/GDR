@@ -1251,6 +1251,19 @@ void A_Look (mobj_t* actor)
 	    S_StartSound (actor, sound);
     }
 
+    // Goblin Dice Rollaz: Trigger boss music when boss first sees player
+    // Only trigger if not already playing boss music and not in melee range
+    if (actor->type == MT_GOBLIN_KING || actor->type == MT_DWARVEN_WAR_MACHINE)
+    {
+        if (!P_CheckMeleeRange(actor))
+        {
+            if (actor->type == MT_GOBLIN_KING)
+                S_ChangeMusic(mus_goblin_boss, true);
+            else if (actor->type == MT_DWARVEN_WAR_MACHINE)
+                S_ChangeMusic(mus_dwarf_boss, true);
+        }
+    }
+
     P_SetMobjState (actor, actor->info->seestate);
 }
 

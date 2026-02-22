@@ -1287,6 +1287,12 @@ P_DamageMobj
     
     if (target->health <= 0)
     {
+        // Goblin Dice Rollaz: Play boss victory music when boss dies
+        if (target->type == MT_GOBLIN_KING || target->type == MT_DWARVEN_WAR_MACHINE)
+        {
+            S_ChangeMusic(mus_boss_victory, true);
+        }
+        
 	P_KillMobj (source, target);
 	return;
     }
