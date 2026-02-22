@@ -32,6 +32,8 @@
 #define FROZEN_TICS       (5 * TICRATE)
 #define STUNNED_TICS      (3 * TICRATE)
 #define DICE_CURSE_TICS   (15 * TICRATE)
+#define ENRAGED_TICS      (8 * TICRATE)
+#define ENRAGED_DAMAGE_MULT 150
 
 int burn_damage = BURNING_DAMAGE;
 int burn_tics = BURNING_TICS;
@@ -41,6 +43,8 @@ int stunned_tics = STUNNED_TICS;
 int dice_curse_tics = DICE_CURSE_TICS;
 int dice_curse_variance_min = 25;
 int dice_curse_variance_max = 150;
+int enraged_tics = ENRAGED_TICS;
+int enraged_damage_mult = ENRAGED_DAMAGE_MULT;
 
 void G_UpdateStatusEffectInfo(void)
 {
@@ -50,6 +54,8 @@ void G_UpdateStatusEffectInfo(void)
     status_effects[st_frozen].move_speed_multiplier = frozen_speed_mul;
     status_effects[st_stunned].default_duration = stunned_tics;
     status_effects[st_dicecurse].default_duration = dice_curse_tics;
+    status_effects[st_enraged].default_duration = enraged_tics;
+    status_effects[st_enraged].damage_multiplier = enraged_damage_mult;
 }
 
 status_info_t status_effects[NUMSTATUSEFFECTS] = {
@@ -60,6 +66,7 @@ status_info_t status_effects[NUMSTATUSEFFECTS] = {
         0,
         0,
         100,
+        100,
         0
     },
     {
@@ -68,6 +75,7 @@ status_info_t status_effects[NUMSTATUSEFFECTS] = {
         BURNING_TICS,
         STATUSEFFECT_FLAG_TIMED | STATUSEFFECT_FLAG_DAMAGE,
         BURNING_DAMAGE,
+        100,
         100,
         0xFF4400
     },
@@ -78,6 +86,7 @@ status_info_t status_effects[NUMSTATUSEFFECTS] = {
         STATUSEFFECT_FLAG_TIMED | STATUSEFFECT_FLAG_MOVESLOW,
         0,
         FROZEN_SPEED_MUL,
+        100,
         0x4488FF
     },
     {
@@ -86,6 +95,7 @@ status_info_t status_effects[NUMSTATUSEFFECTS] = {
         STUNNED_TICS,
         STATUSEFFECT_FLAG_TIMED | STATUSEFFECT_FLAG_ATTACKDISABLE,
         0,
+        100,
         100,
         0xFFFF00
     },
@@ -96,7 +106,18 @@ status_info_t status_effects[NUMSTATUSEFFECTS] = {
         STATUSEFFECT_FLAG_TIMED,
         0,
         100,
+        100,
         0xFF00FF
+    },
+    {
+        st_enraged,
+        "Enraged",
+        ENRAGED_TICS,
+        STATUSEFFECT_FLAG_TIMED | STATUSEFFECT_FLAG_DAMAGEBOOST,
+        0,
+        100,
+        ENRAGED_DAMAGE_MULT,
+        0xFF8800
     }
 };
 
@@ -107,6 +128,21 @@ int G_GetDiceCurseDamageMultiplier(mobj_t* target)
 
     int variance = (P_Random() % (dice_curse_variance_max - dice_curse_variance_min + 1)) + dice_curse_variance_min;
     return variance;
+}
+
+int G_GetStatusEffectDamageMultiplier(mobj_t* target)
+{
+    int total_multiplier = 100;
+
+    if (!target)
+        return total_multiplier;
+
+    if (G_StatusEffectIsActive(target, st_enraged))
+    {
+        total_multiplier = status_effects[st_enraged].damage_multiplier;
+    }
+
+    return total_multiplier;
 }
 
 boolean G_StatusEffectIsActive(mobj_t* target, int effect_id)

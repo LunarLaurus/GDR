@@ -196,6 +196,7 @@ typedef enum
     st_frozen,
     st_stunned,
     st_dicecurse,
+    st_enraged,
     NUMSTATUSEFFECTS
     
 } statuseffect_t;
@@ -204,6 +205,7 @@ typedef enum
 #define STATUSEFFECT_FLAG_DAMAGE    0x0002
 #define STATUSEFFECT_FLAG_MOVESLOW  0x0004
 #define STATUSEFFECT_FLAG_ATTACKDISABLE 0x0008
+#define STATUSEFFECT_FLAG_DAMAGEBOOST  0x0010
 
 typedef struct
 {
@@ -213,6 +215,7 @@ typedef struct
     int         flags;
     int         damage_per_second;
     int         move_speed_multiplier;
+    int         damage_multiplier;
     int         color;
 } status_info_t;
 

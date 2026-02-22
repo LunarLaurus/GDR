@@ -2528,11 +2528,11 @@ void A_ShamanSpell (mobj_t* actor)
 
     spell_roll = P_Random ();
 
-    if (spell_roll < 85)
+    if (spell_roll < 70)
     {
         P_SpawnMissile (actor, actor->target, MT_SHAMAN_FIREBOLT);
     }
-    else if (spell_roll < 170)
+    else if (spell_roll < 120)
     {
         mobj_t* target;
         int best_dist = 0;
@@ -2573,7 +2573,43 @@ void A_ShamanSpell (mobj_t* actor)
             P_SpawnMissile (actor, actor->target, MT_SHAMAN_FIREBOLT);
         }
     }
-    else if (spell_roll < 210)
+    else if (spell_roll < 160)
+    {
+        mobj_t* target;
+        int buff_count = 0;
+        
+        target = actor->subsector->sector->thinglist;
+        while (target)
+        {
+            if (target != actor && 
+                target->type >= MT_DWARF_DEFENDER && 
+                target->type <= MT_GOBLIN_ALCHEMIST &&
+                target->health > 0 &&
+                (target->flags & MF_SOLID) &&
+                !(target->flags & MF_CORPSE))
+            {
+                int dist = P_AproximalDistance (actor->x - target->x, actor->y - target->y);
+                if (dist < 512*FRACUNIT)
+                {
+                    if (!G_StatusEffectIsActive(target, st_enraged))
+                    {
+                        G_StatusEffectApply(target, st_enraged, enraged_tics);
+                        buff_count++;
+                    }
+                }
+            }
+            target = target->next;
+        }
+
+        if (buff_count > 0)
+        {
+            P_SetMobjState (actor, S_SHAMAN_CAST1);
+            S_StartSound (actor, sfx_posit1);
+        }
+        P_SetShamanCooldown(actor, SHAMAN_COOLDOWN_TICS);
+        return;
+    }
+    else if (spell_roll < 200)
     {
         P_SpawnMissile (actor, actor->target, MT_SHAMAN_FREEZE);
     }

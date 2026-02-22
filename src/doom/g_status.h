@@ -34,6 +34,8 @@ extern int stunned_tics;
 extern int dice_curse_tics;
 extern int dice_curse_variance_min;
 extern int dice_curse_variance_max;
+extern int enraged_tics;
+extern int enraged_damage_mult;
 
 boolean G_StatusEffectIsActive(mobj_t* target, int effect_id);
 int     G_StatusEffectTimeRemaining(mobj_t* target, int effect_id);
@@ -45,6 +47,7 @@ boolean G_StatusEffectCanAttack(mobj_t* target);
 void    G_StatusEffectTick(mobj_t* target);
 boolean G_StatusEffectDamageTarget(mobj_t* target, int damage);
 int     G_GetDiceCurseDamageMultiplier(mobj_t* target);
+int     G_GetStatusEffectDamageMultiplier(mobj_t* target);
 void    G_UpdateStatusEffectInfo(void);
 
 #define STATUS(c) status_effects[c]

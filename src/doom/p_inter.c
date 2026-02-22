@@ -1051,6 +1051,17 @@ P_DamageMobj
             }
         }
 
+        // Goblin Dice Rollaz: Apply Enraged status effect damage boost
+        if (source && G_StatusEffectIsActive(source, st_enraged))
+        {
+            int enragedMultiplier = G_GetStatusEffectDamageMultiplier(source);
+            damage = (damage * enragedMultiplier) / 100;
+            if (source == &players[consoleplayer].mo)
+            {
+                players[consoleplayer].message = "ENRAGED!";
+            }
+        }
+
         // Goblin Dice Rollaz: Apply stun on critical hits (20% chance)
         if (was_critical && target && !target->player && target->health > 0)
         {
