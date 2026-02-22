@@ -1020,6 +1020,18 @@ P_DamageMobj
             }
         }
 
+        if (rpg_mode)
+        {
+            int rpgCritBonus = G_GetPlayerCritBonus(source->player);
+            effectiveCritChance += rpgCritBonus;
+
+            if (source->player->level > 1)
+            {
+                int levelCritBonus = (source->player->level - 1) / 2;
+                effectiveCritChance += levelCritBonus;
+            }
+        }
+
         if (guaranteed_crit)
         {
             damage *= effectiveCritMultiplier;

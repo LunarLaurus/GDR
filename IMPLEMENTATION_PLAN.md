@@ -223,7 +223,7 @@
 - [x] Add optional RPG progression mode toggle
 - [x] Implement experience tracking
 - [x] Add level-up stat selection screen
-- [ ] Add permanent crit chance scaling
+- [x] Add permanent crit chance scaling
 - [ ] Add weapon mastery modifiers
 - [ ] Ensure vanilla mode remains unaffected
 
