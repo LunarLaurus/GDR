@@ -48,6 +48,8 @@ void G_InitPlayerRPG(player_t* player)
     player->dexterity_bonus = 0;
     player->vitality_bonus = 0;
     player->luck_bonus = 0;
+
+    G_InitPlayerWeaponMastery(player);
 }
 
 void G_PlayerLevelUp(player_t* player)
@@ -240,4 +242,138 @@ int G_GetPlayerXPProgress(player_t* player)
         return 100;
 
     return (player->experience * 100) / current_xp_needed;
+}
+
+#define MASTERY_XP_PER_LEVEL 25
+#define MAX_MASTERY_LEVEL 10
+#define MASTERY_BONUS_DAMAGE_PER_LEVEL 1
+#define MASTERY_BONUS_CRIT_PER_LEVEL 1
+
+static const char* weapon_names[NUMWEAPONS] = {
+    "Fist",
+    "D6 Blaster",
+    "D20 Cannon",
+    "D12",
+    "Shotgun",
+    "Chaingun",
+    "Missile",
+    "Plasma",
+    "BFG",
+    "Chainsaw",
+    "Super Shotgun",
+    "Percentile",
+    "D4",
+    "D8",
+    "D10",
+    "Twin D6",
+    "Arcane D20",
+    "Cursed Die"
+};
+
+void G_InitPlayerWeaponMastery(player_t* player)
+{
+    int i;
+
+    if (!player)
+        return;
+
+    for (i = 0; i < NUMWEAPONS; i++)
+    {
+        player->weapon_kills[i] = 0;
+        player->weapon_mastery[i] = 0;
+        player->weapon_mastery_xp[i] = 0;
+    }
+}
+
+void G_AddWeaponKill(player_t* player, int weapon)
+{
+    int xp_earned;
+    int current_mastery;
+    int xp_needed;
+
+    if (!player || !rpg_mode)
+        return;
+
+    if (weapon < 0 || weapon >= NUMWEAPONS)
+        return;
+
+    player->weapon_kills[weapon]++;
+
+    xp_earned = 5 + (player->level / 2);
+    player->weapon_mastery_xp[weapon] += xp_earned;
+
+    current_mastery = player->weapon_mastery[weapon];
+    xp_needed = MASTERY_XP_PER_LEVEL * (current_mastery + 1);
+
+    while (player->weapon_mastery_xp[weapon] >= xp_needed && current_mastery < MAX_MASTERY_LEVEL)
+    {
+        player->weapon_mastery_xp[weapon] -= xp_needed;
+        player->weapon_mastery[weapon]++;
+        current_mastery++;
+        xp_needed = MASTERY_XP_PER_LEVEL * (current_mastery + 1);
+
+        if (player == &players[consoleplayer])
+        {
+            static char mastmsg[128];
+            snprintf(mastmsg, sizeof(mastmsg), "%s Mastery: Level %d!",
+                     weapon_names[weapon],
+                     player->weapon_mastery[weapon]);
+            player->message = mastmsg;
+        }
+    }
+}
+
+int G_GetWeaponMasteryLevel(player_t* player, int weapon)
+{
+    if (!player || !rpg_mode)
+        return 0;
+
+    if (weapon < 0 || weapon >= NUMWEAPONS)
+        return 0;
+
+    return player->weapon_mastery[weapon];
+}
+
+int G_GetWeaponMasteryDamageBonus(player_t* player, int weapon)
+{
+    int mastery;
+
+    if (!player || !rpg_mode)
+        return 0;
+
+    mastery = G_GetWeaponMasteryLevel(player, weapon);
+    return mastery * MASTERY_BONUS_DAMAGE_PER_LEVEL;
+}
+
+int G_GetWeaponMasteryCritBonus(player_t* player, int weapon)
+{
+    int mastery;
+
+    if (!player || !rpg_mode)
+        return 0;
+
+    mastery = G_GetWeaponMasteryLevel(player, weapon);
+    return mastery * MASTERY_BONUS_CRIT_PER_LEVEL;
+}
+
+int G_GetWeaponMasteryXPProgress(player_t* player, int weapon)
+{
+    int current_xp_needed;
+    int current_mastery;
+
+    if (!player || !rpg_mode)
+        return 0;
+
+    if (weapon < 0 || weapon >= NUMWEAPONS)
+        return 0;
+
+    current_mastery = player->weapon_mastery[weapon];
+    if (current_mastery >= MAX_MASTERY_LEVEL)
+        return 100;
+
+    current_xp_needed = MASTERY_XP_PER_LEVEL * (current_mastery + 1);
+    if (current_xp_needed <= 0)
+        return 100;
+
+    return (player->weapon_mastery_xp[weapon] * 100) / current_xp_needed;
 }

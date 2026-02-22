@@ -22,6 +22,9 @@
 
 #include "doomdef.h"
 
+struct player_s;
+typedef struct player_s player_t;
+
 
 
 // Weapon info: sprite frames, ammunition use.
@@ -86,7 +89,7 @@ extern  dice_weapon_info_t dice_weapon_info[NUMWEAPONS];
 
 // Dice roll backend functions
 int P_RollDice(int sides);
-int P_CalculateDiceDamage(int weapon, int guaranteedCrit, int *outCritRoll, int *outMisfire);
+int P_CalculateDiceDamage(int weapon, int guaranteedCrit, int *outCritRoll, int *outMisfire, player_t* player);
 int P_WeaponCanCrit(int weapon);
 
 // Weapon spawn flag functions for map balancing

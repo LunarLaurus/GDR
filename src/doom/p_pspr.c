@@ -27,6 +27,7 @@
 #include "p_local.h"
 #include "d_items.h"
 #include "s_sound.h"
+#include "g_rpg.h"
 
 // State.
 #include "doomstat.h"
@@ -290,7 +291,7 @@ void P_FireAltWeapon (player_t* player)
         {
             int misfire = 0;
             // Calculate damage for each projectile
-            damage = P_CalculateDiceDamage(wp_d4, guaranteedCrit, &critRoll, &misfire);
+            damage = P_CalculateDiceDamage(wp_d4, guaranteedCrit, &critRoll, &misfire, player);
             
             // Add slight spread for burst inaccuracy
             if (i == 0)
@@ -342,7 +343,7 @@ void P_FireAltWeapon (player_t* player)
         
         // Calculate base damage
         int misfire = 0;
-        damage = P_CalculateDiceDamage(wp_d12, guaranteedCrit, &critRoll, &misfire);
+        damage = P_CalculateDiceDamage(wp_d12, guaranteedCrit, &critRoll, &misfire, player);
         
         // Apply charge bonus: up to +100% damage at max charge
         // weaponcharge ranges from 0-35 (about 1 second at 35fps)
@@ -830,14 +831,17 @@ P_WeaponCanCrit (int weapon)
 // Handles guaranteed crit, dice rolling, and damage mapping
 // Supports Gamble Shot mode for wider variance
 // Supports Misfire mechanic for high-risk weapons
+// Applies weapon mastery bonuses if player is provided
 //
 int
-P_CalculateDiceDamage (int weapon, int guaranteedCrit, int *outCritRoll, int *outMisfire)
+P_CalculateDiceDamage (int weapon, int guaranteedCrit, int *outCritRoll, int *outMisfire, player_t* player)
 {
     int diceRoll;
     int damage = 0;
     int misfired = 0;
     dice_weapon_info_t *dwi;
+    int masteryBonus = 0;
+    int masteryCritBonus = 0;
     
     if (outCritRoll)
         *outCritRoll = 0;
@@ -971,6 +975,13 @@ P_CalculateDiceDamage (int weapon, int guaranteedCrit, int *outCritRoll, int *ou
     
     if (outMisfire)
         *outMisfire = misfired;
+    
+    // Goblin Dice Rollaz: Apply weapon mastery bonuses
+    if (player && rpg_mode)
+    {
+        masteryBonus = G_GetWeaponMasteryDamageBonus(player, weapon);
+        damage += masteryBonus;
+    }
     
     return damage;
 }
@@ -1207,7 +1218,7 @@ A_FireD6Blast
         player->message = "CRITICAL!";
     }
 
-    damage = P_CalculateDiceDamage(wp_d6blaster, guaranteedCrit, &critRoll, NULL);
+    damage = P_CalculateDiceDamage(wp_d6blaster, guaranteedCrit, &critRoll, NULL, player);
 
     P_BulletSlope (player->mo);
     P_GunShotWithDamage (player->mo, !player->refire, damage);
@@ -1245,8 +1256,8 @@ A_FireTwinD6
         player->message = "CRITICAL!";
     }
 
-    damage1 = P_CalculateDiceDamage(wp_twind6, guaranteedCrit, &critRoll1, NULL);
-    damage2 = P_CalculateDiceDamage(wp_twind6, guaranteedCrit, &critRoll2, NULL);
+    damage1 = P_CalculateDiceDamage(wp_twind6, guaranteedCrit, &critRoll1, NULL, player);
+    damage2 = P_CalculateDiceDamage(wp_twind6, guaranteedCrit, &critRoll2, NULL, player);
 
     P_BulletSlope (player->mo);
     P_GunShotWithDamage (player->mo, true, damage1);
@@ -1284,7 +1295,7 @@ A_FireArcaneD20
         player->message = "CRITICAL!";
     }
 
-    damage = P_CalculateDiceDamage(wp_arcaned20, guaranteedCrit, &critRoll, NULL);
+    damage = P_CalculateDiceDamage(wp_arcaned20, guaranteedCrit, &critRoll, NULL, player);
 
     missile = P_SpawnPlayerMissile (player->mo, MT_ARCANED20BEAM);
     if (missile)
@@ -1325,7 +1336,7 @@ A_FireCursed
         player->message = "CRITICAL!";
     }
 
-    damage = P_CalculateDiceDamage(wp_cursed, guaranteedCrit, &critRoll, &misfire);
+    damage = P_CalculateDiceDamage(wp_cursed, guaranteedCrit, &critRoll, &misfire, player);
 
     missile = P_SpawnPlayerMissile (player->mo, MT_CURSEDDIE);
     if (missile)

@@ -224,7 +224,7 @@
 - [x] Implement experience tracking
 - [x] Add level-up stat selection screen
 - [x] Add permanent crit chance scaling
-- [ ] Add weapon mastery modifiers
+- [x] Add weapon mastery modifiers
 - [ ] Ensure vanilla mode remains unaffected
 
 ## Phase 19: Audio Overhaul

@@ -875,6 +875,9 @@ P_KillMobj
 
 	// Goblin Dice Rollaz: Give XP for kills in RPG mode
 	G_AddPlayerXPForKill(target, source);
+
+	// Goblin Dice Rollaz: Add weapon mastery XP for kills
+	G_AddWeaponKill(source->player, source->player->readyweapon);
     }
     else if (!netgame && (target->flags & MF_COUNTKILL) )
     {

@@ -33,4 +33,11 @@ boolean G_AllocateStatPoint(player_t* player, int stat_type);
 void G_RPGThink(player_t* player);
 int G_GetPlayerXPProgress(player_t* player);
 
+void G_InitPlayerWeaponMastery(player_t* player);
+void G_AddWeaponKill(player_t* player, int weapon);
+int G_GetWeaponMasteryLevel(player_t* player, int weapon);
+int G_GetWeaponMasteryDamageBonus(player_t* player, int weapon);
+int G_GetWeaponMasteryCritBonus(player_t* player, int weapon);
+int G_GetWeaponMasteryXPProgress(player_t* player, int weapon);
+
 #endif

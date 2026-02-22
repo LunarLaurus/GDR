@@ -182,6 +182,14 @@ typedef struct player_s
     int			vitality_bonus;
     int			luck_bonus;
 
+    // Goblin Dice Rollaz: Weapon Mastery System
+    // Number of kills per weapon type
+    int			weapon_kills[NUMWEAPONS];
+    // Mastery level per weapon (0-10)
+    int			weapon_mastery[NUMWEAPONS];
+    // XP toward next mastery level per weapon
+    int			weapon_mastery_xp[NUMWEAPONS];
+
 } player_t;
 
 
