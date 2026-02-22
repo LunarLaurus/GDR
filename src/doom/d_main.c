@@ -433,6 +433,9 @@ void D_BindVariables(void)
     M_BindIntVariable("dice_curse_variance_min", &dice_curse_variance_min);
     M_BindIntVariable("dice_curse_variance_max", &dice_curse_variance_max);
 
+    // Goblin Dice Rollaz: RPG Progression Mode
+    M_BindIntVariable("rpg_mode",                &rpg_mode);
+
     // Multiplayer chat macros
 
     for (i=0; i<10; ++i)
@@ -1642,6 +1645,9 @@ void D_DoomMain (void)
         // the BFG edition IWADs, use the "ON"/"OFF" graphics instead.
         DEH_AddStringReplacement("M_GDHIGH", "M_MSGON");
         DEH_AddStringReplacement("M_GDLOW", "M_MSGOFF");
+
+        // Goblin Dice Rollaz: RPG Mode menu label
+        DEH_AddStringReplacement("M_RPGMD", "M_MESSG");
 
         // The BFG edition's "Screen Size:" graphic has also been changed
         // to say "Gamepad:". Fortunately, it (along with the original

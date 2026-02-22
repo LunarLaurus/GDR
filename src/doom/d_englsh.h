@@ -57,6 +57,8 @@
 
 #define MSGOFF	"Messages OFF"
 #define MSGON		"Messages ON"
+#define RPGMODEON	"RPG Mode ON"
+#define RPGMODEOFF	"RPG Mode OFF"
 #define NETEND	"you can't end a netgame!\n\n"PRESSKEY
 #define ENDGAME	"are you sure you want to end the game?\n\n"PRESSYN
 

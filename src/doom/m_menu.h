@@ -58,5 +58,8 @@ extern int screenblocks;
 extern boolean inhelpscreens;
 extern int showMessages;
 
+// Goblin Dice Rollaz: RPG Progression Mode toggle
+extern int rpg_mode;
+
 
 #endif

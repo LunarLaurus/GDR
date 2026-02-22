@@ -70,6 +70,10 @@ float		mouse_sensitivity_scale = 1.0f;
 
 // Show messages has default, 0 = off, 1 = on
 int			showMessages = 1;
+
+// Goblin Dice Rollaz: RPG Progression Mode toggle (0=off, 1=on)
+int			rpg_mode = 0;
+
 	
 
 // Blocky mode, has default, 0 = high, 1 = normal
@@ -184,6 +188,7 @@ static void M_ReadThis2(int choice);
 static void M_QuitDOOM(int choice);
 
 static void M_ChangeMessages(int choice);
+static void M_ChangeRPGMode(int choice);
 static void M_ChangeSensitivity(int choice);
 static void M_SfxVol(int choice);
 static void M_MusicVol(int choice);
@@ -340,6 +345,7 @@ menuitem_t OptionsMenu[]=
 {
     {1,"M_ENDGAM",	M_EndGame,'e'},
     {1,"M_MESSG",	M_ChangeMessages,'m'},
+    {1,"M_RPGMD",	M_ChangeRPGMode,'r'},
     {1,"M_DETAIL",	M_ChangeDetail,'g'},
     {2,"M_SCRNSZ",	M_SizeDisplay,'s'},
     {-1,"",0,'\0'},
@@ -959,6 +965,7 @@ void M_Episode(int choice)
 //
 static const char *detailNames[2] = {"M_GDHIGH","M_GDLOW"};
 static const char *msgNames[2] = {"M_MSGOFF","M_MSGON"};
+static const char *rpgModeNames[2] = {"RPG Mode OFF", "RPG Mode ON"};
 
 void M_DrawOptions(void)
 {
@@ -973,11 +980,15 @@ void M_DrawOptions(void)
                       W_CacheLumpName(DEH_String(msgNames[showMessages]),
                                       PU_CACHE));
 
+    // Goblin Dice Rollaz: Draw RPG Mode toggle state (text)
+    M_WriteText(OptionsDef.x + 120, OptionsDef.y + LINEHEIGHT * 2,
+                rpgModeNames[rpg_mode]);
+
     M_DrawThermo(OptionsDef.x, OptionsDef.y + LINEHEIGHT * (mousesens + 1),
-		 10, mouseSensitivity);
+		  10, mouseSensitivity);
 
     M_DrawThermo(OptionsDef.x,OptionsDef.y+LINEHEIGHT*(scrnsize+1),
-		 9,screenSize);
+		  9,screenSize);
 }
 
 void M_Options(int choice)
@@ -1000,6 +1011,23 @@ void M_ChangeMessages(int choice)
 	players[consoleplayer].message = DEH_String(MSGOFF);
     else
 	players[consoleplayer].message = DEH_String(MSGON);
+
+    message_dontfuckwithme = true;
+}
+
+
+//
+//      Toggle RPG Progression Mode on/off
+//
+void M_ChangeRPGMode(int choice)
+{
+    choice = 0;
+    rpg_mode = 1 - rpg_mode;
+	
+    if (!rpg_mode)
+	players[consoleplayer].message = "RPG Mode OFF";
+    else
+	players[consoleplayer].message = "RPG Mode ON";
 
     message_dontfuckwithme = true;
 }
