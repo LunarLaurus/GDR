@@ -21,6 +21,7 @@
 ### Phase 4: GitHub Actions CI/CD
 - [x] Fix build.yml workflow - ensure it builds correctly
 - [ ] Test that Linux build job works (blocked: requires git push)
+- [ ] Resolve blocker: User must push to main to trigger CI workflow
 - [ ] Resolve blocker: Push to main branch to trigger CI workflow
 - [ ] Test that Windows build job works (blocked: requires git push)
 - [ ] Test that Docker build works (blocked: requires git push)
