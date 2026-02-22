@@ -846,14 +846,14 @@ P_CalculateDiceDamage (int weapon, int guaranteedCrit, int *outCritRoll, int *ou
     
     // Goblin Dice Rollaz: Exploding Max Roll mechanic
     // For gamble_shot weapons OR when exploding_dice_enabled is set globally,
-    // rolls >= 95 trigger additional rolls
-    if ((dwi->gamble_shot || exploding_dice_enabled) && diceRoll >= 95 && diceRoll < dwi->crit_roll)
+    // max roll triggers additional rolls (exploding dice)
+    if ((dwi->gamble_shot || exploding_dice_enabled) && diceRoll == dwi->die_type)
     {
         int explodeRolls = 0;
         int additionalDamage = 0;
         
-        // Roll again for each point above 95 (up to 3 extra rolls)
-        while (diceRoll >= 95 && explodeRolls < 3)
+        // Roll again for each explosion (up to 3 extra rolls)
+        while (diceRoll == dwi->die_type && explodeRolls < 3)
         {
             explodeRolls++;
             diceRoll = P_RollDice(dwi->die_type);

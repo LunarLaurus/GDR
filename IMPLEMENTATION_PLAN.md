@@ -206,13 +206,13 @@
 ## Phase 16: Boss Encounters
 - [x] Design Goblin King boss (multi-phase fight)
 - [x] Design Dwarven War Machine boss (projectile-heavy)
-- [ ] Implement phase transition triggers
+- [x] Implement phase transition triggers
 - [ ] Add boss-specific music cues
 - [ ] Add boss health bar overlay
 - [ ] Add scripted arena lock system (vanilla-compatible)
 
 ## Phase 17: Dice Mechanics Expansion
-- [ ] Add “Exploding Dice” mechanic (max roll triggers reroll)
+- [x] Add “Exploding Dice” mechanic (max roll triggers reroll)
 - [ ] Add “Advantage/Disadvantage” system (roll twice, take best/worst)
 - [ ] Add combo multiplier system for consecutive crits
 - [ ] Add luck stat affecting roll distribution
