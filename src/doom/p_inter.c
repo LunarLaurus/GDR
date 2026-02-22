@@ -1229,6 +1229,9 @@ P_DamageMobj
             // Boss enters phase 2!
             target->special1 = 1;  // Mark as phase 2
             
+            // Goblin Dice Rollaz: Play phase transition music
+            S_ChangeMusic(mus_boss_victory, true);
+            
             // Trigger phase 2 state based on boss type
             if (target->type == MT_GOBLIN_KING)
             {

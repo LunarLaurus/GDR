@@ -208,7 +208,7 @@
 - [x] Design Goblin King boss (multi-phase fight)
 - [x] Design Dwarven War Machine boss (projectile-heavy)
 - [x] Implement phase transition triggers
-- [ ] Add boss-specific music cues
+- [x] Add boss-specific music cues
 - [x] Add boss health bar overlay
 - [ ] Add scripted arena lock system (vanilla-compatible)
 
