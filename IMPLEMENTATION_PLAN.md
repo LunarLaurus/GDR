@@ -208,7 +208,7 @@
 - [x] Design Dwarven War Machine boss (projectile-heavy)
 - [x] Implement phase transition triggers
 - [ ] Add boss-specific music cues
-- [ ] Add boss health bar overlay
+- [x] Add boss health bar overlay
 - [ ] Add scripted arena lock system (vanilla-compatible)
 
 ## Phase 17: Dice Mechanics Expansion

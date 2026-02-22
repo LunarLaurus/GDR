@@ -57,6 +57,9 @@ void ST_drawPowerupSlots(boolean refresh);
 // Goblin Dice Rollaz: Weapon stat debug overlay
 extern int show_weapon_stats;
 
+// Goblin Dice Rollaz: Boss health bar overlay
+void ST_DrawBossHealthBar(void);
+
 extern pixel_t *st_backing_screen;
 extern cheatseq_t cheat_mus;
 extern cheatseq_t cheat_god;

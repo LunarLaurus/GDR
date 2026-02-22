@@ -783,6 +783,7 @@ P_SetupLevel
     {
 	players[i].killcount = players[i].secretcount 
 	    = players[i].itemcount = 0;
+	players[i].bosstarget = NULL;
     }
 
     // Initial height of PointOfView

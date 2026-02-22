@@ -165,6 +165,9 @@ typedef struct player_s
     // Goblin Dice Rollaz: Weapon charging for charged attacks
     int			weaponcharge;
 
+    // Goblin Dice Rollaz: Boss target for health bar overlay
+    struct mobj_s	*bosstarget;
+
 } player_t;
 
 

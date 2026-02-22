@@ -1313,6 +1313,36 @@ P_DamageMobj
 	    && target->info->seestate != S_NULL)
 	    P_SetMobjState (target, target->info->seestate);
     }
+
+    // Goblin Dice Rollaz: Track boss target for health bar overlay
+    if (source && source->player)
+    {
+        // Player is attacking - track the target if it's a boss
+        if (target->flags & MF_BOSS)
+        {
+            source->player->bosstarget = target;
+        }
+    }
+    if (target->player && source && (source->flags & MF_BOSS))
+    {
+        // Boss is attacking player - track the boss
+        target->player->bosstarget = source;
+    }
+    // If player damages a boss, also track it
+    if (target->player == NULL && source && source->player && (target->flags & MF_BOSS))
+    {
+        source->player->bosstarget = target;
+    }
+    // Clear boss target if boss is dead
+    if (target->player && target->player->bosstarget && target->player->bosstarget->health <= 0)
+    {
+        target->player->bosstarget = NULL;
+    }
+    // Clear if source (attacker) dies
+    if (source && source->player && source->player->bosstarget && source->player->bosstarget->health <= 0)
+    {
+        source->player->bosstarget = NULL;
+    }
 			
 }
 

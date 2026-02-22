@@ -200,6 +200,134 @@ static void ST_DrawWeaponStats(int x, int y)
     }
 }
 
+// Goblin Dice Rollaz: Boss health bar overlay
+// Draws a health bar at the top of the screen when fighting a boss
+void ST_DrawBossHealthBar(void)
+{
+    player_t *plyr;
+    mobj_t *boss;
+    int current_health;
+    int max_health;
+    int bar_width = 400;
+    int bar_height = 20;
+    int x, y;
+    int fill_width;
+    int phase = 1;
+    const char *boss_name;
+    
+    if (!players)
+        return;
+    
+    plyr = &players[consoleplayer];
+    if (!plyr || !plyr->bosstarget)
+        return;
+    
+    boss = plyr->bosstarget;
+    if (!boss || !boss->info)
+        return;
+    
+    // Check if boss is dead or gone
+    if (boss->health <= 0 || boss->state == &states[boss->info->deathstate])
+        return;
+    
+    // Get boss info
+    max_health = boss->info->spawnhealth;
+    current_health = boss->health;
+    
+    // Check phase 2
+    if (boss->special1 == 1)
+        phase = 2;
+    
+    // Get boss name
+    if (boss->type == MT_GOBLIN_KING)
+        boss_name = "GOBLIN KING";
+    else if (boss->type == MT_DWARVEN_WAR_MACHINE)
+        boss_name = "DWARVEN WAR MACHINE";
+    else
+        boss_name = "BOSS";
+    
+    // Calculate position (centered at top of screen)
+    x = (SCREENWIDTH - bar_width) / 2;
+    y = 16;
+    
+    // Calculate fill width
+    if (max_health > 0)
+        fill_width = (current_health * bar_width) / max_health;
+    else
+        fill_width = 0;
+    
+    // Clamp
+    if (fill_width > bar_width)
+        fill_width = bar_width;
+    if (fill_width < 0)
+        fill_width = 0;
+    
+    // Draw bar border (dark background)
+    V_DrawFilledBox(x, y, bar_width, bar_height, 0);
+    
+    // Draw health fill (red/orange based on health remaining)
+    if (fill_width > 0)
+    {
+        int color;
+        // Color gradient: green -> yellow -> red as health decreases
+        float health_pct = (float)current_health / (float)max_health;
+        if (health_pct > 0.6f)
+            color = 4; // Green-ish
+        else if (health_pct > 0.3f)
+            color = 3; // Yellow-ish  
+        else
+            color = 2; // Red
+        
+        V_DrawFilledBox(x + 2, y + 2, fill_width - 4, bar_height - 4, color);
+    }
+    
+    // Draw phase indicator
+    if (phase == 2)
+    {
+        V_DrawFilledBox(x + bar_width - 30, y, 28, bar_height, 5);
+    }
+    
+    // Draw boss name text using the font system
+    {
+        char buf[32];
+        int i;
+        int text_x = x + 4;
+        int text_y = y + 4;
+        
+        DEH_snprintf(buf, sizeof(buf), "%s", boss_name);
+        for (i = 0; buf[i]; i++)
+        {
+            int c = buf[i];
+            if (c >= ' ' && c < HU_FONTSIZE)
+            {
+                char namebuf[9];
+                patch_t *p;
+                DEH_snprintf(namebuf, 9, "STCFN%.3d", c);
+                p = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
+                V_DrawPatchDirect(text_x, text_y, p);
+                text_x += SHORT(p->width);
+            }
+        }
+        
+        // Draw health numbers
+        text_x = x + bar_width - 100;
+        DEH_snprintf(buf, sizeof(buf), "%d/%d", current_health, max_health);
+        for (i = 0; buf[i]; i++)
+        {
+            int c = buf[i];
+            if (c >= ' ' && c < HU_FONTSIZE)
+            {
+                char namebuf[9];
+                patch_t *p;
+                DEH_snprintf(namebuf, 9, "STCFN%.3d", c);
+                p = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
+                V_DrawPatchDirect(text_x, text_y, p);
+                text_x += SHORT(p->width);
+            }
+        }
+    }
+}
+
 //
 // STATUS BAR DATA
 //
@@ -1444,6 +1572,9 @@ void ST_Drawer (boolean fullscreen, boolean refresh)
     {
         ST_DrawWeaponStats(280, 20);
     }
+
+    // Goblin Dice Rollaz: Draw boss health bar overlay
+    ST_DrawBossHealthBar();
 
 }
 
