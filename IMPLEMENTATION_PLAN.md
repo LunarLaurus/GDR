@@ -183,7 +183,7 @@
 - [ ] Unique death animations per elite unit (blocked: requires sprite assets)
 - [ ] Resolve blocker: Commission or create sprite assets for death animations
 - [ ] Critical hit reaction animations (blocked: requires sprite assets)
-- [ ] Elemental status visual overlays (burn/freeze/glow)
+- [x] Elemental status visual overlays (burn/freeze/glow)
 - [ ] Add mini bestiary documentation in README or `/docs`
 
 ## Phase 14: Spell & Status Effect System

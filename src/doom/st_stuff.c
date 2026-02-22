@@ -213,6 +213,12 @@ static void ST_DrawWeaponStats(int x, int y)
 #define NUMBONUSPALS		4
 // Radiation suit, green shift.
 #define RADIATIONPAL		13
+// Goblin Dice Rollaz: Status effect screen tints
+#define STATUSBURNINGPAL	14
+#define STATUSFROZENPAL		15
+#define STATUSSTUNNEDPAL	16
+#define STATUSCURSEDPAL	17
+#define NUMSTATUSPALS		4
 
 // Location of status bar
 #define ST_X				0
@@ -1170,6 +1176,14 @@ void ST_doPaletteStuff(void)
     else if ( plyr->powers[pw_ironfeet] > 4*32
 	      || plyr->powers[pw_ironfeet]&8)
 	palette = RADIATIONPAL;
+    else if (plyr->mo && G_StatusEffectIsActive(plyr->mo, st_burning))
+        palette = STATUSBURNINGPAL;
+    else if (plyr->mo && G_StatusEffectIsActive(plyr->mo, st_frozen))
+        palette = STATUSFROZENPAL;
+    else if (plyr->mo && G_StatusEffectIsActive(plyr->mo, st_stunned))
+        palette = STATUSSTUNNEDPAL;
+    else if (plyr->mo && G_StatusEffectIsActive(plyr->mo, st_dicecurse))
+        palette = STATUSCURSEDPAL;
     else
 	palette = 0;
 
