@@ -204,7 +204,7 @@
 - [x] Implement difficulty-scaled AI parameters
 
 ## Phase 16: Boss Encounters
-- [ ] Design Goblin King boss (multi-phase fight)
+- [x] Design Goblin King boss (multi-phase fight)
 - [ ] Design Dwarven War Machine boss (projectile-heavy)
 - [ ] Implement phase transition triggers
 - [ ] Add boss-specific music cues
