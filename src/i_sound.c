@@ -60,6 +60,10 @@ int snd_pitchshift = -1;
 int snd_musicdevice = SNDDEVICE_SB;
 int snd_sfxdevice = SNDDEVICE_SB;
 
+int snd_cave_reverb = 0;
+int snd_cave_reverb_intensity = 50;
+int snd_cave_reverb_mindarkness = 48;
+
 // Low-level sound and music modules we are using
 static const sound_module_t *sound_module;
 static const music_module_t *music_module;
@@ -536,5 +540,9 @@ void I_BindSoundVariables(void)
 
     M_BindIntVariable("use_libsamplerate",       &use_libsamplerate);
     M_BindFloatVariable("libsamplerate_scale",   &libsamplerate_scale);
+
+    M_BindIntVariable("snd_cave_reverb",             &snd_cave_reverb);
+    M_BindIntVariable("snd_cave_reverb_intensity",  &snd_cave_reverb_intensity);
+    M_BindIntVariable("snd_cave_reverb_mindarkness", &snd_cave_reverb_mindarkness);
 }
 

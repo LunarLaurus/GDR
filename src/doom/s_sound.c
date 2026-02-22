@@ -37,6 +37,8 @@
 #include "w_wad.h"
 #include "z_zone.h"
 
+#include "i_sound.h"
+
 // when to clip out sounds
 // Does not fit the large outdoor areas.
 
@@ -406,6 +408,18 @@ static int S_AdjustSoundParams(mobj_t *listener, mobj_t *source,
         *vol = (snd_SfxVolume
                 * ((S_CLIPPING_DIST - approx_dist)>>FRACBITS))
             / S_ATTENUATOR;
+    }
+
+    if (snd_cave_reverb && listener->subsector != NULL)
+    {
+        sector_t *sector = listener->subsector->sector;
+        if (sector != NULL && sector->lightlevel < snd_cave_reverb_mindarkness)
+        {
+            int reverb_reduction = (snd_cave_reverb_intensity * (*vol)) / 100;
+            *vol = *vol - reverb_reduction;
+            if (*vol < 0)
+                *vol = 0;
+        }
     }
 
     return (*vol > 0);

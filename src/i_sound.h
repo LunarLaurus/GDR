@@ -240,6 +240,10 @@ extern char *snd_dmxoption;
 extern int use_libsamplerate;
 extern float libsamplerate_scale;
 
+extern int snd_cave_reverb;
+extern int snd_cave_reverb_intensity;
+extern int snd_cave_reverb_mindarkness;
+
 void I_BindSoundVariables(void);
 
 // DMX version to emulate for OPL emulation:

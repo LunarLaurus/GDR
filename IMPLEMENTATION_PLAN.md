@@ -226,7 +226,7 @@
 - [x] Add crit impact layered sound
 - [x] Add dwarf voice cues
 - [x] Add goblin chatter ambient sounds
-- [ ] Add reverb zones for caves
+- [x] Add reverb zones for caves
 - [ ] Add audio toggle options in setup tool
 
 ## Phase 20: Visual Effects Layer
