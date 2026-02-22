@@ -235,6 +235,15 @@ typedef enum
     sfx_dice_percent, // d100 percentile gamble shot
     sfx_dice_roll,    // Generic dice roll for powerups/pickups
     sfx_dice_crit,    // Critical hit dice sound (satisfaction)
+    // Goblin Dice Rollaz: Dwarf voice cues
+    sfx_dwarfsee,      // Dwarf spotted player (battle cry)
+    sfx_dwarfatk,      // Dwarf attack grunt
+    sfx_dwarfpain,     // Dwarf pain yelp
+    sfx_dwarfdie,      // Dwarf death collapse
+    sfx_dwarfatk2,     // Dwarf secondary attack (explosives/throw)
+    // Goblin Dice Rollaz: Goblin ambient sounds
+    sfx_gobchirp,      // Goblin chatter chirp
+    sfx_gobchatter,    // Goblin chatter group noise
     NUMSFX
 } sfxenum_t;
 

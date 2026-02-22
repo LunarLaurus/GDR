@@ -239,5 +239,14 @@ sfxinfo_t S_sfx[] =
   SOUND("dsperc", 60),   // d100 percentile gamble - tense rattle
   SOUND("dicpick", 78),  // Generic dice pickup/roll sound
   SOUND("cricrit", 85),  // Critical hit satisfaction sound - satisfying crack
+  // Goblin Dice Rollaz: Dwarf voice cues
+  SOUND("dwfsee", 80),   // Dwarf spotted player (battle cry)
+  SOUND("dwfatk", 70),  // Dwarf attack grunt
+  SOUND("dwfpain", 85), // Dwarf pain yelp
+  SOUND("dwfdie", 60),  // Dwarf death collapse
+  SOUND("dwfatk2", 65), // Dwarf secondary attack (explosives/throw)
+  // Goblin Dice Rollaz: Goblin ambient sounds
+  SOUND("gobchrp", 50), // Goblin chatter chirp
+  SOUND("gobchat", 45), // Goblin chatter group noise
 };
 

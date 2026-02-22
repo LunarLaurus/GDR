@@ -229,10 +229,10 @@
 - [ ] Ensure vanilla mode remains unaffected
 
 ## Phase 19: Audio Overhaul
-- [ ] Add dice roll sound library (per die type)
-- [ ] Add crit impact layered sound
-- [ ] Add dwarf voice cues
-- [ ] Add goblin chatter ambient sounds
+- [x] Add dice roll sound library (per die type)
+- [x] Add crit impact layered sound
+- [x] Add dwarf voice cues
+- [x] Add goblin chatter ambient sounds
 - [ ] Add reverb zones for caves
 - [ ] Add audio toggle options in setup tool
 
