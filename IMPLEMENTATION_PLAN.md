@@ -240,7 +240,7 @@
 ## Phase 21: Multiplayer Enhancements
 - [x] Ensure dice mechanics sync deterministically over netplay
 - [x] Add crit event broadcast messages
-- [ ] Add optional PvP dice arena mode
+- [x] Add optional PvP dice arena mode
 - [ ] Add co-op shared crit buffs
 - [x] Add net desync debug logging
 

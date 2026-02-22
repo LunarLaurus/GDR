@@ -22,9 +22,13 @@
 
 
 
-
 boolean	P_GivePower(player_t*, int);
 
+// Goblin Dice Rollaz: Broadcast critical hit message
+void P_BroadcastCritMessage(int player_num, const char *message, boolean is_crit, int damage);
+
+// Goblin Dice Rollaz: Broadcast arena PvP kill message
+void P_BroadcastArenaKill(int killer, int victim);
 
 
 #endif

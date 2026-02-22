@@ -56,6 +56,10 @@ extern int EV_DoArenaLock(int tag, boolean close);
 #define CRIT_CHANCE	10
 #define CRIT_MULTIPLIER	2
 
+// Goblin Dice Rollaz: Dice Arena PvP damage multiplier
+// Increases damage in PvP mode for more exciting combat
+#define DICE_ARENA_DAMAGE_MULT	150  // 150% damage in Dice Arena PvP
+
 // Goblin Dice Rollaz: Combo multiplier system
 // Combo increases damage for consecutive critical hits
 #define CRIT_COMBO_TIMEOUT	(TICRATE * 3)  // 3 seconds to maintain combo
@@ -91,6 +95,26 @@ void P_BroadcastCritMessage(int player_num, const char *message, boolean is_crit
     {
         DEH_printf("[NETSYNC] Crit broadcast: Player %d - %s (damage: %d)\n", 
                player_num, is_crit ? "CRITICAL" : "hit", damage);
+    }
+}
+
+// Goblin Dice Rollaz: Broadcast arena PvP kill message
+void P_BroadcastArenaKill(int killer, int victim)
+{
+    int i;
+    static char killmsg[64];
+    
+    if (!netgame)
+        return;
+
+    snprintf(killmsg, sizeof(killmsg), "Player %d eliminated Player %d!", killer + 1, victim + 1);
+    
+    for (i = 0; i < MAXPLAYERS; i++)
+    {
+        if (playeringame[i])
+        {
+            players[i].message = killmsg;
+        }
     }
 }
 
@@ -927,7 +951,15 @@ P_KillMobj
 	    source->player->killcount++;	
 
 	if (target->player)
+	{
 	    source->player->frags[target->player-players]++;
+
+	    // Goblin Dice Rollaz: Dice Arena PvP announcements
+	    if (IN_DICE_ARENA())
+	    {
+		P_BroadcastArenaKill(source->player - players, target->player - players);
+	    }
+	}
 
 	// Goblin Dice Rollaz: Give XP for kills in RPG mode
 	G_AddPlayerXPForKill(target, source);
@@ -1344,8 +1376,15 @@ P_DamageMobj
 	if (player == &players[consoleplayer])
 	    I_Tactile (40,10,40+temp*2);
     }
-    
-    // do the damage	
+
+    // Goblin Dice Rollaz: Dice Arena PvP damage boost
+    // Increase damage in PvP mode for more exciting combat
+    if (IN_DICE_ARENA() && target->player && source && source->player)
+    {
+        damage = (damage * DICE_ARENA_DAMAGE_MULT) / 100;
+    }
+
+    // do the damage
     target->health -= damage;	
     
     // Goblin Dice Rollaz: Boss phase transition

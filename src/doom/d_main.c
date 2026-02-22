@@ -1499,6 +1499,16 @@ void D_DoomMain (void)
     if (M_CheckParm ("-altdeath"))
 	deathmatch = 2;
 
+    // Goblin Dice Rollaz: PvP Dice Arena mode
+    //!
+    // @category net
+    //
+    // Start a Dice Arena game (PvP with dice weapons).
+    //
+
+    if (M_CheckParm ("-dicearena"))
+	deathmatch = 3;
+
     if (devparm)
 	DEH_printf(D_DEVSTR);
     
