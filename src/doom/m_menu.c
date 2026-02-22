@@ -46,6 +46,7 @@
 #include "hu_stuff.h"
 
 #include "g_game.h"
+#include "g_rpg.h"
 
 #include "m_argv.h"
 #include "m_controls.h"
@@ -222,10 +223,20 @@ static int  M_StringHeight(const char *string);
 static void M_StartMessage(const char *string, void *routine, boolean input);
 static void M_ClearMenus (void);
 
+// Goblin Dice Rollaz: Level Up menu
+static void M_LevelUp(int choice);
+static void M_DrawLevelUp(void);
+static void M_LevelUpStrength(int choice);
+static void M_LevelUpDexterity(int choice);
+static void M_LevelUpVitality(int choice);
+static void M_LevelUpLuck(int choice);
+static void M_CloseLevelUp(int choice);
+static void M_AllocateStat(int choice);
 
 
 
 //
+
 // DOOM MENU
 //
 enum
@@ -440,6 +451,38 @@ menu_t  SoundDef =
 };
 
 //
+// LEVEL UP STAT SELECTION MENU (Goblin Dice Rollaz)
+//
+enum
+{
+    levup_strength,
+    levup_dexterity,
+    levup_vitality,
+    levup_luck,
+    levup_close,
+    levup_end
+} levup_e;
+
+menuitem_t LevelUpMenu[] =
+{
+    {1,"", M_LevelUpStrength,'s'},
+    {1,"", M_LevelUpDexterity,'d'},
+    {1,"", M_LevelUpVitality,'v'},
+    {1,"", M_LevelUpLuck,'l'},
+    {1,"", M_CloseLevelUp,'c'}
+};
+
+menu_t LevelUpDef =
+{
+    levup_end,
+    NULL,
+    LevelUpMenu,
+    M_DrawLevelUp,
+    180,110,
+    0
+};
+
+//
 // LOAD GAME MENU
 //
 enum
@@ -497,7 +540,7 @@ menu_t  SaveDef =
 };
 
 
-//
+ //
 // M_ReadSaveStrings
 //  read the strings from the savegame files
 //
@@ -995,6 +1038,83 @@ void M_Options(int choice)
 {
     M_SetupNextMenu(&OptionsDef);
 }
+
+//
+// M_LevelUp - Open the level up menu
+//
+void M_LevelUp(int choice)
+{
+    M_SetupNextMenu(&LevelUpDef);
+}
+
+//
+// M_AllocateStat - Allocate a stat point
+//
+void M_AllocateStat(int choice)
+{
+    player_t* player = &players[consoleplayer];
+
+    if (!rpg_mode || !player)
+        return;
+
+    if (player->stat_points <= 0)
+        return;
+
+    switch(choice)
+    {
+    case 0:
+        G_AllocateStatPoint(player, 0);
+        break;
+    case 1:
+        G_AllocateStatPoint(player, 1);
+        break;
+    case 2:
+        G_AllocateStatPoint(player, 2);
+        break;
+    case 3:
+        G_AllocateStatPoint(player, 3);
+        break;
+    }
+}
+
+//
+// M_DrawLevelUp - Draw the level up stat allocation menu
+//
+void M_DrawLevelUp(void)
+{
+    player_t* player = &players[consoleplayer];
+    char str[32];
+    int i;
+    static const char* statNames[] = {"STR", "DEX", "VIT", "LUK"};
+    static const char* statDesc[] = {"Damage", "Speed", "Health", "Crit %"};
+
+    V_DrawPatchDirect(109, 15, W_CacheLumpName(DEH_String("M_LEVTTL"),
+                                               PU_CACHE));
+
+    if (!player)
+        return;
+
+    snprintf(str, sizeof(str), "Level %d", player->level);
+    M_WriteText(60, 40, str);
+
+    snprintf(str, sizeof(str), "Points: %d", player->stat_points);
+    M_WriteText(60, 55, str);
+
+    for (i = 0; i < 4; i++)
+    {
+        int y = 80 + i * 25;
+
+        M_WriteText(60, y, statNames[i]);
+
+        snprintf(str, sizeof(str), "%d", *((int*)player + 17 + i));
+        M_WriteText(180, y, str);
+
+        M_DrawThermo(100, y + 8, 10, *((int*)player + 17 + i));
+    }
+
+    M_WriteText(60, 190, "Press ENTER when done");
+}
+
 
 
 

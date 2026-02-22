@@ -838,6 +838,24 @@ boolean G_Responder (event_t* ev)
 	    I_DisplayFPSDots(devparm || showfps);
 	    return true;
 	}
+	if (ev->type == ev_keydown && ev->data1 == KEY_F6)
+	{
+	    if (rpg_mode && players[consoleplayer].stat_points > 0)
+	    {
+		M_LevelUp(0);
+		return true;
+	    }
+	    else if (rpg_mode)
+	    {
+		players[consoleplayer].message = "No stat points available";
+		return true;
+	    }
+	    else
+	    {
+		players[consoleplayer].message = "RPG Mode required for stats";
+		return true;
+	    }
+	}
 	if (HU_Responder (ev))
 	    return true;	// chat ate the event 
 	if (ST_Responder (ev)) 

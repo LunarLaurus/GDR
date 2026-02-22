@@ -61,5 +61,11 @@ extern int showMessages;
 // Goblin Dice Rollaz: RPG Progression Mode toggle
 extern int rpg_mode;
 
+// Goblin Dice Rollaz: Level Up menu
+typedef struct menu_s menu_t;
+void M_SetupNextMenu(menu_t *menudef);
+extern menu_t LevelUpDef;
+void M_LevelUp(int choice);
+
 
 #endif

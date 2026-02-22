@@ -68,6 +68,14 @@ void G_PlayerLevelUp(player_t* player)
             player->message = lvupmsg;
         }
     }
+
+    if (player == &players[consoleplayer] && player->stat_points > 0)
+    {
+        if (gamestate == GS_LEVEL && !menuactive)
+        {
+            M_SetupNextMenu(&LevelUpDef);
+        }
+    }
 }
 
 void G_GiveExperience(player_t* player, int amount)
