@@ -142,6 +142,14 @@ int G_GetPlayerCritBonus(player_t* player)
     return player->luck_bonus;
 }
 
+int G_GetPlayerLevelCritBonus(player_t* player)
+{
+    if (!player || !rpg_mode)
+        return 0;
+
+    return player->level;
+}
+
 int G_GetPlayerMaxHealthBonus(player_t* player)
 {
     if (!player || !rpg_mode)

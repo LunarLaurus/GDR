@@ -26,6 +26,7 @@ void G_GiveExperience(player_t* player, int amount);
 void G_AddPlayerXPForKill(mobj_t* victim, mobj_t* inflictor);
 int G_GetPlayerDamageBonus(player_t* player);
 int G_GetPlayerCritBonus(player_t* player);
+int G_GetPlayerLevelCritBonus(player_t* player);
 int G_GetPlayerMaxHealthBonus(player_t* player);
 int G_GetPlayerSpeedBonus(player_t* player);
 boolean G_AllocateStatPoint(player_t* player, int stat_type);
