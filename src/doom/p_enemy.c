@@ -96,6 +96,7 @@ static faction_t P_GetFaction(mobjtype_t type)
     if (type == MT_DWARF ||
         type == MT_DWARF_BERSERKER ||
         type == MT_DWARF_ENGINEER ||
+        type == MT_DWARF_TURRET ||
         type == MT_DWARF_DEFENDER ||
         type == MT_DWARF_MARKSMAN ||
         type == MT_DWARF_MINER ||
@@ -133,6 +134,11 @@ static tactic_t P_GetTactic(mobjtype_t type)
 // Forward declarations for pack behavior functions
 static int P_GetNearbyAllyCount(mobj_t* actor);
 static boolean P_IsAllyInDanger(mobj_t* actor);
+
+// Forward declarations for turret deployment
+void A_EngineerDeployTurret(mobj_t* actor);
+void A_TurretAttack(mobj_t* actor);
+void A_TurretThink(mobj_t* actor);
 
 // P_GetNearbyAllyCount - Count allies of same faction within pack radius
 // Excludes self, counts only living enemies of same faction
@@ -1492,6 +1498,17 @@ void A_SPosAttack (mobj_t* actor)
 
     if (actor->type == MT_DWARF_ENGINEER)
     {
+        mobj_t* mo;
+        
+        actor->special1++;
+        
+        if (actor->special1 >= 5 && P_Random() < 64)
+        {
+            A_EngineerDeployTurret(actor);
+            actor->special1 = 0;
+            return;
+        }
+        
         A_FaceTarget (actor);
         S_StartSound (actor, sfx_rlaunc);
         mo = P_SpawnMissile (actor, actor->target, MT_DWARF_BOMB);
@@ -1600,6 +1617,83 @@ void A_TotemistDeploy(mobj_t* actor)
         {
             mo->angle = actor->angle;
             mo->flags |= MF_TELESTICK;
+        }
+    }
+}
+
+void A_EngineerDeployTurret(mobj_t* actor)
+{
+    mobj_t* mo;
+    fixed_t spawnX, spawnY;
+    
+    if (!actor->target)
+        return;
+    
+    A_FaceTarget(actor);
+    
+    spawnX = actor->x + 48 * FRACUNIT;
+    spawnY = actor->y;
+    
+    mo = P_SpawnMobj(spawnX, spawnY, ONFLOORZ, MT_DWARF_TURRET);
+    if (mo)
+    {
+        mo->angle = actor->angle;
+        mo->flags |= MF_TELESTICK;
+        mo->special1 = 0;
+        mo->special2 = 0;
+        S_StartSound(actor, sfx_itmbk);
+    }
+}
+
+void A_TurretAttack(mobj_t* actor)
+{
+    mobj_t* mo;
+    
+    if (!actor->target)
+        return;
+    
+    if (!P_CheckSight(actor, actor->target))
+        return;
+    
+    A_FaceTarget(actor);
+    S_StartSound(actor, sfx_rlaunc);
+    
+    mo = P_SpawnMissile(actor, actor->target, MT_DWARF_BOMB);
+    if (mo)
+    {
+        mo->special1 = 0;
+        mo->damage = 30;
+    }
+}
+
+void A_TurretThink(mobj_t* actor)
+{
+    player_t* player;
+    
+    if (!actor->target)
+    {
+        for (player = players; player < &players[MAXPLAYERS]; player++)
+        {
+            if (player->mo && player->mo->health > 0 && P_CheckSight(actor, player->mo))
+            {
+                actor->target = player->mo;
+                break;
+            }
+        }
+    }
+    
+    if (actor->target && actor->target->health <= 0)
+    {
+        actor->target = NULL;
+    }
+    
+    actor->special2++;
+    if (actor->special2 >= TICRATE)
+    {
+        actor->special2 = 0;
+        if (actor->special1 < 3)
+        {
+            A_TurretAttack(actor);
         }
     }
 }

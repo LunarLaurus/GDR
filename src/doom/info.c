@@ -1946,9 +1946,37 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
    	50,		// mass (light)
    	40,		// damage (higher damage on direct hit)
    	sfx_None,		// activesound
-   	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_NOGRAVITY,		// flags
-    	S_NULL		// raisestate
-     },
+    	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_NOGRAVITY,		// flags
+     	S_NULL		// raisestate
+      },
+
+     {		// MT_DWARF_TURRET
+    	-1,		// doomednum (not spawned via mapthing - deployed by engineer)
+    	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy - stationary)
+    	30,		// spawnhealth (fragile - can be destroyed)
+    	S_SPOS_RUN1,		// seestate (not used - no AI)
+    	sfx_posit2,		// seesound (warning beep)
+    	8,		// reactiontime
+    	0,		// attacksound (mechanical whir)
+    	S_SPOS_PAIN,		// painstate
+    	0,		// painchance (doesn't feel pain)
+    	0,		// meleestate (not used)
+    	S_SPOS_ATK1,		// missilestate (auto-fires at target)
+    	S_SPOS_DIE1,		// deathstate (explodes)
+    	S_SPOS_XDIE1,		// xdeathstate
+    	sfx_pop,		// deathsound (metal break)
+    	0,		// speed (stationary - does not move)
+    	12*FRACUNIT,		// radius (small footprint)
+    	32*FRACUNIT,		// height (short - deployed on ground)
+    	100,		// mass (lightweight)
+    	0,		// damage (not used - turret fires missiles)
+    	sfx_posact,		// activesound (mechanical hum)
+    	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+    	S_SPOS_RAISE1,		// raisestate
+    	10,		// crit_resistance (fragile)
+    	0,		// aggression (not used - no AI)
+    	0		// shield_reduction (none)
+      },
 
      {		// MT_DWARF_DEFENDER
     	8024,		// doomednum (custom mapthing number)

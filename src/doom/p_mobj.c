@@ -38,6 +38,7 @@
 
 void G_PlayerReborn (int player);
 void P_SpawnMapThing (mapthing_t*	mthing);
+void A_TurretThink(mobj_t* actor);
 
 
 //
@@ -528,6 +529,11 @@ void P_MobjThinker (mobj_t* mobj)
     }
 
     G_StatusEffectTick(mobj);
+
+    if (mobj->type == MT_DWARF_TURRET)
+    {
+        A_TurretThink(mobj);
+    }
 
 }
 
