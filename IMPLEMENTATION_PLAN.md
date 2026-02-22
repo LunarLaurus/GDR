@@ -227,7 +227,7 @@
 - [x] Add dwarf voice cues
 - [x] Add goblin chatter ambient sounds
 - [x] Add reverb zones for caves
-- [ ] Add audio toggle options in setup tool
+- [x] Add audio toggle options in setup tool
 
 ## Phase 20: Visual Effects Layer
 - [x] Add dynamic screen shake on high rolls

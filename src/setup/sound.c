@@ -79,6 +79,10 @@ static int show_talk = 0;
 int use_libsamplerate = 0;
 float libsamplerate_scale = 0.65;
 
+int snd_cave_reverb = 0;
+int snd_cave_reverb_intensity = 50;
+int snd_cave_reverb_mindarkness = 48;
+
 char *music_pack_path = NULL;
 char *timidity_cfg_path = NULL;
 static char *gus_patch_path = NULL;
@@ -303,7 +307,7 @@ void ConfigSound(TXT_UNCAST_ARG(widget), void *user_data)
 #ifdef HAVE_FLUIDSYNTH
         TXT_NewRadioButton("FluidSynth", &snd_musicdevice, SNDDEVICE_FSYNTH),
         TXT_NewConditional(&snd_musicdevice, SNDDEVICE_FSYNTH,
-            TXT_MakeTable(2,
+            TXT_NewMakeTable(2,
                 TXT_NewStrut(4, 0),
                 TXT_NewLabel("Soundfont file: "),
                 TXT_NewStrut(4, 0),
@@ -312,6 +316,22 @@ void ConfigSound(TXT_UNCAST_ARG(widget), void *user_data)
                                     sf_extension),
                 NULL)),
 #endif
+        TXT_NewSeparator("Cave reverb"),
+
+        TXT_NewCheckBox("Enable cave reverb", &snd_cave_reverb),
+        TXT_NewConditional(&snd_cave_reverb,
+            TXT_NewHorizBox(
+                TXT_NewStrut(4, 0),
+                TXT_NewLabel("Reverb intensity: "),
+                TXT_NewSpinControl(&snd_cave_reverb_intensity, 0, 100),
+                NULL)),
+        TXT_NewConditional(&snd_cave_reverb,
+            TXT_NewHorizBox(
+                TXT_NewStrut(4, 0),
+                TXT_NewLabel("Min darkness: "),
+                TXT_NewSpinControl(&snd_cave_reverb_mindarkness, 0, 255),
+                NULL)),
+
         NULL);
 }
 
@@ -367,6 +387,10 @@ void BindSoundVariables(void)
     M_BindIntVariable("opl_io_port",              &opl_io_port);
 
     M_BindIntVariable("snd_pitchshift",           &snd_pitchshift);
+
+    M_BindIntVariable("snd_cave_reverb",           &snd_cave_reverb);
+    M_BindIntVariable("snd_cave_reverb_intensity", &snd_cave_reverb_intensity);
+    M_BindIntVariable("snd_cave_reverb_mindarkness", &snd_cave_reverb_mindarkness);
 
     if (gamemission == strife)
     {
