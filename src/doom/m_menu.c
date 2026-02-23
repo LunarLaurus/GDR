@@ -1482,6 +1482,9 @@ void M_CritNotification(int choice)
 
 void M_ScreenShake(int choice)
 {
+    if (reduce_motion)
+        return;
+
     switch(choice)
     {
       case 0:

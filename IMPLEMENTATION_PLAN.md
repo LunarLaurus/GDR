@@ -324,8 +324,8 @@
 ## Phase 33: Accessibility Features
 - [x] Add colorblind mode options
 - [x] Add configurable HUD scale
-- [ ] Add screen reader support for menu navigation
-- [ ] Add option to reduce motion/screen shake
+- [x] Add screen reader support for menu navigation
+- [x] Add option to reduce motion/screen shake
 
 ## Phase 34: Community Features
 - [x] Add replay sharing functionality
