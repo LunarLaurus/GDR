@@ -266,6 +266,7 @@
 - [x] Add release packaging scripts (Linux/Windows/macOS)
 - [x] Create demo WAD bundle
 - [ ] Publish first tagged release
+- [ ] Resolve blocker: Requires manual GitHub release creation and push to remote
 - [ ] Draft public roadmap
 
 ## Phase 25: Polish & Identity Lock
