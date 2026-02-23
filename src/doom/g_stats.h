@@ -46,17 +46,25 @@ typedef struct {
     int highest_roll_achieved;
     int kills;
     int deaths;
+    int levels_completed;
+    int total_play_time;
+    int session_start_time;
 } global_dice_stats_t;
 
 extern global_dice_stats_t global_dice_stats;
+extern global_dice_stats_t cumulative_dice_stats;
 extern dice_weapon_stats_t weapon_stats[MAX_DICE_WEAPONS];
 
 void G_ResetDiceStats(void);
 void G_TrackDiceRoll(int weapon, int die_type, int roll, int damage, boolean is_crit, boolean is_misfire);
 void G_TrackKill(int killer_weapon);
 void G_TrackDeath(void);
+void G_TrackLevelComplete(void);
+void G_StartSession(void);
+void G_AccumulateSessionStats(void);
 void G_PrintDiceStats(void);
 void G_PrintWeaponStats(int weapon);
+void G_PrintCumulativeStats(void);
 const char* G_GetWeaponName(int weapon);
 
 #endif

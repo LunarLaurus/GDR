@@ -68,6 +68,7 @@
 #include "g_timeattack.h"
 #include "g_achievement.h"
 #include "g_leaderboard.h"
+#include "g_stats.h"
 #include "g_game.h"
 
 // Data.
@@ -1563,6 +1564,11 @@ void G_ExitLevel (void)
     
     secretexit = false; 
 
+    // Goblin Dice Rollaz: Track cumulative session stats
+    G_TrackLevelComplete();
+    G_AccumulateSessionStats();
+    G_ResetDiceStats();
+
     // Goblin Dice Rollaz: Track time attack level completion
     if (G_IsTimeAttackMode())
     {
@@ -2047,6 +2053,10 @@ G_InitNew
             G_InitPlayerRPG(&players[i]);
         }
     }
+
+    // Goblin Dice Rollaz: Initialize session stats
+    G_StartSession();
+    G_ResetDiceStats();
 
     if (paused)
     {
