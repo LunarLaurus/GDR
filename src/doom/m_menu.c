@@ -49,6 +49,7 @@
 #include "g_rpg.h"
 #include "g_survival.h"
 #include "g_timeattack.h"
+#include "g_leaderboard.h"
 
 #include "m_argv.h"
 #include "m_controls.h"
@@ -295,52 +296,15 @@ static void M_LevelUpLuck(int choice);
 static void M_CloseLevelUp(int choice);
 static void M_AllocateStat(int choice);
 
-
-
-//
-
-// DOOM MENU
-//
-enum
-{
-    newgame = 0,
-    survivalmode,
-    options,
-    gamesettings,
-    accessibility,
-    loadgame,
-    savegame,
-    readthis,
-    quitdoom,
-    main_end
-} main_e;
-
-menuitem_t MainMenu[]=
-{
-    {1,"M_NGAME",M_NewGame,'n'},
-    {1,"M_SURVIV",M_SurvivalMode,'s'},
-    {1,"M_TIMATT",M_TimeAttackMode,'t'},
-    {1,"M_OPTION",M_Options,'o'},
-    {1,"M_GAMESET",M_GameSettings,'g'},
-    {1,"M_ACCESS",M_Accessibility,'a'},
-    {1,"M_LOADG",M_LoadGame,'l'},
-    {1,"M_SAVEG",M_SaveGame,'s'},
-    // Another hickup with Special edition.
-    {1,"M_RDTHIS",M_ReadThis,'r'},
-    {1,"M_QUITG",M_QuitDOOM,'q'}
-};
-
-menu_t  MainDef =
-{
-    main_end,
-    NULL,
-    MainMenu,
-    M_DrawMainMenu,
-    97,64,
-    0
-};
-
-
+// Goblin Dice Rollaz: Leaderboard menu
+static void M_Leaderboard(int choice);
+static void M_DrawLeaderboard(void);
+static void M_LeaderboardSurvival(int choice);
+static void M_LeaderboardTimeAttack(int choice);
+static void M_LeaderboardCritOnly(int choice);
+static void M_LeaderboardNoPowerups(int choice);
+static void M_LeaderboardHardcore(int choice);
+static void M_ClearLeaderboards(int choice);
 //
 // EPISODE SELECT
 //
@@ -406,32 +370,74 @@ menu_t  NewDef =
 
 
 //
+// DOOM MENU
+//
+enum
+{
+    newgame = 0,
+    survivalmode,
+    timeattackmode,
+    leaderboard,
+    options,
+    gamesettings,
+    accessibility,
+    loadgame,
+    savegame,
+    readthis,
+    quitdoom,
+    main_end
+} main_e;
+
+menuitem_t MainMenu[]=
+{
+    {1,"M_NGAME",M_NewGame,'n'},
+    {1,"M_SURVIV",M_SurvivalMode,'s'},
+    {1,"M_TIMATT",M_TimeAttackMode,'t'},
+    {1,"M_LEADER",M_Leaderboard,'l'},
+    {1,"M_OPTION",M_Options,'o'},
+    {1,"M_GAMESET",M_GameSettings,'g'},
+    {1,"M_ACCESS",M_Accessibility,'a'},
+    {1,"M_LOADG",M_LoadGame,'b'},
+    {1,"M_SAVEG",M_SaveGame,'v'},
+    // Another hickup with Special edition.
+    {1,"M_RDTHIS",M_ReadThis,'r'},
+    {1,"M_QUITG",M_QuitDOOM,'q'}
+};
+
+menu_t  MainDef =
+{
+    main_end,
+    NULL,
+    MainMenu,
+    M_DrawMainMenu,
+    97,64,
+    0
+};
+
+//
 // OPTIONS MENU
 //
 enum
 {
-    endgame,
-    messages,
-    detail,
-    scrnsize,
-    option_empty1,
-    mousesens,
-    option_empty2,
-    soundvol,
+    opt_endflags,
+    opt_customize,
+    opt_messages,
+    opt_sound,
+    opt_sensitivity,
+    opt_quick,
+    opt_always,
     opt_end
 } options_e;
 
 menuitem_t OptionsMenu[]=
 {
-    {1,"M_ENDGAM",	M_EndGame,'e'},
-    {1,"M_MESSG",	M_ChangeMessages,'m'},
-    {1,"M_RPGMD",	M_ChangeRPGMode,'r'},
-    {1,"M_DETAIL",	M_ChangeDetail,'g'},
-    {2,"M_SCRNSZ",	M_SizeDisplay,'s'},
-    {-1,"",0,'\0'},
-    {2,"M_MSENS",	M_ChangeSensitivity,'m'},
-    {-1,"",0,'\0'},
-    {1,"M_SVOL",	M_Sound,'s'}
+    {1,"M_CUSTM", M_Options, 'c'},
+    {1,"M_MSGS",  M_ChangeMessages, 's'},
+    {1,"M_SNDvol", M_Sound, 's'},
+    {1,"M_SENS",  M_ChangeSensitivity, 's'},
+    {1,"M_QUICK", M_QuickSave2, 'q'},
+    {1,"M_AUTOM", M_ChangeDetail, 'a'},
+    {1,"M_ENDGC", M_EndGame, 'e'}
 };
 
 menu_t  OptionsDef =
@@ -472,6 +478,42 @@ menu_t  GameSettingsDef =
     &MainDef,
     GameSettingsMenu,
     M_DrawGameSettings,
+    60,37,
+    0
+};
+
+//
+// Goblin Dice Rollaz: LEADERBOARD MENU
+//
+enum
+{
+    leaderboard_survival,
+    leaderboard_timeattack,
+    leaderboard_critonly,
+    leaderboard_nopowerups,
+    leaderboard_hardcore,
+    leaderboard_clear,
+    leaderboard_back,
+    leaderboard_end
+} leaderboard_e;
+
+menuitem_t LeaderboardMenu[]=
+{
+    {1,"M_SURVIV", M_LeaderboardSurvival, 's'},
+    {1,"M_TIMATT", M_LeaderboardTimeAttack, 't'},
+    {1,"M_CRITON", M_LeaderboardCritOnly, 'c'},
+    {1,"M_NOPWUP", M_LeaderboardNoPowerups, 'n'},
+    {1,"M_HARDC", M_LeaderboardHardcore, 'h'},
+    {1,"M_CLEAR", M_ClearLeaderboards, 'l'},
+    {1,"M_BACK", M_CloseLeaderboard, 'b'}
+};
+
+menu_t  LeaderboardDef =
+{
+    leaderboard_end,
+    &MainDef,
+    LeaderboardMenu,
+    M_DrawLeaderboard,
     60,37,
     0
 };
@@ -1746,6 +1788,160 @@ void M_DrawLevelUp(void)
     }
 
     M_WriteText(60, 190, "Press ENTER when done");
+}
+
+void M_Leaderboard(int choice)
+{
+    choice = 0;
+    M_SetupNextMenu(&LeaderboardDef);
+}
+
+void M_CloseLeaderboard(int choice)
+{
+    choice = 0;
+    M_SetupNextMenu(&MainDef);
+}
+
+void M_DrawLeaderboard(void)
+{
+    V_DrawPatchDirect(109, 15, W_CacheLumpName(DEH_String("M_LEADTTL"), PU_CACHE));
+    M_WriteText(60, 40, "Select a category");
+}
+
+void M_LeaderboardSurvival(int choice)
+{
+    choice = 0;
+    leaderboard_t *lb = G_GetLeaderboard(LEADERBOARD_SURVIVAL);
+    char str[64];
+    int i;
+
+    DEH_printf("\n=== SURVIVAL LEADERBOARD ===\n");
+    if (!lb || lb->num_entries == 0)
+    {
+        DEH_printf("No entries yet!\n");
+    }
+    else
+    {
+        for (i = 0; i < lb->num_entries; i++)
+        {
+            snprintf(str, sizeof(str), "%d. %s - Wave %d, %d kills (Score: %d)",
+                     i + 1, lb->entries[i].player_name,
+                     lb->entries[i].wave, lb->entries[i].time,
+                     lb->entries[i].score);
+            DEH_printf("%s\n", str);
+        }
+    }
+    DEH_printf("============================\n");
+}
+
+void M_LeaderboardTimeAttack(int choice)
+{
+    choice = 0;
+    leaderboard_t *lb = G_GetLeaderboard(LEADERBOARD_TIMEATTACK);
+    char str[64];
+    int i;
+    int minutes, seconds;
+
+    DEH_printf("\n=== TIME ATTACK LEADERBOARD ===\n");
+    if (!lb || lb->num_entries == 0)
+    {
+        DEH_printf("No entries yet!\n");
+    }
+    else
+    {
+        for (i = 0; i < lb->num_entries; i++)
+        {
+            minutes = lb->entries[i].time / 3600;
+            seconds = (lb->entries[i].time % 3600) / 60;
+            snprintf(str, sizeof(str), "%d. %s - %d:%02d (Maps: %d)",
+                     i + 1, lb->entries[i].player_name,
+                     minutes, seconds, lb->entries[i].wave);
+            DEH_printf("%s\n", str);
+        }
+    }
+    DEH_printf("==============================\n");
+}
+
+void M_LeaderboardCritOnly(int choice)
+{
+    choice = 0;
+    leaderboard_t *lb = G_GetLeaderboard(LEADERBOARD_CHALLENGE_CRITONLY);
+    char str[64];
+    int i;
+
+    DEH_printf("\n=== CRIT ONLY CHALLENGE LEADERBOARD ===\n");
+    if (!lb || lb->num_entries == 0)
+    {
+        DEH_printf("No entries yet!\n");
+    }
+    else
+    {
+        for (i = 0; i < lb->num_entries; i++)
+        {
+            snprintf(str, sizeof(str), "%d. %s - Wave %d (Score: %d)",
+                     i + 1, lb->entries[i].player_name,
+                     lb->entries[i].wave, lb->entries[i].score);
+            DEH_printf("%s\n", str);
+        }
+    }
+    DEH_printf("======================================\n");
+}
+
+void M_LeaderboardNoPowerups(int choice)
+{
+    choice = 0;
+    leaderboard_t *lb = G_GetLeaderboard(LEADERBOARD_CHALLENGE_NOPOWERUPS);
+    char str[64];
+    int i;
+
+    DEH_printf("\n=== NO POWERUPS CHALLENGE LEADERBOARD ===\n");
+    if (!lb || lb->num_entries == 0)
+    {
+        DEH_printf("No entries yet!\n");
+    }
+    else
+    {
+        for (i = 0; i < lb->num_entries; i++)
+        {
+            snprintf(str, sizeof(str), "%d. %s - Wave %d (Score: %d)",
+                     i + 1, lb->entries[i].player_name,
+                     lb->entries[i].wave, lb->entries[i].score);
+            DEH_printf("%s\n", str);
+        }
+    }
+    DEH_printf("=========================================\n");
+}
+
+void M_LeaderboardHardcore(int choice)
+{
+    choice = 0;
+    leaderboard_t *lb = G_GetLeaderboard(LEADERBOARD_CHALLENGE_HARDCORE);
+    char str[64];
+    int i;
+
+    DEH_printf("\n=== HARDCORE CHALLENGE LEADERBOARD ===\n");
+    if (!lb || lb->num_entries == 0)
+    {
+        DEH_printf("No entries yet!\n");
+    }
+    else
+    {
+        for (i = 0; i < lb->num_entries; i++)
+        {
+            snprintf(str, sizeof(str), "%d. %s - Wave %d (Score: %d)",
+                     i + 1, lb->entries[i].player_name,
+                     lb->entries[i].wave, lb->entries[i].score);
+            DEH_printf("%s\n", str);
+        }
+    }
+    DEH_printf("=======================================\n");
+}
+
+void M_ClearLeaderboards(int choice)
+{
+    choice = 0;
+    G_ClearAllLeaderboards();
+    players[consoleplayer].message = "Leaderboards cleared";
 }
 
 

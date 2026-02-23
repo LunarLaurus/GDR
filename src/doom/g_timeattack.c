@@ -21,6 +21,7 @@
 #include "info.h"
 #include "doomstat.h"
 #include "g_timeattack.h"
+#include "g_leaderboard.h"
 #include "m_random.h"
 
 timeattack_data_t timeattack;
@@ -110,6 +111,7 @@ void G_TimeAttackCompleteLevel(void)
         if (timeattack.best_time == 0 || timeattack.total_time < timeattack.best_time)
         {
             timeattack.best_time = timeattack.total_time;
+            G_AddTimeAttackEntry("Player", timeattack.total_time, timeattack.maps_completed);
         }
     }
 }

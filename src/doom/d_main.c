@@ -62,6 +62,8 @@
 
 #include "g_game.h"
 #include "g_status.h"
+#include "g_achievement.h"
+#include "g_leaderboard.h"
 #include "g_demo_test.h"
 #include "g_balance.h"
 #include "g_achievement.h"
@@ -1653,6 +1655,7 @@ void D_DoomMain (void)
     M_LoadDefaults();
     G_UpdateStatusEffectInfo();
     G_InitAchievements();
+    G_InitLeaderboard();
 
     // Save configuration at exit.
     I_AtExit(M_SaveDefaults, false);

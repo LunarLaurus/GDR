@@ -21,6 +21,7 @@
 #include "info.h"
 #include "doomstat.h"
 #include "g_survival.h"
+#include "g_leaderboard.h"
 #include "m_random.h"
 
 survival_data_t survival;
@@ -265,6 +266,10 @@ void G_SurvivalTicker(void)
 
 void G_EndSurvivalGame(void)
 {
+    if (survival.highest_wave_reached > 0)
+    {
+        G_AddSurvivalEntry("Player", survival.highest_wave_reached, survival.total_kills);
+    }
     survival.wave_number = 0;
     survival.wave_in_progress = false;
     survival.game_over = true;

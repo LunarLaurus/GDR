@@ -67,6 +67,7 @@
 #include "g_survival.h"
 #include "g_timeattack.h"
 #include "g_achievement.h"
+#include "g_leaderboard.h"
 #include "g_game.h"
 
 // Data.
@@ -1567,6 +1568,26 @@ void G_ExitLevel (void)
     {
         G_RecordLevelCompleteTime(leveltime);
         G_TimeAttackCompleteLevel();
+    }
+
+    // Goblin Dice Rollaz: Track challenge mode completion
+    if (IN_CHALLENGE_MODE() && gamemap >= MAX_TIMEATTACK_MAPS)
+    {
+        int score = players[consoleplayer].killcount * 10 + players[consoleplayer].itemcount;
+        int wave = gamemap;
+
+        if (challenge_critonly)
+        {
+            G_AddChallengeEntry(LEADERBOARD_CHALLENGE_CRITONLY, "Player", score, wave);
+        }
+        if (challenge_nopowerups)
+        {
+            G_AddChallengeEntry(LEADERBOARD_CHALLENGE_NOPOWERUPS, "Player", score, wave);
+        }
+        if (challenge_hardcore)
+        {
+            G_AddChallengeEntry(LEADERBOARD_CHALLENGE_HARDCORE, "Player", score, wave);
+        }
     }
 
     // Goblin Dice Rollaz: Auto-save on level transition

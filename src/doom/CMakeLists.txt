@@ -37,6 +37,7 @@ add_library(doom STATIC
             g_status.c      g_status.h
             g_survival.c    g_survival.h
             g_timeattack.c  g_timeattack.h
+            g_leaderboard.c g_leaderboard.h
             hu_lib.c        hu_lib.h
             hu_stuff.c      hu_stuff.h
             info.c          info.h
