@@ -299,8 +299,8 @@
 
 ## Phase 30: Debug Tools & Developer Features
 - [x] Add console command to list all dice weapons and stats
-- [ ] Add debug overlay showing damage calculations
-- [ ] Add configurable minimum damage cap (prevent 0-damage rolls)
+- [x] Add debug overlay showing damage calculations
+- [x] Add configurable minimum damage cap (prevent 0-damage rolls)
 - [ ] Add screenshot hotkey with dice roll overlay capture
 - [ ] Add demo recording/playback validation
 - [ ] Add network packet debug logging for multiplayer

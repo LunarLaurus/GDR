@@ -71,6 +71,10 @@ int	dice_arena_damage_mult = 150;
 int	crit_boost_bonus = 15;
 int	exploding_dice_enabled = 0;
 
+// Goblin Dice Rollaz: Minimum damage cap
+// Ensures no attack deals less than this amount of damage
+int	min_damage_cap = 1;
+
 // Goblin Dice Rollaz: Net sync debug logging
 // When enabled, logs RNG state and desync warnings to console
 int net_sync_debug = 0;

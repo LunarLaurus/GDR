@@ -777,6 +777,7 @@ extern int luck;
 extern int crit_scaling_default;
 extern int crit_scaling_param;
 extern int net_sync_debug;
+extern int min_damage_cap;
 
 // Goblin Dice Rollaz: RNG sync validation
 void P_ValidateRNGState(const char *checkpoint);
@@ -1023,6 +1024,13 @@ P_CalculateDiceDamage (int weapon, int guaranteedCrit, int *outCritRoll, int *ou
     {
         masteryBonus = G_GetWeaponMasteryDamageBonus(player, weapon);
         damage += masteryBonus;
+    }
+    
+    // Goblin Dice Rollaz: Apply minimum damage cap
+    // Ensures no weapon attack deals less than the configured minimum
+    if (min_damage_cap > 0 && damage > 0 && damage < min_damage_cap)
+    {
+        damage = min_damage_cap;
     }
     
     return damage;

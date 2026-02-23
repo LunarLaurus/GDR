@@ -132,6 +132,7 @@ extern int      exploding_dice_enabled;
 extern int      advantage_mode;
 extern int      luck;
 extern int      powerup_spawn_rate;
+extern int      min_damage_cap;
 
 // Goblin Dice Rollaz: crit scaling curve settings
 extern int      crit_scaling_default;
