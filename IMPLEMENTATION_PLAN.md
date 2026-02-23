@@ -277,7 +277,7 @@
 - [x] Add weapon cycle forward/backward keys
 - [x] Add show/hide HUD toggle
 - [x] Add damage log console command for review
-- [ ] Add kill count display in end-level stats
+- [x] Add kill count display in end-level stats
 
 ## Phase 27: Additional Game Modes
 - [ ] Add endless survival mode (waves of enemies)

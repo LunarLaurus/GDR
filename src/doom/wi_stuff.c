@@ -323,6 +323,7 @@ static int 		bcnt;
 static int 		firstrefresh; 
 
 static int		cnt_kills[MAXPLAYERS];
+static int		cnt_kills_value[MAXPLAYERS];
 static int		cnt_items[MAXPLAYERS];
 static int		cnt_secret[MAXPLAYERS];
 static int		cnt_time;
@@ -1104,6 +1105,7 @@ void WI_initNetgameStats(void)
 	    continue;
 
 	cnt_kills[i] = cnt_items[i] = cnt_secret[i] = cnt_frags[i] = 0;
+	cnt_kills_value[i] = 0;
 
 	dofrags += WI_fragSum(i);
     }
@@ -1135,6 +1137,7 @@ void WI_updateNetgameStats(void)
 		continue;
 
 	    cnt_kills[i] = (plrs[i].skills * 100) / wbs->maxkills;
+	    cnt_kills_value[i] = plrs[i].skills;
 	    cnt_items[i] = (plrs[i].sitems * 100) / wbs->maxitems;
 	    cnt_secret[i] = (plrs[i].ssecret * 100) / wbs->maxsecret;
 
@@ -1333,6 +1336,7 @@ void WI_initStats(void)
     acceleratestage = 0;
     sp_state = 1;
     cnt_kills[0] = cnt_items[0] = cnt_secret[0] = -1;
+    cnt_kills_value[0] = -1;
     cnt_time = cnt_par = -1;
     cnt_pause = TICRATE;
 
@@ -1348,6 +1352,7 @@ void WI_updateStats(void)
     {
 	acceleratestage = 0;
 	cnt_kills[0] = (plrs[me].skills * 100) / wbs->maxkills;
+	cnt_kills_value[0] = plrs[me].skills;
 	cnt_items[0] = (plrs[me].sitems * 100) / wbs->maxitems;
 	cnt_secret[0] = (plrs[me].ssecret * 100) / wbs->maxsecret;
 	cnt_time = plrs[me].stime / TICRATE;
@@ -1359,6 +1364,7 @@ void WI_updateStats(void)
     if (sp_state == 2)
     {
 	cnt_kills[0] += 2;
+	cnt_kills_value[0] += (plrs[me].skills + 9) / 10;
 
 	if (!(bcnt&3))
 	    S_StartSound(0, sfx_pistol);
@@ -1366,6 +1372,7 @@ void WI_updateStats(void)
 	if (cnt_kills[0] >= (plrs[me].skills * 100) / wbs->maxkills)
 	{
 	    cnt_kills[0] = (plrs[me].skills * 100) / wbs->maxkills;
+	    cnt_kills_value[0] = plrs[me].skills;
 	    S_StartSound(0, sfx_barexp);
 	    sp_state++;
 	}
@@ -1461,6 +1468,12 @@ void WI_drawStats(void)
 
     V_DrawPatch(SP_STATSX, SP_STATSY, kills);
     WI_drawPercent(SCREENWIDTH - SP_STATSX, SP_STATSY, cnt_kills[0]);
+
+    if (cnt_kills_value[0] >= 0)
+    {
+        int killx = SP_STATSX + SHORT(kills->width) + 20;
+        WI_drawNum(killx, SP_STATSY, cnt_kills_value[0], -1);
+    }
 
     V_DrawPatch(SP_STATSX, SP_STATSY+lh, items);
     WI_drawPercent(SCREENWIDTH - SP_STATSX, SP_STATSY+lh, cnt_items[0]);
