@@ -322,7 +322,7 @@
 - [x] Add damage type indicator icons on hit
 
 ## Phase 33: Accessibility Features
-- [ ] Add colorblind mode options
+- [x] Add colorblind mode options
 - [ ] Add configurable HUD scale
 - [ ] Add screen reader support for menu navigation
 - [ ] Add option to reduce motion/screen shake

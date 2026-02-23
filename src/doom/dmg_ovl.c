@@ -23,6 +23,7 @@
 #include "doomdef.h"
 #include "doomstat.h"
 #include "i_video.h"
+#include "m_menu.h"
 #include "v_video.h"
 #include "w_wad.h"
 #include "z_zone.h"
@@ -275,7 +276,7 @@ static void DMG_DrawDamageTypeIcon(int x, int y, damage_type_t dtype)
 {
     byte *col;
     int i;
-    static const byte colors[DAMAGETYPE_MAX][3] = {
+    static const byte colors_normal[DAMAGETYPE_MAX][3] = {
         { 255, 255, 255 },
         { 255, 80, 0 },
         { 100, 200, 255 },
@@ -283,11 +284,32 @@ static void DMG_DrawDamageTypeIcon(int x, int y, damage_type_t dtype)
         { 255, 140, 0 },
         { 128, 0, 128 }
     };
+    static const byte colors_rg[DAMAGETYPE_MAX][3] = {
+        { 255, 255, 255 },
+        { 255, 0, 255 },
+        { 0, 255, 255 },
+        { 192, 192, 192 },
+        { 255, 200, 0 },
+        { 128, 0, 128 }
+    };
+    static const byte colors_by[DAMAGETYPE_MAX][3] = {
+        { 255, 255, 255 },
+        { 255, 100, 0 },
+        { 255, 255, 0 },
+        { 192, 192, 192 },
+        { 255, 165, 0 },
+        { 255, 0, 255 }
+    };
 
     if (dtype <= DAMAGETYPE_NORMAL || dtype >= DAMAGETYPE_MAX)
         return;
 
-    col = colors[dtype];
+    if (colorblind_mode == 1)
+        col = colors_rg[dtype];
+    else if (colorblind_mode == 2)
+        col = colors_by[dtype];
+    else
+        col = colors_normal[dtype];
 
     for (i = 0; i < 6; i++)
     {
