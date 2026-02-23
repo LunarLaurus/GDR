@@ -40,7 +40,7 @@ char *P_SaveGameFile(int slot);
 // Savegame file header read/write functions
 
 boolean P_ReadSaveGameHeader(void);
-void P_WriteSaveGameHeader(char *description);
+void P_WriteSaveGameHeader(char *description, char *comment);
 
 // Savegame end-of-file read/write functions
 

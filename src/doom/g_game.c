@@ -234,6 +234,7 @@ static boolean *joybuttons = &joyarray[1];		// allow [-1]
  
 static int      savegameslot; 
 static char     savedescription[32]; 
+static char     savecomment[SAVESTRINGSIZE];
  
 #define	BODYQUESIZE	32
 
@@ -1817,10 +1818,12 @@ void G_DoLoadGame (void)
 void
 G_SaveGame
 ( int	slot,
-  char*	description )
+  char*	description,
+  char*	comment )
 {
     savegameslot = slot;
     M_StringCopy(savedescription, description, sizeof(savedescription));
+    M_StringCopy(savecomment, comment, sizeof(savecomment));
     sendsave = true;
 }
 
@@ -1855,7 +1858,7 @@ void G_DoSaveGame (void)
 
     savegame_error = false;
 
-    P_WriteSaveGameHeader(savedescription);
+    P_WriteSaveGameHeader(savedescription, savecomment);
 
     P_ArchivePlayers ();
     P_ArchiveWorld ();
@@ -1894,6 +1897,7 @@ void G_DoSaveGame (void)
 
     gameaction = ga_nothing;
     M_StringCopy(savedescription, "", sizeof(savedescription));
+    M_StringCopy(savecomment, "", sizeof(savecomment));
 
     players[consoleplayer].message = DEH_String(GGSAVED);
 

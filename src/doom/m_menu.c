@@ -130,6 +130,10 @@ int			saveCharIndex;	// which char we're editing
 static boolean          joypadSave = false; // was the save action initiated by joypad?
 // old save description before edit
 char			saveOldString[SAVESTRINGSIZE];  
+// old save comment before edit
+char			saveOldComment[SAVESTRINGSIZE];  
+// are we editing the comment instead of the name?
+static boolean          editingComment = false;
 
 boolean			inhelpscreens;
 boolean			menuactive;
@@ -138,6 +142,7 @@ boolean			menuactive;
 #define LINEHEIGHT		16
 
 char			savegamestrings[10][SAVESTRINGSIZE];
+char			savecomments[10][SAVESTRINGSIZE];
 
 char	endstring[160];
 
@@ -614,7 +619,7 @@ menu_t  SaveDef =
 };
 
 
- //
+//
 // M_ReadSaveStrings
 //  read the strings from the savegame files
 //
@@ -633,12 +638,14 @@ void M_ReadSaveStrings(void)
         if (handle == NULL)
         {
             M_StringCopy(savegamestrings[i], EMPTYSTRING, SAVESTRINGSIZE);
+            M_StringCopy(savecomments[i], EMPTYSTRING, SAVESTRINGSIZE);
             LoadMenu[i].status = 0;
             continue;
         }
         retval = fread(&savegamestrings[i], 1, SAVESTRINGSIZE, handle);
+        retval += fread(&savecomments[i], 1, SAVESTRINGSIZE, handle);
 	fclose(handle);
-        LoadMenu[i].status = retval == SAVESTRINGSIZE;
+        LoadMenu[i].status = retval >= SAVESTRINGSIZE;
     }
 }
 
@@ -657,6 +664,10 @@ void M_DrawLoad(void)
     {
 	M_DrawSaveLoadBorder(LoadDef.x,LoadDef.y+LINEHEIGHT*i);
 	M_WriteText(LoadDef.x,LoadDef.y+LINEHEIGHT*i,savegamestrings[i]);
+	if (savecomments[i][0])
+	{
+	    M_WriteText(LoadDef.x + 16, LoadDef.y + LINEHEIGHT*i + 10, savecomments[i]);
+	}
     }
 }
 
@@ -726,12 +737,24 @@ void M_DrawSave(void)
     {
 	M_DrawSaveLoadBorder(LoadDef.x,LoadDef.y+LINEHEIGHT*i);
 	M_WriteText(LoadDef.x,LoadDef.y+LINEHEIGHT*i,savegamestrings[i]);
+	if (savecomments[i][0])
+	{
+	    M_WriteText(LoadDef.x + 16, LoadDef.y + LINEHEIGHT*i + 10, savecomments[i]);
+	}
     }
 	
     if (saveStringEnter)
     {
-	i = M_StringWidth(savegamestrings[saveSlot]);
-	M_WriteText(LoadDef.x + i,LoadDef.y+LINEHEIGHT*saveSlot,"_");
+	if (editingComment)
+	{
+	    int i = M_StringWidth(savecomments[saveSlot]);
+	    M_WriteText(LoadDef.x + 16 + i, LoadDef.y+LINEHEIGHT*saveSlot + 10, "_");
+	}
+	else
+	{
+	    i = M_StringWidth(savegamestrings[saveSlot]);
+	    M_WriteText(LoadDef.x + i,LoadDef.y+LINEHEIGHT*saveSlot,"_");
+	}
     }
 }
 
@@ -740,7 +763,7 @@ void M_DrawSave(void)
 //
 void M_DoSave(int slot)
 {
-    G_SaveGame (slot,savegamestrings[slot]);
+    G_SaveGame (slot,savegamestrings[slot], savecomments[slot]);
     M_ClearMenus ();
 
     // PICK QUICKSAVE SLOT YET?
@@ -790,6 +813,7 @@ void M_SaveSelect(int choice)
 
     // we are going to be intercepting all chars
     saveStringEnter = 1;
+    editingComment = false;
 
     // We need to turn on text input:
     x = LoadDef.x - 11;
@@ -798,6 +822,7 @@ void M_SaveSelect(int choice)
 
     saveSlot = choice;
     M_StringCopy(saveOldString,savegamestrings[choice], SAVESTRINGSIZE);
+    M_StringCopy(saveOldComment,savecomments[choice], SAVESTRINGSIZE);
     if (!strcmp(savegamestrings[choice], EMPTYSTRING))
     {
         savegamestrings[choice][0] = 0;
@@ -806,6 +831,11 @@ void M_SaveSelect(int choice)
         {
             SetDefaultSaveName(choice);
         }
+    }
+    if (!strcmp(savecomments[choice], EMPTYSTRING))
+    {
+        M_snprintf(savecomments[choice], SAVESTRINGSIZE,
+                   "Level %d", gamemap);
     }
     saveCharIndex = strlen(savegamestrings[choice]);
 }
@@ -1983,25 +2013,48 @@ boolean M_Responder (event_t* ev)
 	switch(key)
 	{
 	  case KEY_BACKSPACE:
-	    if (saveCharIndex > 0)
+	    if (editingComment)
 	    {
-		saveCharIndex--;
-		savegamestrings[saveSlot][saveCharIndex] = 0;
+		if (saveCharIndex > 0)
+		{
+		    saveCharIndex--;
+		    savecomments[saveSlot][saveCharIndex] = 0;
+		}
+	    }
+	    else
+	    {
+		if (saveCharIndex > 0)
+		{
+		    saveCharIndex--;
+		    savegamestrings[saveSlot][saveCharIndex] = 0;
+		}
 	    }
 	    break;
 
           case KEY_ESCAPE:
             saveStringEnter = 0;
+            editingComment = false;
             I_StopTextInput();
             M_StringCopy(savegamestrings[saveSlot], saveOldString,
+                         SAVESTRINGSIZE);
+            M_StringCopy(savecomments[saveSlot], saveOldComment,
                          SAVESTRINGSIZE);
             break;
 
 	  case KEY_ENTER:
 	    saveStringEnter = 0;
+            editingComment = false;
             I_StopTextInput();
 	    if (savegamestrings[saveSlot][0])
 		M_DoSave(saveSlot);
+	    break;
+
+	  case KEY_TAB:
+	    editingComment = !editingComment;
+	    if (editingComment)
+		saveCharIndex = strlen(savecomments[saveSlot]);
+	    else
+		saveCharIndex = strlen(savegamestrings[saveSlot]);
 	    break;
 
 	  default:
@@ -2035,12 +2088,26 @@ boolean M_Responder (event_t* ev)
             }
 
 	    if (ch >= 32 && ch <= 127 &&
-		saveCharIndex < SAVESTRINGSIZE-1 &&
-		M_StringWidth(savegamestrings[saveSlot]) <
-		(SAVESTRINGSIZE-2)*8)
+		saveCharIndex < SAVESTRINGSIZE-1)
 	    {
-		savegamestrings[saveSlot][saveCharIndex++] = ch;
-		savegamestrings[saveSlot][saveCharIndex] = 0;
+		if (editingComment)
+		{
+		    if (M_StringWidth(savecomments[saveSlot]) <
+			(SAVESTRINGSIZE-2)*8)
+		    {
+			savecomments[saveSlot][saveCharIndex++] = ch;
+			savecomments[saveSlot][saveCharIndex] = 0;
+		    }
+		}
+		else
+		{
+		    if (M_StringWidth(savegamestrings[saveSlot]) <
+			(SAVESTRINGSIZE-2)*8)
+		    {
+			savegamestrings[saveSlot][saveCharIndex++] = ch;
+			savegamestrings[saveSlot][saveCharIndex] = 0;
+		    }
+		}
 	    }
 	    break;
 	}

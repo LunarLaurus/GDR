@@ -1365,13 +1365,18 @@ static void saveg_write_glow_t(glow_t *str)
 // Write the header for a savegame
 //
 
-void P_WriteSaveGameHeader(char *description)
+void P_WriteSaveGameHeader(char *description, char *comment)
 {
     char name[VERSIONSIZE]; 
     int i; 
 	
     for (i=0; description[i] != '\0'; ++i)
         saveg_write8(description[i]);
+    for (; i<SAVESTRINGSIZE; ++i)
+        saveg_write8(0);
+
+    for (i=0; comment[i] != '\0'; ++i)
+        saveg_write8(comment[i]);
     for (; i<SAVESTRINGSIZE; ++i)
         saveg_write8(0);
 
@@ -1406,6 +1411,10 @@ boolean P_ReadSaveGameHeader(void)
 	 
     // skip the description field 
 
+    for (i=0; i<SAVESTRINGSIZE; ++i)
+        saveg_read8();
+
+    // skip the comment field (for backward compatibility)
     for (i=0; i<SAVESTRINGSIZE; ++i)
         saveg_read8();
     
