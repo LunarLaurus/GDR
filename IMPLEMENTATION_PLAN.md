@@ -329,7 +329,7 @@
 
 ## Phase 34: Community Features
 - [x] Add replay sharing functionality
-- [ ] Add dice roll statistics tracking
+- [x] Add dice roll statistics tracking
 - [ ] Add achievement system
 - [ ] Add leaderboard for challenge modes
 

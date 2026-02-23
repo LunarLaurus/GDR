@@ -966,6 +966,13 @@ boolean G_Responder (event_t* ev)
 	    G_ValidateDemo();
 	    return true;
 	}
+	// Goblin Dice Rollaz: F8 - Print dice statistics
+	if (ev->type == ev_keydown && ev->data1 == KEY_F8)
+	{
+	    extern void G_PrintDiceStats(void);
+	    G_PrintDiceStats();
+	    return true;
+	}
 	// Goblin Dice Rollaz: F12 - Print WAD info
 	if (ev->type == ev_keydown && ev->data1 == KEY_F12)
 	{

@@ -28,6 +28,7 @@
 #include "d_items.h"
 #include "s_sound.h"
 #include "g_rpg.h"
+#include "g_stats.h"
 #include "r_main.h"
 
 // State.
@@ -1031,6 +1032,16 @@ P_CalculateDiceDamage (int weapon, int guaranteedCrit, int *outCritRoll, int *ou
     if (min_damage_cap > 0 && damage > 0 && damage < min_damage_cap)
     {
         damage = min_damage_cap;
+    }
+    
+    // Goblin Dice Rollaz: Track dice roll statistics
+    // Track whether this was a crit or misfire for stats
+    {
+        boolean was_crit = (outCritRoll && *outCritRoll > 0) || guaranteedCrit;
+        boolean was_misfire = (outMisfire && *outMisfire != 0);
+        G_TrackDiceRoll(weapon, dwi->die_type, 
+                        outDiceRoll ? *outDiceRoll : diceRoll, 
+                        damage, was_crit, was_misfire);
     }
     
     return damage;
