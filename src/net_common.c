@@ -30,6 +30,34 @@
 #include "net_io.h"
 #include "net_packet.h"
 #include "net_structrw.h"
+#include "net_defs.h"
+
+// Goblin Dice Rollaz: Network packet debug logging enhancements
+// Convert packet type enum to human-readable string for debug logging
+static const char *NET_PacketTypeName(unsigned int type)
+{
+    switch (type)
+    {
+        case 0: return "SYN";
+        case 1: return "ACK";
+        case 2: return "REJECTED";
+        case 3: return "KEEPALIVE";
+        case 4: return "WAITING_DATA";
+        case 5: return "GAMESTART";
+        case 6: return "GAMEDATA";
+        case 7: return "GAMEDATA_ACK";
+        case 8: return "DISCONNECT";
+        case 9: return "DISCONNECT_ACK";
+        case 10: return "RELIABLE_ACK";
+        case 11: return "GAMEDATA_RESEND";
+        case 12: return "CONSOLE_MESSAGE";
+        case 13: return "QUERY";
+        case 14: return "QUERY_RESPONSE";
+        case 15: return "LAUNCH";
+        case 16: return "NAT_HOLE_PUNCH";
+        default: return "UNKNOWN";
+    }
+}
 
 // connections time out after 30 seconds
 
@@ -498,10 +526,17 @@ void NET_Log(const char *fmt, ...)
 void NET_LogPacket(net_packet_t *packet)
 {
     int i, bytes;
+    unsigned int packet_type = 0;
 
     if (net_debug == NULL)
     {
         return;
+    }
+
+    // Goblin Dice Rollaz: Read and display packet type name
+    if (packet->len >= 2)
+    {
+        packet_type = (packet->data[0] << 8) | packet->data[1];
     }
 
     bytes = packet->len - packet->pos;
@@ -509,6 +544,10 @@ void NET_LogPacket(net_packet_t *packet)
     {
         return;
     }
+    
+    // Goblin Dice Rollaz: Enhanced packet logging with type name
+    fprintf(net_debug, "\t[PKT: %s (type=%d), len=%d]\n", 
+            NET_PacketTypeName(packet_type), packet_type, packet->len);
     fprintf(net_debug, "\t%02x", packet->data[packet->pos]);
     for (i = 1; i < bytes; ++i)
     {

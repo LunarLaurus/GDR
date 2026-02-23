@@ -303,7 +303,7 @@
 - [x] Add configurable minimum damage cap (prevent 0-damage rolls)
 - [x] Add screenshot hotkey with dice roll overlay capture
 - [x] Add demo recording/playback validation
-- [ ] Add network packet debug logging for multiplayer
+- [x] Add network packet debug logging for multiplayer
 - [ ] Add weapon balance tuning constants file
 - [ ] Add environment variable for IWAD path override
 - [ ] Add startup crash handler with stack trace
