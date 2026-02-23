@@ -20,14 +20,15 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-
-#include <stdarg.h>
+#include <signal.h>
 
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#include <dbghelp.h>
 #else
 #include <unistd.h>
+#include <execinfo.h>
 #endif
 
 #include "SDL.h"
@@ -51,6 +52,106 @@
 
 #define DEFAULT_RAM 16 /* MiB */
 #define MIN_RAM     4  /* MiB */
+
+#ifdef _WIN32
+static void I_WindowsStackTrace(EXCEPTION_POINTERS *ExceptionInfo)
+{
+    HANDLE process = GetCurrentProcess();
+    HANDLE thread = GetCurrentThread();
+    STACKFRAME64 stackframe;
+    IMAGEHLP_LINE64 lineInfo;
+    DWORD machineType;
+    BOOL result;
+
+    memset(&stackframe, 0, sizeof(stackframe));
+    memset(&lineInfo, 0, sizeof(lineInfo));
+    lineInfo.SizeOfStruct = sizeof(IMAGEHLP_LINE64);
+
+    SymInitialize(process, NULL, TRUE);
+
+    machineType = IMAGE_FILE_MACHINE_I386;
+    stackframe.AddrPC.Offset = ExceptionInfo->ContextRecord->Eip;
+    stackframe.AddrPC.Mode = AddrModeFlat;
+    stackframe.AddrFrame.Offset = ExceptionInfo->ContextRecord->Ebp;
+    stackframe.AddrFrame.Mode = AddrModeFlat;
+    stackframe.AddrStack.Offset = ExceptionInfo->ContextRecord->Esp;
+    stackframe.AddrStack.Mode = AddrModeFlat;
+
+    fprintf(stderr, "\nStack trace:\n");
+
+    while (1)
+    {
+        result = StackWalk64(machineType, process, thread, &stackframe,
+                           ExceptionInfo->ContextRecord, NULL, SymFunctionTableAccess64,
+                           SymGetModuleBase64, NULL);
+
+        if (!result)
+            break;
+
+        fprintf(stderr, "  0x%08lx", (unsigned long)stackframe.AddrPC.Offset);
+
+        if (SymGetLineFromAddr64(process, stackframe.AddrPC.Offset, NULL, &lineInfo))
+        {
+            fprintf(stderr, " in %s (%s:%lu)",
+                   lineInfo.FunctionName ? lineInfo.FunctionName : "?",
+                   lineInfo.FileName, (unsigned long)lineInfo.LineNumber);
+        }
+        fprintf(stderr, "\n");
+    }
+
+    SymCleanup(process);
+}
+
+static long __stdcall I_HandleException(EXCEPTION_POINTERS *ExceptionInfo)
+{
+    fprintf(stderr, "\nCRASH: Unhandled exception code 0x%lx at 0x%lx\n",
+            ExceptionInfo->ExceptionRecord->ExceptionCode,
+            (unsigned long)ExceptionInfo->ContextRecord->Eip);
+
+    I_WindowsStackTrace(ExceptionInfo);
+
+    return EXCEPTION_EXECUTE_HANDLER;
+}
+#endif
+
+static void I_PrintStackTrace(int sig)
+{
+    fprintf(stderr, "\nCRASH: Signal %d (%s) received.\n", sig, strsignal(sig));
+
+#ifdef _WIN32
+    // On Windows, we'll just exit - the exception handler does the work
+#else
+    void *buffer[64];
+    int nframes;
+    char **symbols;
+
+    nframes = backtrace(buffer, 64);
+    symbols = backtrace_symbols(buffer, nframes);
+
+    fprintf(stderr, "Stack trace:\n");
+
+    for (int i = 0; i < nframes; i++)
+    {
+        fprintf(stderr, "  #%d: %s\n", i, symbols[i]);
+    }
+
+    free(symbols);
+#endif
+
+    fflush(stderr);
+}
+
+void I_InitCrashHandler(void)
+{
+#ifdef _WIN32
+    SetUnhandledExceptionFilter(I_HandleException);
+#else
+    signal(SIGSEGV, I_PrintStackTrace);
+    signal(SIGFPE, I_PrintStackTrace);
+    signal(SIGILL, I_PrintStackTrace);
+    signal(SIGABRT, I_PrintStackTrace);
+#endif
+}
 
 
 typedef struct atexit_listentry_s atexit_listentry_t;

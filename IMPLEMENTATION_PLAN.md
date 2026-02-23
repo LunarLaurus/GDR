@@ -306,8 +306,32 @@
 - [x] Add network packet debug logging for multiplayer
 - [x] Add weapon balance tuning constants file
 - [x] Add environment variable for IWAD path override
-- [ ] Add startup crash handler with stack trace
+- [x] Add startup crash handler with stack trace
 - [ ] Add mod loader error reporting system
+
+## Phase 31: Network Optimizations
+- [ ] Add client-side prediction for dice roll results
+- [ ] Implement server-authoritative damage validation
+- [ ] Add lag compensation for projectile hits
+- [ ] Optimize network packet size for dice roll events
+
+## Phase 32: User Interface Polish
+- [ ] Add main menu animated background
+- [ ] Add dice-themed loading screen tips
+- [ ] Implement crosshair customization options
+- [ ] Add damage type indicator icons on hit
+
+## Phase 33: Accessibility Features
+- [ ] Add colorblind mode options
+- [ ] Add configurable HUD scale
+- [ ] Add screen reader support for menu navigation
+- [ ] Add option to reduce motion/screen shake
+
+## Phase 34: Community Features
+- [ ] Add replay sharing functionality
+- [ ] Add dice roll statistics tracking
+- [ ] Add achievement system
+- [ ] Add leaderboard for challenge modes
 
 ## Current Status
 **Phase 1-8 complete**. Phase 9-13 ready for implementation.

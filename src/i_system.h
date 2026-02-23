@@ -82,5 +82,9 @@ void I_PrintBanner(const char *text);
 
 void I_PrintDivider(void);
 
+// Initialize crash handler for catching unhandled exceptions.
+
+void I_InitCrashHandler(void);
+
 #endif
 

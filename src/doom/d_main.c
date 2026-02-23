@@ -1900,6 +1900,7 @@ void D_DoomMain (void)
 
     DEH_printf("I_Init: Setting up machine state.\n");
     I_CheckIsScreensaver();
+    I_InitCrashHandler();
     I_InitTimer();
     I_InitJoystick();
     I_InitSound(doom);
