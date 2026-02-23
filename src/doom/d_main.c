@@ -40,6 +40,7 @@
 #include "w_wad.h"
 #include "s_sound.h"
 #include "v_diskicon.h"
+#include "v_diceicon.h"
 #include "v_video.h"
 
 #include "f_finale.h"
@@ -632,6 +633,7 @@ void D_DoomLoop (void)
     I_RegisterWindowIcon(doom_icon_data, doom_icon_w, doom_icon_h);
     I_InitGraphics();
     EnableLoadingDisk();
+    V_EnableDiceIcon();
 
     TryRunTics();
 

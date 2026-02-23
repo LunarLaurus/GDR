@@ -44,6 +44,7 @@
 #include "m_misc.h"
 #include "tables.h"
 #include "v_diskicon.h"
+#include "v_diceicon.h"
 #include "v_video.h"
 #include "w_wad.h"
 #include "z_zone.h"
@@ -768,6 +769,9 @@ void I_FinishUpdate (void)
 
     // Draw disk icon before blit, if necessary.
     V_DrawDiskIcon();
+
+    // Goblin Dice Rollaz: Draw dice loading animation
+    V_DrawDiceIcon();
 
     if (palette_to_set)
     {
