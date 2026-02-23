@@ -274,7 +274,7 @@
 - [x] Add weapon quick-switch keybindings (1-9 number keys)
 - [x] Add reload/replace weapon function
 - [x] Add auto-switch to new weapon on pickup
-- [ ] Add weapon cycle forward/backward keys
+- [x] Add weapon cycle forward/backward keys
 - [ ] Add show/hide HUD toggle
 - [ ] Add damage log console command for review
 - [ ] Add kill count display in end-level stats
