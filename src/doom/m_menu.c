@@ -48,6 +48,7 @@
 #include "g_game.h"
 #include "g_rpg.h"
 #include "g_survival.h"
+#include "g_timeattack.h"
 
 #include "m_argv.h"
 #include "m_controls.h"
@@ -182,6 +183,7 @@ menu_t*	currentMenu;
 //
 static void M_NewGame(int choice);
 static void M_SurvivalMode(int choice);
+static void M_TimeAttackMode(int choice);
 static void M_Episode(int choice);
 static void M_ChooseSkill(int choice);
 static void M_LoadGame(int choice);
@@ -259,6 +261,7 @@ menuitem_t MainMenu[]=
 {
     {1,"M_NGAME",M_NewGame,'n'},
     {1,"M_SURVIV",M_SurvivalMode,'s'},
+    {1,"M_TIMATT",M_TimeAttackMode,'t'},
     {1,"M_OPTION",M_Options,'o'},
     {1,"M_LOADG",M_LoadGame,'l'},
     {1,"M_SAVEG",M_SaveGame,'s'},
@@ -969,8 +972,22 @@ void M_SurvivalMode(int choice)
 	M_StartMessage(DEH_String(NEWGAME),NULL,false);
 	return;
     }
-	
+    	
     G_InitSurvival();
+    G_DeferedInitNew(sk_medium, 1, 1);
+    M_ClearMenus();
+}
+
+
+void M_TimeAttackMode(int choice)
+{
+    if (netgame && !demoplayback)
+    {
+	M_StartMessage(DEH_String(NEWGAME),NULL,false);
+	return;
+    }
+    	
+    G_StartTimeAttack();
     G_DeferedInitNew(sk_medium, 1, 1);
     M_ClearMenus();
 }

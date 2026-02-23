@@ -65,6 +65,7 @@
 
 #include "g_rpg.h"
 #include "g_survival.h"
+#include "g_timeattack.h"
 
 // Data.
 #include "dstrings.h"
@@ -1184,6 +1185,7 @@ void G_Ticker (void)
     AM_Ticker (); 
     HU_Ticker ();             
     G_SurvivalTicker();
+    G_TimeAttackTicker();
 	break; 
 	 
       case GS_INTERMISSION: 
@@ -1508,8 +1510,16 @@ boolean		secretexit;
 void G_ExitLevel (void) 
 { 
     secretexit = false; 
+
+    // Goblin Dice Rollaz: Track time attack level completion
+    if (G_IsTimeAttackMode())
+    {
+        G_RecordLevelCompleteTime(leveltime);
+        G_TimeAttackCompleteLevel();
+    }
+
     gameaction = ga_completed; 
-} 
+}
 
 // Here's for the german edition.
 void G_SecretExitLevel (void) 

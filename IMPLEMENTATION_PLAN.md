@@ -176,8 +176,7 @@
 - [x] Add weak point logic (headshot or rear bonus multiplier)
 - [x] Add spawn group presets for map designers
 - [ ] Unique death animations per elite unit (blocked: requires sprite assets)
-- [ ] Resolve blocker: Sprite assets needed - no artist available in current environment
-- [ ] Resolve blocker: Commission or create sprite assets for death animations
+- [ ] Resolve blocker: Cannot implement - no sprite artist available in current environment
 - [ ] Critical hit reaction animations (blocked: requires sprite assets)
 - [x] Elemental status visual overlays (burn/freeze/glow)
 - [x] Add mini bestiary documentation in README or `/docs`
@@ -281,7 +280,7 @@
 
 ## Phase 27: Additional Game Modes
 - [x] Add endless survival mode (waves of enemies)
-- [ ] Add time attack mode (speedrun)
+- [x] Add time attack mode (speedrun)
 - [ ] Add challenge mode presets (crit only, no powerups, etc.)
 
 ## Phase 28: Configuration & Settings

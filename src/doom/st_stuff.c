@@ -38,6 +38,7 @@
 #include "g_game.h"
 #include "g_rpg.h"
 #include "g_survival.h"
+#include "g_timeattack.h"
 
 #include "st_stuff.h"
 #include "st_lib.h"
@@ -388,6 +389,60 @@ void ST_DrawSurvivalHUD(void)
     x = 20;
     y += 20;
     DEH_snprintf(buf, sizeof(buf), "KILLS: %d", kills);
+    for (i = 0; buf[i]; i++)
+    {
+        int c = buf[i];
+        if (c >= ' ' && c < HU_FONTSIZE)
+        {
+            char namebuf[9];
+            patch_t *p;
+            DEH_snprintf(namebuf, 9, "STCFN%.3d", c);
+            p = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
+            V_DrawPatchDirect(x, y, p);
+            x += SHORT(p->width);
+        }
+    }
+}
+
+// Goblin Dice Rollaz: Time Attack mode HUD overlay
+void ST_DrawTimeAttackHUD(void)
+{
+    char buf[64];
+    int x, y;
+    int total_time;
+    int minutes, seconds;
+    int i;
+    
+    if (!G_IsTimeAttackMode())
+        return;
+    
+    total_time = G_GetTimeAttackTotalTime();
+    minutes = (total_time / TICRATE) / 60;
+    seconds = (total_time / TICRATE) % 60;
+    
+    x = 20;
+    y = 20;
+    
+    // Draw "TIME ATTACK" label
+    DEH_snprintf(buf, sizeof(buf), "TIME ATTACK");
+    for (i = 0; buf[i]; i++)
+    {
+        int c = buf[i];
+        if (c >= ' ' && c < HU_FONTSIZE)
+        {
+            char namebuf[9];
+            patch_t *p;
+            DEH_snprintf(namebuf, 9, "STCFN%.3d", c);
+            p = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
+            V_DrawPatchDirect(x, y, p);
+            x += SHORT(p->width);
+        }
+    }
+    
+    // Draw current time
+    x = 20;
+    y += 20;
+    DEH_snprintf(buf, sizeof(buf), "%02d:%02d", minutes, seconds);
     for (i = 0; buf[i]; i++)
     {
         int c = buf[i];
@@ -1673,6 +1728,12 @@ void ST_Drawer (boolean fullscreen, boolean refresh)
     if (G_IsSurvivalMode() && gamestate == GS_LEVEL)
     {
         ST_DrawSurvivalHUD();
+    }
+
+    // Goblin Dice Rollaz: Draw time attack mode HUD
+    if (G_IsTimeAttackMode() && gamestate == GS_LEVEL)
+    {
+        ST_DrawTimeAttackHUD();
     }
 
 }
