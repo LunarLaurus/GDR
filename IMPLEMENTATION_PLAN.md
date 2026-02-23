@@ -331,7 +331,7 @@
 - [x] Add replay sharing functionality
 - [x] Add dice roll statistics tracking
 - [x] Add achievement system
-- [ ] Add leaderboard for challenge modes
+- [x] Add leaderboard for challenge modes
 
 ## Current Status
 **Phase 1-8 complete**. Phase 9-13 ready for implementation.
