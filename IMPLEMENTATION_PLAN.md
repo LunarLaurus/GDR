@@ -250,7 +250,7 @@
 - [x] Add custom dice weapon template example
 - [x] Add enemy definition template
 - [x] Create example goblin-themed TC pack
-- [ ] Write Modding Guide in `/docs`
+- [x] Write Modding Guide in `/docs`
 
 ## Phase 23: Performance & Determinism Audit
 - [ ] Profile thinker loop under heavy dice spam
