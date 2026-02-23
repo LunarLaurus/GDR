@@ -510,6 +510,11 @@ void D_BindVariables(void)
     M_BindFloatVariable("damage_number_scale",    &damage_number_scale);
     M_BindIntVariable("particle_effects",         &particle_effects);
 
+    // Goblin Dice Rollaz: Accessibility Settings
+    M_BindIntVariable("colorblind_mode",          &colorblind_mode);
+    M_BindFloatVariable("hud_scale",              &hud_scale);
+    M_BindIntVariable("reduce_motion",            &reduce_motion);
+
     // Multiplayer chat macros
 
     for (i=0; i<10; ++i)

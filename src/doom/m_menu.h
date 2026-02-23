@@ -61,6 +61,18 @@ extern int showMessages;
 // Goblin Dice Rollaz: RPG Progression Mode toggle
 extern int rpg_mode;
 
+// Goblin Dice Rollaz: Game Settings
+extern int dice_sound_volume;
+extern int crit_notification;
+extern float screen_shake_intensity;
+extern float damage_number_scale;
+extern int particle_effects;
+
+// Goblin Dice Rollaz: Accessibility Settings
+extern int colorblind_mode;
+extern float hud_scale;
+extern int reduce_motion;
+
 // Goblin Dice Rollaz: Level Up menu
 typedef struct menu_s menu_t;
 void M_SetupNextMenu(menu_t *menudef);

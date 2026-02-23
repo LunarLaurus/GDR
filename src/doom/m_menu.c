@@ -86,6 +86,11 @@ float		screen_shake_intensity = 1.0f; // Screen shake multiplier (0.0-2.0)
 float		damage_number_scale = 1.0f;    // Damage number size multiplier (0.5-2.0)
 int			particle_effects = 1;         // Enable particle effects (0=off, 1=on)
 
+// Goblin Dice Rollaz: Accessibility Settings
+int			colorblind_mode = 0;          // Colorblind mode (0=off, 1=red-green, 2=blue-yellow)
+float		hud_scale = 1.0f;              // HUD scale multiplier (0.5-2.0)
+int			reduce_motion = 0;            // Reduce motion effects (0=off, 1=on)
+
 // Goblin Dice Rollaz: Main menu animated background
 #define MENU_ANIM_FRAMES 8
 #define MENU_ANIM_SPEED 4  // frames per second
@@ -243,6 +248,13 @@ static void M_DamageNumberScale(int choice);
 static void M_ParticleEffects(int choice);
 static void M_DrawGameSettings(void);
 
+// Goblin Dice Rollaz: Accessibility menu
+static void M_Accessibility(int choice);
+static void M_ColorblindMode(int choice);
+static void M_HUDScale(int choice);
+static void M_ReduceMotion(int choice);
+static void M_DrawAccessibility(void);
+
 static void M_FinishReadThis(int choice);
 static void M_LoadSelect(int choice);
 static void M_SaveSelect(int choice);
@@ -293,6 +305,7 @@ enum
     survivalmode,
     options,
     gamesettings,
+    accessibility,
     loadgame,
     savegame,
     readthis,
@@ -307,6 +320,7 @@ menuitem_t MainMenu[]=
     {1,"M_TIMATT",M_TimeAttackMode,'t'},
     {1,"M_OPTION",M_Options,'o'},
     {1,"M_GAMESET",M_GameSettings,'g'},
+    {1,"M_ACCESS",M_Accessibility,'a'},
     {1,"M_LOADG",M_LoadGame,'l'},
     {1,"M_SAVEG",M_SaveGame,'s'},
     // Another hickup with Special edition.
@@ -456,6 +470,34 @@ menu_t  GameSettingsDef =
     &MainDef,
     GameSettingsMenu,
     M_DrawGameSettings,
+    60,37,
+    0
+};
+
+//
+// Goblin Dice Rollaz: ACCESSIBILITY MENU
+//
+enum
+{
+    accessibility_colorblind,
+    accessibility_hudscale,
+    accessibility_reducemotion,
+    accessibility_end
+} accessibility_e;
+
+menuitem_t AccessibilityMenu[]=
+{
+    {1,"M_COLBLND", M_ColorblindMode, 'c'},
+    {2,"M_HUDSCAL", M_HUDScale, 'h'},
+    {1,"M_REDMOT", M_ReduceMotion, 'r'}
+};
+
+menu_t  AccessibilityDef =
+{
+    accessibility_end,
+    &MainDef,
+    AccessibilityMenu,
+    M_DrawAccessibility,
     60,37,
     0
 };
@@ -1507,6 +1549,83 @@ void M_DrawGameSettings(void)
     V_DrawPatchDirect(GameSettingsDef.x + 120, 
                       GameSettingsDef.y + LINEHEIGHT * 4,
                       W_CacheLumpName(DEH_String(particle_effects ? "M_YES" : "M_NO"),
+                                      PU_CACHE));
+}
+
+void M_Accessibility(int choice)
+{
+    M_SetupNextMenu(&AccessibilityDef);
+}
+
+void M_ColorblindMode(int choice)
+{
+    choice = 0;
+    colorblind_mode = (colorblind_mode + 1) % 3;
+    
+    if (colorblind_mode == 0)
+        players[consoleplayer].message = "Colorblind Mode: OFF";
+    else if (colorblind_mode == 1)
+        players[consoleplayer].message = "Colorblind Mode: Red-Green";
+    else
+        players[consoleplayer].message = "Colorblind Mode: Blue-Yellow";
+}
+
+void M_HUDScale(int choice)
+{
+    switch(choice)
+    {
+      case 0:
+          if (hud_scale > 0.5f)
+              hud_scale -= 0.1f;
+          break;
+      case 1:
+          if (hud_scale < 2.0f)
+              hud_scale += 0.1f;
+          break;
+    }
+}
+
+void M_ReduceMotion(int choice)
+{
+    choice = 0;
+    reduce_motion = 1 - reduce_motion;
+    
+    if (reduce_motion)
+    {
+        players[consoleplayer].message = "Reduce Motion: ON";
+        screen_shake_intensity = 0.0f;
+    }
+    else
+    {
+        players[consoleplayer].message = "Reduce Motion: OFF";
+        screen_shake_intensity = 1.0f;
+    }
+}
+
+void M_DrawAccessibility(void)
+{
+    V_DrawPatchDirect(72, 15, W_CacheLumpName(DEH_String("M_OPTTTL"),
+                                               PU_CACHE));
+    
+    // Colorblind mode cycle
+    M_WriteText(AccessibilityDef.x - 80, AccessibilityDef.y, "Colorblind");
+    if (colorblind_mode == 0)
+        M_WriteText(AccessibilityDef.x + 120, AccessibilityDef.y, "OFF");
+    else if (colorblind_mode == 1)
+        M_WriteText(AccessibilityDef.x + 120, AccessibilityDef.y, "R/G");
+    else
+        M_WriteText(AccessibilityDef.x + 120, AccessibilityDef.y, "B/Y");
+    
+    // HUD scale slider
+    M_WriteText(AccessibilityDef.x - 80, AccessibilityDef.y + LINEHEIGHT * 1, "HUD Scale");
+    M_DrawThermo(AccessibilityDef.x, AccessibilityDef.y + LINEHEIGHT * 1,
+                 15, (int)(hud_scale * 10));
+    
+    // Reduce motion toggle
+    M_WriteText(AccessibilityDef.x - 80, AccessibilityDef.y + LINEHEIGHT * 2, "Reduce Mot");
+    V_DrawPatchDirect(AccessibilityDef.x + 120, 
+                      AccessibilityDef.y + LINEHEIGHT * 2,
+                      W_CacheLumpName(DEH_String(reduce_motion ? "M_YES" : "M_NO"),
                                       PU_CACHE));
 }
 
