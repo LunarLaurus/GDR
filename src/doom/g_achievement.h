@@ -61,9 +61,26 @@ typedef struct {
 extern achievement_t achievements[MAX_ACHIEVEMENTS];
 extern int achievement_count;
 
+// Goblin Dice Rollaz: Achievement toast notifications
+#define MAX_TOAST_QUEUE 4
+#define TOAST_DURATION 180  // 3 seconds at 60fps
+
+typedef struct {
+    const char *name;
+    const char *description;
+    int duration;
+    boolean active;
+} achievement_toast_t;
+
+extern achievement_toast_t toast_queue[MAX_TOAST_QUEUE];
+extern int toast_count;
+
 void G_InitAchievements(void);
 void G_ResetAchievements(void);
 void G_UnlockAchievement(const char* id);
+void G_QueueAchievementToast(const char *name, const char *description);
+void G_UpdateToasts(void);
+void G_DrawToasts(void);
 boolean G_HasAchievement(const char* id);
 void G_TrackAchievementProgress(achievement_type_t type, int value);
 void G_UpdateAchievements(void);

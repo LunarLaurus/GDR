@@ -19,9 +19,15 @@
 #include "g_achievement.h"
 #include "g_stats.h"
 #include "d_items.h"
+#include "v_video.h"
+#include "hu_stuff.h"
 
 achievement_t achievements[MAX_ACHIEVEMENTS];
-int achievement_count = 0;
+int achievement_count;
+
+// Goblin Dice Rollaz: Achievement toast notifications
+achievement_toast_t toast_queue[MAX_TOAST_QUEUE];
+int toast_count = 0;
 
 static achievement_t default_achievements[] = {
     {"ACH_KILL_10", "First Blood", "Kill 10 enemies", ACH_CATEGORY_COMBAT, ACH_TYPE_KILLS, 10, 0, 0},
@@ -118,8 +124,120 @@ void G_UnlockAchievement(const char* id)
                 achievements[i].progress = achievements[i].threshold;
                 
                 DEH_printf("[ACHIEVEMENT UNLOCKED: %s]\n", achievements[i].name);
+                
+                G_QueueAchievementToast(achievements[i].name, achievements[i].description);
             }
             return;
+        }
+    }
+}
+
+void G_QueueAchievementToast(const char *name, const char *description)
+{
+    int i;
+    
+    if (!name)
+        return;
+    
+    for (i = 0; i < MAX_TOAST_QUEUE; i++)
+    {
+        if (!toast_queue[i].active)
+        {
+            toast_queue[i].name = name;
+            toast_queue[i].description = description;
+            toast_queue[i].duration = TOAST_DURATION;
+            toast_queue[i].active = true;
+            toast_count++;
+            return;
+        }
+    }
+}
+
+void G_UpdateToasts(void)
+{
+    int i;
+    
+    for (i = 0; i < MAX_TOAST_QUEUE; i++)
+    {
+        if (toast_queue[i].active)
+        {
+            toast_queue[i].duration--;
+            if (toast_queue[i].duration <= 0)
+            {
+                toast_queue[i].active = false;
+                toast_count--;
+            }
+        }
+    }
+}
+
+void G_DrawToasts(void)
+{
+    int i;
+    int y_offset;
+    int char_y;
+    const char *ch;
+    int c;
+    int x;
+    extern patch_t *hu_font[HU_FONTSIZE];
+    extern void M_WriteText(int x, int y, const char *string);
+    
+    y_offset = 20;
+    
+    for (i = 0; i < MAX_TOAST_QUEUE; i++)
+    {
+        if (toast_queue[i].active)
+        {
+            int alpha = 255;
+            if (toast_queue[i].duration < 30)
+                alpha = (toast_queue[i].duration * 255) / 30;
+            
+            V_DrawFilledBox(SCREENWIDTH - 280, y_offset, 270, 50, 0);
+            V_DrawBox(SCREENWIDTH - 280, y_offset, 270, 50, 84);
+            
+            char_y = y_offset + 8;
+            x = SCREENWIDTH - 275;
+            
+            if (toast_queue[i].name)
+            {
+                ch = toast_queue[i].name;
+                while (*ch)
+                {
+                    c = toupper(*ch++) - HU_FONTSTART;
+                    if (c >= 0 && c < HU_FONTSIZE && hu_font[c])
+                    {
+                        V_DrawPatchDirect(x, char_y, hu_font[c]);
+                        x += SHORT(hu_font[c]->width);
+                    }
+                    else
+                    {
+                        x += 4;
+                    }
+                }
+            }
+            
+            char_y = y_offset + 26;
+            x = SCREENWIDTH - 275;
+            
+            if (toast_queue[i].description)
+            {
+                ch = toast_queue[i].description;
+                while (*ch)
+                {
+                    c = toupper(*ch++) - HU_FONTSTART;
+                    if (c >= 0 && c < HU_FONTSIZE && hu_font[c])
+                    {
+                        V_DrawPatchDirect(x, char_y, hu_font[c]);
+                        x += SHORT(hu_font[c]->width);
+                    }
+                    else
+                    {
+                        x += 4;
+                    }
+                }
+            }
+            
+            y_offset += 55;
         }
     }
 }

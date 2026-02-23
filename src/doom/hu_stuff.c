@@ -45,6 +45,8 @@
 
 #include "doomstat.h"
 
+#include "g_achievement.h"
+
 // Data.
 #include "dstrings.h"
 #include "sounds.h"
@@ -454,6 +456,8 @@ void HU_Drawer(void)
     DMG_Drawer();
     DBG_Drawer();
     P_DrawParticles();
+    
+    G_DrawToasts();
 
 }
 
@@ -471,6 +475,8 @@ void HU_Ticker(void)
 
     int i, rc;
     char c;
+
+    G_UpdateToasts();
 
     // tick down message counter if message is up
     if (message_counter && !--message_counter)

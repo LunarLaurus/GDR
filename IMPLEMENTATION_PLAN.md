@@ -277,7 +277,7 @@
 - [x] Add cumulative session stats tracking
 - [x] Polish loading screen with dice animation
 - [x] Add region-specific content warnings
-- [ ] Implement achievement notification toasts
+- [x] Implement achievement notification toasts
 - [ ] Add cross-platform save file migration utility
 - [x] Draft public roadmap
 
