@@ -38,6 +38,7 @@ add_library(doom STATIC
             hu_stuff.c      hu_stuff.h
             info.c          info.h
             m_menu.c        m_menu.h
+            m_tips.c        m_tips.h
             m_random.c      m_random.h
             p_ceilng.c
             p_doors.c

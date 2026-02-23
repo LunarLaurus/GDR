@@ -317,7 +317,7 @@
 
 ## Phase 32: User Interface Polish
 - [x] Add main menu animated background
-- [ ] Add dice-themed loading screen tips
+- [x] Add dice-themed loading screen tips
 - [ ] Implement crosshair customization options
 - [ ] Add damage type indicator icons on hit
 

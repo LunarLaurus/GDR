@@ -50,6 +50,7 @@
 #include "m_controls.h"
 #include "m_misc.h"
 #include "m_menu.h"
+#include "m_tips.h"
 #include "p_saveg.h"
 
 #include "i_endoom.h"
@@ -652,6 +653,12 @@ void D_PageTicker (void)
 void D_PageDrawer (void)
 {
     V_DrawPatch (0, 0, W_CacheLumpName(pagename, PU_CACHE));
+
+    if (pagename != NULL && strcmp(pagename, "TITLEPIC") == 0)
+    {
+        GDR_InitTips();
+        GDR_DrawTip(40, SCREENHEIGHT - 30);
+    }
 }
 
 
