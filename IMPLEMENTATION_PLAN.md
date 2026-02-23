@@ -301,7 +301,7 @@
 - [x] Add console command to list all dice weapons and stats
 - [x] Add debug overlay showing damage calculations
 - [x] Add configurable minimum damage cap (prevent 0-damage rolls)
-- [ ] Add screenshot hotkey with dice roll overlay capture
+- [x] Add screenshot hotkey with dice roll overlay capture
 - [ ] Add demo recording/playback validation
 - [ ] Add network packet debug logging for multiplayer
 - [ ] Add weapon balance tuning constants file

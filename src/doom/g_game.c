@@ -1087,9 +1087,9 @@ void G_Ticker (void)
 	    break; 
 	  case ga_screenshot: 
 	    V_ScreenShot("GOBLIN%02i.%s"); 
-            players[consoleplayer].message = DEH_String("screen shot");
+            players[consoleplayer].message = DEH_String("screenshot - dice roll overlay captured");
 	    gameaction = ga_nothing; 
-	    break; 
+	    break;
 	  case ga_nothing: 
 	    break; 
 	} 
