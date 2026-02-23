@@ -271,7 +271,7 @@
 
 ## Phase 25: Polish & Identity Lock
 - [ ] Finalize logo and title screen art
-- [ ] Replace remaining Doom legacy strings
+- [x] Replace remaining Doom legacy strings
 - [ ] Audit UI consistency
 - [ ] Balance all dice weapons numerically
 - [ ] Final playtest pass (solo + co-op)
