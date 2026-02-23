@@ -274,7 +274,7 @@
 - [x] Add weapon recoil visual feedback
 - [x] Implement kill confirmation popup
 - [x] Add damage statistics end-of-level screen
-- [ ] Add cumulative session stats tracking
+- [x] Add cumulative session stats tracking
 - [ ] Polish loading screen with dice animation
 - [ ] Add region-specific content warnings
 - [ ] Implement achievement notification toasts
