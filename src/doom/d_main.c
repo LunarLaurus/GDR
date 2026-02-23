@@ -448,6 +448,10 @@ void D_BindVariables(void)
     M_BindIntVariable("net_sync_debug",           &net_sync_debug);
     M_BindIntVariable("rng_validation_enabled",    &rng_validation_enabled);
 
+    // Goblin Dice Rollaz: Server-authoritative damage validation
+    M_BindIntVariable("sv_authoritative_damage",   &sv_authoritative_damage);
+    M_BindIntVariable("sv_validate_frequency",     &sv_validate_frequency);
+
     // Goblin Dice Rollaz: modern visual effects toggle
     M_BindIntVariable("usemodernfx",             &usemodernfx);
 

@@ -83,6 +83,12 @@ int net_sync_debug = 0;
 int net_desync_count = 0;
 int rng_validation_enabled = 0;
 
+// Goblin Dice Rollaz: Server-authoritative damage validation
+// When enabled, server recalculates damage to validate client predictions
+int sv_authoritative_damage = 0;
+int sv_validate_frequency = 4;  // Validate every Nth attack
+int sv_damage_validate_count = 0;
+
 // Goblin Dice Rollaz: Damage log system
 #define DAMAGE_LOG_MAX 64
 

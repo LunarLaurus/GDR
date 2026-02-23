@@ -54,4 +54,8 @@ int PREDICT_GetDesyncCount(void);
 
 void PREDICT_Ticker(void);
 
+// Server-authoritative damage validation
+int PREDICT_CalculateServerDamage(int weapon, player_t *player, mobj_t *target);
+void PREDICT_ValidateServerDamage(int predict_id, int weapon, player_t *player, mobj_t *target);
+
 #endif

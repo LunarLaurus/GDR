@@ -20,6 +20,8 @@
 #include "g_game.h"
 #include "m_misc.h"
 #include "net_defs.h"
+#include "d_items.h"
+#include "p_local.h"
 
 static predicted_damage_t predicted_damages[MAX_PREDICTED_DAMAGE];
 static int next_predict_id = 0;
@@ -182,4 +184,90 @@ void PREDICT_Ticker(void)
             predicted_damages[i].pending = false;
         }
     }
+}
+
+// Goblin Dice Rollaz: Server-authoritative damage recalculation
+// Recalculates damage server-side to validate client predictions
+int PREDICT_CalculateServerDamage(int weapon, player_t *player, mobj_t *target)
+{
+    int damage = 0;
+    int crit_roll = 0;
+    int dice_roll = 0;
+    int misfire = 0;
+    boolean is_critical = false;
+    int effectiveCritChance = crit_chance_default;
+    int effectiveCritMultiplier = crit_multiplier_default;
+    
+    if (!player || weapon < 0 || weapon >= NUMWEAPONS)
+        return 0;
+    
+    damage = P_CalculateDiceDamage(weapon, 0, &crit_roll, &misfire, &dice_roll, player);
+    
+    if (damage <= 0)
+        return 0;
+    
+    dice_weapon_info_t *dwi = &dice_weapon_info[weapon];
+    if (dwi->die_type > 0)
+    {
+        effectiveCritChance = dwi->crit_chance;
+        effectiveCritMultiplier = dwi->crit_multiplier;
+    }
+    
+    if (player->powers[pw_critboost])
+    {
+        effectiveCritChance += crit_boost_bonus;
+    }
+    
+    if (rpg_mode)
+    {
+        effectiveCritChance += G_GetPlayerCritBonus(player);
+        effectiveCritChance += G_GetPlayerLevelCritBonus(player);
+    }
+    
+    if (target && target->info)
+    {
+        int targetCritResistance = target->info->crit_resistance;
+        effectiveCritChance -= targetCritResistance;
+    }
+    
+    if (effectiveCritChance < 0)
+        effectiveCritChance = 0;
+    
+    if ((P_Random() % 100) < effectiveCritChance)
+    {
+        damage *= effectiveCritMultiplier;
+        is_critical = true;
+        crit_roll = (P_Random() % 20) + 1;
+    }
+    
+    if (player->powers[pw_doubledamage])
+    {
+        damage *= 2;
+    }
+    
+    if (damage < min_damage_cap)
+        damage = min_damage_cap;
+    
+    if (net_sync_debug && netgame)
+    {
+        DEH_printf("[SERVER] Recalculated damage: weapon=%d, damage=%d, crit=%d, roll=%d\n",
+                   weapon, damage, is_critical, crit_roll);
+    }
+    
+    return damage;
+}
+
+// Goblin Dice Rollaz: Server-authoritative validation check
+// Called periodically to validate client damage predictions
+void PREDICT_ValidateServerDamage(int predict_id, int weapon, player_t *player, mobj_t *target)
+{
+    if (!sv_authoritative_damage || !netgame)
+        return;
+    
+    if (sv_validate_frequency > 0 && (sv_damage_validate_count++ % sv_validate_frequency) != 0)
+        return;
+    
+    int server_damage = PREDICT_CalculateServerDamage(weapon, player, target);
+    
+    PREDICT_ValidateDamage(predict_id, server_damage, false, 0);
 }

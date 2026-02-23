@@ -311,7 +311,7 @@
 
 ## Phase 31: Network Optimizations
 - [x] Add client-side prediction for dice roll results
-- [ ] Implement server-authoritative damage validation
+- [x] Implement server-authoritative damage validation
 - [ ] Add lag compensation for projectile hits
 - [ ] Optimize network packet size for dice roll events
 
