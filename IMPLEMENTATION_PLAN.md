@@ -255,7 +255,7 @@
 ## Phase 23: Performance & Determinism Audit
 - [x] Profile thinker loop under heavy dice spam
 - [x] Validate deterministic RNG across platforms
-- [ ] Audit floating-point usage (avoid nondeterminism)
+- [x] Audit floating-point usage (avoid nondeterminism)
 - [ ] Benchmark sprite-heavy scenes
 - [ ] Test low-spec hardware compatibility
 - [ ] Add reproducible demo test suite
