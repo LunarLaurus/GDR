@@ -41,6 +41,7 @@
 #include "p_inter.h"
 #include "p_particles.h"
 #include "dmg_ovl.h"
+#include "dbg_ovl.h"
 #include "d_items.h"
 #include "g_status.h"
 #include "g_rpg.h"
@@ -1533,6 +1534,30 @@ P_DamageMobj
         }
         
         DMG_AddDamageLog(damage, was_critical, crit_roll, target_name, weapon_name);
+        
+        // Goblin Dice Rollaz: Debug overlay - record last damage info
+        if (source && source->player)
+        {
+            int debugCritChance = 0;
+            int debugCritMult = 1;
+            int diceRoll = 0;
+            
+            dice_weapon_info_t *dwi = &dice_weapon_info[source->player->readyweapon];
+            if (dwi->die_type > 0)
+            {
+                debugCritChance = dwi->crit_chance;
+                debugCritMult = dwi->crit_multiplier;
+            }
+            
+            DBG_SetLastDamage(damage, debugCritChance, debugCritMult, 
+                             (P_Random() % 20) + 1, crit_roll, 
+                             was_critical, guaranteed_crit, target ? target->type : 0);
+            
+            if (target && target->info && target->info->name)
+            {
+                DBG_SetLastHitTarget(target->info->name);
+            }
+        }
     }
     
     // Goblin Dice Rollaz: Boss phase transition

@@ -32,6 +32,7 @@
 #include "hu_stuff.h"
 #include "hu_lib.h"
 #include "dmg_ovl.h"
+#include "dbg_ovl.h"
 #include "p_particles.h"
 #include "m_controls.h"
 #include "m_misc.h"
@@ -351,6 +352,7 @@ void HU_Init(void)
     }
 
     DMG_Init();
+    DBG_Init();
     P_InitParticles();
 
 }
@@ -446,6 +448,7 @@ void HU_Drawer(void)
 	HUlib_drawTextLine(&w_title, false);
 
     DMG_Drawer();
+    DBG_Drawer();
     P_DrawParticles();
 
 }

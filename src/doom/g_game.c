@@ -850,6 +850,15 @@ boolean G_Responder (event_t* ev)
 	    I_DisplayFPSDots(devparm || showfps);
 	    return true;
 	}
+	if (ev->type == ev_keydown && ev->data1 == KEY_F8)
+	{
+	    extern void DBG_SetVisible(boolean);
+	    static boolean dbg_visible = false;
+	    dbg_visible = !dbg_visible;
+	    DBG_SetVisible(dbg_visible);
+	    players[consoleplayer].message = dbg_visible ? "Damage Debug ON" : "Damage Debug OFF";
+	    return true;
+	}
 	if (ev->type == ev_keydown && ev->data1 == KEY_F6)
 	{
 	    r_showspritestats = !r_showspritestats;
