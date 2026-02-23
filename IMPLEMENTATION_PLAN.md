@@ -248,7 +248,7 @@
 - [x] Document dice weapon DEHACKED mappings
 - [x] Expose crit system parameters to config
 - [x] Add custom dice weapon template example
-- [ ] Add enemy definition template
+- [x] Add enemy definition template
 - [ ] Create example goblin-themed TC pack
 - [ ] Write Modding Guide in `/docs`
 
