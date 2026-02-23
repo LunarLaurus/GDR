@@ -1109,7 +1109,7 @@ A_FireMissile
   pspdef_t*	psp ) 
 {
     DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
-    P_SpawnPlayerMissile (player->mo, MT_ROCKET);
+    P_SpawnPlayerMissile (player->mo, MT_ROCKET, player->readyweapon);
 }
 
 
@@ -1123,7 +1123,7 @@ A_FireBFG
 {
     DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 
                  deh_bfg_cells_per_shot);
-    P_SpawnPlayerMissile (player->mo, MT_BFG);
+    P_SpawnPlayerMissile (player->mo, MT_BFG, player->readyweapon);
 }
 
 
@@ -1142,7 +1142,7 @@ A_FirePlasma
 		  ps_flash,
 		  weaponinfo[player->readyweapon].flashstate+(P_Random ()&1) );
 
-    P_SpawnPlayerMissile (player->mo, MT_PLASMA);
+    P_SpawnPlayerMissile (player->mo, MT_PLASMA, player->readyweapon);
 }
 
 
@@ -1371,7 +1371,7 @@ A_FireArcaneD20
 
     damage = P_CalculateDiceDamage(wp_arcaned20, guaranteedCrit, &critRoll, NULL, &diceRoll, player);
 
-    missile = P_SpawnPlayerMissile (player->mo, MT_ARCANED20BEAM);
+    missile = P_SpawnPlayerMissile (player->mo, MT_ARCANED20BEAM, wp_arcaned20);
     if (missile)
     {
         missile->damage = damage;
@@ -1420,7 +1420,7 @@ A_FireCursed
 
     damage = P_CalculateDiceDamage(wp_cursed, guaranteedCrit, &critRoll, &misfire, &diceRoll, player);
 
-    missile = P_SpawnPlayerMissile (player->mo, MT_CURSEDDIE);
+    missile = P_SpawnPlayerMissile (player->mo, MT_CURSEDDIE, wp_cursed);
     if (missile)
     {
         missile->damage = damage;

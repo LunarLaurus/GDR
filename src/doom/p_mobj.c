@@ -28,6 +28,7 @@
 
 #include "st_stuff.h"
 #include "hu_stuff.h"
+#include "dice_projectile_lag.h"
 
 #include "s_sound.h"
 
@@ -1230,7 +1231,8 @@ P_SpawnMissile
 void
 P_SpawnPlayerMissile
 ( mobj_t*	source,
-  mobjtype_t	type )
+  mobjtype_t	type,
+  int		weapon )
 {
     mobj_t*	th;
     angle_t	an;
@@ -1261,7 +1263,7 @@ P_SpawnPlayerMissile
 	    slope = 0;
 	}
     }
-		
+    	
     x = source->x;
     y = source->y;
     z = source->z + 4*8*FRACUNIT;
@@ -1280,5 +1282,10 @@ P_SpawnPlayerMissile
     th->momz = FixedMul( th->info->speed, slope);
 
     P_CheckMissileSpawn (th);
+
+    if (sv_lag_compensation && netgame && source->player)
+    {
+        PLAG_RecordProjectile(th, linetarget, weapon);
+    }
 }
 

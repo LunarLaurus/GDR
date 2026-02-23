@@ -63,6 +63,8 @@
 #include "g_status.h"
 #include "g_demo_test.h"
 #include "g_balance.h"
+#include "dice_predict.h"
+#include "dice_projectile_lag.h"
 
 #include "hu_stuff.h"
 #include "wi_stuff.h"
@@ -451,6 +453,10 @@ void D_BindVariables(void)
     // Goblin Dice Rollaz: Server-authoritative damage validation
     M_BindIntVariable("sv_authoritative_damage",   &sv_authoritative_damage);
     M_BindIntVariable("sv_validate_frequency",     &sv_validate_frequency);
+
+    // Goblin Dice Rollaz: Lag compensation for projectile hits
+    M_BindIntVariable("sv_lag_compensation",       &sv_lag_compensation);
+    M_BindIntVariable("lag_compensation_window",   &lag_compensation_window);
 
     // Goblin Dice Rollaz: modern visual effects toggle
     M_BindIntVariable("usemodernfx",             &usemodernfx);

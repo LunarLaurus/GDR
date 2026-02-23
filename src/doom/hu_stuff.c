@@ -34,6 +34,7 @@
 #include "dmg_ovl.h"
 #include "dbg_ovl.h"
 #include "dice_predict.h"
+#include "dice_projectile_lag.h"
 #include "p_particles.h"
 #include "m_controls.h"
 #include "m_misc.h"
@@ -354,6 +355,7 @@ void HU_Init(void)
 
     DMG_Init();
     PREDICT_Init();
+    PLAG_Init();
     DBG_Init();
     P_InitParticles();
 
@@ -537,6 +539,7 @@ void HU_Ticker(void)
 
     DMG_Ticker();
     PREDICT_Ticker();
+    PLAG_Ticker();
     P_TickerParticles();
 
 }
