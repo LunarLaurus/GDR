@@ -53,6 +53,7 @@ void    G_PowerupDeactivate(player_t* player, int powerup_id);
 boolean G_PowerupCanPickup(player_t* player, int powerup_id);
 void    G_PowerupOnHit(player_t* player, int powerup_id);
 int     G_GetActivePowerupCount(player_t* player);
+void    G_PowerupShareWithNearbyPlayers(player_t* activator, int powerup_id);
 
 #define POWERUP(c) powerups[c]
 

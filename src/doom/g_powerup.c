@@ -195,6 +195,7 @@ void G_PowerupDeactivate(player_t* player, int powerup_id)
 boolean G_PowerupCanPickup(player_t* player, int powerup_id)
 {
     powerup_info_t* pu;
+    int i;
 
     if (powerup_id < 0 || powerup_id >= NUMPOWERS)
         return false;
@@ -208,7 +209,6 @@ boolean G_PowerupCanPickup(player_t* player, int powerup_id)
 
     if (pu->flags & POWERUP_FLAG_EXCLUSIVE)
     {
-        int i;
         for (i = 0; i < NUMPOWERS; i++)
         {
             if (i != powerup_id && (powerups[i].flags & POWERUP_FLAG_EXCLUSIVE))
@@ -252,120 +252,56 @@ int G_GetActivePowerupCount(player_t* player)
 
     return count;
 }
-};
 
-boolean G_PowerupIsActive(player_t* player, int powerup_id)
-{
-    if (powerup_id < 0 || powerup_id >= NUMPOWERS)
-        return false;
-    return player->powers[powerup_id] > 0;
-}
+#define COOP_POWERUP_SHARE_RADIUS (768 * FRACUNIT)
 
-int G_PowerupTimeRemaining(player_t* player, int powerup_id)
-{
-    if (powerup_id < 0 || powerup_id >= NUMPOWERS)
-        return 0;
-    return player->powers[powerup_id];
-}
-
-void G_PowerupActivate(player_t* player, int powerup_id, int duration)
-{
-    powerup_info_t* pu;
-
-    if (powerup_id < 0 || powerup_id >= NUMPOWERS)
-        return;
-
-    pu = &powerups[powerup_id];
-
-    if (!(pu->flags & POWERUP_FLAG_PERMANENT) && duration <= 0)
-    {
-        duration = pu->default_duration;
-    }
-
-    if (pu->flags & POWERUP_FLAG_EXCLUSIVE)
-    {
-        int i;
-        for (i = 0; i < NUMPOWERS; i++)
-        {
-            if (i != powerup_id && (powerups[i].flags & POWERUP_FLAG_EXCLUSIVE))
-            {
-                player->powers[i] = 0;
-            }
-        }
-    }
-
-    player->powers[powerup_id] = duration;
-
-    if (pu->sound != sfx_None)
-    {
-        S_StartSound(&player->mo->sphere, pu->sound);
-    }
-}
-
-void G_PowerupDeactivate(player_t* player, int powerup_id)
-{
-    if (powerup_id < 0 || powerup_id >= NUMPOWERS)
-        return;
-    player->powers[powerup_id] = 0;
-}
-
-boolean G_PowerupCanPickup(player_t* player, int powerup_id)
-{
-    powerup_info_t* pu;
-
-    if (powerup_id < 0 || powerup_id >= NUMPOWERS)
-        return false;
-
-    pu = &powerups[powerup_id];
-
-    if (pu->flags & POWERUP_FLAG_ONESHOT)
-    {
-        return player->powers[powerup_id] == 0;
-    }
-
-    if (pu->flags & POWERUP_FLAG_EXCLUSIVE)
-    {
-        int i;
-        for (i = 0; i < NUMPOWERS; i++)
-        {
-            if (i != powerup_id && (powerups[i].flags & POWERUP_FLAG_EXCLUSIVE))
-            {
-                if (player->powers[i] > 0)
-                    return false;
-            }
-        }
-    }
-
-    if (pu->flags & POWERUP_FLAG_TIMED)
-    {
-        if (player->powers[powerup_id] > 0)
-            return false;
-    }
-
-    return true;
-}
-
-void G_PowerupOnHit(player_t* player, int powerup_id)
-{
-    if (powerup_id < 0 || powerup_id >= NUMPOWERS)
-        return;
-
-    if (powerups[powerup_id].flags & POWERUP_FLAG_ONESHOT)
-    {
-        player->powers[powerup_id] = 0;
-    }
-}
-
-int G_GetActivePowerupCount(player_t* player)
+void G_PowerupShareWithNearbyPlayers(player_t* activator, int powerup_id)
 {
     int i;
-    int count = 0;
+    player_t* other;
+    mobj_t* activator_mo;
+    fixed_t dist;
 
-    for (i = 0; i < NUMPOWERS; i++)
+    if (!netgame || deathmatch)
+        return;
+
+    if (powerup_id < 0 || powerup_id >= NUMPOWERS)
+        return;
+
+    if (!(powerups[powerup_id].flags & POWERUP_FLAG_TIMED))
+        return;
+
+    if (!activator->mo)
+        return;
+
+    activator_mo = activator->mo;
+
+    for (i = 0; i < MAXPLAYERS; i++)
     {
-        if (player->powers[i] > 0)
-            count++;
-    }
+        other = &players[i];
 
-    return count;
+        if (other == activator)
+            continue;
+
+        if (!playeringame[i])
+            continue;
+
+        if (!other->mo)
+            continue;
+
+        if (other->playerstate != PST_LIVE)
+            continue;
+
+        dist = P_AproxDistance(activator_mo->x - other->mo->x,
+                               activator_mo->y - other->mo->y);
+
+        if (dist <= COOP_POWERUP_SHARE_RADIUS)
+        {
+            if (G_PowerupCanPickup(other, powerup_id))
+            {
+                int duration = powerups[powerup_id].default_duration;
+                G_PowerupActivate(other, powerup_id, duration);
+            }
+        }
+    }
 }

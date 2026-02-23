@@ -44,6 +44,7 @@
 #include "d_items.h"
 #include "g_status.h"
 #include "g_rpg.h"
+#include "g_powerup.h"
 
 // Goblin Dice Rollaz: Arena lock system
 extern int arena_locked;
@@ -475,6 +476,7 @@ P_GivePower
         }
         player->powers[power] = CRITBOOSTTICS;
         S_StartSound(&player->mo->sphere, sfx_getpow);
+        G_PowerupShareWithNearbyPlayers(player, pw_critboost);
         return true;
     }
 
@@ -486,6 +488,7 @@ P_GivePower
         }
         player->powers[power] = DOUBLEDAMAGETICS;
         S_StartSound(&player->mo->sphere, sfx_getpow);
+        G_PowerupShareWithNearbyPlayers(player, pw_doubledamage);
         return true;
     }
 
