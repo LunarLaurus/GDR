@@ -1645,10 +1645,15 @@ P_DamageMobj
             if (screen_x > 0 && screen_x < SCREENWIDTH && screen_y > 0 && screen_y < SCREENHEIGHT)
             {
                 int weapon = -1;
+                damage_type_t dtype = DAMAGETYPE_NORMAL;
                 if (source && source->player)
+                {
                     weapon = source->player->readyweapon;
+                    if (weapon >= 0 && weapon < NUMWEAPONS)
+                        dtype = dice_weapon_info[weapon].damage_type;
+                }
                 PREDICT_RecordDamage(screen_x, screen_y, damage, was_critical, crit_roll, weapon);
-                DMG_AddDamage(screen_x, screen_y, damage, was_critical, crit_roll);
+                DMG_AddDamage(screen_x, screen_y, damage, was_critical, crit_roll, dtype);
                 if (was_critical && target)
                 {
                     P_SpawnCritParticles(target->x, target->y, target->z + (target->height / 2), damage, crit_roll);

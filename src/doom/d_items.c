@@ -206,7 +206,7 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
 dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
 {
     {   // wp_fist - no dice
-        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}, 0, 0, 0, 0, SPF_NONE, 0, CRIT_SCALING_LINEAR, 2
+        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}, 0, 0, 0, 0, SPF_NONE, 0, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_NORMAL
     },
     {   // wp_d6blaster - d6
         6,      // die_type: d6
@@ -215,7 +215,7 @@ dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
         1,      // min_damage
         6,      // crit_roll: 6
         {1, 1, 2, 2, 3, 5, 10}, 0, 0, 0, 0,   // Balanced: 1-2=1, 3-4=2, 5=3, 6=crit(10)
-        SPF_ALWAYS_SPAWN, 100, CRIT_SCALING_LINEAR, 2  // Common starting weapon
+        SPF_ALWAYS_SPAWN, 100, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_NORMAL  // Common starting weapon
     },
     {   // wp_d20cannon - d20
         20,     // die_type: d20
@@ -224,7 +224,7 @@ dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
         5,      // min_damage
         20,     // crit_roll: 20
         {5, 5, 10, 10, 15, 25, 50}, 0, 0, 0, 0,  // Balanced: 1-5=5, 6-10=10, 11-15=15, 16-19=25, 20=crit(50)
-        SPF_LATE_GAME, 30, CRIT_SCALING_LINEAR, 2  // Heavy weapon, later maps
+        SPF_LATE_GAME, 30, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_EXPLOSIVE  // Heavy weapon, later maps
     },
     {   // wp_d12 - d12
         12,     // die_type: d12
@@ -233,28 +233,28 @@ dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
         3,      // min_damage
         12,     // crit_roll: 12
         {3, 3, 6, 6, 9, 12, 24}, 0, 0, 0, 0,  // 1-3=3, 4-6=6, 7-9=9, 10-12=12, 12=crit(24)
-        SPF_EARLY_GAME | SPF_RARE, 25, CRIT_SCALING_LINEAR, 2  // Rare early game weapon
+        SPF_EARLY_GAME | SPF_RARE, 25, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_PIERCING  // Rare early game weapon
     },
     {   // wp_shotgun - shotgun (not dice)
-        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}, 0, 0, 0, 0, SPF_ALWAYS_SPAWN, 80, CRIT_SCALING_LINEAR, 2
+        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}, 0, 0, 0, 0, SPF_ALWAYS_SPAWN, 80, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_NORMAL
     },
     {   // wp_chaingun - chaingun (not dice)
-        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}, 0, 0, 0, 0, SPF_ALWAYS_SPAWN, 50, CRIT_SCALING_LINEAR, 2
+        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}, 0, 0, 0, 0, SPF_ALWAYS_SPAWN, 50, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_NORMAL
     },
     {   // wp_missile - missile launcher (not dice)
-        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}, 0, 0, 0, 0, SPF_NONE, 25, CRIT_SCALING_LINEAR, 2
+        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}, 0, 0, 0, 0, SPF_NONE, 25, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_EXPLOSIVE
     },
     {   // wp_plasma - plasma rifle (not dice)
-        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}, 0, 0, 0, 0, SPF_NONE, 30, CRIT_SCALING_LINEAR, 2
+        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}, 0, 0, 0, 0, SPF_NONE, 30, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_FIRE
     },
     {   // wp_bfg - bfg 9000 (not dice)
-        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}, 0, 0, 0, 0, SPF_NONE, 15, CRIT_SCALING_LINEAR, 2
+        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}, 0, 0, 0, 0, SPF_NONE, 15, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_FIRE
     },
     {   // wp_chainsaw - chainsaw (not dice)
-        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}, 0, 0, 0, 0, SPF_NONE, 20, CRIT_SCALING_LINEAR, 2
+        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}, 0, 0, 0, 0, SPF_NONE, 20, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_NORMAL
     },
     {   // wp_supershotgun - super shotgun (not dice)
-        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}, 0, 0, 0, 0, SPF_NONE, 10, CRIT_SCALING_LINEAR, 2
+        0, 0, 0, 0, 0, {0, 0, 0, 0, 0, 0, 0}, 0, 0, 0, 0, SPF_NONE, 10, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_PIERCING
     },
     {   // wp_percentile - d100 percentile (Gamble Shot - wide variance)
         100,    // die_type: d100
@@ -267,7 +267,7 @@ dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
         0,      // ricochet_bounces: none
         5,      // misfire_roll: roll 1-5 triggers misfire (5% chance)
         25,     // misfire_penalty: 25% damage on misfire
-        SPF_RARE | SPF_LATE_GAME, 20, CRIT_SCALING_EXPONENTIAL, 3  // Rare, high-risk weapon - exponential scaling
+        SPF_RARE | SPF_LATE_GAME, 20, CRIT_SCALING_EXPONENTIAL, 3, DAMAGETYPE_CURSE  // Rare, high-risk weapon - exponential scaling
     },
     {   // wp_d4 - d4 throwing knives
         4,      // die_type: d4
@@ -276,7 +276,7 @@ dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
         1,      // min_damage
         4,      // crit_roll: 4
         {1, 2, 3, 4, 0, 0, 8}, 0, 0, 0, 0,  // Fixed: 1=1, 2=2, 3=3, 4=crit(8), no zeros in main table
-        SPF_EARLY_GAME, 60, CRIT_SCALING_LINEAR, 2  // Fast-firing early game weapon
+        SPF_EARLY_GAME, 60, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_PIERCING  // Fast-firing early game weapon
     },
     {   // wp_d8 - d8 balanced mid-tier
         8,      // die_type: d8
@@ -285,7 +285,7 @@ dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
         2,      // min_damage
         8,      // crit_roll: 8
         {1, 2, 3, 4, 5, 6, 16}, 0, 0, 0, 0,  // 1=1, 2-3=2, 4=3, 5=4, 6=5, 7=6, 8=crit(16)
-        SPF_NONE, 45, CRIT_SCALING_LINEAR, 2  // Mid-tier weapon, moderate spawn weight
+        SPF_NONE, 45, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_NORMAL  // Mid-tier weapon, moderate spawn weight
     },
     {   // wp_d10 - d10 ricochet weapon
         10,     // die_type: d10
@@ -297,7 +297,7 @@ dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
         0,      // gamble_shot: no
         1,      // ricochet_bounces: 1 bounce
         0, 0,   // No gamble/misfire
-        SPF_NONE, 35, CRIT_SCALING_LINEAR, 2  // Mid-tier heavy weapon
+        SPF_NONE, 35, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_EXPLOSIVE  // Mid-tier heavy weapon
     },
     {   // wp_twind6 - twin d6 scatter weapon (close-range burst)
         6,      // die_type: d6 (two dice fired)
@@ -309,7 +309,7 @@ dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
         0,      // gamble_shot: no
         0,      // ricochet_bounces: no
         0, 0,   // No misfire
-        SPF_EARLY_GAME | SPF_RARE, 20, CRIT_SCALING_LINEAR, 2  // Close-range, early game, rare
+        SPF_EARLY_GAME | SPF_RARE, 20, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_PIERCING  // Close-range, early game, rare
     },
     {   // wp_arcaned20 - arcane d20 beam (continuous roll tick damage)
         20,     // die_type: d20
@@ -321,7 +321,7 @@ dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
         0,      // gamble_shot: no
         0,      // ricochet_bounces: no
         0, 0,   // No misfire
-        SPF_NONE, 25, CRIT_SCALING_BONUS_PERCENT, 2  // Arcane mid-tier weapon - percent bonus scaling
+        SPF_NONE, 25, CRIT_SCALING_BONUS_PERCENT, 2, DAMAGETYPE_ICE  // Arcane mid-tier weapon - percent bonus scaling
     },
     {   // wp_cursed - cursed die (high damage, self-risk mechanic)
         6,      // die_type: d6
@@ -334,7 +334,7 @@ dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
         0,      // ricochet_bounces: no
         2,      // misfire_roll: roll 1-2 triggers self-damage (33% chance)
         -1,     // misfire_penalty: -1 means self-damage instead of damage penalty
-        SPF_RARE | SPF_LATE_GAME, 15, CRIT_SCALING_EXPONENTIAL, 2  // Rare, high-risk weapon - exponential scaling
+        SPF_RARE | SPF_LATE_GAME, 15, CRIT_SCALING_EXPONENTIAL, 2, DAMAGETYPE_CURSE  // Rare, high-risk weapon - exponential scaling
     },
 };
 

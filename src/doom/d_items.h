@@ -54,6 +54,18 @@ typedef enum
     SPF_DIFFICULTY_HARD = 128,   // Hard mode bonus
 } weapon_spawn_flags_t;
 
+// Goblin Dice Rollaz: Damage type identifiers
+typedef enum
+{
+    DAMAGETYPE_NORMAL = 0,
+    DAMAGETYPE_FIRE,
+    DAMAGETYPE_ICE,
+    DAMAGETYPE_PIERCING,
+    DAMAGETYPE_EXPLOSIVE,
+    DAMAGETYPE_CURSE,
+    DAMAGETYPE_MAX
+} damage_type_t;
+
 // Goblin Dice Rollaz: Crit scaling curve types
 typedef enum
 {
@@ -82,6 +94,7 @@ typedef struct
     int spawn_weight;       // Relative spawn probability (higher = more common)
     crit_scaling_type_t crit_scaling_type;   // Type of scaling curve
     int crit_scaling_param; // Parameter for scaling curve (e.g., bonus damage, exponent)
+    damage_type_t damage_type;  // Damage type for HUD indicator
 } dice_weapon_info_t;
 
 extern  weaponinfo_t    weaponinfo[NUMWEAPONS];

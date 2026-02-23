@@ -18,6 +18,7 @@
 #define __DMG_OVL_H__
 
 #include "doomdef.h"
+#include "d_items.h"
 
 #define MAX_DAMAGE_NUMBERS 32
 #define MAX_CRIT_POPUPS 8
@@ -30,6 +31,7 @@ typedef struct damage_number_s {
     int max_lifetime;
     boolean is_critical;
     int crit_roll;
+    damage_type_t damage_type;
     boolean active;
 } damage_number_t;
 
@@ -43,7 +45,7 @@ typedef struct crit_popup_s {
 } crit_popup_t;
 
 void DMG_Init(void);
-void DMG_AddDamage(int x, int y, int damage, boolean critical, int crit_roll);
+void DMG_AddDamage(int x, int y, int damage, boolean critical, int crit_roll, damage_type_t damage_type);
 void DMG_AddCritPopup(int x, int y, int roll);
 void DMG_Ticker(void);
 void DMG_Drawer(void);

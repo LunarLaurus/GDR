@@ -65,7 +65,7 @@ void DMG_Init(void)
     }
 }
 
-void DMG_AddDamage(int x, int y, int damage, boolean critical, int crit_roll)
+void DMG_AddDamage(int x, int y, int damage, boolean critical, int crit_roll, damage_type_t damage_type)
 {
     int i;
     int oldest_index = -1;
@@ -103,6 +103,7 @@ void DMG_AddDamage(int x, int y, int damage, boolean critical, int crit_roll)
     damage_numbers[i].max_lifetime = DAMAGE_LIFETIME;
     damage_numbers[i].is_critical = critical;
     damage_numbers[i].crit_roll = crit_roll;
+    damage_numbers[i].damage_type = damage_type;
     damage_numbers[i].active = true;
 
     if (critical && crit_roll > 0)
@@ -270,6 +271,38 @@ static void DMG_DrawCritPopup(int x, int y, int roll)
     }
 }
 
+static void DMG_DrawDamageTypeIcon(int x, int y, damage_type_t dtype)
+{
+    byte *col;
+    int i;
+    static const byte colors[DAMAGETYPE_MAX][3] = {
+        { 255, 255, 255 },
+        { 255, 80, 0 },
+        { 100, 200, 255 },
+        { 192, 192, 192 },
+        { 255, 140, 0 },
+        { 128, 0, 128 }
+    };
+
+    if (dtype <= DAMAGETYPE_NORMAL || dtype >= DAMAGETYPE_MAX)
+        return;
+
+    col = colors[dtype];
+
+    for (i = 0; i < 6; i++)
+    {
+        byte *dest = I_VideoBuffer + (y + i) * SCREENWIDTH + x;
+        int j;
+        for (j = 0; j < 6; j++)
+        {
+            if (x + j >= 0 && x + j < SCREENWIDTH && y + i >= 0 && y + i < SCREENHEIGHT)
+            {
+                dest[j] = I_GetColor(j, i, col[0], col[1], col[2]);
+            }
+        }
+    }
+}
+
 void DMG_Drawer(void)
 {
     int i;
@@ -292,6 +325,14 @@ void DMG_Drawer(void)
                           damage_numbers[i].y, 
                           damage_numbers[i].value,
                           damage_numbers[i].is_critical);
+
+            if (damage_numbers[i].damage_type > DAMAGETYPE_NORMAL && 
+                damage_numbers[i].damage_type < DAMAGETYPE_MAX)
+            {
+                DMG_DrawDamageTypeIcon(damage_numbers[i].x + 20,
+                                      damage_numbers[i].y,
+                                      damage_numbers[i].damage_type);
+            }
         }
     }
 }
