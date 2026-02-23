@@ -246,7 +246,7 @@
 
 ## Phase 22: Modding & Extensibility
 - [x] Document dice weapon DEHACKED mappings
-- [ ] Expose crit system parameters to config
+- [x] Expose crit system parameters to config
 - [ ] Add custom dice weapon template example
 - [ ] Add enemy definition template
 - [ ] Create example goblin-themed TC pack

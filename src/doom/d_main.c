@@ -136,6 +136,14 @@ extern int      powerup_spawn_rate;
 extern int      crit_scaling_default;
 extern int      crit_scaling_param;
 
+// Goblin Dice Rollaz: crit system defaults (configurable)
+extern int      crit_chance_default;
+extern int      crit_multiplier_default;
+extern int      crit_combo_timeout;
+extern int      crit_combo_bonus;
+extern int      crit_combo_max;
+extern int      dice_arena_damage_mult;
+
 // Goblin Dice Rollaz: per-powerup rarity
 extern int      critboost_spawn_rate;
 extern int      doubledamage_spawn_rate;
@@ -410,6 +418,14 @@ void D_BindVariables(void)
     // Goblin Dice Rollaz: crit scaling curve settings
     M_BindIntVariable("crit_scaling_default",   &crit_scaling_default);
     M_BindIntVariable("crit_scaling_param",      &crit_scaling_param);
+
+    // Goblin Dice Rollaz: crit system defaults
+    M_BindIntVariable("crit_chance_default",    &crit_chance_default);
+    M_BindIntVariable("crit_multiplier_default", &crit_multiplier_default);
+    M_BindIntVariable("crit_combo_timeout",      &crit_combo_timeout);
+    M_BindIntVariable("crit_combo_bonus",        &crit_combo_bonus);
+    M_BindIntVariable("crit_combo_max",          &crit_combo_max);
+    M_BindIntVariable("dice_arena_damage_mult",  &dice_arena_damage_mult);
 
     // Goblin Dice Rollaz: per-powerup rarity settings
     M_BindIntVariable("critboost_spawn_rate",     &critboost_spawn_rate);

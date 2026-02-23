@@ -54,19 +54,15 @@ extern int EV_DoArenaLock(int tag, boolean close);
 
 #define BONUSADD	6
 
-#define CRIT_CHANCE	10
-#define CRIT_MULTIPLIER	2
-
-// Goblin Dice Rollaz: Dice Arena PvP damage multiplier
-// Increases damage in PvP mode for more exciting combat
-#define DICE_ARENA_DAMAGE_MULT	150  // 150% damage in Dice Arena PvP
+// Goblin Dice Rollaz: Default crit system configuration
+int	crit_chance_default = 10;
+int	crit_multiplier_default = 2;
+int	crit_combo_timeout = TICRATE * 3;
+int	crit_combo_bonus = 15;
+int	crit_combo_max = 4;
+int	dice_arena_damage_mult = 150;
 
 // Goblin Dice Rollaz: Combo multiplier system
-// Combo increases damage for consecutive critical hits
-#define CRIT_COMBO_TIMEOUT	(TICRATE * 3)  // 3 seconds to maintain combo
-#define CRIT_COMBO_BONUS_PER HIT	15  // +15% damage per combo level
-#define CRIT_COMBO_MAX_MULTIPLIER	4  // Cap at 4x combo multiplier
-
 int	crit_boost_bonus = 15;
 int	exploding_dice_enabled = 0;
 
@@ -1091,8 +1087,8 @@ P_DamageMobj
     
     if (source && source->player && damage > 0)
     {
-        int effectiveCritChance = CRIT_CHANCE;
-        int effectiveCritMultiplier = CRIT_MULTIPLIER;
+        int effectiveCritChance = crit_chance_default;
+        int effectiveCritMultiplier = crit_multiplier_default;
         boolean guaranteed_crit = false;
 
         if (source->player->powers[pw_dicefortune])
@@ -1209,17 +1205,17 @@ P_DamageMobj
                 // Increment combo on critical hit
                 source->player->crit_combo++;
                 // Reset combo timeout
-                source->player->crit_combo_timer = CRIT_COMBO_TIMEOUT;
+                source->player->crit_combo_timer = crit_combo_timeout;
 
                 // Apply combo bonus damage
                 int comboLevel = source->player->crit_combo;
                 if (comboLevel > 0)
                 {
                     // Cap at max multiplier
-                    int bonusMultiplier = 1 + (comboLevel * CRIT_COMBO_BONUS_PER_HIT / 100);
-                    if (bonusMultiplier > CRIT_COMBO_MAX_MULTIPLIER)
+                    int bonusMultiplier = 1 + (comboLevel * crit_combo_bonus / 100);
+                    if (bonusMultiplier > crit_combo_max)
                     {
-                        bonusMultiplier = CRIT_COMBO_MAX_MULTIPLIER;
+                        bonusMultiplier = crit_combo_max;
                     }
 
                     if (bonusMultiplier > 1)
@@ -1384,7 +1380,7 @@ P_DamageMobj
     // Increase damage in PvP mode for more exciting combat
     if (IN_DICE_ARENA() && target->player && source && source->player)
     {
-        damage = (damage * DICE_ARENA_DAMAGE_MULT) / 100;
+        damage = (damage * dice_arena_damage_mult) / 100;
     }
 
     // do the damage
