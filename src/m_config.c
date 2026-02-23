@@ -1255,6 +1255,12 @@ static default_t extra_defaults_list[] =
     CONFIG_VARIABLE_INT(dclick_use),
 
     //!
+    // If non-zero, automatically switch to a newly picked up weapon.
+    //
+
+    CONFIG_VARIABLE_INT(auto_switch_weapon),
+
+    //!
     // SDL GUID string indicating the joystick to use. An empty string
     // indicates that no joystick is configured.
     //

@@ -273,7 +273,7 @@
 ## Phase 26: Quality of Life Improvements
 - [x] Add weapon quick-switch keybindings (1-9 number keys)
 - [x] Add reload/replace weapon function
-- [ ] Add auto-switch to new weapon on pickup
+- [x] Add auto-switch to new weapon on pickup
 - [ ] Add weapon cycle forward/backward keys
 - [ ] Add show/hide HUD toggle
 - [ ] Add damage log console command for review

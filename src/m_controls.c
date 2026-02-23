@@ -227,6 +227,8 @@ int joybflycenter = -1;
 // "use" has been pressed
 
 int dclick_use = 1;
+
+int auto_switch_weapon = 1;
  
 // 
 // Bind all of the common controls used by Doom and all other games.
@@ -270,6 +272,7 @@ void M_BindBaseControls(void)
     M_BindIntVariable("mouseb_use",          &mousebuse);
     M_BindIntVariable("mouseb_backward",     &mousebbackward);
     M_BindIntVariable("dclick_use",          &dclick_use);
+    M_BindIntVariable("auto_switch_weapon",   &auto_switch_weapon);
     M_BindIntVariable("key_pause",           &key_pause);
     M_BindIntVariable("key_message_refresh", &key_message_refresh);
 }

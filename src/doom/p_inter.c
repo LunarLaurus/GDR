@@ -51,6 +51,9 @@ extern int arena_locked;
 extern int arena_lock_tag;
 extern int EV_DoArenaLock(int tag, boolean close);
 
+// Goblin Dice Rollaz: Auto-switch weapon on pickup
+extern int auto_switch_weapon;
+
 
 #define BONUSADD	6
 
@@ -404,6 +407,12 @@ P_GiveWeapon
 	gaveweapon = true;
 	player->weaponowned[weapon] = true;
 	player->pendingweapon = weapon;
+
+	if (auto_switch_weapon && !dropped)
+	{
+	    player->readyweapon = weapon;
+	    P_SetPsprite(player, ps_weapon, weaponinfo[weapon].readystate);
+	}
     }
 	
     return (gaveweapon || gaveammo);
