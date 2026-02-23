@@ -49,6 +49,13 @@ extern  boolean	fastparm;	// checkparm of -fast
 
 extern  boolean	devparm;	// DEBUG: launched with -devparm
 extern  boolean	showfps;	// FPS counter display toggle
+extern  boolean	r_showspritestats;	// Sprite rendering stats toggle
+
+// Sprite rendering statistics (for benchmarking)
+extern  int	r_sprite_count;
+extern  int	r_sprite_drawseg_checks;
+extern  int	r_sprite_pixels_drawn;
+extern  int	r_vissprite_count;
 
 // Goblin Dice Rollaz: Thinker profiling
 extern  int      thinker_profiling_enabled;

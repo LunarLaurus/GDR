@@ -72,6 +72,12 @@ lighttable_t**	spritelights;
 
 int r_spritedetail = 0;
 
+int r_sprite_count = 0;
+int r_sprite_drawseg_checks = 0;
+int r_sprite_pixels_drawn = 0;
+int r_vissprite_count = 0;
+boolean r_showspritestats = false;
+
 // constant arrays
 //  used for psprite clipping and initializing clipping
 short		negonearray[SCREENWIDTH];
@@ -841,6 +847,9 @@ void R_DrawSprite (vissprite_t* spr)
     fixed_t		scale;
     fixed_t		lowscale;
     int			silhouette;
+	
+    r_sprite_count++;
+    r_sprite_pixels_drawn += (spr->x2 - spr->x1 + 1) * (spr->scale >> FRACBITS);
 		
     for (x = spr->x1 ; x<=spr->x2 ; x++)
 	clipbot[x] = cliptop[x] = -2;
@@ -850,6 +859,7 @@ void R_DrawSprite (vissprite_t* spr)
     //  is the clip seg.
     for (ds=ds_p-1 ; ds >= drawsegs ; ds--)
     {
+	r_sprite_drawseg_checks++;
 	// determine if the drawseg obscures the sprite
 	if (ds->x1 > spr->x2
 	    || ds->x2 < spr->x1
@@ -952,6 +962,10 @@ void R_DrawMasked (void)
     drawseg_t*		ds;
 	
     R_SortVisSprites ();
+
+    r_vissprite_count = vissprite_p - vissprites;
+    r_sprite_count = 0;
+    r_sprite_drawseg_checks = 0;
 
     if (vissprite_p > vissprites)
     {

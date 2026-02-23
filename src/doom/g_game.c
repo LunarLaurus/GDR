@@ -838,6 +838,24 @@ boolean G_Responder (event_t* ev)
 	    I_DisplayFPSDots(devparm || showfps);
 	    return true;
 	}
+	if (ev->type == ev_keydown && ev->data1 == KEY_F6)
+	{
+	    r_showspritestats = !r_showspritestats;
+	    if (r_showspritestats)
+	    {
+		DEH_printf("Sprite stats enabled. Press F6 to disable.\n");
+	    }
+	    else
+	    {
+		DEH_printf("Sprite stats disabled.\n");
+		DEH_printf("=== Sprite Render Stats ===\n");
+		DEH_printf("Vis sprites: %d\n", r_vissprite_count);
+		DEH_printf("Sprites drawn: %d\n", r_sprite_count);
+		DEH_printf("Drawseg checks: %d\n", r_sprite_drawseg_checks);
+		DEH_printf("Est. pixels: %d\n", r_sprite_pixels_drawn);
+	    }
+	    return true;
+	}
 	if (ev->type == ev_keydown && ev->data1 == KEY_F7)
 	{
 	    thinker_profiling_enabled = !thinker_profiling_enabled;

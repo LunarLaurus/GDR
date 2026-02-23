@@ -256,7 +256,7 @@
 - [x] Profile thinker loop under heavy dice spam
 - [x] Validate deterministic RNG across platforms
 - [x] Audit floating-point usage (avoid nondeterminism)
-- [ ] Benchmark sprite-heavy scenes
+- [x] Benchmark sprite-heavy scenes
 - [ ] Test low-spec hardware compatibility
 - [ ] Add reproducible demo test suite
 
