@@ -297,5 +297,17 @@
 - [x] Add save game comments
 - [x] Add auto-save on level transition
 
+## Phase 30: Debug Tools & Developer Features
+- [ ] Add console command to list all dice weapons and stats
+- [ ] Add debug overlay showing damage calculations
+- [ ] Add configurable minimum damage cap (prevent 0-damage rolls)
+- [ ] Add screenshot hotkey with dice roll overlay capture
+- [ ] Add demo recording/playback validation
+- [ ] Add network packet debug logging for multiplayer
+- [ ] Add weapon balance tuning constants file
+- [ ] Add environment variable for IWAD path override
+- [ ] Add startup crash handler with stack trace
+- [ ] Add mod loader error reporting system
+
 ## Current Status
 **Phase 1-8 complete**. Phase 9-13 ready for implementation.
