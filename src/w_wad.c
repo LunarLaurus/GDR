@@ -627,3 +627,115 @@ boolean W_IsIWADLump(const lumpinfo_t *lump)
 {
 	return lump->wad_file == lumpinfo[0]->wad_file;
 }
+
+void W_PrintLoadedWADs(void)
+{
+    unsigned int i;
+    const char *current_wad = NULL;
+    unsigned int lump_count = 0;
+    unsigned int total_lumps = 0;
+
+    printf("\n=== Loaded WAD Files ===\n");
+
+    for (i = 0; i < numlumps; ++i)
+    {
+        const char *wad_name = W_WadNameForLump(lumpinfo[i]);
+
+        if (current_wad == NULL || strcmp(wad_name, current_wad) != 0)
+        {
+            if (current_wad != NULL)
+            {
+                printf("  %s: %u lumps\n", current_wad, lump_count);
+                total_lumps += lump_count;
+            }
+            current_wad = wad_name;
+            lump_count = 1;
+        }
+        else
+        {
+            ++lump_count;
+        }
+    }
+
+    if (current_wad != NULL)
+    {
+        printf("  %s: %u lumps\n", current_wad, lump_count);
+        total_lumps += lump_count;
+    }
+
+    printf("Total: %u lumps in %u WAD file(s)\n\n", total_lumps,
+           W_GetNumWADFiles());
+}
+
+unsigned int W_GetNumWADFiles(void)
+{
+    unsigned int i;
+    unsigned int count = 0;
+    const char *current_wad = NULL;
+
+    for (i = 0; i < numlumps; ++i)
+    {
+        const char *wad_name = W_WadNameForLump(lumpinfo[i]);
+
+        if (current_wad == NULL || strcmp(wad_name, current_wad) != 0)
+        {
+            current_wad = wad_name;
+            ++count;
+        }
+    }
+
+    return count;
+}
+
+void W_ValidateLoadedFiles(void)
+{
+    unsigned int i;
+    int warnings = 0;
+
+    printf("\n=== WAD Validation Report ===\n");
+
+    for (i = 0; i < numlumps; ++i)
+    {
+        if (lumpinfo[i]->size < 0)
+        {
+            printf("WARNING: Lump %.8s has negative size (%d)\n",
+                   lumpinfo[i]->name, lumpinfo[i]->size);
+            warnings++;
+        }
+
+        if (lumpinfo[i]->wad_file == NULL)
+        {
+            printf("WARNING: Lump %.8s has no associated WAD file\n",
+                   lumpinfo[i]->name);
+            warnings++;
+        }
+    }
+
+    if (numlumps == 0)
+    {
+        printf("ERROR: No lumps loaded!\n");
+        warnings++;
+    }
+    else if (numlumps > 10000)
+    {
+        printf("WARNING: High lump count (%u) may affect performance\n", numlumps);
+        warnings++;
+    }
+
+    if (W_GetNumWADFiles() == 0)
+    {
+        printf("ERROR: No WAD files loaded!\n");
+        warnings++;
+    }
+
+    if (warnings == 0)
+    {
+        printf("Validation passed: No issues detected.\n");
+    }
+    else
+    {
+        printf("Found %d warning(s). Please review your WAD files.\n", warnings);
+    }
+
+    printf("\n");
+}

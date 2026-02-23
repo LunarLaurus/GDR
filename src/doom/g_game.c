@@ -966,6 +966,15 @@ boolean G_Responder (event_t* ev)
 	    G_ValidateDemo();
 	    return true;
 	}
+	// Goblin Dice Rollaz: F12 - Print WAD info
+	if (ev->type == ev_keydown && ev->data1 == KEY_F12)
+	{
+	    extern void W_PrintLoadedWADs(void);
+	    extern void W_ValidateLoadedFiles(void);
+	    W_PrintLoadedWADs();
+	    W_ValidateLoadedFiles();
+	    return true;
+	}
 	if (HU_Responder (ev))
 	    return true;	// chat ate the event 
 	if (ST_Responder (ev)) 

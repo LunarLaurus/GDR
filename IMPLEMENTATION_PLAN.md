@@ -307,7 +307,7 @@
 - [x] Add weapon balance tuning constants file
 - [x] Add environment variable for IWAD path override
 - [x] Add startup crash handler with stack trace
-- [ ] Add mod loader error reporting system
+- [x] Add mod loader error reporting system
 
 ## Phase 31: Network Optimizations
 - [ ] Add client-side prediction for dice roll results

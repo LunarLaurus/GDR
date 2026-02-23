@@ -74,5 +74,8 @@ void W_ReleaseLumpName(const char *name);
 
 const char *W_WadNameForLump(const lumpinfo_t *lump);
 boolean W_IsIWADLump(const lumpinfo_t *lump);
+void W_PrintLoadedWADs(void);
+unsigned int W_GetNumWADFiles(void);
+void W_ValidateLoadedFiles(void);
 
 #endif
