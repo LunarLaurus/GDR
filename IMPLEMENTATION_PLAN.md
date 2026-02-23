@@ -262,7 +262,7 @@
 
 ## Phase 24: Release Engineering
 - [x] Create versioning scheme (SemVer or similar)
-- [ ] Add changelog automation
+- [x] Add changelog automation
 - [ ] Add release packaging scripts (Linux/Windows/macOS)
 - [ ] Create demo WAD bundle
 - [ ] Publish first tagged release
