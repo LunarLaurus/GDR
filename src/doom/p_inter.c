@@ -75,6 +75,74 @@ int net_sync_debug = 0;
 int net_desync_count = 0;
 int rng_validation_enabled = 0;
 
+// Goblin Dice Rollaz: Damage log system
+#define DAMAGE_LOG_MAX 64
+
+typedef struct {
+    int tick;
+    int damage;
+    boolean is_crit;
+    int crit_roll;
+    const char *target_name;
+    const char *weapon_name;
+} damage_log_entry_t;
+
+static damage_log_entry_t damage_log[DAMAGE_LOG_MAX];
+static int damage_log_count = 0;
+static int damage_log_enabled = 0;
+
+void DMG_AddDamageLog(int damage, boolean is_crit, int crit_roll, const char *target_name, const char *weapon_name)
+{
+    if (!damage_log_enabled || damage_log_count >= DAMAGE_LOG_MAX)
+        return;
+    
+    damage_log[damage_log_count].tick = gametic;
+    damage_log[damage_log_count].damage = damage;
+    damage_log[damage_log_count].is_crit = is_crit;
+    damage_log[damage_log_count].crit_roll = crit_roll;
+    damage_log[damage_log_count].target_name = target_name;
+    damage_log[damage_log_count].weapon_name = weapon_name;
+    damage_log_count++;
+}
+
+void DMG_ClearDamageLog(void)
+{
+    damage_log_count = 0;
+}
+
+void DMG_PrintDamageLog(void)
+{
+    int i;
+    
+    if (!damage_log_enabled)
+    {
+        DEH_printf("Damage logging is disabled. Press F9 to enable.\n");
+        return;
+    }
+    
+    if (damage_log_count == 0)
+    {
+        DEH_printf("No damage logged yet.\n");
+        return;
+    }
+    
+    DEH_printf("=== Damage Log (%d entries) ===\n", damage_log_count);
+    DEH_printf("%-6s %-6s %-5s %-8s %-s\n", "Tick", "Damage", "Crit", "Roll", "Target (Weapon)");
+    DEH_printf("------------------------------------------------\n");
+    
+    for (i = 0; i < damage_log_count; i++)
+    {
+        DEH_printf("%-6d %-6d %-5s %-8d %s (%s)\n",
+            damage_log[i].tick,
+            damage_log[i].damage,
+            damage_log[i].is_crit ? "YES" : "no",
+            damage_log[i].crit_roll,
+            damage_log[i].target_name ? damage_log[i].target_name : "unknown",
+            damage_log[i].weapon_name ? damage_log[i].weapon_name : "none");
+    }
+    DEH_printf("=== End of Damage Log ===\n");
+}
+
 // Goblin Dice Rollaz: Broadcast critical hit message to all netgame players
 // Ensures all players see the same critical hit notifications
 void P_BroadcastCritMessage(int player_num, const char *message, boolean is_crit, int damage)
@@ -1443,6 +1511,23 @@ P_DamageMobj
 
     // do the damage
     target->health -= damage;	
+    
+    // Goblin Dice Rollaz: Log damage to damage log
+    if (source && source->player && damage > 0)
+    {
+        const char *target_name = NULL;
+        const char *weapon_name = NULL;
+        
+        if (target && target->info && target->info->name)
+            target_name = target->info->name;
+        
+        if (source->player->readyweapon >= 0 && source->player->readyweapon < NUMWEAPONS)
+        {
+            weapon_name = weaponinfo[source->player->readyweapon].name;
+        }
+        
+        DMG_AddDamageLog(damage, was_critical, crit_roll, target_name, weapon_name);
+    }
     
     // Goblin Dice Rollaz: Boss phase transition
     // If boss health drops below phase threshold and hasn't transitioned yet

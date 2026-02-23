@@ -916,6 +916,30 @@ boolean G_Responder (event_t* ev)
 	    }
 	    return true;
 	}
+	// Goblin Dice Rollaz: F9 - Toggle damage logging
+	if (ev->type == ev_keydown && ev->data1 == KEY_F9)
+	{
+	    extern int damage_log_enabled;
+	    extern void DMG_ClearDamageLog(void);
+	    damage_log_enabled = !damage_log_enabled;
+	    if (damage_log_enabled)
+	    {
+		DMG_ClearDamageLog();
+		DEH_printf("Damage logging enabled. Press F10 to view log.\n");
+	    }
+	    else
+	    {
+		DEH_printf("Damage logging disabled.\n");
+	    }
+	    return true;
+	}
+	// Goblin Dice Rollaz: F10 - Print damage log
+	if (ev->type == ev_keydown && ev->data1 == KEY_F10)
+	{
+	    extern void DMG_PrintDamageLog(void);
+	    DMG_PrintDamageLog();
+	    return true;
+	}
 	if (HU_Responder (ev))
 	    return true;	// chat ate the event 
 	if (ST_Responder (ev)) 

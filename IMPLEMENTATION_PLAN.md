@@ -275,8 +275,8 @@
 - [x] Add reload/replace weapon function
 - [x] Add auto-switch to new weapon on pickup
 - [x] Add weapon cycle forward/backward keys
-- [ ] Add show/hide HUD toggle
-- [ ] Add damage log console command for review
+- [x] Add show/hide HUD toggle
+- [x] Add damage log console command for review
 - [ ] Add kill count display in end-level stats
 
 ## Phase 27: Additional Game Modes
