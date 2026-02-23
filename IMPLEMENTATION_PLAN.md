@@ -280,7 +280,7 @@
 - [x] Add kill count display in end-level stats
 
 ## Phase 27: Additional Game Modes
-- [ ] Add endless survival mode (waves of enemies)
+- [x] Add endless survival mode (waves of enemies)
 - [ ] Add time attack mode (speedrun)
 - [ ] Add challenge mode presets (crit only, no powerups, etc.)
 

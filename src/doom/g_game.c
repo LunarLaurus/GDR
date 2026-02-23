@@ -64,6 +64,7 @@
 #include "s_sound.h"
 
 #include "g_rpg.h"
+#include "g_survival.h"
 
 // Data.
 #include "dstrings.h"
@@ -1178,10 +1179,11 @@ void G_Ticker (void)
     switch (gamestate) 
     { 
       case GS_LEVEL: 
-	P_Ticker (); 
-	ST_Ticker (); 
-	AM_Ticker (); 
-	HU_Ticker ();            
+    P_Ticker (); 
+    ST_Ticker (); 
+    AM_Ticker (); 
+    HU_Ticker ();             
+    G_SurvivalTicker();
 	break; 
 	 
       case GS_INTERMISSION: 

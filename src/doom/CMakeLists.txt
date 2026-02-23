@@ -29,6 +29,7 @@ add_library(doom STATIC
             g_powerup.c     g_powerup.h
             g_rpg.c         g_rpg.h
             g_status.c      g_status.h
+            g_survival.c    g_survival.h
             hu_lib.c        hu_lib.h
             hu_stuff.c      hu_stuff.h
             info.c          info.h

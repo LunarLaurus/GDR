@@ -36,6 +36,8 @@
 #include "doomkeys.h"
 
 #include "g_game.h"
+#include "g_rpg.h"
+#include "g_survival.h"
 
 #include "st_stuff.h"
 #include "st_lib.h"
@@ -324,6 +326,79 @@ void ST_DrawBossHealthBar(void)
                 V_DrawPatchDirect(text_x, text_y, p);
                 text_x += SHORT(p->width);
             }
+        }
+    }
+}
+
+// Goblin Dice Rollaz: Survival mode HUD overlay
+void ST_DrawSurvivalHUD(void)
+{
+    char buf[64];
+    int x, y;
+    int wave;
+    int enemies;
+    int kills;
+    int i;
+    
+    if (!G_IsSurvivalMode())
+        return;
+    
+    wave = G_GetSurvivalWaveNumber();
+    enemies = G_GetSurvivalEnemiesRemaining();
+    kills = G_GetSurvivalTotalKills();
+    
+    x = 20;
+    y = 20;
+    
+    // Draw wave number
+    DEH_snprintf(buf, sizeof(buf), "WAVE %d", wave);
+    for (i = 0; buf[i]; i++)
+    {
+        int c = buf[i];
+        if (c >= ' ' && c < HU_FONTSIZE)
+        {
+            char namebuf[9];
+            patch_t *p;
+            DEH_snprintf(namebuf, 9, "STCFN%.3d", c);
+            p = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
+            V_DrawPatchDirect(x, y, p);
+            x += SHORT(p->width);
+        }
+    }
+    
+    // Draw enemies remaining
+    x = 20;
+    y += 20;
+    DEH_snprintf(buf, sizeof(buf), "ENEMIES: %d", enemies);
+    for (i = 0; buf[i]; i++)
+    {
+        int c = buf[i];
+        if (c >= ' ' && c < HU_FONTSIZE)
+        {
+            char namebuf[9];
+            patch_t *p;
+            DEH_snprintf(namebuf, 9, "STCFN%.3d", c);
+            p = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
+            V_DrawPatchDirect(x, y, p);
+            x += SHORT(p->width);
+        }
+    }
+    
+    // Draw total kills
+    x = 20;
+    y += 20;
+    DEH_snprintf(buf, sizeof(buf), "KILLS: %d", kills);
+    for (i = 0; buf[i]; i++)
+    {
+        int c = buf[i];
+        if (c >= ' ' && c < HU_FONTSIZE)
+        {
+            char namebuf[9];
+            patch_t *p;
+            DEH_snprintf(namebuf, 9, "STCFN%.3d", c);
+            p = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
+            V_DrawPatchDirect(x, y, p);
+            x += SHORT(p->width);
         }
     }
 }
@@ -1593,6 +1668,12 @@ void ST_Drawer (boolean fullscreen, boolean refresh)
 
     // Goblin Dice Rollaz: Draw boss health bar overlay
     ST_DrawBossHealthBar();
+
+    // Goblin Dice Rollaz: Draw survival mode HUD
+    if (G_IsSurvivalMode() && gamestate == GS_LEVEL)
+    {
+        ST_DrawSurvivalHUD();
+    }
 
 }
 

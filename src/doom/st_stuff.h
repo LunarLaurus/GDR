@@ -60,6 +60,9 @@ extern int show_weapon_stats;
 // Goblin Dice Rollaz: Boss health bar overlay
 void ST_DrawBossHealthBar(void);
 
+// Goblin Dice Rollaz: Survival mode HUD overlay
+void ST_DrawSurvivalHUD(void);
+
 // Goblin Dice Rollaz: HUD visibility toggle
 extern boolean hud_hidden;
 void ST_ToggleHUD(void);

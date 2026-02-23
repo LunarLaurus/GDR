@@ -44,6 +44,7 @@
 #include "d_items.h"
 #include "g_status.h"
 #include "g_rpg.h"
+#include "g_survival.h"
 #include "g_powerup.h"
 
 // Goblin Dice Rollaz: Arena lock system
@@ -1074,6 +1075,9 @@ P_KillMobj
 	// count for intermission
 	if (target->flags & MF_COUNTKILL)
 	    source->player->killcount++;	
+		
+	// Goblin Dice Rollaz: Track survival mode kills
+	G_SurvivalEnemyKilled();
 
 	if (target->player)
 	{
@@ -1097,6 +1101,8 @@ P_KillMobj
 	// count all monster deaths,
 	// even those caused by other monsters
 	players[0].killcount++;
+	// Goblin Dice Rollaz: Track survival mode kills
+	G_SurvivalEnemyKilled();
     }
     
     if (target->player)
