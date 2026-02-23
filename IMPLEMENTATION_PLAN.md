@@ -284,12 +284,12 @@
 - [ ] Add challenge mode presets (crit only, no powerups, etc.)
 
 ## Phase 28: Configuration & Settings
-- [ ] Add in-game settings menu accessible via ESC
-- [ ] Add dice roll sound volume slider
-- [ ] Add critical hit notification text toggle
-- [ ] Add screen shake intensity slider
-- [ ] Add damage number scale slider
-- [ ] Add particle effects toggle
+- [x] Add in-game settings menu accessible via ESC
+- [x] Add dice roll sound volume slider
+- [x] Add critical hit notification text toggle
+- [x] Add screen shake intensity slider
+- [x] Add damage number scale slider
+- [x] Add particle effects toggle
 
 ## Phase 29: Save System Enhancements
 - [ ] Add quicksave/quickload slots

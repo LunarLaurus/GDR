@@ -475,6 +475,13 @@ void D_BindVariables(void)
     // Goblin Dice Rollaz: Thinker profiling
     M_BindIntVariable("thinker_profiling_enabled", &thinker_profiling_enabled);
 
+    // Goblin Dice Rollaz: Game Settings (in-game menu)
+    M_BindIntVariable("dice_sound_volume",         &dice_sound_volume);
+    M_BindIntVariable("crit_notification",        &crit_notification);
+    M_BindFloatVariable("screen_shake_intensity", &screen_shake_intensity);
+    M_BindFloatVariable("damage_number_scale",    &damage_number_scale);
+    M_BindIntVariable("particle_effects",         &particle_effects);
+
     // Multiplayer chat macros
 
     for (i=0; i<10; ++i)

@@ -79,6 +79,13 @@ int			showMessages = 1;
 // Goblin Dice Rollaz: RPG Progression Mode toggle (0=off, 1=on)
 int			rpg_mode = 0;
 
+// Goblin Dice Rollaz: Game Settings
+int			dice_sound_volume = 8;       // Dice roll sound volume (0-15)
+int			crit_notification = 1;        // Show crit text notifications (0=off, 1=on)
+float		screen_shake_intensity = 1.0f; // Screen shake multiplier (0.0-2.0)
+float		damage_number_scale = 1.0f;    // Damage number size multiplier (0.5-2.0)
+int			particle_effects = 1;         // Enable particle effects (0=off, 1=on)
+
 	
 
 // Blocky mode, has default, 0 = high, 1 = normal
@@ -203,6 +210,15 @@ static void M_ChangeDetail(int choice);
 static void M_SizeDisplay(int choice);
 static void M_Sound(int choice);
 
+// Goblin Dice Rollaz: Game Settings menu
+static void M_GameSettings(int choice);
+static void M_DiceSoundVol(int choice);
+static void M_CritNotification(int choice);
+static void M_ScreenShake(int choice);
+static void M_DamageNumberScale(int choice);
+static void M_ParticleEffects(int choice);
+static void M_DrawGameSettings(void);
+
 static void M_FinishReadThis(int choice);
 static void M_LoadSelect(int choice);
 static void M_SaveSelect(int choice);
@@ -250,6 +266,7 @@ enum
     newgame = 0,
     survivalmode,
     options,
+    gamesettings,
     loadgame,
     savegame,
     readthis,
@@ -263,6 +280,7 @@ menuitem_t MainMenu[]=
     {1,"M_SURVIV",M_SurvivalMode,'s'},
     {1,"M_TIMATT",M_TimeAttackMode,'t'},
     {1,"M_OPTION",M_Options,'o'},
+    {1,"M_GAMESET",M_GameSettings,'g'},
     {1,"M_LOADG",M_LoadGame,'l'},
     {1,"M_SAVEG",M_SaveGame,'s'},
     // Another hickup with Special edition.
@@ -380,6 +398,38 @@ menu_t  OptionsDef =
     &MainDef,
     OptionsMenu,
     M_DrawOptions,
+    60,37,
+    0
+};
+
+//
+// Goblin Dice Rollaz: GAME SETTINGS MENU
+//
+enum
+{
+    gamesettings_dicevol,
+    gamesettings_critnotif,
+    gamesettings_screenshake,
+    gamesettings_damagenum,
+    gamesettings_particles,
+    gamesettings_end
+} gamesettings_e;
+
+menuitem_t GameSettingsMenu[]=
+{
+    {2,"M_DICEVOL", M_DiceSoundVol, 'd'},
+    {1,"M_CRITNOT", M_CritNotification, 'c'},
+    {2,"M_SCRNSHK", M_ScreenShake, 's'},
+    {2,"M_DMGSCAL", M_DamageNumberScale, 'n'},
+    {1,"M_PARTCL", M_ParticleEffects, 'p'}
+};
+
+menu_t  GameSettingsDef =
+{
+    gamesettings_end,
+    &MainDef,
+    GameSettingsMenu,
+    M_DrawGameSettings,
     60,37,
     0
 };
@@ -1069,6 +1119,116 @@ void M_DrawOptions(void)
 void M_Options(int choice)
 {
     M_SetupNextMenu(&OptionsDef);
+}
+
+//
+// Goblin Dice Rollaz: Game Settings Menu Functions
+//
+void M_GameSettings(int choice)
+{
+    M_SetupNextMenu(&GameSettingsDef);
+}
+
+void M_DiceSoundVol(int choice)
+{
+    switch(choice)
+    {
+      case 0:
+	if (dice_sound_volume)
+	    dice_sound_volume--;
+	break;
+      case 1:
+	if (dice_sound_volume < 15)
+	    dice_sound_volume++;
+	break;
+    }
+}
+
+void M_CritNotification(int choice)
+{
+    choice = 0;
+    crit_notification = 1 - crit_notification;
+    
+    if (!crit_notification)
+	players[consoleplayer].message = "Crit Notifications OFF";
+    else
+	players[consoleplayer].message = "Crit Notifications ON";
+}
+
+void M_ScreenShake(int choice)
+{
+    switch(choice)
+    {
+      case 0:
+	if (screen_shake_intensity > 0.0f)
+	    screen_shake_intensity -= 0.1f;
+	break;
+      case 1:
+	if (screen_shake_intensity < 2.0f)
+	    screen_shake_intensity += 0.1f;
+	break;
+    }
+}
+
+void M_DamageNumberScale(int choice)
+{
+    switch(choice)
+    {
+      case 0:
+	if (damage_number_scale > 0.5f)
+	    damage_number_scale -= 0.1f;
+	break;
+      case 1:
+	if (damage_number_scale < 2.0f)
+	    damage_number_scale += 0.1f;
+	break;
+    }
+}
+
+void M_ParticleEffects(int choice)
+{
+    choice = 0;
+    particle_effects = 1 - particle_effects;
+    
+    if (!particle_effects)
+	players[consoleplayer].message = "Particle Effects OFF";
+    else
+	players[consoleplayer].message = "Particle Effects ON";
+}
+
+void M_DrawGameSettings(void)
+{
+    V_DrawPatchDirect(108, 15, W_CacheLumpName(DEH_String("M_OPTTTL"),
+                                               PU_CACHE));
+    
+    // Dice sound volume slider
+    M_WriteText(GameSettingsDef.x - 80, GameSettingsDef.y, "Dice Vol");
+    M_DrawThermo(GameSettingsDef.x, GameSettingsDef.y + LINEHEIGHT * 0,
+		 16, dice_sound_volume);
+    
+    // Crit notification toggle
+    M_WriteText(GameSettingsDef.x - 80, GameSettingsDef.y + LINEHEIGHT * 1, "Crit Notif");
+    V_DrawPatchDirect(GameSettingsDef.x + 120, 
+                      GameSettingsDef.y + LINEHEIGHT * 1,
+                      W_CacheLumpName(DEH_String(crit_notification ? "M_YES" : "M_NO"),
+                                      PU_CACHE));
+    
+    // Screen shake slider
+    M_WriteText(GameSettingsDef.x - 80, GameSettingsDef.y + LINEHEIGHT * 2, "Shake");
+    M_DrawThermo(GameSettingsDef.x, GameSettingsDef.y + LINEHEIGHT * 2,
+		 20, (int)(screen_shake_intensity * 10));
+    
+    // Damage number scale slider
+    M_WriteText(GameSettingsDef.x - 80, GameSettingsDef.y + LINEHEIGHT * 3, "Dmg Scale");
+    M_DrawThermo(GameSettingsDef.x, GameSettingsDef.y + LINEHEIGHT * 3,
+		 15, (int)(damage_number_scale * 10));
+    
+    // Particle effects toggle
+    M_WriteText(GameSettingsDef.x - 80, GameSettingsDef.y + LINEHEIGHT * 4, "Particles");
+    V_DrawPatchDirect(GameSettingsDef.x + 120, 
+                      GameSettingsDef.y + LINEHEIGHT * 4,
+                      W_CacheLumpName(DEH_String(particle_effects ? "M_YES" : "M_NO"),
+                                      PU_CACHE));
 }
 
 //
