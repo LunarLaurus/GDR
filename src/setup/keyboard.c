@@ -61,8 +61,9 @@ static int *menu_nav[] = { &key_menu_activate, &key_menu_up, &key_menu_down,
 
 static int *shortcuts[] = { &key_menu_help, &key_menu_save, &key_menu_load,
                             &key_menu_volume, &key_menu_detail, &key_menu_qsave,
-                            &key_menu_endgame, &key_menu_messages, &key_spy,
-                            &key_menu_qload, &key_menu_quit, &key_menu_gamma,
+                            &key_menu_qsave2, &key_menu_endgame, &key_menu_messages, 
+                            &key_spy, &key_menu_qload, &key_menu_qload2, 
+                            &key_menu_quit, &key_menu_gamma,
                             &key_menu_incscreen, &key_menu_decscreen, 
                             &key_menu_screenshot,
                             &key_message_refresh, &key_multi_msg,
@@ -329,9 +330,11 @@ static void OtherKeysDialog(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
     AddKeyControl(table, "Sound volume",          &key_menu_volume);
     AddKeyControl(table, "Toggle detail",         &key_menu_detail);
     AddKeyControl(table, "Quick save",            &key_menu_qsave);
+    AddKeyControl(table, "Quick save (slot 2)",  &key_menu_qsave2);
     AddKeyControl(table, "End game",              &key_menu_endgame);
     AddKeyControl(table, "Toggle messages",       &key_menu_messages);
     AddKeyControl(table, "Quick load",            &key_menu_qload);
+    AddKeyControl(table, "Quick load (slot 2)",   &key_menu_qload2);
     AddKeyControl(table, "Quit game",             &key_menu_quit);
     AddKeyControl(table, "Toggle gamma",          &key_menu_gamma);
     AddKeyControl(table, "Multiplayer spy",       &key_spy);

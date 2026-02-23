@@ -1684,6 +1684,12 @@ static default_t extra_defaults_list[] =
     CONFIG_VARIABLE_KEY(key_menu_qsave),
 
     //!
+    // Keyboard shortcut to alternate quicksave (slot 2).
+    //
+
+    CONFIG_VARIABLE_KEY(key_menu_qsave2),
+
+    //!
     // Keyboard shortcut to end the game.
     //
 
@@ -1700,6 +1706,12 @@ static default_t extra_defaults_list[] =
     //
 
     CONFIG_VARIABLE_KEY(key_menu_qload),
+
+    //!
+    // Keyboard shortcut to alternate quickload (slot 2).
+    //
+
+    CONFIG_VARIABLE_KEY(key_menu_qload2),
 
     //!
     // Keyboard shortcut to quit the game.

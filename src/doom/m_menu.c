@@ -97,6 +97,7 @@ int			screenSize;
 
 // -1 = no quicksave slot picked!
 int			quickSaveSlot;
+int			quickSaveSlot2;
 
  // 1 = message to be printed
 int			messageToPrint;
@@ -225,6 +226,8 @@ static void M_SaveSelect(int choice);
 static void M_ReadSaveStrings(void);
 static void M_QuickSave(void);
 static void M_QuickLoad(void);
+static void M_QuickSave2(void);
+static void M_QuickLoad2(void);
 
 static void M_DrawMainMenu(void);
 static void M_DrawReadThis1(void);
@@ -743,6 +746,8 @@ void M_DoSave(int slot)
     // PICK QUICKSAVE SLOT YET?
     if (quickSaveSlot == -2)
 	quickSaveSlot = slot;
+    if (quickSaveSlot2 == -2)
+	quickSaveSlot2 = slot;
 }
 
 //
@@ -894,6 +899,77 @@ void M_QuickLoad(void)
     DEH_snprintf(tempstring, sizeof(tempstring),
                  QLPROMPT, savegamestrings[quickSaveSlot]);
     M_StartMessage(tempstring, M_QuickLoadResponse, true);
+}
+
+
+
+//
+// M_QuickSave2 - Alternate quicksave slot
+//
+void M_QuickSave2Response(int key)
+{
+    if (key == key_menu_confirm)
+    {
+	M_DoSave(quickSaveSlot2);
+	S_StartSound(NULL,sfx_swtchx);
+    }
+}
+
+void M_QuickSave2(void)
+{
+    if (!usergame)
+    {
+	S_StartSound(NULL,sfx_oof);
+	return;
+    }
+
+    if (gamestate != GS_LEVEL)
+	return;
+	
+    if (quickSaveSlot2 < 0)
+    {
+	M_StartControlPanel();
+	M_ReadSaveStrings();
+	M_SetupNextMenu(&SaveDef);
+	quickSaveSlot2 = -2;
+	return;
+    }
+    DEH_snprintf(tempstring, sizeof(tempstring),
+                 QSPROMPT, savegamestrings[quickSaveSlot2]);
+    M_StartMessage(tempstring, M_QuickSave2Response, true);
+}
+
+
+
+//
+// M_QuickLoad2 - Alternate quickload slot
+//
+void M_QuickLoad2Response(int key)
+{
+    if (key == key_menu_confirm)
+    {
+	M_LoadSelect(quickSaveSlot2);
+	S_StartSound(NULL,sfx_swtchx);
+    }
+}
+
+
+void M_QuickLoad2(void)
+{
+    if (netgame)
+    {
+	M_StartMessage(DEH_String(QLOADNET),NULL,false);
+	return;
+    }
+	
+    if (quickSaveSlot2 < 0)
+    {
+	M_StartMessage(DEH_String(QSAVESPOT),NULL,false);
+	return;
+    }
+    DEH_snprintf(tempstring, sizeof(tempstring),
+                 QLPROMPT, savegamestrings[quickSaveSlot2]);
+    M_StartMessage(tempstring, M_QuickLoad2Response, true);
 }
 
 
@@ -2066,6 +2142,12 @@ boolean M_Responder (event_t* ev)
 	    M_QuickSave();
 	    return true;
         }
+        else if (key == key_menu_qsave2)   // Alternate Quicksave (slot 2)
+        {
+	    S_StartSound(NULL,sfx_swtchn);
+	    M_QuickSave2();
+	    return true;
+        }
         else if (key == key_menu_endgame)  // End game
         {
 	    S_StartSound(NULL,sfx_swtchn);
@@ -2082,6 +2164,12 @@ boolean M_Responder (event_t* ev)
         {
 	    S_StartSound(NULL,sfx_swtchn);
 	    M_QuickLoad();
+	    return true;
+        }
+        else if (key == key_menu_qload2)   // Alternate Quickload (slot 2)
+        {
+	    S_StartSound(NULL,sfx_swtchn);
+	    M_QuickLoad2();
 	    return true;
         }
         else if (key == key_menu_quit)     // Quit Game
@@ -2439,6 +2527,7 @@ void M_Init (void)
     messageString = NULL;
     messageLastMenuActive = menuactive;
     quickSaveSlot = -1;
+    quickSaveSlot2 = -1;
 
     // Here we could catch other version dependencies,
     //  like HELP1/2, and four episodes.
