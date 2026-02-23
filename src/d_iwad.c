@@ -891,6 +891,19 @@ char *D_FindIWAD(int mask, GameMission_t *mission)
     int iwadparm;
     int i;
 
+    // Check for GOBLIN_IWAD environment variable override
+    iwadfile = M_getenv("GOBLIN_IWAD");
+    if (iwadfile != NULL)
+    {
+        result = D_FindWADByName(iwadfile);
+        if (result == NULL)
+        {
+            I_Error("IWAD file '%s' not found!", iwadfile);
+        }
+        *mission = IdentifyIWADByName(result, mask);
+        return result;
+    }
+
     // Check for the -iwad parameter
 
     //!

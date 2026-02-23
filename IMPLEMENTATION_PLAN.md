@@ -305,7 +305,7 @@
 - [x] Add demo recording/playback validation
 - [x] Add network packet debug logging for multiplayer
 - [x] Add weapon balance tuning constants file
-- [ ] Add environment variable for IWAD path override
+- [x] Add environment variable for IWAD path override
 - [ ] Add startup crash handler with stack trace
 - [ ] Add mod loader error reporting system
 
