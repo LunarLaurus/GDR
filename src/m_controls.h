@@ -66,6 +66,7 @@ extern int key_weapon5;
 extern int key_weapon6;
 extern int key_weapon7;
 extern int key_weapon8;
+extern int key_weapon9;
 
 extern int key_arti_quartz;
 extern int key_arti_urn;

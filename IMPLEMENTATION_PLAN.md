@@ -270,13 +270,33 @@
 - [ ] Resolve blocker: Requires manual GitHub release creation and push to remote
 - [x] Draft public roadmap
 
-## Phase 25: Polish & Identity Lock
-- [ ] Finalize logo and title screen art
-- [x] Replace remaining Doom legacy strings
-- [x] Audit UI consistency
-- [ ] Balance all dice weapons numerically
-- [ ] Final playtest pass (solo + co-op)
-- [ ] Freeze feature set for v1.0
+## Phase 26: Quality of Life Improvements
+- [x] Add weapon quick-switch keybindings (1-9 number keys)
+- [ ] Add reload/replace weapon function
+- [ ] Add auto-switch to new weapon on pickup
+- [ ] Add weapon cycle forward/backward keys
+- [ ] Add show/hide HUD toggle
+- [ ] Add damage log console command for review
+- [ ] Add kill count display in end-level stats
+
+## Phase 27: Additional Game Modes
+- [ ] Add endless survival mode (waves of enemies)
+- [ ] Add time attack mode (speedrun)
+- [ ] Add challenge mode presets (crit only, no powerups, etc.)
+
+## Phase 28: Configuration & Settings
+- [ ] Add in-game settings menu accessible via ESC
+- [ ] Add dice roll sound volume slider
+- [ ] Add critical hit notification text toggle
+- [ ] Add screen shake intensity slider
+- [ ] Add damage number scale slider
+- [ ] Add particle effects toggle
+
+## Phase 29: Save System Enhancements
+- [ ] Add quicksave/quickload slots
+- [ ] Add save game comments
+- [ ] Add auto-save on level transition
+- [ ] Add additional save slots (beyond 6)
 
 ## Current Status
 **Phase 1-8 complete**. Phase 9-13 ready for implementation.
