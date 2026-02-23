@@ -882,6 +882,21 @@ boolean G_Responder (event_t* ev)
 		return true;
 	    }
 	}
+	// Goblin Dice Rollaz: F8 - Run RNG validation test
+	if (ev->type == ev_keydown && ev->data1 == KEY_F8)
+	{
+	    extern void P_RunRNGValidationTest(void);
+	    extern int rng_validation_enabled;
+	    if (rng_validation_enabled || devparm)
+	    {
+		P_RunRNGValidationTest();
+	    }
+	    else
+	    {
+		players[consoleplayer].message = "RNG validation: Set rng_validation_enabled=1 or use -devparm";
+	    }
+	    return true;
+	}
 	if (HU_Responder (ev))
 	    return true;	// chat ate the event 
 	if (ST_Responder (ev)) 

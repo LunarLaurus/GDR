@@ -70,6 +70,7 @@ int	exploding_dice_enabled = 0;
 // When enabled, logs RNG state and desync warnings to console
 int net_sync_debug = 0;
 int net_desync_count = 0;
+int rng_validation_enabled = 0;
 
 // Goblin Dice Rollaz: Broadcast critical hit message to all netgame players
 // Ensures all players see the same critical hit notifications
@@ -139,6 +140,54 @@ void P_ValidateRNGState(const char *checkpoint)
         DEH_printf("[NETSYNC] %s: prnd=%d, rnd=%d, gametic=%d\n",
                checkpoint, P_GetRNGState(), M_GetRNGState(), gametic);
     }
+}
+
+// Goblin Dice Rollaz: Run deterministic RNG validation test
+// Outputs a sequence of RNG values that should be identical across platforms
+// Used to verify that the RNG is deterministic across different systems
+void P_RunRNGValidationTest(void)
+{
+    int i;
+    int save_prndindex, save_rndindex;
+    extern int P_Random(void);
+    extern int M_Random(void);
+    extern int P_GetRNGState(void);
+    extern int M_GetRNGState(void);
+    
+    DEH_printf("=== RNG Validation Test ===\n");
+    DEH_printf("Initial state: P_Random index=%d, M_Random index=%d\n",
+           P_GetRNGState(), M_GetRNGState());
+    
+    // Save current RNG state
+    save_prndindex = P_GetRNGState();
+    save_rndindex = M_GetRNGState();
+    
+    // Run 20 P_Random calls and output results
+    DEH_printf("P_Random sequence (20 calls): ");
+    for (i = 0; i < 20; i++)
+    {
+        DEH_printf("%d ", P_Random());
+    }
+    DEH_printf("\n");
+    
+    // Run 20 M_Random calls and output results  
+    DEH_printf("M_Random sequence (20 calls): ");
+    for (i = 0; i < 20; i++)
+    {
+        DEH_printf("%d ", M_Random());
+    }
+    DEH_printf("\n");
+    
+    // Run dice roll simulation
+    DEH_printf("Dice roll simulation (d6, d20, d100): ");
+    DEH_printf("%d %d %d\n", 
+           (P_Random() % 6) + 1,
+           (P_Random() % 20) + 1,
+           (P_Random() % 100) + 1);
+    
+    DEH_printf("Final state: P_Random index=%d, M_Random index=%d\n",
+           P_GetRNGState(), M_GetRNGState());
+    DEH_printf("=== End RNG Test ===\n");
 }
 
 // Goblin Dice Rollaz: Crit scaling curve settings

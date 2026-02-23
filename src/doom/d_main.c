@@ -151,6 +151,7 @@ extern int      dicefortune_spawn_rate;
 
 // Goblin Dice Rollaz: net sync debug
 extern int      net_sync_debug;
+extern int      rng_validation_enabled;
 
 // Goblin Dice Rollaz: difficulty scaling
 extern int      difficulty_hp_scale[5];
@@ -442,6 +443,7 @@ void D_BindVariables(void)
     // Goblin Dice Rollaz: multiplayer sync debug
     M_BindIntVariable("debug_sync_check",         &debug_sync_check);
     M_BindIntVariable("net_sync_debug",           &net_sync_debug);
+    M_BindIntVariable("rng_validation_enabled",    &rng_validation_enabled);
 
     // Goblin Dice Rollaz: modern visual effects toggle
     M_BindIntVariable("usemodernfx",             &usemodernfx);
