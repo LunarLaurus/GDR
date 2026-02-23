@@ -62,6 +62,7 @@
 #include "g_game.h"
 #include "g_status.h"
 #include "g_demo_test.h"
+#include "g_balance.h"
 
 #include "hu_stuff.h"
 #include "wi_stuff.h"

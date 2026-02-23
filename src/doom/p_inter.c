@@ -47,6 +47,7 @@
 #include "g_rpg.h"
 #include "g_survival.h"
 #include "g_powerup.h"
+#include "g_balance.h"
 
 // Goblin Dice Rollaz: Arena lock system
 extern int arena_locked;
@@ -60,20 +61,20 @@ extern int auto_switch_weapon;
 #define BONUSADD	6
 
 // Goblin Dice Rollaz: Default crit system configuration
-int	crit_chance_default = 10;
-int	crit_multiplier_default = 2;
-int	crit_combo_timeout = TICRATE * 3;
-int	crit_combo_bonus = 15;
-int	crit_combo_max = 4;
+int	crit_chance_default = DEFAULT_CRIT_CHANCE;
+int	crit_multiplier_default = DEFAULT_CRIT_MULTIPLIER;
+int	crit_combo_timeout = DEFAULT_CRIT_COMBO_TIMEOUT;
+int	crit_combo_bonus = DEFAULT_CRIT_COMBO_BONUS;
+int	crit_combo_max = DEFAULT_CRIT_COMBO_MAX;
 int	dice_arena_damage_mult = 150;
 
 // Goblin Dice Rollaz: Combo multiplier system
-int	crit_boost_bonus = 15;
+int	crit_boost_bonus = CRIT_POWERUP_BONUS;
 int	exploding_dice_enabled = 0;
 
 // Goblin Dice Rollaz: Minimum damage cap
 // Ensures no attack deals less than this amount of damage
-int	min_damage_cap = 1;
+int	min_damage_cap = DEFAULT_MIN_DAMAGE_CAP;
 
 // Goblin Dice Rollaz: Net sync debug logging
 // When enabled, logs RNG state and desync warnings to console
@@ -270,8 +271,8 @@ void P_RunRNGValidationTest(void)
 // Goblin Dice Rollaz: Crit scaling curve settings
 // crit_scaling_default: 0=linear, 1=exponential, 2=bonus_flat, 3=bonus_percent, 4=crit_chance
 // crit_scaling_param: parameter for the scaling curve (multiplier, bonus, etc.)
-int	crit_scaling_default = 0;
-int	crit_scaling_param = 2;
+int	crit_scaling_default = DEFAULT_CRIT_SCALING_TYPE;
+int	crit_scaling_param = DEFAULT_CRIT_SCALING_PARAM;
 
 // Goblin Dice Rollaz: Advantage/Disadvantage system
 // 0 = normal, 1 = advantage (roll twice, take best), -1 = disadvantage (roll twice, take worst)
