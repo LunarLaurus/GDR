@@ -267,7 +267,7 @@
 - [x] Create demo WAD bundle
 - [ ] Publish first tagged release
 - [ ] Resolve blocker: Requires manual GitHub release creation and push to remote
-- [ ] Draft public roadmap
+- [x] Draft public roadmap
 
 ## Phase 25: Polish & Identity Lock
 - [ ] Finalize logo and title screen art
