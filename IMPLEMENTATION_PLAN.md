@@ -319,7 +319,7 @@
 - [x] Add main menu animated background
 - [x] Add dice-themed loading screen tips
 - [x] Implement crosshair customization options
-- [ ] Add damage type indicator icons on hit
+- [x] Add damage type indicator icons on hit
 
 ## Phase 33: Accessibility Features
 - [ ] Add colorblind mode options
