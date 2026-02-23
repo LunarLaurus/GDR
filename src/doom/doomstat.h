@@ -50,6 +50,12 @@ extern  boolean	fastparm;	// checkparm of -fast
 extern  boolean	devparm;	// DEBUG: launched with -devparm
 extern  boolean	showfps;	// FPS counter display toggle
 
+// Goblin Dice Rollaz: Thinker profiling
+extern  int      thinker_profiling_enabled;
+extern  int      thinker_total_count;
+extern  int      thinker_total_time_ms;
+extern  int      thinker_frame_count;
+
 
 // -----------------------------------------------------
 // Game Mode - identify IWAD as shareware, retail etc.

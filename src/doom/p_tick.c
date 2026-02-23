@@ -23,8 +23,23 @@
 
 #include "doomstat.h"
 
+#include "i_timer.h"
+
 
 int	leveltime;
+
+// Goblin Dice Rollaz: Thinker profiling
+int thinker_profiling_enabled = 0;
+int thinker_total_count = 0;
+int thinker_total_time_ms = 0;
+int thinker_frame_count = 0;
+
+void P_ResetThinkerStats (void)
+{
+    thinker_total_count = 0;
+    thinker_total_time_ms = 0;
+    thinker_frame_count = 0;
+}
 
 //
 // THINKERS
@@ -94,6 +109,13 @@ void P_AllocateThinker (thinker_t*	thinker)
 void P_RunThinkers (void)
 {
     thinker_t *currentthinker, *nextthinker;
+    int thinkers_run = 0;
+    int start_time = 0;
+
+    if (thinker_profiling_enabled)
+    {
+        start_time = I_GetTimeMS();
+    }
 
     currentthinker = thinkercap.next;
     while (currentthinker != &thinkercap)
@@ -111,8 +133,17 @@ void P_RunThinkers (void)
 	    if (currentthinker->function.acp1)
 		currentthinker->function.acp1 (currentthinker);
             nextthinker = currentthinker->next;
+            thinkers_run++;
 	}
 	currentthinker = nextthinker;
+    }
+
+    if (thinker_profiling_enabled)
+    {
+        int elapsed = I_GetTimeMS() - start_time;
+        thinker_total_count += thinkers_run;
+        thinker_total_time_ms += elapsed;
+        thinker_frame_count++;
     }
 }
 

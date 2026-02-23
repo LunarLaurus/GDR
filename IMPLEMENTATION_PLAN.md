@@ -253,7 +253,7 @@
 - [x] Write Modding Guide in `/docs`
 
 ## Phase 23: Performance & Determinism Audit
-- [ ] Profile thinker loop under heavy dice spam
+- [x] Profile thinker loop under heavy dice spam
 - [ ] Validate deterministic RNG across platforms
 - [ ] Audit floating-point usage (avoid nondeterminism)
 - [ ] Benchmark sprite-heavy scenes

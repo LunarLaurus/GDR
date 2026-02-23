@@ -71,6 +71,13 @@ void P_InitThinkers (void);
 void P_AddThinker (thinker_t* thinker);
 void P_RemoveThinker (thinker_t* thinker);
 
+// Goblin Dice Rollaz: Thinker profiling
+extern int thinker_profiling_enabled;
+extern int thinker_total_count;
+extern int thinker_total_time_ms;
+extern int thinker_frame_count;
+void P_ResetThinkerStats (void);
+
 
 //
 // P_PSPR

@@ -165,6 +165,13 @@ extern int      usemodernfx;
 int             arena_lock_tag = 666;
 int             arena_locked = 0;
 
+// Goblin Dice Rollaz: Thinker profiling
+extern int      thinker_profiling_enabled;
+extern int      thinker_total_count;
+extern int      thinker_total_time_ms;
+extern int      thinker_frame_count;
+void P_ResetThinkerStats (void);
+
 
 void D_ConnectNetGame(void);
 void D_CheckNetGame(void);
@@ -461,6 +468,9 @@ void D_BindVariables(void)
 
     // Goblin Dice Rollaz: RPG Progression Mode
     M_BindIntVariable("rpg_mode",                &rpg_mode);
+
+    // Goblin Dice Rollaz: Thinker profiling
+    M_BindIntVariable("thinker_profiling_enabled", &thinker_profiling_enabled);
 
     // Multiplayer chat macros
 

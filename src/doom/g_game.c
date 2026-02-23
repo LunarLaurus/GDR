@@ -838,6 +838,32 @@ boolean G_Responder (event_t* ev)
 	    I_DisplayFPSDots(devparm || showfps);
 	    return true;
 	}
+	if (ev->type == ev_keydown && ev->data1 == KEY_F7)
+	{
+	    thinker_profiling_enabled = !thinker_profiling_enabled;
+	    if (!thinker_profiling_enabled && thinker_frame_count > 0)
+	    {
+		int avg_time = thinker_total_time_ms / thinker_frame_count;
+		int avg_count = thinker_total_count / thinker_frame_count;
+		DEH_printf("=== Thinker Profile Summary ===\n");
+		DEH_printf("Frames: %d\n", thinker_frame_count);
+		DEH_printf("Total thinkers executed: %d\n", thinker_total_count);
+		DEH_printf("Total time: %d ms\n", thinker_total_time_ms);
+		DEH_printf("Avg thinkers/frame: %d\n", avg_count);
+		DEH_printf("Avg time/frame: %d ms\n", avg_time);
+		P_ResetThinkerStats();
+	    }
+	    else if (thinker_profiling_enabled)
+	    {
+		P_ResetThinkerStats();
+		DEH_printf("Thinker profiling enabled. Press F7 to disable and see stats.\n");
+	    }
+	    else
+	    {
+		DEH_printf("Thinker profiling disabled.\n");
+	    }
+	    return true;
+	}
 	if (ev->type == ev_keydown && ev->data1 == KEY_F6)
 	{
 	    if (rpg_mode && players[consoleplayer].stat_points > 0)
