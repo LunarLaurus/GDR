@@ -190,6 +190,10 @@ typedef struct player_s
     // XP toward next mastery level per weapon
     int			weapon_mastery_xp[NUMWEAPONS];
 
+    // Goblin Dice Rollaz: Weapon recoil offset
+    // Current weapon kickback from firing (decays over time)
+    fixed_t		weapon_recoil;
+
 } player_t;
 
 

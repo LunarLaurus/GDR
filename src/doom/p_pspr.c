@@ -45,6 +45,30 @@
 #define WEAPONBOTTOM	128*FRACUNIT
 #define WEAPONTOP		32*FRACUNIT
 
+// Goblin Dice Rollaz: Weapon recoil values per weapon
+// Defines how much the weapon kicks back when fired
+static const fixed_t weapon_recoil_values[NUMWEAPONS] = {
+    0,              // wp_fist
+    FRACUNIT/4,    // wp_pistol
+    FRACUNIT/2,    // wp_shotgun
+    FRACUNIT/3,    // wp_chaingun
+    FRACUNIT/2,    // wp_missile
+    0,              // wp_chainsaw
+    FRACUNIT/4,    // wp_plasma
+    FRACUNIT,      // wp_bfg
+    FRACUNIT/4,    // wp_supershotgun
+    FRACUNIT/2,    // wp_d6blaster - Goblin Dice Rollaz
+    FRACUNIT/2,    // wp_d20cannon - Goblin Dice Rollaz
+    FRACUNIT,      // wp_d12 - Goblin Dice Rollaz
+    FRACUNIT/4,    // wp_percentile - Goblin Dice Rollaz
+    FRACUNIT/3,    // wp_d4 - Goblin Dice Rollaz
+    FRACUNIT/3,    // wp_d8 - Goblin Dice Rollaz
+    FRACUNIT/2,    // wp_d10 - Goblin Dice Rollaz
+    FRACUNIT/2,    // wp_twind6 - Goblin Dice Rollaz
+    FRACUNIT/4,    // wp_arcaned20 - Goblin Dice Rollaz
+    FRACUNIT       // wp_cursed - Goblin Dice Rollaz
+};
+
 
 
 //
@@ -249,6 +273,9 @@ void P_FireWeapon (player_t* player)
     newstate = weaponinfo[player->readyweapon].atkstate;
     P_SetPsprite (player, ps_weapon, newstate);
     P_NoiseAlert (player->mo, player->mo);
+
+    // Goblin Dice Rollaz: Apply weapon recoil based on weapon type
+    player->weapon_recoil = weapon_recoil_values[player->readyweapon];
 }
 
 
@@ -529,11 +556,22 @@ A_WeaponReady
 	player->altattackdown = false;
     }
     
+    // Goblin Dice Rollaz: Apply weapon recoil offset
+    // Decay the recoil each frame (simple linear decay)
+    fixed_t current_recoil = player->weapon_recoil;
+    if (current_recoil > 0)
+    {
+        player->weapon_recoil -= FRACUNIT / 8;
+        if (player->weapon_recoil < 0)
+            player->weapon_recoil = 0;
+    }
+    
     // bob the weapon based on movement speed
     angle = (128*leveltime)&FINEMASK;
     psp->sx = FRACUNIT + FixedMul (player->bob, finecosine[angle]);
     angle &= FINEANGLES/2-1;
-    psp->sy = WEAPONTOP + FixedMul (player->bob, finesine[angle]);
+    // Goblin Dice Rollaz: Add recoil offset to weapon Y position
+    psp->sy = WEAPONTOP + FixedMul (player->bob, finesine[angle]) + current_recoil;
 }
 
 
@@ -1282,6 +1320,9 @@ A_FireD6Blast
 
     damage = P_CalculateDiceDamage(wp_d6blaster, guaranteedCrit, &critRoll, NULL, &diceRoll, player);
 
+    // Goblin Dice Rollaz: Apply weapon recoil
+    player->weapon_recoil = weapon_recoil_values[wp_d6blaster];
+
     P_BulletSlope (player->mo);
     P_GunShotWithDamage (player->mo, !player->refire, damage);
     
@@ -1330,6 +1371,9 @@ A_FireTwinD6
 
     damage1 = P_CalculateDiceDamage(wp_twind6, guaranteedCrit, &critRoll1, NULL, &diceRoll1, player);
     damage2 = P_CalculateDiceDamage(wp_twind6, guaranteedCrit, &critRoll2, NULL, &diceRoll2, player);
+
+    // Goblin Dice Rollaz: Apply weapon recoil
+    player->weapon_recoil = weapon_recoil_values[wp_twind6];
 
     // Track highest roll for screen shake
     highestRoll = (diceRoll1 > diceRoll2) ? diceRoll1 : diceRoll2;
@@ -1382,6 +1426,9 @@ A_FireArcaneD20
 
     damage = P_CalculateDiceDamage(wp_arcaned20, guaranteedCrit, &critRoll, NULL, &diceRoll, player);
 
+    // Goblin Dice Rollaz: Apply weapon recoil
+    player->weapon_recoil = weapon_recoil_values[wp_arcaned20];
+
     missile = P_SpawnPlayerMissile (player->mo, MT_ARCANED20BEAM, wp_arcaned20);
     if (missile)
     {
@@ -1430,6 +1477,9 @@ A_FireCursed
     }
 
     damage = P_CalculateDiceDamage(wp_cursed, guaranteedCrit, &critRoll, &misfire, &diceRoll, player);
+
+    // Goblin Dice Rollaz: Apply weapon recoil
+    player->weapon_recoil = weapon_recoil_values[wp_cursed];
 
     missile = P_SpawnPlayerMissile (player->mo, MT_CURSEDDIE, wp_cursed);
     if (missile)
