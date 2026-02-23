@@ -512,6 +512,9 @@ static int		st_msgcounter=0;
 // whether left-side main status bar is active
 static boolean		st_statusbaron;
 
+// Goblin Dice Rollaz: HUD visibility toggle
+boolean hud_hidden = false;
+
 // whether status bar chat is active
 static boolean		st_chat;
 
@@ -1565,6 +1568,11 @@ void ST_diffDraw(void)
 
 void ST_Drawer (boolean fullscreen, boolean refresh)
 {
+    // Goblin Dice Rollaz: Check if HUD is hidden
+    if (hud_hidden)
+    {
+        return;
+    }
   
     st_statusbaron = (!fullscreen) || automapactive;
     st_firsttime = st_firsttime || refresh;
@@ -1586,6 +1594,19 @@ void ST_Drawer (boolean fullscreen, boolean refresh)
     // Goblin Dice Rollaz: Draw boss health bar overlay
     ST_DrawBossHealthBar();
 
+}
+
+void ST_ToggleHUD(void)
+{
+    hud_hidden = !hud_hidden;
+    if (hud_hidden)
+    {
+        players[consoleplayer].message = "HUD Hidden";
+    }
+    else
+    {
+        players[consoleplayer].message = "HUD Visible";
+    }
 }
 
 typedef void (*load_callback_t)(const char *lumpname, patch_t **variable);

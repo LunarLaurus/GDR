@@ -62,6 +62,8 @@
 
 #include "m_menu.h"
 
+#include "st_stuff.h"
+
 
 //
 // defaulted values
@@ -1895,6 +1897,12 @@ boolean M_Responder (event_t* ev)
             I_SetPalette (W_CacheLumpName (DEH_String("PLAYPAL"),PU_CACHE));
 	    return true;
 	}
+        else if (key == key_menu_hud)    // Goblin Dice Rollaz: HUD toggle
+        {
+	    ST_ToggleHUD();
+	    S_StartSound(NULL,sfx_swtchn);
+	    return true;
+        }
     }
 
     // Pop-up menu?

@@ -60,6 +60,10 @@ extern int show_weapon_stats;
 // Goblin Dice Rollaz: Boss health bar overlay
 void ST_DrawBossHealthBar(void);
 
+// Goblin Dice Rollaz: HUD visibility toggle
+extern boolean hud_hidden;
+void ST_ToggleHUD(void);
+
 extern pixel_t *st_backing_screen;
 extern cheatseq_t cheat_mus;
 extern cheatseq_t cheat_god;
