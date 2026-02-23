@@ -1,0 +1,87 @@
+# Goblin Dice Rollaz - Enemy Spawn Definitions
+# Text format for enemy thing placements
+# Format: type,x,y,z,angle,flags
+
+# ==========================================
+# MAP01: Goblin Enemies (Cavern Theme)
+# ==========================================
+
+# Goblin Warrior (MT_GOBLIN_WARRIOR = 8100)
+# Replaces Zombieman, 15 HP, fast melee
+THING: 8100,1400,2200,0,270,7
+THING: 8100,1500,2400,0,90,7
+THING: 8100,800,2100,0,180,7
+THING: 8100,900,2300,0,0,7
+THING: 8100,1300,1800,0,0,7
+THING: 8100,1100,2500,0,180,7
+THING: 8100,600,2200,0,45,7
+THING: 8100,1000,1900,0,90,7
+
+# Goblin Scout (MT_GOBLIN_SCOUT = 8102)
+# Fast, low HP
+THING: 8102,1200,2100,0,0,7
+THING: 8102,1350,2350,0,90,7
+THING: 8102,950,2200,0,270,7
+THING: 8102,700,2050,0,180,7
+
+# Goblin Sneak (MT_GOBLIN_SNEAK = 8103)
+# Stealthy, ambush behavior
+THING: 8103,1600,2300,0,270,5  # Hard skill only
+THING: 8103,500,2150,0,45,5   # Secret area
+
+# Goblin Alchemist (MT_GOBLIN_ALCHEMIST = 8105)
+# Throws volatile potions
+THING: 8105,1500,2500,0,0,5   # Boss minion
+
+# ==========================================
+# MAP02: Dwarf Enemies (Forge Theme)
+# ==========================================
+
+# Dwarf Defender (MT_DWARF_DEFENDER = 8200)
+# Shielded, frontal damage reduction
+THING: 8200,800,2500,0,0,7
+THING: 8200,900,2700,0,90,7
+THING: 8200,1000,2400,0,180,7
+THING: 8200,1100,2600,0,270,7
+THING: 8200,1200,2500,0,0,7
+THING: 8200,1300,2800,0,90,7
+
+# Dwarf Marksman (MT_DWARF_MARKSMAN = 8201)
+# Slow, high-damage ranged
+THING: 8201,1700,2000,0,180,7
+THING: 8201,1600,3100,0,270,7
+THING: 8201,1800,2800,0,0,7
+
+# Dwarf Miner (MT_DWARF_MINER = 8202)
+# Throws pickaxes
+THING: 8202,850,2300,0,45,7
+THING: 8202,1050,2900,0,135,7
+THING: 8202,1200,2200,0,90,7
+THING: 8202,950,2100,0,0,7
+
+# Dwarf Engineer (MT_DWARF_ENGINEER = 8204)
+# Deploys turrets, uses explosives
+THING: 8204,1400,2700,0,180,5  # Hard only
+
+# ==========================================
+# MAP03: Treasure Vault (Elite Enemies)
+# ==========================================
+
+# Elite Dwarf Captain (MT_DWARF_CAPTAIN = 8205)
+# Buffs nearby dwarves
+THING: 8205,1200,2400,0,0,7  # Boss encounter
+
+# Armored Dwarf (MT_DWARF_ARMORED = 8203)
+# High HP, weak rear hitbox
+THING: 8203,900,2300,0,0,7
+THING: 8203,1000,2600,0,90,7
+THING: 8203,1400,2500,0,180,7
+THING: 8203,1300,2200,0,270,7
+
+# Dwarf Berserker (MT_DWARF_BERSERKER = 8206)
+# Fast melee, rage
+THING: 8206,800,2500,0,45,5  # Hard only
+
+# Goblin Shaman (MT_GOBLIN_SHAMAN = 8104)
+# Casts spells (backup for MAP03)
+THING: 8104,1500,2600,0,180,5

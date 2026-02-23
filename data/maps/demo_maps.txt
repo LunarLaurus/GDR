@@ -1,0 +1,197 @@
+# Goblin Dice Rollaz - Demo Map Definitions
+# Text format for map data (convertible to WAD format)
+# Format: sector,x,y,z coordinates for key points
+
+# ==========================================
+# MAP01: Goblin Cavern (Mine Theme)
+# ==========================================
+
+# Map Info
+MAP: MAP01
+NAME: "Goblin Camp"
+INTERPIC: "HELP"
+MUSIC: "E1M1"
+FLAGS: "NOCLIP,TRIPLE"
+
+# Sector Definitions
+SECTOR: 0
+  floor_height: 0
+  ceiling_height: 128
+  floor_texture: "FLOOR4_8"
+  ceiling_texture: "CEILING3"
+  light_level: 64
+  type: 0
+  tag: 0
+
+SECTOR: 1
+  floor_height: 0
+  ceiling_height: 96
+  floor_texture: "FLOOR5_1"
+  ceiling_texture: "CEILING3"
+  light_level: 48
+  type: 0
+  tag: 0
+
+SECTOR: 2
+  floor_height: -16
+  ceiling_height: 128
+  floor_texture: "NUKAGE1"
+  ceiling_texture: "CEILING3"
+  light_level: 32
+  type: 5  # Damage
+  tag: 666
+
+# Room Definitions (vertices in clockwise order)
+ROOM: MainChamber
+  sector: 0
+  vertices:
+    - [512, 2048]
+    - [1536, 2048]
+    - [1536, 2560]
+    - [512, 2560]
+
+ROOM: SideTunnelNorth
+  sector: 1
+  vertices:
+    - [512, 1536]
+    - [1024, 1536]
+    - [1024, 2048]
+    - [512, 2048]
+
+ROOM: SideTunnelSouth
+  sector: 1
+  vertices:
+    - [1024, 2560]
+    - [1536, 2560]
+    - [1536, 3072]
+    - [1024, 3072]
+
+ROOM: CaveInPit
+  sector: 2
+  vertices:
+    - [1536, 2048]
+    - [2048, 2048]
+    - [2048, 2560]
+    - [1536, 2560]
+
+# ==========================================
+# MAP02: Dwarven Forge (Lava Theme)
+# ==========================================
+
+MAP: MAP02
+NAME: "The Dwarven Forge"
+INTERPIC: "HELP2"
+MUSIC: "E1M2"
+FLAGS: "NOCLIP"
+
+SECTOR: 10
+  floor_height: 0
+  ceiling_height: 192
+  floor_texture: "FLOOR7_1"
+  ceiling_texture: "CEILING5"
+  light_level: 128
+  type: 0
+  tag: 0
+
+SECTOR: 11
+  floor_height: -32
+  ceiling_height: 64
+  floor_texture: "LAVA1"
+  ceiling_texture: "CEILING5"
+  light_level: 160
+  type: 666  # Lava damage
+  tag: 666
+
+SECTOR: 12
+  floor_height: 32
+  ceiling_height: 96
+  floor_texture: "FLOOR5_1"
+  ceiling_texture: "CEILING3"
+  light_level: 80
+  type: 0
+  tag: 0
+
+ROOM: ForgeMain
+  sector: 10
+  vertices:
+    - [256, 1792]
+    - [1792, 1792]
+    - [1792, 3328]
+    - [256, 3328]
+
+ROOM: LavaPit
+  sector: 11
+  vertices:
+    - [768, 2048]
+    - [1280, 2048]
+    - [1280, 2560]
+    - [768, 2560]
+
+ROOM: AnvilPlatform
+  sector: 12
+  vertices:
+    - [1536, 2048]
+    - [1792, 2048]
+    - [1792, 2304]
+    - [1536, 2304]
+
+# ==========================================
+# MAP03: Treasure Vault
+# ==========================================
+
+MAP: MAP03
+NAME: "The Treasure Vault"
+INTERPIC: "HELP3"
+MUSIC: "E1M3"
+FLAGS: "NOCLIP"
+
+SECTOR: 20
+  floor_height: 0
+  ceiling_height: 96
+  floor_texture: "FLOOR6_1"
+  ceiling_texture: "CEILING3"
+  light_level: 192
+  type: 0
+  tag: 0
+
+SECTOR: 21
+  floor_height: -64
+  ceiling_height: 32
+  floor_texture: "FLOOR6_1"
+  ceiling_texture: "CEILING3"
+  light_level: 64
+  type: 0
+  tag: 0
+
+SECTOR: 22
+  floor_height: 0
+  ceiling_height: 64
+  floor_texture: "FLOOR5_1"
+  ceiling_texture: "CEILING3"
+  light_level: 144
+  type: 0
+  tag: 0
+
+ROOM: VaultMain
+  sector: 20
+  vertices:
+    - [512, 2048]
+    - [1536, 2048]
+    - [1536, 3072]
+    - [512, 3072]
+
+ROOM: TrapPit
+  sector: 21
+  vertices:
+    - [768, 2304]
+    - [1280, 2304]
+    - [1280, 2816]
+    - [768, 2816]
+
+ROOM: ElevatedPlatform
+  sector: 22
+  vertices:
+    - [1536, 2048]
+    - [1792, 2048]
+    - [1792, 2560]
+    - [1536, 2560]

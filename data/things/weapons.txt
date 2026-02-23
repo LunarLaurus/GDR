@@ -1,0 +1,67 @@
+# Goblin Dice Rollaz - Thing Definitions
+# Text format for Doom map things
+# Format: type,x,y,z,angle,flags
+
+# ==========================================
+# Player Starts
+# ==========================================
+
+# Type 1 = Player 1 Start
+THING: 1,1024,2048,0,0,7  # MAP01 - Goblin Cavern
+THING: 1,1024,2048,0,0,7  # MAP02 - Dwarven Forge
+THING: 1,1024,2048,0,0,7  # MAP03 - Treasure Vault
+
+# ==========================================
+# Weapons & Ammo (Dice Themed)
+# ==========================================
+
+# d4 Dagger/Throwing Knives
+# Using Thing 2005 as placeholder for d4 ammo
+THING: 2005,1152,2304,0,0,0  # MAP01 - d4 ammo pickup
+THING: 2005,1400,2400,0,0,0  # MAP01 - d4 ammo pickup
+
+# d6 Blaster (replaces pistol)
+# Using Thing 2006 as placeholder for d6 ammo
+THING: 2006,1200,2200,0,0,0  # MAP01 - d6 ammo pickup
+THING: 2006,1300,2350,0,0,0  # MAP01 - d6 ammo pickup
+
+# d8 Rapid Roll
+# Using Thing 2007 as placeholder for d8 ammo
+THING: 2007,1024,1536,0,0,0  # MAP01 - d8 ammo pickup (secret)
+
+# d10 Ricochet
+# Using Thing 2008 as placeholder for d10 ammo
+THING: 2008,512,2048,0,0,0  # MAP01 - d10 ammo (hidden alcove)
+
+# d12 Heavy (MAP02)
+THING: 2007,768,2304,0,0,0  # MAP02 - d12 ammo near lava
+
+# d20 Cannon (MAP02)
+THING: 2008,1800,3200,0,0,0  # MAP02 - d20 in back corner
+
+# d100 Percentile (MAP03)
+THING: 2008,1600,2304,0,0,0  # MAP03 - d100 on elevated platform
+
+# Twin d6 Scatter (MAP03)
+THING: 2006,1400,2800,0,0,0  # MAP03 - twin d6 in vault
+
+# ==========================================
+# Health & Armor
+# ==========================================
+
+THING: 2018,1200,2400,0,0,0  # Health 100% - MAP01
+THING: 2019,1100,2250,0,0,0  # Health 25% - MAP01
+THING: 2018,900,2800,0,0,0   # Health 100% - MAP02
+THING: 2022,1100,3200,0,0,0  # Armor 50% - MAP02
+THING: 2018,800,2200,0,0,0   # Health 100% - MAP03
+
+# ==========================================
+# Ammo Box Pickups (Dice Themed)
+# ==========================================
+
+THING: 2045,1150,2100,0,0,0  # Box of d4s - MAP01
+THING: 2046,1250,2150,0,0,0  # Box of d6s - MAP01
+THING: 2047,1350,2250,0,0,0  # Box of d8s - MAP02
+THING: 2048,1050,3000,0,0,0  # Box of d12s - MAP02
+THING: 2045,950,2500,0,0,0   # Box of d4s - MAP03
+THING: 2046,1300,2900,0,0,0  # Box of d6s - MAP03

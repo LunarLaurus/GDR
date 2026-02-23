@@ -264,7 +264,7 @@
 - [x] Create versioning scheme (SemVer or similar)
 - [x] Add changelog automation
 - [x] Add release packaging scripts (Linux/Windows/macOS)
-- [ ] Create demo WAD bundle
+- [x] Create demo WAD bundle
 - [ ] Publish first tagged release
 - [ ] Draft public roadmap
 

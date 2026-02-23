@@ -1,0 +1,51 @@
+# Goblin Dice Rollaz - Powerup Definitions
+# Text format for powerup thing placements
+# Format: type,x,y,z,angle,flags
+
+# ==========================================
+# Critical Hit Powerup (30s boost)
+# ==========================================
+
+# Thing 2011 = Invulnerability sphere (used as crit powerup)
+THING: 2011,1536,1536,0,0,0  # MAP03 - Treasure Vault
+THING: 2011,1700,2400,0,0,0  # MAP03 - Elevated platform
+
+# ==========================================
+# Double Damage Powerup (20s)
+# ==========================================
+
+# Thing 2012 = Berserk (used as double damage)
+THING: 2012,2048,1024,0,0,0  # MAP02 - Dwarven Forge
+THING: 2012,1400,3200,0,0,0  # MAP02 - Near lava
+
+# ==========================================
+# Fortune Powerup (Guaranteed next-hit crit)
+# ==========================================
+
+# Thing 2013 = Invisibility (used as fortune)
+THING: 2013,1024,2048,0,0,0  # MAP03 - Main vault
+THING: 2013,1200,2500,0,0,0  # MAP03 - Secret alcove
+
+# ==========================================
+# Additional Powerups
+# ==========================================
+
+# Speed Boost (Thing 2014 = Rad suit used as speed)
+THING: 2014,900,2000,0,0,0   # MAP01 - Early game speed boost
+THING: 2014,1600,2800,0,0,0  # MAP02 - Forge speed
+
+# Health/Regen (Thing 2015 = Allmap used as regen)
+THING: 2015,800,1800,0,0,0   # MAP01 - Health regen
+
+# ==========================================
+# Puzzle Artifacts (Dice Themed)
+# ==========================================
+
+# d4 Crystal (d4 weapon upgrade)
+THING: 2046,1300,1900,0,0,0  # MAP01 - d4 upgrade
+
+# d20 Orb (d20 weapon upgrade)
+THING: 2048,1800,3400,0,0,0  # MAP02 - d20 upgrade (hard)
+
+# Arcane Die (d100 weapon upgrade)
+THING: 2045,1700,2100,0,0,0  # MAP03 - d100 upgrade

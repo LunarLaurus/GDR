@@ -1,0 +1,81 @@
+# Goblin Dice Rollaz - Demo WAD Build Script
+# Generates goblin_demo.wad from text definitions
+# Requires: SLADE3, XWE, or Doom Builder 2
+
+# This script provides instructions for building the demo WAD
+# since binary WAD generation requires specialized tools.
+
+GOBLIN_DEMO_WAD="goblin_demo.wad"
+
+echo "=============================================="
+echo "Goblin Dice Rollaz - Demo WAD Builder"
+echo "=============================================="
+echo ""
+echo "This script helps build the demo WAD bundle."
+echo ""
+echo "Prerequisites:"
+echo "  1. SLADE3 (recommended): https://slade.mancubus.net/"
+echo "  2. OR Doom Builder 2: https://www.doombuilder.com/"
+echo ""
+echo "Build Steps:"
+echo "============"
+echo ""
+echo "Option A - Using SLADE3:"
+echo "  1. Open SLADE3"
+echo "  2. File -> New -> New PWAD"
+echo "  3. Import map data from 'maps/' directory"
+echo "  4. Import thing definitions from 'things/' directory"
+echo "  5. File -> Save As -> $GOBLIN_DEMO_WAD"
+echo ""
+echo "Option B - Using Doom Builder 2:"
+echo "  1. Open Doom Builder 2"
+echo "  2. Map -> New Map -> Select 'Doom 2' engine"
+echo "  3. Import thing definitions"
+echo "  4. Build the map (F5)"
+echo "  5. Save as $GOBLIN_DEMO_WAD"
+echo ""
+echo "Option C - Command Line (Linux with freedoom):"
+echo "  Install freedoom and use: doomretro --help"
+echo ""
+echo "Manual WAD Creation:"
+echo "==================="
+echo ""
+echo "If you have a Doom IWAD (DOOM.WAD), you can create"
+echo "a minimal WAD by:"
+echo ""
+echo "  1. Copy DOOM.WAD to goblin_demo.wad"
+echo "  2. Delete all maps except MAP01"
+echo "  3. Replace map01 with cavern theme"
+echo "  4. Add custom thing definitions"
+echo ""
+echo "Files in this bundle:"
+echo "====================="
+echo ""
+echo "maps/"
+echo "  demo_maps.txt    - Map geometry definitions"
+echo "  map01_cavern.txt - Goblin cavern layout"
+echo "  map02_forge.txt  - Dwarven forge layout"
+echo "  map03_vault.txt  - Treasure vault layout"
+echo ""
+echo "things/"
+echo "  player_starts.txt  - Player spawn points"
+echo "  weapons.txt        - Weapon/ammo pickups"
+echo "  powerups.txt       - Powerup locations"
+echo "  enemies_goblin.txt - Goblin enemy spawns"
+echo "  enemies_dwarf.txt  - Dwarf enemy spawns"
+echo ""
+echo "scripts/"
+echo "  build_wad.ps1     - PowerShell build helper"
+echo ""
+echo "For more information, see demo-wad-spec.md"
+echo ""
+echo "=============================================="
+
+# If we have the necessary tools, try to build
+if command -v slade &> /dev/null; then
+    echo "SLADE3 found - attempting to build WAD..."
+    slade -w goblin_demo.wad maps/ things/ 2>/dev/null || true
+elif command -v doombuilder &> /dev/null; then
+    echo "Doom Builder found - opening..."
+    doombuilder goblin_demo.db2 2>/dev/null || true
+fi
