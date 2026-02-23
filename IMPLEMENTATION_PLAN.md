@@ -245,7 +245,7 @@
 - [x] Add net desync debug logging
 
 ## Phase 22: Modding & Extensibility
-- [ ] Document dice weapon DEHACKED mappings
+- [x] Document dice weapon DEHACKED mappings
 - [ ] Expose crit system parameters to config
 - [ ] Add custom dice weapon template example
 - [ ] Add enemy definition template
