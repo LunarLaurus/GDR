@@ -68,6 +68,8 @@
 
 #include "g_balance.h"
 
+#include "m_menu.h"
+
 // Goblin Dice Rollaz: Weapon stat debug overlay
 int show_weapon_stats = 0;
 static patch_t *st_weaponstat_font[HU_FONTSIZE];
@@ -259,6 +261,22 @@ static void ST_DrawWeaponStats(int x, int y)
     char buf[64];
     int i;
     char namebuf[9];
+    int scaled_x, scaled_y;
+    int line_height;
+    
+    // Goblin Dice Rollaz: Apply HUD scale
+    if (hud_scale != 1.0f)
+    {
+        scaled_x = (int)(x * hud_scale);
+        scaled_y = (int)(y * hud_scale);
+        line_height = (int)(12 * hud_scale);
+    }
+    else
+    {
+        scaled_x = x;
+        scaled_y = y;
+        line_height = 12;
+    }
     
     if (!players)
         return;
@@ -293,52 +311,56 @@ static void ST_DrawWeaponStats(int x, int y)
     {
         int c = buf[i];
         if (c >= ' ' && c < HU_FONTSIZE)
-            V_DrawPatchDirect(x, y, st_weaponstat_font[c]);
-        x += SHORT(st_weaponstat_font[c]->width);
+            V_DrawPatchDirect(scaled_x, scaled_y, st_weaponstat_font[c]);
+        scaled_x += SHORT(st_weaponstat_font[c]->width) * hud_scale;
     }
     
-    y += 12;
+    scaled_y += line_height;
     
     DEH_snprintf(buf, sizeof(buf), "DMG:%d-%d", min_dmg, max_dmg);
+    scaled_x = hud_scale != 1.0f ? (int)(x * hud_scale) : x;
     for (i = 0; buf[i]; i++)
     {
         int c = buf[i];
         if (c >= ' ' && c < HU_FONTSIZE)
-            V_DrawPatchDirect(x, y, st_weaponstat_font[c]);
-        x += SHORT(st_weaponstat_font[c]->width);
+            V_DrawPatchDirect(scaled_x, scaled_y, st_weaponstat_font[c]);
+        scaled_x += SHORT(st_weaponstat_font[c]->width) * hud_scale;
     }
     
-    y += 12;
+    scaled_y += line_height;
     
     DEH_snprintf(buf, sizeof(buf), "AVG:%d", avg_dmg);
+    scaled_x = hud_scale != 1.0f ? (int)(x * hud_scale) : x;
     for (i = 0; buf[i]; i++)
     {
         int c = buf[i];
         if (c >= ' ' && c < HU_FONTSIZE)
-            V_DrawPatchDirect(x, y, st_weaponstat_font[c]);
-        x += SHORT(st_weaponstat_font[c]->width);
+            V_DrawPatchDirect(scaled_x, scaled_y, st_weaponstat_font[c]);
+        scaled_x += SHORT(st_weaponstat_font[c]->width) * hud_scale;
     }
     
-    y += 12;
+    scaled_y += line_height;
     
     DEH_snprintf(buf, sizeof(buf), "CRIT:%d%%", crit_pct);
+    scaled_x = hud_scale != 1.0f ? (int)(x * hud_scale) : x;
     for (i = 0; buf[i]; i++)
     {
         int c = buf[i];
         if (c >= ' ' && c < HU_FONTSIZE)
-            V_DrawPatchDirect(x, y, st_weaponstat_font[c]);
-        x += SHORT(st_weaponstat_font[c]->width);
+            V_DrawPatchDirect(scaled_x, scaled_y, st_weaponstat_font[c]);
+        scaled_x += SHORT(st_weaponstat_font[c]->width) * hud_scale;
     }
     
-    y += 12;
+    scaled_y += line_height;
     
     DEH_snprintf(buf, sizeof(buf), "x%d", dwi->crit_multiplier);
+    scaled_x = hud_scale != 1.0f ? (int)(x * hud_scale) : x;
     for (i = 0; buf[i]; i++)
     {
         int c = buf[i];
         if (c >= ' ' && c < HU_FONTSIZE)
-            V_DrawPatchDirect(x, y, st_weaponstat_font[c]);
-        x += SHORT(st_weaponstat_font[c]->width);
+            V_DrawPatchDirect(scaled_x, scaled_y, st_weaponstat_font[c]);
+        scaled_x += SHORT(st_weaponstat_font[c]->width) * hud_scale;
     }
 }
 
@@ -356,6 +378,13 @@ void ST_DrawBossHealthBar(void)
     int fill_width;
     int phase = 1;
     const char *boss_name;
+    
+    // Goblin Dice Rollaz: Apply HUD scale
+    if (hud_scale != 1.0f)
+    {
+        bar_width = (int)(bar_width * hud_scale);
+        bar_height = (int)(bar_height * hud_scale);
+    }
     
     if (!players)
         return;
@@ -390,7 +419,7 @@ void ST_DrawBossHealthBar(void)
     
     // Calculate position (centered at top of screen)
     x = (SCREENWIDTH - bar_width) / 2;
-    y = 16;
+    y = (int)(16 * hud_scale);
     
     // Calculate fill width
     if (max_health > 0)
@@ -479,6 +508,24 @@ void ST_DrawSurvivalHUD(void)
     int enemies;
     int kills;
     int i;
+    int line_height;
+    int char_width;
+    
+    // Goblin Dice Rollaz: Apply HUD scale
+    if (hud_scale != 1.0f)
+    {
+        x = (int)(20 * hud_scale);
+        y = (int)(20 * hud_scale);
+        line_height = (int)(20 * hud_scale);
+        char_width = (int)(8 * hud_scale);
+    }
+    else
+    {
+        x = 20;
+        y = 20;
+        line_height = 20;
+        char_width = 8;
+    }
     
     if (!G_IsSurvivalMode())
         return;
@@ -486,9 +533,6 @@ void ST_DrawSurvivalHUD(void)
     wave = G_GetSurvivalWaveNumber();
     enemies = G_GetSurvivalEnemiesRemaining();
     kills = G_GetSurvivalTotalKills();
-    
-    x = 20;
-    y = 20;
     
     // Draw wave number
     DEH_snprintf(buf, sizeof(buf), "WAVE %d", wave);
@@ -502,13 +546,13 @@ void ST_DrawSurvivalHUD(void)
             DEH_snprintf(namebuf, 9, "STCFN%.3d", c);
             p = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
             V_DrawPatchDirect(x, y, p);
-            x += SHORT(p->width);
+            x += SHORT(p->width) * hud_scale;
         }
     }
     
     // Draw enemies remaining
-    x = 20;
-    y += 20;
+    x = hud_scale != 1.0f ? (int)(20 * hud_scale) : 20;
+    y += line_height;
     DEH_snprintf(buf, sizeof(buf), "ENEMIES: %d", enemies);
     for (i = 0; buf[i]; i++)
     {
@@ -520,13 +564,13 @@ void ST_DrawSurvivalHUD(void)
             DEH_snprintf(namebuf, 9, "STCFN%.3d", c);
             p = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
             V_DrawPatchDirect(x, y, p);
-            x += SHORT(p->width);
+            x += SHORT(p->width) * hud_scale;
         }
     }
     
     // Draw total kills
-    x = 20;
-    y += 20;
+    x = hud_scale != 1.0f ? (int)(20 * hud_scale) : 20;
+    y += line_height;
     DEH_snprintf(buf, sizeof(buf), "KILLS: %d", kills);
     for (i = 0; buf[i]; i++)
     {
@@ -538,7 +582,7 @@ void ST_DrawSurvivalHUD(void)
             DEH_snprintf(namebuf, 9, "STCFN%.3d", c);
             p = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
             V_DrawPatchDirect(x, y, p);
-            x += SHORT(p->width);
+            x += SHORT(p->width) * hud_scale;
         }
     }
 }
@@ -551,6 +595,21 @@ void ST_DrawTimeAttackHUD(void)
     int total_time;
     int minutes, seconds;
     int i;
+    int line_height;
+    
+    // Goblin Dice Rollaz: Apply HUD scale
+    if (hud_scale != 1.0f)
+    {
+        x = (int)(20 * hud_scale);
+        y = (int)(20 * hud_scale);
+        line_height = (int)(20 * hud_scale);
+    }
+    else
+    {
+        x = 20;
+        y = 20;
+        line_height = 20;
+    }
     
     if (!G_IsTimeAttackMode())
         return;
@@ -558,9 +617,6 @@ void ST_DrawTimeAttackHUD(void)
     total_time = G_GetTimeAttackTotalTime();
     minutes = (total_time / TICRATE) / 60;
     seconds = (total_time / TICRATE) % 60;
-    
-    x = 20;
-    y = 20;
     
     // Draw "TIME ATTACK" label
     DEH_snprintf(buf, sizeof(buf), "TIME ATTACK");
@@ -574,13 +630,13 @@ void ST_DrawTimeAttackHUD(void)
             DEH_snprintf(namebuf, 9, "STCFN%.3d", c);
             p = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
             V_DrawPatchDirect(x, y, p);
-            x += SHORT(p->width);
+            x += SHORT(p->width) * hud_scale;
         }
     }
     
     // Draw current time
-    x = 20;
-    y += 20;
+    x = hud_scale != 1.0f ? (int)(20 * hud_scale) : 20;
+    y += line_height;
     DEH_snprintf(buf, sizeof(buf), "%02d:%02d", minutes, seconds);
     for (i = 0; buf[i]; i++)
     {
@@ -592,7 +648,7 @@ void ST_DrawTimeAttackHUD(void)
             DEH_snprintf(namebuf, 9, "STCFN%.3d", c);
             p = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
             V_DrawPatchDirect(x, y, p);
-            x += SHORT(p->width);
+            x += SHORT(p->width) * hud_scale;
         }
     }
 }
