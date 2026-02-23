@@ -48,6 +48,7 @@
 #include "g_rpg.h"
 #include "g_survival.h"
 #include "g_powerup.h"
+#include "g_achievement.h"
 #include "g_balance.h"
 
 // Goblin Dice Rollaz: Arena lock system
@@ -1092,6 +1093,13 @@ P_KillMobj
 	// Goblin Dice Rollaz: Track survival mode kills
 	G_SurvivalEnemyKilled();
 
+	// Goblin Dice Rollaz: Track achievement kills
+	G_TrackAchievementProgress(ACH_TYPE_KILLS, global_dice_stats.kills);
+	if (target->flags & MF_BOSS)
+	{
+	    G_TrackAchievementProgress(ACH_TYPE_BOSSES, 0);
+	}
+
 	if (target->player)
 	{
 	    source->player->frags[target->player-players]++;
@@ -1120,15 +1128,18 @@ P_KillMobj
     
     if (target->player)
     {
- 	// count environment kills against you
- 	if (!source)	
- 	    target->player->frags[target->player-players]++;
- 			
+  	// count environment kills against you
+  	if (!source)	
+  	    target->player->frags[target->player-players]++;
+  			
 	target->flags &= ~MF_SOLID;
 	target->player->playerstate = PST_DEAD;
 	P_DropWeapon (target->player);
 
 	target->player->powers[pw_dicefortune] = 0;
+
+	// Goblin Dice Rollaz: Track player death for achievements
+	G_TrackDeath();
 
 	if (target->player == &players[consoleplayer]
 	    && automapactive)

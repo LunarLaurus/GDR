@@ -66,6 +66,8 @@
 #include "g_rpg.h"
 #include "g_survival.h"
 #include "g_timeattack.h"
+#include "g_achievement.h"
+#include "g_game.h"
 
 // Data.
 #include "dstrings.h"
@@ -73,11 +75,7 @@
 
 // SKY handling - still the wrong place.
 #include "r_data.h"
-#include "r_sky.h"
-
-
-
-#include "g_game.h"
+#include "r_sky.h
 
 
 #define SAVEGAMESIZE	0x2c000
@@ -973,6 +971,13 @@ boolean G_Responder (event_t* ev)
 	    G_PrintDiceStats();
 	    return true;
 	}
+	// Goblin Dice Rollaz: F9 - Print achievements
+	if (ev->type == ev_keydown && ev->data1 == KEY_F9)
+	{
+	    extern void G_PrintAchievements(void);
+	    G_PrintAchievements();
+	    return true;
+	}
 	// Goblin Dice Rollaz: F12 - Print WAD info
 	if (ev->type == ev_keydown && ev->data1 == KEY_F12)
 	{
@@ -1116,6 +1121,9 @@ void G_Ticker (void)
 	    break; 
 	} 
     }
+    
+    // Goblin Dice Rollaz: Update achievement progress
+    G_UpdateAchievements();
     
     // get commands, check consistancy,
     // and build new consistancy check

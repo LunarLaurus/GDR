@@ -64,6 +64,7 @@
 #include "g_status.h"
 #include "g_demo_test.h"
 #include "g_balance.h"
+#include "g_achievement.h"
 #include "dice_predict.h"
 #include "dice_projectile_lag.h"
 
@@ -1651,6 +1652,7 @@ void D_DoomMain (void)
     D_BindVariables();
     M_LoadDefaults();
     G_UpdateStatusEffectInfo();
+    G_InitAchievements();
 
     // Save configuration at exit.
     I_AtExit(M_SaveDefaults, false);
