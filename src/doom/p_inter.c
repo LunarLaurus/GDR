@@ -1675,6 +1675,32 @@ P_DamageMobj
     
     if (target->health <= 0)
     {
+        // Goblin Dice Rollaz: Add kill confirmation popup
+        if (source && source->player && !(target->flags & MF_MISSILE) && kill_confirm_enabled)
+        {
+            fixed_t tr_x = target->x - viewx;
+            fixed_t tr_y = target->y - viewy;
+            fixed_t gxt = FixedMul(tr_x, viewcos);
+            fixed_t gyt = -FixedMul(tr_y, viewsin);
+            fixed_t tz = gxt - gyt;
+
+            if (tz > 0)
+            {
+                fixed_t xscale = FixedDiv(projection, tz);
+                gxt = -FixedMul(tr_x, viewsin);
+                gyt = FixedMul(tr_y, viewcos);
+                fixed_t tx = -(gyt + gxt);
+
+                int screen_x = (centerxfrac + FixedMul(tx, xscale)) >> FRACBITS;
+                int screen_y = (centeryfrac + FixedMul(target->z - viewz + target->height, xscale)) >> FRACBITS;
+
+                if (screen_x > 0 && screen_x < SCREENWIDTH && screen_y > 0 && screen_y < SCREENHEIGHT)
+                {
+                    DMG_AddKillConfirm(screen_x, screen_y, target);
+                }
+            }
+        }
+
         // Goblin Dice Rollaz: Play boss victory music when boss dies
         if (target->type == MT_GOBLIN_KING || target->type == MT_DWARVEN_WAR_MACHINE)
         {

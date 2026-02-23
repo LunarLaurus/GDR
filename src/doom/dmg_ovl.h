@@ -22,6 +22,7 @@
 
 #define MAX_DAMAGE_NUMBERS 32
 #define MAX_CRIT_POPUPS 8
+#define MAX_KILL_CONFIRMS 6
 
 typedef struct damage_number_s {
     int x;
@@ -44,9 +45,19 @@ typedef struct crit_popup_s {
     boolean active;
 } crit_popup_t;
 
+typedef struct kill_confirm_s {
+    int x;
+    int y;
+    int lifetime;
+    int max_lifetime;
+    boolean active;
+    mobj_t *target;
+} kill_confirm_t;
+
 void DMG_Init(void);
 void DMG_AddDamage(int x, int y, int damage, boolean critical, int crit_roll, damage_type_t damage_type);
 void DMG_AddCritPopup(int x, int y, int roll);
+void DMG_AddKillConfirm(int x, int y, mobj_t *target);
 void DMG_Ticker(void);
 void DMG_Drawer(void);
 

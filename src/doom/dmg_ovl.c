@@ -30,12 +30,15 @@
 
 #define DAMAGE_LIFETIME 35
 #define CRIT_POPUP_LIFETIME 45
+#define KILL_CONFIRM_LIFETIME 30
 #define MAX_DAMAGE_NUMBERS 24
 #define MAX_CRIT_POPUPS 8
+#define MAX_KILL_CONFIRMS 6
 
 static patch_t* dmg_font[10];
 static damage_number_t damage_numbers[MAX_DAMAGE_NUMBERS];
 static crit_popup_t crit_popups[MAX_CRIT_POPUPS];
+static kill_confirm_t kill_confirms[MAX_KILL_CONFIRMS];
 static patch_t* hu_font[HU_FONTSIZE];
 
 void DMG_Init(void)
@@ -51,6 +54,12 @@ void DMG_Init(void)
     for (i = 0; i < MAX_CRIT_POPUPS; i++)
     {
         crit_popups[i].active = false;
+    }
+
+    for (i = 0; i < MAX_KILL_CONFIRMS; i++)
+    {
+        kill_confirms[i].active = false;
+        kill_confirms[i].target = NULL;
     }
 
     for (i = 0; i < 10; i++)
@@ -152,6 +161,45 @@ void DMG_AddCritPopup(int x, int y, int roll)
     crit_popups[i].active = true;
 }
 
+void DMG_AddKillConfirm(int x, int y, mobj_t *target)
+{
+    int i;
+    int oldest_index = -1;
+    int oldest_lifetime = 999;
+
+    for (i = 0; i < MAX_KILL_CONFIRMS; i++)
+    {
+        if (!kill_confirms[i].active)
+        {
+            break;
+        }
+        if (kill_confirms[i].lifetime < oldest_lifetime)
+        {
+            oldest_lifetime = kill_confirms[i].lifetime;
+            oldest_index = i;
+        }
+    }
+
+    if (i >= MAX_KILL_CONFIRMS)
+    {
+        if (oldest_index >= 0)
+        {
+            i = oldest_index;
+        }
+        else
+        {
+            return;
+        }
+    }
+
+    kill_confirms[i].x = x;
+    kill_confirms[i].y = y;
+    kill_confirms[i].lifetime = KILL_CONFIRM_LIFETIME;
+    kill_confirms[i].max_lifetime = KILL_CONFIRM_LIFETIME;
+    kill_confirms[i].active = true;
+    kill_confirms[i].target = target;
+}
+
 void DMG_Ticker(void)
 {
     int i;
@@ -184,6 +232,26 @@ void DMG_Ticker(void)
             if (crit_popups[i].lifetime <= 0)
             {
                 crit_popups[i].active = false;
+            }
+        }
+    }
+
+    for (i = 0; i < MAX_KILL_CONFIRMS; i++)
+    {
+        if (kill_confirms[i].active)
+        {
+            kill_confirms[i].lifetime--;
+            if (kill_confirms[i].lifetime > kill_confirms[i].max_lifetime - 8)
+            {
+                kill_confirms[i].y -= 1;
+            }
+            else
+            {
+                kill_confirms[i].y += 1;
+            }
+            if (kill_confirms[i].lifetime <= 0)
+            {
+                kill_confirms[i].active = false;
             }
         }
     }
@@ -272,6 +340,38 @@ static void DMG_DrawCritPopup(int x, int y, int roll)
     }
 }
 
+static void DMG_DrawKillConfirm(int x, int y, int lifetime, int max_lifetime)
+{
+    int w;
+    int h;
+    int alpha;
+    float fade;
+    byte *col;
+
+    fade = (float)lifetime / (float)max_lifetime;
+    alpha = (int)(255 * fade);
+
+    col = I_GetColor(0, 0, 255, 50, 50);
+
+    w = SHORT(hu_font[0]->width);
+    h = SHORT(hu_font[0]->height);
+
+    x = x - (4 * w) / 2;
+    y = y - h / 2;
+
+    if (hu_font[20])
+        V_DrawPatchDirect(x, y, hu_font[20]);
+    x += w;
+    if (hu_font[22])
+        V_DrawPatchDirect(x, y, hu_font[22]);
+    x += w;
+    if (hu_font[23])
+        V_DrawPatchDirect(x, y, hu_font[23]);
+    x += w;
+    if (hu_font[23])
+        V_DrawPatchDirect(x, y, hu_font[23]);
+}
+
 static void DMG_DrawDamageTypeIcon(int x, int y, damage_type_t dtype)
 {
     byte *col;
@@ -355,6 +455,17 @@ void DMG_Drawer(void)
                                       damage_numbers[i].y,
                                       damage_numbers[i].damage_type);
             }
+        }
+    }
+
+    for (i = 0; i < MAX_KILL_CONFIRMS; i++)
+    {
+        if (kill_confirms[i].active)
+        {
+            DMG_DrawKillConfirm(kill_confirms[i].x,
+                               kill_confirms[i].y,
+                               kill_confirms[i].lifetime,
+                               kill_confirms[i].max_lifetime);
         }
     }
 }

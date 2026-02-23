@@ -513,6 +513,7 @@ void D_BindVariables(void)
     M_BindFloatVariable("screen_shake_intensity", &screen_shake_intensity);
     M_BindFloatVariable("damage_number_scale",    &damage_number_scale);
     M_BindIntVariable("particle_effects",         &particle_effects);
+    M_BindIntVariable("kill_confirm_enabled",     &kill_confirm_enabled);
 
     // Goblin Dice Rollaz: Accessibility Settings
     M_BindIntVariable("colorblind_mode",          &colorblind_mode);

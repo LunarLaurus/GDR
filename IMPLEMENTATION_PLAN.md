@@ -272,7 +272,7 @@
 ### Phase 35: Post-Release Polish
 - [x] Optimize projectile rendering for 100+ dice on screen
 - [x] Add weapon recoil visual feedback
-- [ ] Implement kill confirmation popup
+- [x] Implement kill confirmation popup
 - [ ] Add damage statistics end-of-level screen
 - [ ] Add cumulative session stats tracking
 - [ ] Polish loading screen with dice animation
