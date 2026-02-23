@@ -249,7 +249,7 @@
 - [x] Expose crit system parameters to config
 - [x] Add custom dice weapon template example
 - [x] Add enemy definition template
-- [ ] Create example goblin-themed TC pack
+- [x] Create example goblin-themed TC pack
 - [ ] Write Modding Guide in `/docs`
 
 ## Phase 23: Performance & Determinism Audit
