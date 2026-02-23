@@ -10,6 +10,7 @@ add_library(doom STATIC
             deh_sound.c
             deh_thing.c
             deh_weapon.c
+            dice_predict.c  dice_predict.h
                             d_englsh.h
             d_items.c       d_items.h
             d_main.c        d_main.h

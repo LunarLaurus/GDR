@@ -42,6 +42,7 @@
 #include "p_particles.h"
 #include "dmg_ovl.h"
 #include "dbg_ovl.h"
+#include "dice_predict.h"
 #include "d_items.h"
 #include "g_status.h"
 #include "g_rpg.h"
@@ -1637,6 +1638,10 @@ P_DamageMobj
             
             if (screen_x > 0 && screen_x < SCREENWIDTH && screen_y > 0 && screen_y < SCREENHEIGHT)
             {
+                int weapon = -1;
+                if (source && source->player)
+                    weapon = source->player->readyweapon;
+                PREDICT_RecordDamage(screen_x, screen_y, damage, was_critical, crit_roll, weapon);
                 DMG_AddDamage(screen_x, screen_y, damage, was_critical, crit_roll);
                 if (was_critical && target)
                 {

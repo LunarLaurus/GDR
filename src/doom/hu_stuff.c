@@ -33,6 +33,7 @@
 #include "hu_lib.h"
 #include "dmg_ovl.h"
 #include "dbg_ovl.h"
+#include "dice_predict.h"
 #include "p_particles.h"
 #include "m_controls.h"
 #include "m_misc.h"
@@ -352,6 +353,7 @@ void HU_Init(void)
     }
 
     DMG_Init();
+    PREDICT_Init();
     DBG_Init();
     P_InitParticles();
 
@@ -534,9 +536,10 @@ void HU_Ticker(void)
     }
 
     DMG_Ticker();
+    PREDICT_Ticker();
     P_TickerParticles();
 
-}    DMG_T
+}
 
 #define QUEUESIZE		128
 

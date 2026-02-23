@@ -310,7 +310,7 @@
 - [x] Add mod loader error reporting system
 
 ## Phase 31: Network Optimizations
-- [ ] Add client-side prediction for dice roll results
+- [x] Add client-side prediction for dice roll results
 - [ ] Implement server-authoritative damage validation
 - [ ] Add lag compensation for projectile hits
 - [ ] Optimize network packet size for dice roll events
