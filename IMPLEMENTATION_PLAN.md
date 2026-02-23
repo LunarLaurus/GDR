@@ -298,7 +298,7 @@
 - [x] Add auto-save on level transition
 
 ## Phase 30: Debug Tools & Developer Features
-- [ ] Add console command to list all dice weapons and stats
+- [x] Add console command to list all dice weapons and stats
 - [ ] Add debug overlay showing damage calculations
 - [ ] Add configurable minimum damage cap (prevent 0-damage rolls)
 - [ ] Add screenshot hotkey with dice roll overlay capture
