@@ -45,6 +45,10 @@
 
 #include "wi_stuff.h"
 
+#include "g_stats.h"
+#include "hu_stuff.h"
+#include "m_menu.h"
+
 //
 // Data needed to add patches to full screen intermission pics.
 // Patches are statistics messages, and animations.
@@ -1452,10 +1456,53 @@ void WI_updateStats(void)
 
 }
 
+static void WI_drawDiceStats(int y)
+{
+    int lh;
+    int x;
+    char buffer[64];
+    
+    if (global_dice_stats.total_dice_rolls == 0)
+    {
+        return;
+    }
+    
+    lh = SHORT(hu_font[0]->height) + 2;
+    
+    x = SCREENWIDTH - SP_STATSX;
+    
+    M_WriteText(SP_STATSX, y, "DICE ROLLAZ STATS");
+    y += lh + 4;
+    
+    M_WriteText(SP_STATSX, y, "TOTAL ROLLS:");
+    WI_drawNum(x, y, global_dice_stats.total_dice_rolls, -1);
+    y += lh;
+    
+    M_WriteText(SP_STATSX, y, "TOTAL DAMAGE:");
+    WI_drawNum(x, y, global_dice_stats.total_damage_dealt, -1);
+    y += lh;
+    
+    M_WriteText(SP_STATSX, y, "CRITICALS:");
+    WI_drawNum(x, y, global_dice_stats.total_crits, -1);
+    y += lh;
+    
+    M_WriteText(SP_STATSX, y, "MISFIRES:");
+    WI_drawNum(x, y, global_dice_stats.total_misfires, -1);
+    y += lh;
+    
+    M_WriteText(SP_STATSX, y, "HIGH ROLL:");
+    WI_drawNum(x, y, global_dice_stats.highest_roll_achieved, -1);
+    y += lh;
+    
+    M_WriteText(SP_STATSX, y, "HIGH DMG:");
+    WI_drawNum(x, y, global_dice_stats.highest_single_hit, -1);
+}
+
 void WI_drawStats(void)
 {
     // line height
     int lh;	
+    int dice_stats_y;
 
     lh = (3*SHORT(num[0]->height))/2;
 
@@ -1488,6 +1535,12 @@ void WI_drawStats(void)
     {
         V_DrawPatch(SCREENWIDTH/2 + SP_TIMEX, SP_TIMEY, par);
         WI_drawTime(SCREENWIDTH - SP_TIMEX, SP_TIMEY, cnt_par);
+    }
+    
+    dice_stats_y = SP_STATSY + 4 * lh + 10;
+    if (dice_stats_y < SP_TIMEY - 60)
+    {
+        WI_drawDiceStats(dice_stats_y);
     }
 
 }

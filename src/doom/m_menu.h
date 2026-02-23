@@ -80,5 +80,8 @@ void M_SetupNextMenu(menu_t *menudef);
 extern menu_t LevelUpDef;
 void M_LevelUp(int choice);
 
+// Text drawing function for intermission and other screens
+void M_WriteText(int x, int y, const char *string);
+
 
 #endif

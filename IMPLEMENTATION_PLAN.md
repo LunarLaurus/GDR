@@ -273,7 +273,7 @@
 - [x] Optimize projectile rendering for 100+ dice on screen
 - [x] Add weapon recoil visual feedback
 - [x] Implement kill confirmation popup
-- [ ] Add damage statistics end-of-level screen
+- [x] Add damage statistics end-of-level screen
 - [ ] Add cumulative session stats tracking
 - [ ] Polish loading screen with dice animation
 - [ ] Add region-specific content warnings
