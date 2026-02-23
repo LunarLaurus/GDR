@@ -257,8 +257,8 @@
 - [x] Validate deterministic RNG across platforms
 - [x] Audit floating-point usage (avoid nondeterminism)
 - [x] Benchmark sprite-heavy scenes
-- [ ] Test low-spec hardware compatibility
-- [ ] Add reproducible demo test suite
+- [x] Test low-spec hardware compatibility
+- [x] Add reproducible demo test suite
 
 ## Phase 24: Release Engineering
 - [ ] Create versioning scheme (SemVer or similar)
