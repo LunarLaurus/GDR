@@ -295,7 +295,7 @@
 - [x] Add additional save slots (beyond 6)
 - [x] Add quicksave/quickload slots
 - [x] Add save game comments
-- [ ] Add auto-save on level transition
+- [x] Add auto-save on level transition
 
 ## Current Status
 **Phase 1-8 complete**. Phase 9-13 ready for implementation.

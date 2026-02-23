@@ -112,6 +112,9 @@ boolean         challenge_critonly;
 boolean         challenge_nopowerups;
 boolean         challenge_hardcore; 
 
+// Goblin Dice Rollaz: Auto-save on level transition
+boolean         auto_save_enabled = true; 
+
 // If non-zero, exit the level after this number of minutes.
 
 int             timelimit;
@@ -1515,6 +1518,9 @@ boolean		secretexit;
  
 void G_ExitLevel (void) 
 { 
+    char autoSaveDescription[32];
+    char autoSaveComment[SAVESTRINGSIZE];
+    
     secretexit = false; 
 
     // Goblin Dice Rollaz: Track time attack level completion
@@ -1524,20 +1530,40 @@ void G_ExitLevel (void)
         G_TimeAttackCompleteLevel();
     }
 
+    // Goblin Dice Rollaz: Auto-save on level transition
+    if (auto_save_enabled && !netgame && !demoplayback && usergame && !paused && players[consoleplayer].playerstate == PST_LIVE)
+    {
+        M_snprintf(autoSaveDescription, sizeof(autoSaveDescription), "Auto-save E%dm%d", gameepisode, gamemap);
+        M_snprintf(autoSaveComment, sizeof(autoSaveComment), "Level %d - Auto saved", gamemap);
+        G_SaveGame(0, autoSaveDescription, autoSaveComment);
+    }
+
     gameaction = ga_completed; 
 }
 
 // Here's for the german edition.
 void G_SecretExitLevel (void) 
 { 
+    char autoSaveDescription[32];
+    char autoSaveComment[SAVESTRINGSIZE];
+    
     // IF NO WOLF3D LEVELS, NO SECRET EXIT!
     if ( (gamemode == commercial)
       && (W_CheckNumForName("map31")<0))
 	secretexit = false;
     else
 	secretexit = true; 
+
+    // Goblin Dice Rollaz: Auto-save on secret level transition
+    if (auto_save_enabled && !netgame && !demoplayback && usergame && !paused && players[consoleplayer].playerstate == PST_LIVE)
+    {
+        M_snprintf(autoSaveDescription, sizeof(autoSaveDescription), "Auto-save E%dm%d", gameepisode, gamemap);
+        M_snprintf(autoSaveComment, sizeof(autoSaveComment), "Secret Exit - Auto saved");
+        G_SaveGame(0, autoSaveDescription, autoSaveComment);
+    }
+
     gameaction = ga_completed; 
-} 
+}
  
 void G_DoCompleted (void) 
 { 
