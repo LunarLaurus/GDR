@@ -328,7 +328,7 @@
 - [ ] Add option to reduce motion/screen shake
 
 ## Phase 34: Community Features
-- [ ] Add replay sharing functionality
+- [x] Add replay sharing functionality
 - [ ] Add dice roll statistics tracking
 - [ ] Add achievement system
 - [ ] Add leaderboard for challenge modes

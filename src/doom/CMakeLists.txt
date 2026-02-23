@@ -30,6 +30,7 @@ add_library(doom STATIC
             g_demo_test.c   g_demo_test.h
             g_game.c        g_game.h
             g_powerup.c     g_powerup.h
+            g_replay.c      g_replay.h
             g_rpg.c         g_rpg.h
             g_status.c      g_status.h
             g_survival.c    g_survival.h
