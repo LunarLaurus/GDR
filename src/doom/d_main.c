@@ -428,6 +428,7 @@ void D_BindVariables(void)
     M_BindIntVariable("screenblocks",           &screenblocks);
     M_BindIntVariable("detaillevel",            &detailLevel);
     M_BindIntVariable("r_spritedetail",         &r_spritedetail);
+    M_BindIntVariable("r_projectile_farclip",   &r_projectile_farclip);
     M_BindIntVariable("snd_channels",           &snd_channels);
     M_BindIntVariable("vanilla_savegame_limit", &vanilla_savegame_limit);
     M_BindIntVariable("vanilla_demo_limit",     &vanilla_demo_limit);

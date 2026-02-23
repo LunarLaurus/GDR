@@ -270,7 +270,7 @@
 - [x] Resolve blocker: Requires manual GitHub release creation and push to remote
 
 ### Phase 35: Post-Release Polish
-- [ ] Optimize projectile rendering for 100+ dice on screen
+- [x] Optimize projectile rendering for 100+ dice on screen
 - [ ] Add weapon recoil visual feedback
 - [ ] Implement kill confirmation popup
 - [ ] Add damage statistics end-of-level screen

@@ -90,6 +90,10 @@ extern	int		detailshift;
 // 0 = use detaillevel setting, 1 = force high detail sprites
 extern  int     r_spritedetail;
 
+// Goblin Dice Rollaz: Projectile rendering optimization
+// Distance at which projectiles are culled (in fracunits)
+extern int r_projectile_farclip;
+
 
 //
 // Function pointers to switch refresh/drawing functions.

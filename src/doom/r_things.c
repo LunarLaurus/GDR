@@ -78,6 +78,8 @@ int r_sprite_pixels_drawn = 0;
 int r_vissprite_count = 0;
 boolean r_showspritestats = false;
 
+int r_projectile_farclip = 24*FRACUNIT;
+
 // constant arrays
 //  used for psprite clipping and initializing clipping
 short		negonearray[SCREENWIDTH];
@@ -490,6 +492,11 @@ void R_ProjectSprite (mobj_t* thing)
 
     // thing is behind view plane?
     if (tz < MINZ)
+	return;
+
+    // Goblin Dice Rollaz: Early culling for projectiles
+    // Skip projectiles that are too far or behind the player
+    if ((thing->flags & MF_MISSILE) && tz > r_projectile_farclip)
 	return;
     
     xscale = FixedDiv(projection, tz);
