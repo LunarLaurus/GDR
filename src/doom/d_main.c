@@ -514,6 +514,7 @@ void D_BindVariables(void)
     M_BindIntVariable("colorblind_mode",          &colorblind_mode);
     M_BindFloatVariable("hud_scale",              &hud_scale);
     M_BindIntVariable("reduce_motion",            &reduce_motion);
+    M_BindIntVariable("screen_reader_enabled",    &screen_reader_enabled);
 
     // Multiplayer chat macros
 

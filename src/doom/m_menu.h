@@ -72,6 +72,7 @@ extern int particle_effects;
 extern int colorblind_mode;
 extern float hud_scale;
 extern int reduce_motion;
+extern int screen_reader_enabled;
 
 // Goblin Dice Rollaz: Level Up menu
 typedef struct menu_s menu_t;

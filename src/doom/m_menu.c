@@ -90,6 +90,7 @@ int			particle_effects = 1;         // Enable particle effects (0=off, 1=on)
 int			colorblind_mode = 0;          // Colorblind mode (0=off, 1=red-green, 2=blue-yellow)
 float		hud_scale = 1.0f;              // HUD scale multiplier (0.5-2.0)
 int			reduce_motion = 0;            // Reduce motion effects (0=off, 1=on)
+int			screen_reader_enabled = 0;   // Screen reader mode (0=off, 1=on)
 
 // Goblin Dice Rollaz: Main menu animated background
 #define MENU_ANIM_FRAMES 8
@@ -253,6 +254,7 @@ static void M_Accessibility(int choice);
 static void M_ColorblindMode(int choice);
 static void M_HUDScale(int choice);
 static void M_ReduceMotion(int choice);
+static void M_ScreenReaderMode(int choice);
 static void M_DrawAccessibility(void);
 
 static void M_FinishReadThis(int choice);
@@ -482,6 +484,7 @@ enum
     accessibility_colorblind,
     accessibility_hudscale,
     accessibility_reducemotion,
+    accessibility_screenreader,
     accessibility_end
 } accessibility_e;
 
@@ -489,7 +492,8 @@ menuitem_t AccessibilityMenu[]=
 {
     {1,"M_COLBLND", M_ColorblindMode, 'c'},
     {2,"M_HUDSCAL", M_HUDScale, 'h'},
-    {1,"M_REDMOT", M_ReduceMotion, 'r'}
+    {1,"M_REDMOT", M_ReduceMotion, 'r'},
+    {1,"M_SCRNRD", M_ScreenReaderMode, 's'}
 };
 
 menu_t  AccessibilityDef =
@@ -1602,6 +1606,35 @@ void M_ReduceMotion(int choice)
     }
 }
 
+void M_ScreenReaderMode(int choice)
+{
+    choice = 0;
+    screen_reader_enabled = 1 - screen_reader_enabled;
+    
+    if (screen_reader_enabled)
+    {
+        players[consoleplayer].message = "Screen Reader: ON";
+    }
+    else
+    {
+        players[consoleplayer].message = "Screen Reader: OFF";
+    }
+}
+
+static void M_AnnounceMenuItem(void)
+{
+    const char *itemname;
+    
+    if (!screen_reader_enabled || !menuactive)
+        return;
+    
+    itemname = DEH_String(currentMenu->menuitems[itemOn].name);
+    if (itemname && *itemname)
+    {
+        DEH_printf("[SCREENREADER] %s\n", itemname);
+    }
+}
+
 void M_DrawAccessibility(void)
 {
     V_DrawPatchDirect(72, 15, W_CacheLumpName(DEH_String("M_OPTTTL"),
@@ -1626,6 +1659,13 @@ void M_DrawAccessibility(void)
     V_DrawPatchDirect(AccessibilityDef.x + 120, 
                       AccessibilityDef.y + LINEHEIGHT * 2,
                       W_CacheLumpName(DEH_String(reduce_motion ? "M_YES" : "M_NO"),
+                                      PU_CACHE));
+    
+    // Screen reader toggle
+    M_WriteText(AccessibilityDef.x - 80, AccessibilityDef.y + LINEHEIGHT * 3, "Screen Rd");
+    V_DrawPatchDirect(AccessibilityDef.x + 120, 
+                      AccessibilityDef.y + LINEHEIGHT * 3,
+                      W_CacheLumpName(DEH_String(screen_reader_enabled ? "M_YES" : "M_NO"),
                                       PU_CACHE));
 }
 
@@ -2568,6 +2608,7 @@ boolean M_Responder (event_t* ev)
 	    S_StartSound(NULL,sfx_pstop);
 	} while(currentMenu->menuitems[itemOn].status==-1);
 
+	M_AnnounceMenuItem();
 	return true;
     }
     else if (key == key_menu_up)
@@ -2582,6 +2623,7 @@ boolean M_Responder (event_t* ev)
 	    S_StartSound(NULL,sfx_pstop);
 	} while(currentMenu->menuitems[itemOn].status==-1);
 
+	M_AnnounceMenuItem();
 	return true;
     }
     else if (key == key_menu_left)
@@ -2696,6 +2738,7 @@ void M_StartControlPanel (void)
     menuactive = 1;
     currentMenu = &MainDef;         // JDC
     itemOn = currentMenu->lastOn;   // JDC
+    M_AnnounceMenuItem();
 }
 
 // Display OPL debug messages - hack for GENMIDI development.
@@ -2843,6 +2886,7 @@ void M_SetupNextMenu(menu_t *menudef)
 {
     currentMenu = menudef;
     itemOn = currentMenu->lastOn;
+    M_AnnounceMenuItem();
 }
 
 
