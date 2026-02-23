@@ -699,5 +699,51 @@
 #define CC_CYBER	"THE WAR GOLEM"
 #define CC_HERO		"OUR HERO"
 
+//
+//	M_Menu.C - Region-specific content warnings
+//
+#define REGION_NA	"North America"
+#define REGION_EU	"Europe"
+#define REGION_AU	"Australia"
+#define REGION_JP	"Japan"
+
+#define CONTENT_WARN_NA \
+"This game contains:\n" \
+"Violence\n" \
+"Blood and Gore\n" \
+"Strong Language\n" \
+"\n" \
+"ESRB Rating: M (Mature 17+)\n" \
+"Interactive Elements: \n" \
+"Users Interact, In-Game Purchases"
+
+#define CONTENT_WARN_EU \
+"This game contains:\n" \
+"Violence\n" \
+"Blood\n" \
+"\n" \
+"PEGI Rating: 18\n" \
+"Violence\n" \
+"Online Interactions Not Rated"
+
+#define CONTENT_WARN_AU \
+"This game contains:\n" \
+"Violence\n" \
+"Blood and Gore\n" \
+"\n" \
+"Classification: R18+\n" \
+"High Impact Violence"
+
+#define CONTENT_WARN_JP \
+"This game contains:\n" \
+"Violence\n" \
+"Blood\n" \
+"\n" \
+"CERO Rating: Z (18+)\n" \
+"Violence"
+
+#define CONTENT_WARNING_TITLE	"Content Warning"
+#define CONTENT_WARNING_PRESSKEY	"\n\nPress any key to continue..."
+
 
 #endif

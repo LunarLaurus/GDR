@@ -94,6 +94,11 @@ float		hud_scale = 1.0f;              // HUD scale multiplier (0.5-2.0)
 int			reduce_motion = 0;            // Reduce motion effects (0=off, 1=on)
 int			screen_reader_enabled = 0;   // Screen reader mode (0=off, 1=on)
 
+// Goblin Dice Rollaz: Region settings for content warnings
+// 0=North America (ESRB), 1=Europe (PEGI), 2=Australia (ACB), 3=Japan (CERO)
+int			player_region = 0;
+int			content_warning_accepted = 0;  // Has user acknowledged warning
+
 // Goblin Dice Rollaz: Main menu animated background
 #define MENU_ANIM_FRAMES 8
 #define MENU_ANIM_SPEED 4  // frames per second
@@ -259,6 +264,13 @@ static void M_ReduceMotion(int choice);
 static void M_ScreenReaderMode(int choice);
 static void M_DrawAccessibility(void);
 
+// Goblin Dice Rollaz: Content Warning menu
+static void M_ContentWarning(int choice);
+static void M_ChangeRegion(int choice);
+static void M_ShowContentWarning(int choice);
+static void M_DrawContentWarning(void);
+static void M_AcceptContentWarning(int choice);
+
 static void M_FinishReadThis(int choice);
 static void M_LoadSelect(int choice);
 static void M_SaveSelect(int choice);
@@ -382,8 +394,8 @@ enum
     options,
     gamesettings,
     accessibility,
+    contentwarn,
     loadgame,
-    savegame,
     readthis,
     quitdoom,
     main_end
@@ -398,6 +410,7 @@ menuitem_t MainMenu[]=
     {1,"M_OPTION",M_Options,'o'},
     {1,"M_GAMESET",M_GameSettings,'g'},
     {1,"M_ACCESS",M_Accessibility,'a'},
+    {1,"",M_ContentWarning,'c'},
     {1,"M_LOADG",M_LoadGame,'b'},
     {1,"M_SAVEG",M_SaveGame,'v'},
     // Another hickup with Special edition.
@@ -545,6 +558,34 @@ menu_t  AccessibilityDef =
     &MainDef,
     AccessibilityMenu,
     M_DrawAccessibility,
+    60,37,
+    0
+};
+
+//
+// Goblin Dice Rollaz: CONTENT WARNING MENU
+//
+enum
+{
+    contentwarn_region,
+    contentwarn_view,
+    contentwarn_accept,
+    contentwarn_end
+} contentwarn_e;
+
+menuitem_t ContentWarningMenu[]=
+{
+    {2,"M_REGIONS", M_ChangeRegion, 'r'},
+    {1,"M_VIEW", M_ShowContentWarning, 'v'},
+    {1,"M_ACKWRN", M_AcceptContentWarning, 'a'}
+};
+
+menu_t  ContentWarningDef =
+{
+    contentwarn_end,
+    &MainDef,
+    ContentWarningMenu,
+    M_DrawContentWarning,
     60,37,
     0
 };
@@ -1352,6 +1393,8 @@ void M_DrawMainMenu(void)
 
     V_DrawPatchDirect(94, 2,
                       W_CacheLumpName(DEH_String("M_DOOM"), PU_CACHE));
+
+    M_WriteText(MainDef.x + 120, MainDef.y + LINEHEIGHT * 7, "Content");
 }
 
 
@@ -1713,6 +1756,112 @@ void M_DrawAccessibility(void)
                       AccessibilityDef.y + LINEHEIGHT * 3,
                       W_CacheLumpName(DEH_String(screen_reader_enabled ? "M_YES" : "M_NO"),
                                       PU_CACHE));
+}
+
+//
+// M_ContentWarning - Open the content warning menu
+//
+void M_ContentWarning(int choice)
+{
+    M_SetupNextMenu(&ContentWarningDef);
+}
+
+//
+// M_ChangeRegion - Cycle through region options
+//
+void M_ChangeRegion(int choice)
+{
+    player_region++;
+    if (player_region > 3)
+        player_region = 0;
+    S_StartSound(NULL, sfx_pstop);
+}
+
+//
+// M_ShowContentWarning - Display the content warning for current region
+//
+void M_ShowContentWarning(int choice)
+{
+    const char* region_name;
+    const char* warning_text;
+    char warning_msg[1024];
+    
+    switch(player_region)
+    {
+    case 0:
+        region_name = DEH_String(REGION_NA);
+        warning_text = DEH_String(CONTENT_WARN_NA);
+        break;
+    case 1:
+        region_name = DEH_String(REGION_EU);
+        warning_text = DEH_String(CONTENT_WARN_EU);
+        break;
+    case 2:
+        region_name = DEH_String(REGION_AU);
+        warning_text = DEH_String(CONTENT_WARN_AU);
+        break;
+    case 3:
+    default:
+        region_name = DEH_String(REGION_JP);
+        warning_text = DEH_String(CONTENT_WARN_JP);
+        break;
+    }
+    
+    DEH_snprintf(warning_msg, sizeof(warning_msg), "%s\n\n%s\n\n%s",
+                 DEH_String(CONTENT_WARNING_TITLE),
+                 region_name,
+                 warning_text);
+    
+    players[consoleplayer].message = warning_msg;
+    S_StartSound(NULL, sfx_swtchn);
+}
+
+//
+// M_AcceptContentWarning - Acknowledge the content warning
+//
+void M_AcceptContentWarning(int choice)
+{
+    content_warning_accepted = 1;
+    S_StartSound(NULL, sfx_swtchn);
+    M_SetupNextMenu(&MainDef);
+}
+
+//
+// M_DrawContentWarning - Draw the content warning menu
+//
+void M_DrawContentWarning(void)
+{
+    V_DrawPatchDirect(72, 15, W_CacheLumpName(DEH_String("M_OPTTTL"),
+                                               PU_CACHE));
+    
+    // Region selection
+    M_WriteText(ContentWarningDef.x - 80, ContentWarningDef.y, "Region");
+    switch(player_region)
+    {
+    case 0:
+        M_WriteText(ContentWarningDef.x + 120, ContentWarningDef.y, "N. America");
+        break;
+    case 1:
+        M_WriteText(ContentWarningDef.x + 120, ContentWarningDef.y, "Europe");
+        break;
+    case 2:
+        M_WriteText(ContentWarningDef.x + 120, ContentWarningDef.y, "Australia");
+        break;
+    case 3:
+        M_WriteText(ContentWarningDef.x + 120, ContentWarningDef.y, "Japan");
+        break;
+    }
+    
+    // View warning button
+    M_WriteText(ContentWarningDef.x - 80, ContentWarningDef.y + LINEHEIGHT * 1, "View");
+    M_WriteText(ContentWarningDef.x + 120, ContentWarningDef.y + LINEHEIGHT * 1, "Warning");
+    
+    // Acknowledge button
+    M_WriteText(ContentWarningDef.x - 80, ContentWarningDef.y + LINEHEIGHT * 2, "Accept");
+    if (content_warning_accepted)
+        M_WriteText(ContentWarningDef.x + 120, ContentWarningDef.y + LINEHEIGHT * 2, "YES");
+    else
+        M_WriteText(ContentWarningDef.x + 120, ContentWarningDef.y + LINEHEIGHT * 2, "NO");
 }
 
 //

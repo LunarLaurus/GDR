@@ -276,7 +276,7 @@
 - [x] Add damage statistics end-of-level screen
 - [x] Add cumulative session stats tracking
 - [x] Polish loading screen with dice animation
-- [ ] Add region-specific content warnings
+- [x] Add region-specific content warnings
 - [ ] Implement achievement notification toasts
 - [ ] Add cross-platform save file migration utility
 - [x] Draft public roadmap
