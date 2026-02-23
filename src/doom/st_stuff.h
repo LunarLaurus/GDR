@@ -67,6 +67,9 @@ void ST_DrawSurvivalHUD(void);
 extern boolean hud_hidden;
 void ST_ToggleHUD(void);
 
+// Goblin Dice Rollaz: Crosshair drawing
+void ST_DrawCrosshair(void);
+
 extern pixel_t *st_backing_screen;
 extern cheatseq_t cheat_mus;
 extern cheatseq_t cheat_god;

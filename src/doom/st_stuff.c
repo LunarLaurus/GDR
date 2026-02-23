@@ -66,6 +66,8 @@
 
 #include "d_items.h"
 
+#include "g_balance.h"
+
 // Goblin Dice Rollaz: Weapon stat debug overlay
 int show_weapon_stats = 0;
 static patch_t *st_weaponstat_font[HU_FONTSIZE];
@@ -2283,5 +2285,92 @@ void ST_Init (void)
 {
     ST_loadData();
     st_backing_screen = (pixel_t *) Z_Malloc(ST_WIDTH * ST_HEIGHT * sizeof(*st_backing_screen), PU_STATIC, 0);
+}
+
+//
+// ST_DrawCrosshair
+// Goblin Dice Rollaz: Draw crosshair at center of view
+//
+void ST_DrawCrosshair(void)
+{
+    extern int scaledviewwidth;
+    extern int viewheight;
+    int cx, cy;
+    int color;
+    int size;
+
+    if (!crosshair_enabled)
+        return;
+
+    if (gamestate != GS_LEVEL || automapactive)
+        return;
+
+    cx = scaledviewwidth / 2;
+    cy = viewheight / 2;
+
+    switch (crosshair_scale)
+    {
+        case 0: size = 2; break;
+        case 2: size = 6; break;
+        default: size = 4; break;
+    }
+
+    switch (crosshair_color)
+    {
+        case CROSSHAIR_COLOR_RED:    color = 0x9D; break;
+        case CROSSHAIR_COLOR_GREEN:   color = 0x19; break;
+        case CROSSHAIR_COLOR_YELLOW:  color = 0x29; break;
+        case CROSSHAIR_COLOR_CYAN:   color = 0x39; break;
+        default:                      color = 0x00; break;
+    }
+
+    switch (crosshair_type)
+    {
+        case CROSSHAIR_DOT:
+            V_DrawFilledBox(cx - 1, cy - 1, 3, 3, color);
+            break;
+
+        case CROSSHAIR_CROSS:
+            V_DrawHorizLine(cx - size * 2, cy, size * 4 + 1, color);
+            V_DrawVertLine(cx, cy - size * 2, size * 4 + 1, color);
+            break;
+
+        case CROSSHAIR_CIRCLE:
+            V_DrawFilledBox(cx - size, cy - 1, size * 2 + 1, 3, color);
+            V_DrawFilledBox(cx - 1, cy - size, 3, size * 2 + 1, color);
+            V_DrawFilledBox(cx - size - 1, cy - 1, 3, 3, color);
+            V_DrawFilledBox(cx + size - 1, cy - 1, 3, 3, color);
+            V_DrawFilledBox(cx - 1, cy - size - 1, 3, 3, color);
+            V_DrawFilledBox(cx - 1, cy + size - 1, 3, 3, color);
+            break;
+
+        case CROSSHAIR_DIAMOND:
+            V_DrawFilledBox(cx, cy - size, 1, size * 2 + 1, color);
+            V_DrawFilledBox(cx - size, cy, size * 2 + 1, 1, color);
+            break;
+
+        case CROSSHAIR_TRIANGLE:
+            {
+                int w = size * 3;
+                int h = size * 2;
+                int i;
+                for (i = 0; i < w; i++)
+                {
+                    V_DrawFilledBox(cx - w + i, cy - h + (i * h / w), 1, (h * 2) - (i * 2 * h / w) + 1, color);
+                }
+            }
+            break;
+
+        case CROSSHAIR_DICE_DOTS:
+            V_DrawFilledBox(cx - 3, cy - 3, 2, 2, color);
+            V_DrawFilledBox(cx + 2, cy - 3, 2, 2, color);
+            V_DrawFilledBox(cx - 3, cy + 2, 2, 2, color);
+            V_DrawFilledBox(cx + 2, cy + 2, 2, 2, color);
+            V_DrawFilledBox(cx - 1, cy - 1, 3, 3, color);
+            break;
+
+        default:
+            break;
+    }
 }
 

@@ -77,6 +77,12 @@ int				viewshake_duration;
 // Goblin Dice Rollaz: Modern FX toggle (0 = off, 1 = on)
 int				usemodernfx;
 
+// Goblin Dice Rollaz: Crosshair customization
+int             crosshair_enabled;
+int             crosshair_type;
+int             crosshair_color;
+int             crosshair_scale;
+
 angle_t			viewangle;
 
 fixed_t			viewcos;

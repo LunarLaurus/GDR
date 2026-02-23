@@ -849,6 +849,26 @@ static default_t extra_defaults_list[] =
     //
     CONFIG_VARIABLE_INT(usemodernfx),
 
+    // Goblin Dice Rollaz: Crosshair customization
+    // If non-zero, crosshair is displayed at center of view.
+    //
+    CONFIG_VARIABLE_INT(crosshair_enabled),
+
+    // Goblin Dice Rollaz: Crosshair type
+    // 0=none, 1=dot, 2=cross, 3=circle, 4=diamond, 5=triangle, 6=dice dots
+    //
+    CONFIG_VARIABLE_INT(crosshair_type),
+
+    // Goblin Dice Rollaz: Crosshair color
+    // 0=white, 1=red, 2=green, 3=yellow, 4=cyan
+    //
+    CONFIG_VARIABLE_INT(crosshair_color),
+
+    // Goblin Dice Rollaz: Crosshair scale
+    // 0=small, 1=normal, 2=large
+    //
+    CONFIG_VARIABLE_INT(crosshair_scale),
+
     //!
     // If non-zero, save screenshots in PNG format. If zero, screenshots are
     // saved in PCX format, as Vanilla Doom does.

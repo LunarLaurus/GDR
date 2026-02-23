@@ -279,4 +279,25 @@
 #define DEBUG_POWERUP_TIMERS     0
 #endif
 
+// ============================================================================
+// CROSSHAIR SYSTEM
+// ============================================================================
+
+// Crosshair types
+#define CROSSHAIR_NONE           0
+#define CROSSHAIR_DOT            1
+#define CROSSHAIR_CROSS          2
+#define CROSSHAIR_CIRCLE         3
+#define CROSSHAIR_DIAMOND        4
+#define CROSSHAIR_TRIANGLE       5
+#define CROSSHAIR_DICE_DOTS      6       // Dice-themed: dots for d6 face
+#define CROSSHAIR_MAX            6
+
+// Crosshair colors
+#define CROSSHAIR_COLOR_DEFAULT  0       // White
+#define CROSSHAIR_COLOR_RED      1       // Red (classic)
+#define CROSSHAIR_COLOR_GREEN    2       // Green
+#define CROSSHAIR_COLOR_YELLOW   3       // Yellow
+#define CROSSHAIR_COLOR_CYAN     4       // Cyan
+
 #endif

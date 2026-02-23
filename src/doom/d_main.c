@@ -159,6 +159,12 @@ extern int      dicefortune_spawn_rate;
 extern int      net_sync_debug;
 extern int      rng_validation_enabled;
 
+// Goblin Dice Rollaz: Crosshair customization
+extern int      crosshair_enabled;
+extern int      crosshair_type;
+extern int      crosshair_color;
+extern int      crosshair_scale;
+
 // Goblin Dice Rollaz: difficulty scaling
 extern int      difficulty_hp_scale[5];
 
@@ -283,7 +289,10 @@ boolean D_Display (void)
     
     // draw the view directly
     if (gamestate == GS_LEVEL && !automapactive && gametic)
-	R_RenderPlayerView (&players[displayplayer]);
+    {
+        R_RenderPlayerView (&players[displayplayer]);
+        ST_DrawCrosshair();
+    }
 
     if (gamestate == GS_LEVEL && gametic)
 	HU_Drawer ();
@@ -461,6 +470,12 @@ void D_BindVariables(void)
 
     // Goblin Dice Rollaz: modern visual effects toggle
     M_BindIntVariable("usemodernfx",             &usemodernfx);
+
+    // Goblin Dice Rollaz: Crosshair customization
+    M_BindIntVariable("crosshair_enabled",       &crosshair_enabled);
+    M_BindIntVariable("crosshair_type",         &crosshair_type);
+    M_BindIntVariable("crosshair_color",        &crosshair_color);
+    M_BindIntVariable("crosshair_scale",        &crosshair_scale);
 
     // Goblin Dice Rollaz: difficulty scaling
     M_BindIntVariable("difficulty_hp_baby",       &difficulty_hp_scale[0]);

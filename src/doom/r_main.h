@@ -171,5 +171,11 @@ void R_TriggerScreenShake(fixed_t intensity, int duration);
 // Goblin Dice Rollaz: Modern visual effects toggle
 extern int usemodernfx;
 
+// Goblin Dice Rollaz: Crosshair customization
+extern int crosshair_enabled;
+extern int crosshair_type;
+extern int crosshair_color;
+extern int crosshair_scale;
+
 
 #endif
