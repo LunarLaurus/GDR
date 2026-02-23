@@ -86,6 +86,24 @@ float		screen_shake_intensity = 1.0f; // Screen shake multiplier (0.0-2.0)
 float		damage_number_scale = 1.0f;    // Damage number size multiplier (0.5-2.0)
 int			particle_effects = 1;         // Enable particle effects (0=off, 1=on)
 
+// Goblin Dice Rollaz: Main menu animated background
+#define MENU_ANIM_FRAMES 8
+#define MENU_ANIM_SPEED 4  // frames per second
+typedef struct {
+    int x;
+    int y;
+    int die_type;  // 4, 6, 8, 10, 12, 20, 100
+    float speed_y;
+    int color;
+} menu_dice_particle_t;
+
+static int menu_anim_tic = 0;
+static menu_dice_particle_t menu_particles[16];
+static boolean menu_anim_initialized = false;
+
+void M_InitMenuAnimation(void);
+void M_DrawMenuBackground(void);
+
 	
 
 // Blocky mode, has default, 0 = high, 1 = normal
@@ -1092,6 +1110,147 @@ void M_MusicVol(int choice)
     S_SetMusicVolume(musicVolume * 8);
 }
 
+//
+// M_InitMenuAnimation
+// Initialize floating dice particles for main menu background
+//
+void M_InitMenuAnimation(void)
+{
+    int i;
+    if (menu_anim_initialized)
+        return;
+
+    for (i = 0; i < 16; i++)
+    {
+        menu_particles[i].x = (rand() % (SCREENWIDTH - 40)) + 20;
+        menu_particles[i].y = rand() % SCREENHEIGHT;
+        menu_particles[i].die_type = 4 + (rand() % 7) * 2; // 4, 6, 8, 10, 12, 16(not used), 18(not used), 20
+        if (menu_particles[i].die_type == 16 || menu_particles[i].die_type == 18)
+            menu_particles[i].die_type = 20;
+        menu_particles[i].speed_y = 0.2f + (rand() % 30) / 100.0f;
+        menu_particles[i].color = 4 + (rand() % 8); // palette colors in dark range
+    }
+    menu_anim_initialized = true;
+}
+
+//
+// M_DrawMenuBackground
+// Draw animated background with floating dice for main menu
+//
+void M_DrawMenuBackground(void)
+{
+    int i;
+    int frame;
+    int bg_color;
+    int time = I_GetTime();
+
+    // Initialize on first call
+    if (!menu_anim_initialized)
+        M_InitMenuAnimation();
+
+    // Update animation tic every few frames
+    if (time % 4 == 0)
+        menu_anim_tic++;
+
+    // Cycle background color slowly
+    frame = (menu_anim_tic / 8) % MENU_ANIM_FRAMES;
+
+    // Dark cavern-style background with subtle color shifting
+    bg_color = 0; // Base dark
+    V_DrawFilledBox(0, 0, SCREENWIDTH, SCREENHEIGHT, bg_color);
+
+    // Draw subtle gradient overlay (using box layers)
+    for (i = 0; i < 8; i++)
+    {
+        int alpha = (frame + i) % 16;
+        if (alpha < 8)
+            V_DrawFilledBox(0, i * (SCREENHEIGHT / 8), SCREENWIDTH, SCREENHEIGHT / 8, 0);
+    }
+
+    // Draw floating dice particles
+    for (i = 0; i < 16; i++)
+    {
+        menu_particles[i].y -= menu_particles[i].speed_y;
+
+        // Wrap around when particle goes off screen
+        if (menu_particles[i].y < -20)
+        {
+            menu_particles[i].y = SCREENHEIGHT + 20;
+            menu_particles[i].x = (rand() % (SCREENWIDTH - 40)) + 20;
+        }
+
+        // Draw a simple representation of dice number using the number character
+        // Use hu_font to draw the die face number
+        if (menu_particles[i].die_type <= 6)
+        {
+            // Draw dice face (1-6)
+            char dice_char = '0' + ((i % 6) + 1);
+            int char_index = dice_char - '!';
+            if (char_index >= 0 && char_index < HU_FONTSIZE && hu_font[char_index])
+            {
+                V_DrawPatchDirect(menu_particles[i].x, (int)menu_particles[i].y,
+                                  hu_font[char_index]);
+            }
+        }
+        else
+        {
+            // For larger dice, draw the number as text
+            char dice_str[4];
+            int dice_num = menu_particles[i].die_type;
+            M_snprintf(dice_str, sizeof(dice_str), "%d", dice_num);
+            // Draw the d20 as a special case
+            if (dice_num == 20)
+            {
+                // Draw '20' using the font
+                int char_index = '2' - '!';
+                if (char_index >= 0 && char_index < HU_FONTSIZE && hu_font[char_index])
+                    V_DrawPatchDirect(menu_particles[i].x, (int)menu_particles[i].y,
+                                      hu_font[char_index]);
+                char_index = '0' - '!';
+                if (char_index >= 0 && char_index < HU_FONTSIZE && hu_font[char_index])
+                    V_DrawPatchDirect(menu_particles[i].x + 8, (int)menu_particles[i].y,
+                                      hu_font[char_index]);
+            }
+            else if (dice_num == 10)
+            {
+                int char_index = '1' - '!';
+                if (char_index >= 0 && char_index < HU_FONTSIZE && hu_font[char_index])
+                    V_DrawPatchDirect(menu_particles[i].x, (int)menu_particles[i].y,
+                                      hu_font[char_index]);
+                char_index = '0' - '!';
+                if (char_index >= 0 && char_index < HU_FONTSIZE && hu_font[char_index])
+                    V_DrawPatchDirect(menu_particles[i].x + 8, (int)menu_particles[i].y,
+                                      hu_font[char_index]);
+            }
+            else if (dice_num == 12)
+            {
+                int char_index = '1' - '!';
+                if (char_index >= 0 && char_index < HU_FONTSIZE && hu_font[char_index])
+                    V_DrawPatchDirect(menu_particles[i].x, (int)menu_particles[i].y,
+                                      hu_font[char_index]);
+                char_index = '2' - '!';
+                if (char_index >= 0 && char_index < HU_FONTSIZE && hu_font[char_index])
+                    V_DrawPatchDirect(menu_particles[i].x + 8, (int)menu_particles[i].y,
+                                      hu_font[char_index]);
+            }
+            else if (dice_num == 8)
+            {
+                int char_index = '8' - '!';
+                if (char_index >= 0 && char_index < HU_FONTSIZE && hu_font[char_index])
+                    V_DrawPatchDirect(menu_particles[i].x, (int)menu_particles[i].y,
+                                      hu_font[char_index]);
+            }
+            else if (dice_num == 100)
+            {
+                int char_index = '%' - '!';
+                if (char_index >= 0 && char_index < HU_FONTSIZE && hu_font[char_index])
+                    V_DrawPatchDirect(menu_particles[i].x, (int)menu_particles[i].y,
+                                      hu_font[char_index]);
+            }
+        }
+    }
+}
+
 
 
 
@@ -1100,6 +1259,8 @@ void M_MusicVol(int choice)
 //
 void M_DrawMainMenu(void)
 {
+    M_DrawMenuBackground();
+
     V_DrawPatchDirect(94, 2,
                       W_CacheLumpName(DEH_String("M_DOOM"), PU_CACHE));
 }
