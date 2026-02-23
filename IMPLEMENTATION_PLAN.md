@@ -292,10 +292,10 @@
 - [x] Add particle effects toggle
 
 ## Phase 29: Save System Enhancements
+- [x] Add additional save slots (beyond 6)
 - [ ] Add quicksave/quickload slots
 - [ ] Add save game comments
 - [ ] Add auto-save on level transition
-- [ ] Add additional save slots (beyond 6)
 
 ## Current Status
 **Phase 1-8 complete**. Phase 9-13 ready for implementation.
