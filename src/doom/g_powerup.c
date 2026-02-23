@@ -200,6 +200,10 @@ boolean G_PowerupCanPickup(player_t* player, int powerup_id)
     if (powerup_id < 0 || powerup_id >= NUMPOWERS)
         return false;
 
+    // Goblin Dice Rollaz: Challenge mode - no powerups
+    if (CHALLENGE_NO_POWERUPS())
+        return false;
+
     pu = &powerups[powerup_id];
 
     if (pu->flags & POWERUP_FLAG_ONESHOT)

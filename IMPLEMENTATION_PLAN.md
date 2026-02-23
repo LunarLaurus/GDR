@@ -281,7 +281,7 @@
 ## Phase 27: Additional Game Modes
 - [x] Add endless survival mode (waves of enemies)
 - [x] Add time attack mode (speedrun)
-- [ ] Add challenge mode presets (crit only, no powerups, etc.)
+- [x] Add challenge mode presets (crit only, no powerups, etc.)
 
 ## Phase 28: Configuration & Settings
 - [x] Add in-game settings menu accessible via ESC

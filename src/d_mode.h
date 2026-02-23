@@ -96,7 +96,11 @@ typedef enum
     sk_easy,
     sk_medium,
     sk_hard,
-    sk_nightmare
+    sk_nightmare,
+    // Goblin Dice Rollaz: Challenge Modes
+    sk_challenge_critonly = 6,       // All attacks are critical hits
+    sk_challenge_nopowerups = 7,    // No powerups spawn
+    sk_challenge_hardcore = 8        // Combined hardest mode
 } skill_t;
 
 boolean D_ValidGameMode(GameMission_t mission, GameMode_t mode);

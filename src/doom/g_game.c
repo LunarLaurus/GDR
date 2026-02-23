@@ -107,6 +107,11 @@ boolean		respawnmonsters;
 int             gameepisode; 
 int             gamemap; 
 
+// Goblin Dice Rollaz: Challenge mode flags
+boolean         challenge_critonly;
+boolean         challenge_nopowerups;
+boolean         challenge_hardcore; 
+
 // If non-zero, exit the level after this number of minutes.
 
 int             timelimit;
@@ -1989,8 +1994,8 @@ G_InitNew
     }
     */
 
-    if (skill > sk_nightmare)
-	skill = sk_nightmare;
+    if (skill > sk_challenge_hardcore)
+	skill = sk_challenge_hardcore;
 
     if (gameversion >= exe_ultimate)
     {
@@ -2025,12 +2030,12 @@ G_InitNew
 
     M_ClearRandom ();
 
-    if (skill == sk_nightmare || respawnparm )
+    if (skill == sk_nightmare || skill >= sk_challenge_critonly || respawnparm )
 	respawnmonsters = true;
     else
 	respawnmonsters = false;
 
-    if (fastparm || (skill == sk_nightmare && gameskill != sk_nightmare) )
+    if (fastparm || ((skill == sk_nightmare || skill >= sk_challenge_critonly) && gameskill != sk_nightmare && gameskill < sk_challenge_critonly) )
     {
 	for (i=S_SARG_RUN1 ; i<=S_SARG_PAIN2 ; i++)
 	    states[i].tics >>= 1;
@@ -2038,7 +2043,7 @@ G_InitNew
 	mobjinfo[MT_HEADSHOT].speed = 20*FRACUNIT;
 	mobjinfo[MT_TROOPSHOT].speed = 20*FRACUNIT;
     }
-    else if (skill != sk_nightmare && gameskill == sk_nightmare)
+    else if (skill != sk_nightmare && skill < sk_challenge_critonly && (gameskill == sk_nightmare || gameskill >= sk_challenge_critonly))
     {
 	for (i=S_SARG_RUN1 ; i<=S_SARG_PAIN2 ; i++)
 	    states[i].tics <<= 1;
@@ -2059,6 +2064,11 @@ G_InitNew
     gameepisode = episode;
     gamemap = map;
     gameskill = skill;
+
+    // Goblin Dice Rollaz: Initialize challenge mode flags
+    challenge_critonly = (skill == sk_challenge_critonly || skill == sk_challenge_hardcore);
+    challenge_nopowerups = (skill == sk_challenge_nopowerups || skill == sk_challenge_hardcore);
+    challenge_hardcore = (skill == sk_challenge_hardcore);
 
     // Set the sky to use.
     //

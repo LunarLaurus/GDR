@@ -121,6 +121,18 @@ extern int deathmatch;
 // Goblin Dice Rollaz: Dice Arena mode check
 #define IN_DICE_ARENA() (deathmatch == 3)
 
+// Goblin Dice Rollaz: Challenge Mode flags
+// Challenge mode is active when gameskill >= sk_challenge_critonly
+extern boolean challenge_critonly;      // All attacks crit
+extern boolean challenge_nopowerups;   // No powerups spawn
+extern boolean challenge_hardcore;      // Combined hardest mode
+
+// Helper macros to check challenge mode
+#define IN_CHALLENGE_MODE() (gameskill >= sk_challenge_critonly)
+#define CHALLENGE_CRIT_ONLY() (challenge_critonly || gameskill == sk_challenge_critonly)
+#define CHALLENGE_NO_POWERUPS() (challenge_nopowerups || gameskill == sk_challenge_nopowerups)
+#define CHALLENGE_HARDCORE() (challenge_hardcore || gameskill == sk_challenge_hardcore)
+
 // -------------------------
 // Internal parameters for sound rendering.
 // These have been taken from the DOS version,

@@ -887,6 +887,10 @@ P_CalculateDiceDamage (int weapon, int guaranteedCrit, int *outCritRoll, int *ou
     
     dwi = &dice_weapon_info[weapon];
     
+    // Goblin Dice Rollaz: Challenge mode - always crit
+    if (CHALLENGE_CRIT_ONLY())
+        guaranteedCrit = 1;
+    
     if (dwi->die_type == 0)
         return 1;
     
