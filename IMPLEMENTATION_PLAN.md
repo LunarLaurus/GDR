@@ -313,7 +313,7 @@
 - [x] Add client-side prediction for dice roll results
 - [x] Implement server-authoritative damage validation
 - [x] Add lag compensation for projectile hits
-- [ ] Optimize network packet size for dice roll events
+- [x] Optimize network packet size for dice roll events
 
 ## Phase 32: User Interface Polish
 - [ ] Add main menu animated background

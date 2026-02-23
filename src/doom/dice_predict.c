@@ -271,3 +271,83 @@ void PREDICT_ValidateServerDamage(int predict_id, int weapon, player_t *player, 
     
     PREDICT_ValidateDamage(predict_id, server_damage, false, 0);
 }
+
+// Goblin Dice Rollaz: Network packet optimization
+// Encode a dice event into a compact network packet
+void PREDICT_EncodeEvent(dice_event_net_t *packet, int predict_id, 
+                         int player_x, int player_y,
+                         int target_x, int target_y,
+                         int damage, boolean critical, int crit_roll, int weapon)
+{
+    if (!packet)
+        return;
+    
+    packet->predict_id = (uint8_t)(predict_id & 0xFF);
+    packet->weapon = (uint8_t)(weapon & 0xFF);
+    packet->damage = (int16_t)(damage & 0xFFFF);
+    packet->crit_roll = (uint8_t)(crit_roll & 0xFF);
+    
+    packet->flags = 0;
+    if (critical)
+        packet->flags |= DICE_EVENT_FLAG_CRITICAL;
+    
+    packet->reserved = 0;
+    
+    // Store delta from player position (reduces bytes needed vs absolute coords)
+    packet->target_x_delta = (int16_t)((target_x - player_x) >> FRACBITS);
+    packet->target_y_delta = (int16_t)((target_y - player_y) >> FRACBITS);
+    
+    if (net_sync_debug && netgame)
+    {
+        DEH_printf("[NET] Encoded dice event: id=%d, dmg=%d, crit=%d, roll=%d, wp=%d\n",
+                   predict_id, damage, critical, crit_roll, weapon);
+    }
+}
+
+// Goblin Dice Rollaz: Decode a compact network packet back to dice event data
+boolean PREDICT_DecodeEvent(const dice_event_net_t *packet, int player_x, int player_y,
+                            int *out_predict_id, int *out_target_x, int *out_target_y,
+                            int *out_damage, boolean *out_critical, int *out_crit_roll, 
+                            int *out_weapon)
+{
+    if (!packet)
+        return false;
+    
+    if (out_predict_id)
+        *out_predict_id = packet->predict_id;
+    
+    if (out_weapon)
+        *out_weapon = packet->weapon;
+    
+    if (out_damage)
+        *out_damage = (int)packet->damage;
+    
+    if (out_crit_roll)
+        *out_crit_roll = packet->crit_roll;
+    
+    if (out_critical)
+        *out_critical = (packet->flags & DICE_EVENT_FLAG_CRITICAL) != 0;
+    
+    // Reconstruct absolute position from delta
+    if (out_target_x)
+        *out_target_x = player_x + (((int)packet->target_x_delta) << FRACBITS);
+    
+    if (out_target_y)
+        *out_target_y = player_y + (((int)packet->target_y_delta) << FRACBITS);
+    
+    if (net_sync_debug && netgame)
+    {
+        DEH_printf("[NET] Decoded dice event: id=%d, dmg=%d, crit=%d, roll=%d, wp=%d\n",
+                   packet->predict_id, packet->damage, 
+                   (packet->flags & DICE_EVENT_FLAG_CRITICAL) != 0,
+                   packet->crit_roll, packet->weapon);
+    }
+    
+    return true;
+}
+
+// Goblin Dice Rollaz: Return the size of a single dice event packet
+int PREDICT_GetEventSize(void)
+{
+    return sizeof(dice_event_net_t);
+}
