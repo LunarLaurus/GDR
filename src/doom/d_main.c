@@ -189,6 +189,14 @@ extern int      thinker_total_time_ms;
 extern int      thinker_frame_count;
 void P_ResetThinkerStats (void);
 
+// Goblin Dice Rollaz: Cross-platform save game migration
+extern char *import_save_path;
+extern int import_saves_trigger;
+void G_SetImportSavePath(const char *path);
+void G_SetImportSavesTrigger(int value);
+int G_GetImportSavesTrigger(void);
+void G_DoImportSaveGames(void);
+
 
 void D_ConnectNetGame(void);
 void D_CheckNetGame(void);
@@ -521,6 +529,10 @@ void D_BindVariables(void)
     M_BindFloatVariable("hud_scale",              &hud_scale);
     M_BindIntVariable("reduce_motion",            &reduce_motion);
     M_BindIntVariable("screen_reader_enabled",    &screen_reader_enabled);
+
+    // Goblin Dice Rollaz: Cross-platform save game migration
+    M_BindStringVariable("import_save_path",      &import_save_path);
+    M_BindIntVariable("import_saves_trigger",    &import_saves_trigger);
 
     // Multiplayer chat macros
 
@@ -2099,6 +2111,14 @@ void D_DoomMain (void)
     {
         // Not loading a game
         startloadgame = -1;
+    }
+
+    // Goblin Dice Rollaz: Cross-platform save game migration
+    p = M_CheckParmWithArgs("-import_saves", 1);
+    if (p)
+    {
+        G_SetImportSavePath(myargv[p+1]);
+        G_DoImportSaveGames();
     }
 
     DEH_printf("M_Init: Init miscellaneous info.\n");

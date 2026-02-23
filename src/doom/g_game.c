@@ -35,6 +35,7 @@
 #include "m_misc.h"
 #include "m_menu.h"
 #include "m_random.h"
+#include "i_glob.h"
 #include "i_joystick.h"
 #include "i_system.h"
 #include "i_timer.h"
@@ -1079,6 +1080,13 @@ void G_Ticker (void)
     int		i;
     int		buf; 
     ticcmd_t*	cmd;
+
+    // Goblin Dice Rollaz: Check for save import trigger
+    if (import_saves_trigger == 1)
+    {
+        G_DoImportSaveGames();
+        import_saves_trigger = 0;
+    }
     
     // do player reborns if needed
     for (i=0 ; i<MAXPLAYERS ; i++) 
@@ -2826,5 +2834,129 @@ void G_ReloadWeapon(void)
     if (clipAmount > 0)
     {
         P_GiveAmmo(player, ammo, clipAmount);
+    }
+}
+
+static char *import_save_path = NULL;
+static int import_saves_trigger = 0;
+
+void G_SetImportSavePath(const char *path)
+{
+    if (import_save_path != NULL)
+    {
+        free(import_save_path);
+    }
+    if (path != NULL && path[0] != '\0')
+    {
+        import_save_path = M_StringDuplicate(path);
+    }
+    else
+    {
+        import_save_path = NULL;
+    }
+}
+
+const char *G_GetImportSavePath(void)
+{
+    return import_save_path;
+}
+
+void G_SetImportSavesTrigger(int value)
+{
+    import_saves_trigger = value;
+    if (import_saves_trigger == 1)
+    {
+        G_DoImportSaveGames();
+        import_saves_trigger = 0;
+    }
+}
+
+int G_GetImportSavesTrigger(void)
+{
+    return import_saves_trigger;
+}
+
+void G_DoImportSaveGames(void)
+{
+    glob_t *glob;
+    const char *filename;
+    int imported_count = 0;
+    int slot;
+    char src_path[512];
+    char dest_path[512];
+    byte *file_buffer;
+    int file_size;
+
+    if (import_save_path == NULL || *import_save_path == '\0')
+    {
+        DEH_printf("Import path not set. Use -import_saves <path> or set import_save_path.\n");
+        DEH_printf("Set import_save_path to the directory containing savegames,\n");
+        DEH_printf("then set import_saves_trigger to 1 to import.\n");
+        return;
+    }
+
+    if (!M_FileExists(import_save_path))
+    {
+        DEH_printf("Import directory does not exist: %s\n", import_save_path);
+        return;
+    }
+
+    DEH_printf("Scanning for savegames in: %s\n", import_save_path);
+
+    glob = I_StartGlob(import_save_path, "doomsav*.dsg", GLOB_FLAG_NOCASE);
+    if (glob == NULL)
+    {
+        DEH_printf("Failed to scan directory.\n");
+        return;
+    }
+
+    while ((filename = I_NextGlob(glob)) != NULL)
+    {
+        M_snprintf(src_path, sizeof(src_path), "%s%s%s", 
+                   import_save_path, DIR_SEPARATOR_S, filename);
+
+        if (!M_FileExists(src_path))
+            continue;
+
+        file_size = M_ReadFile(src_path, &file_buffer);
+        if (file_size <= 0)
+        {
+            DEH_printf("Failed to read: %s\n", filename);
+            continue;
+        }
+
+        if (sscanf(filename, "doomsav%d.dsg", &slot) != 1)
+        {
+            DEH_printf("Could not parse slot from: %s\n", filename);
+            free(file_buffer);
+            continue;
+        }
+
+        M_snprintf(dest_path, sizeof(dest_path), "%sdoomsav%d.dsg",
+                   savegamedir, slot);
+
+        if (M_WriteFile(dest_path, file_buffer, file_size))
+        {
+            DEH_printf("Imported savegame %d from: %s\n", slot, filename);
+            imported_count++;
+        }
+        else
+        {
+            DEH_printf("Failed to write savegame %d\n", slot);
+        }
+
+        free(file_buffer);
+    }
+
+    I_EndGlob(glob);
+
+    if (imported_count > 0)
+    {
+        DEH_printf("Successfully imported %d savegame(s).\n", imported_count);
+        DEH_printf("Load the game and check the Load Game menu.\n");
+    }
+    else
+    {
+        DEH_printf("No savegames found to import.\n");
     }
 }
