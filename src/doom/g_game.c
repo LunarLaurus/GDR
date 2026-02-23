@@ -951,6 +951,10 @@ boolean G_Responder (event_t* ev)
     {
         next_weapon = 1;
     }
+    else if (ev->type == ev_keydown && ev->data1 == key_reload)
+    {
+        G_ReloadWeapon();
+    }
 
     switch (ev->type) 
     { 
@@ -2495,9 +2499,35 @@ boolean G_CheckDemoStatus (void)
 	demorecording = false; 
 	I_Error ("Demo %s recorded",demoname); 
     } 
-	 
     return false; 
-} 
- 
- 
- 
+}
+
+void G_ReloadWeapon(void)
+{
+    player_t* player;
+    ammotype_t ammo;
+    int clipAmount;
+
+    if (demoplayback || !players[consoleplayer].mo)
+        return;
+
+    player = &players[consoleplayer];
+
+    if (player->health <= 0)
+        return;
+
+    ammo = weaponinfo[player->readyweapon].ammo;
+
+    if (ammo == am_noammo)
+        return;
+
+    if (player->ammo[ammo] >= player->maxammo[ammo])
+        return;
+
+    clipAmount = clipammo[ammo];
+
+    if (clipAmount > 0)
+    {
+        P_GiveAmmo(player, ammo, clipAmount);
+    }
+}

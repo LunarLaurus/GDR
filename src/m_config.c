@@ -1864,6 +1864,12 @@ static default_t extra_defaults_list[] =
     CONFIG_VARIABLE_KEY(key_nextweapon),
 
     //!
+    // Key to reload current weapon.
+    //
+
+    CONFIG_VARIABLE_KEY(key_reload),
+
+    //!
     // @game heretic
     //
     // Key to use "quartz flask" artifact.

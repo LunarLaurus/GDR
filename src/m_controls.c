@@ -150,6 +150,7 @@ int key_weapon8 = '8';
 int key_weapon9 = '9';
 int key_prevweapon = 0;
 int key_nextweapon = 0;
+int key_reload = 'r';
 
 // Map control keys:
 

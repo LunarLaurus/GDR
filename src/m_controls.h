@@ -92,6 +92,7 @@ extern int key_demo_quit;
 extern int key_spy;
 extern int key_prevweapon;
 extern int key_nextweapon;
+extern int key_reload;
 
 extern int key_map_north;
 extern int key_map_south;
