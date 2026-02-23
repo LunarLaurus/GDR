@@ -261,7 +261,7 @@
 - [x] Add reproducible demo test suite
 
 ## Phase 24: Release Engineering
-- [ ] Create versioning scheme (SemVer or similar)
+- [x] Create versioning scheme (SemVer or similar)
 - [ ] Add changelog automation
 - [ ] Add release packaging scripts (Linux/Windows/macOS)
 - [ ] Create demo WAD bundle
