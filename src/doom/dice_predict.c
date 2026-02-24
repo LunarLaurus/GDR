@@ -215,7 +215,7 @@ int PREDICT_CalculateServerDamage(int weapon, player_t *player, mobj_t *target)
     
     if (player->powers[pw_critboost])
     {
-        effectiveCritChance += crit_boost_bonus;
+        effectiveCritChance += goblin_crit_boost_bonus;
     }
     
     if (rpg_mode)

@@ -71,7 +71,7 @@ int	crit_combo_max = DEFAULT_CRIT_COMBO_MAX;
 int	dice_arena_damage_mult = 150;
 
 // Goblin Dice Rollaz: Combo multiplier system
-int	crit_boost_bonus = CRIT_POWERUP_BONUS;
+int	goblin_crit_boost_bonus = CRIT_POWERUP_BONUS;
 int	exploding_dice_enabled = 0;
 
 // Goblin Dice Rollaz: Minimum damage cap
@@ -1255,7 +1255,7 @@ P_DamageMobj
 
         if (source->player->powers[pw_critboost])
         {
-            effectiveCritChance += crit_boost_bonus;
+            effectiveCritChance += goblin_crit_boost_bonus;
         }
 
         if (source->player->readyweapon >= 0 && source->player->readyweapon < NUMWEAPONS)
