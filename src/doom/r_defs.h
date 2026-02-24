@@ -420,7 +420,7 @@ typedef struct
 //
 // Now what is a visplane, anyway?
 // 
-typedef struct
+typedef struct visplane_s
 {
   fixed_t		height;
   int			picnum;
@@ -439,6 +439,9 @@ typedef struct
   // See above.
   byte		bottom[SCREENWIDTH];
   byte		pad4;
+
+  // Hash chain for fast lookup
+  struct visplane_s*	hash_next;
 
 } visplane_t;
 

@@ -48,6 +48,22 @@ visplane_t*		lastvisplane;
 visplane_t*		floorplane;
 visplane_t*		ceilingplane;
 
+static visplane_t*	visplane_hash[MAXVISPLANES];
+
+//
+// Hash function for visplane lookup
+//
+static inline unsigned int VisplaneHash(fixed_t height, int picnum, int lightlevel)
+{
+    unsigned int hash;
+    
+    hash = (unsigned int)((height >> FRACBITS) * 73856093u);
+    hash ^= (unsigned int)(picnum * 19349663u);
+    hash ^= (unsigned int)(lightlevel * 83492791u);
+    
+    return hash & (MAXVISPLANES - 1);
+}
+
 // ?
 #define MAXOPENINGS	SCREENWIDTH*64
 short			openings[MAXOPENINGS];
@@ -180,6 +196,11 @@ void R_ClearPlanes (void)
     int		i;
     angle_t	angle;
     
+    for (i = 0; i < MAXVISPLANES; i++)
+    {
+        visplane_hash[i] = NULL;
+    }
+    
     // opening / clipping determination
     for (i=0 ; i<viewwidth ; i++)
     {
@@ -214,37 +235,53 @@ R_FindPlane
   int		lightlevel )
 {
     visplane_t*	check;
-	
+    unsigned int hash;
+    
     if (picnum == skyflatnum)
     {
 	height = 0;			// all skys map together
 	lightlevel = 0;
     }
-	
-    for (check=visplanes; check<lastvisplane; check++)
+    
+    hash = VisplaneHash(height, picnum, lightlevel);
+    check = visplane_hash[hash];
+    
+    while (check != NULL)
     {
-	if (height == check->height
+        if (height == check->height
 	    && picnum == check->picnum
 	    && lightlevel == check->lightlevel)
 	{
-	    break;
+	    return check;
 	}
+	check = check->hash_next;
     }
     
-			
-    if (check < lastvisplane)
-	return check;
-		
     if (lastvisplane - visplanes == MAXVISPLANES)
-	I_Error ("R_FindPlane: no more visplanes");
+    {
+        // Hash table is full, fall back to linear search
+        // to find a free slot or return error
+        for (check = visplanes; check < lastvisplane; check++)
+        {
+            if (height == check->height
+	        && picnum == check->picnum
+	        && lightlevel == check->lightlevel)
+	    {
+	        return check;
+	    }
+        }
+        I_Error ("R_FindPlane: no more visplanes");
+    }
 		
-    lastvisplane++;
-
+    check = lastvisplane++;
+    
     check->height = height;
     check->picnum = picnum;
     check->lightlevel = lightlevel;
     check->minx = SCREENWIDTH;
     check->maxx = -1;
+    check->hash_next = visplane_hash[hash];
+    visplane_hash[hash] = check;
     
     memset (check->top,0xff,sizeof(check->top));
 		

@@ -11,7 +11,7 @@
 - [x] Verify all RNG usage uses P_Random/M_Random tables
 
 ### Phase 2: Rendering Performance
-- [ ] Implement hash table for visplane lookup in r_plane.c
+- [x] Implement hash table for visplane lookup in r_plane.c
 - [ ] Remove linear search in R_FindPlane function
 - [ ] Optimize R_CheckPlane overlap scanning
 - [ ] Pre-cache sprite patches in LRU cache r_things.c
