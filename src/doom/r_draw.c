@@ -24,6 +24,7 @@
 #include "doomdef.h"
 #include "deh_main.h"
 
+#include <string.h>
 #include "i_system.h"
 #include "z_zone.h"
 #include "w_wad.h"
@@ -96,6 +97,31 @@ byte*			dc_source;
 // just for profiling 
 int			dccount;
 
+#define COLORMAP_CACHE_SIZE 64
+
+static byte colormap_cache_valid[COLORMAP_CACHE_SIZE];
+static byte colormap_cache_source[COLORMAP_CACHE_SIZE];
+static byte colormap_cache_result[COLORMAP_CACHE_SIZE];
+
+static inline byte ColormapCache_Lookup(lighttable_t* colormap, byte source)
+{
+    unsigned int index = source & (COLORMAP_CACHE_SIZE - 1);
+    if (colormap_cache_valid[index] && colormap_cache_source[index] == source)
+    {
+        return colormap_cache_result[index];
+    }
+    byte result = colormap[source];
+    colormap_cache_valid[index] = 1;
+    colormap_cache_source[index] = source;
+    colormap_cache_result[index] = result;
+    return result;
+}
+
+static inline void ColormapCache_Invalidate(void)
+{
+    memset(colormap_cache_valid, 0, sizeof(colormap_cache_valid));
+}
+
 #if defined(__SSE2__) || defined(_M_X64) || (defined(_M_IX86_FP) && _M_IX86_FP >= 2)
 #include <emmintrin.h>
 
@@ -114,6 +140,8 @@ void R_DrawColumn_SSE2(void)
     dest = ylookup[dc_yl] + columnofs[dc_x];
     fracstep = dc_iscale;
     frac = dc_texturemid + (dc_yl - centery) * fracstep;
+
+    ColormapCache_Invalidate();
 
     if (count >= 3)
     {
@@ -151,7 +179,7 @@ void R_DrawColumn_SSE2(void)
 
     while (count >= 0)
     {
-        *dest = dc_colormap[dc_source[(frac >> FRACBITS) & TEXTURECOL_HEIGHT_MASK]];
+        *dest = ColormapCache_Lookup(dc_colormap, dc_source[(frac >> FRACBITS) & TEXTURECOL_HEIGHT_MASK]);
         dest += SCREENWIDTH;
         frac += fracstep;
         count--;
@@ -173,6 +201,8 @@ void R_DrawSpan_SSE2(void)
 
     dest = ylookup[ds_y] + columnofs[ds_x1];
     count = ds_x2 - ds_x1;
+
+    ColormapCache_Invalidate();
 
     if (count >= 3)
     {
@@ -234,11 +264,11 @@ void R_DrawSpan_SSE2(void)
             int mipsize = 64 >> ds_mipmap_level;
             int mipsizemask = mipsize - 1;
             spot = ((spot >> ds_mipmap_level) & mipsizemask) + (((spot >> (ds_mipmap_level + 6)) & mipsizemask) * mipsize);
-            *dest++ = ds_colormap[ds_mipmap_source[spot]];
+            *dest++ = ColormapCache_Lookup(ds_colormap, ds_mipmap_source[spot]);
         }
         else
         {
-            *dest++ = ds_colormap[ds_source[spot]];
+            *dest++ = ColormapCache_Lookup(ds_colormap, ds_source[spot]);
         }
         position += step;
         count--;
@@ -283,6 +313,9 @@ void R_DrawColumn (void)
     fracstep = dc_iscale; 
     frac = dc_texturemid + (dc_yl-centery)*fracstep; 
 
+    // Invalidate cache for new column (colormap may differ)
+    ColormapCache_Invalidate();
+
     // Inner loop that does the actual texture mapping,
     //  e.g. a DDA-lile scaling.
     // This is as fast as it gets.
@@ -290,13 +323,13 @@ void R_DrawColumn (void)
     {
 	// Re-map color indices from wall texture column
 	//  using a lighting/special effects LUT.
-	*dest = dc_colormap[dc_source[(frac>>FRACBITS)&TEXTURECOL_HEIGHT_MASK]];
+	*dest = ColormapCache_Lookup(dc_colormap, dc_source[(frac>>FRACBITS)&TEXTURECOL_HEIGHT_MASK]);
 	
 	dest += SCREENWIDTH; 
 	frac += fracstep;
 	
     } while (count--); 
-} 
+}
 
 
 
@@ -334,11 +367,13 @@ void R_DrawColumnLow (void)
     
     fracstep = dc_iscale; 
     frac = dc_texturemid + (dc_yl-centery)*fracstep;
+
+    ColormapCache_Invalidate();
     
     do 
     {
 	// Hack. Does not work corretly.
-	*dest2 = *dest = dc_colormap[dc_source[(frac>>FRACBITS)&TEXTURECOL_HEIGHT_MASK]];
+	*dest2 = *dest = ColormapCache_Lookup(dc_colormap, dc_source[(frac>>FRACBITS)&TEXTURECOL_HEIGHT_MASK]);
 	dest += SCREENWIDTH;
 	dest2 += SCREENWIDTH;
 	frac += fracstep; 
@@ -520,6 +555,8 @@ void R_DrawTranslatedColumn (void)
     fracstep = dc_iscale; 
     frac = dc_texturemid + (dc_yl-centery)*fracstep; 
 
+    ColormapCache_Invalidate();
+
     // Here we do an additional index re-mapping.
     do 
     {
@@ -528,12 +565,12 @@ void R_DrawTranslatedColumn (void)
 	//  used with PLAY sprites.
 	// Thus the "green" ramp of the player 0 sprite
 	//  is mapped to gray, red, black/indigo. 
-	*dest = dc_colormap[dc_translation[dc_source[frac>>FRACBITS]]];
+	*dest = ColormapCache_Lookup(dc_colormap, dc_translation[dc_source[frac>>FRACBITS]]);
 	dest += SCREENWIDTH;
 	
 	frac += fracstep; 
     } while (count--); 
-} 
+}
 
 void R_DrawTranslatedColumnLow (void) 
 { 
@@ -570,6 +607,8 @@ void R_DrawTranslatedColumnLow (void)
     fracstep = dc_iscale; 
     frac = dc_texturemid + (dc_yl-centery)*fracstep; 
 
+    ColormapCache_Invalidate();
+
     // Here we do an additional index re-mapping.
     do 
     {
@@ -578,13 +617,13 @@ void R_DrawTranslatedColumnLow (void)
 	//  used with PLAY sprites.
 	// Thus the "green" ramp of the player 0 sprite
 	//  is mapped to gray, red, black/indigo. 
-	*dest = dc_colormap[dc_translation[dc_source[frac>>FRACBITS]]];
-	*dest2 = dc_colormap[dc_translation[dc_source[frac>>FRACBITS]]];
+	*dest = ColormapCache_Lookup(dc_colormap, dc_translation[dc_source[frac>>FRACBITS]]);
+	*dest2 = ColormapCache_Lookup(dc_colormap, dc_translation[dc_source[frac>>FRACBITS]]);
 	dest += SCREENWIDTH;
 	dest2 += SCREENWIDTH;
 	
 	frac += fracstep; 
-    } while (count--); 
+    } while (count--);
 } 
 
 
@@ -696,6 +735,8 @@ void R_DrawSpan (void)
     // We do not check for zero spans here?
     count = ds_x2 - ds_x1;
 
+    ColormapCache_Invalidate();
+
     do
     {
 	// Calculate current texture index in u,v.
@@ -715,11 +756,11 @@ void R_DrawSpan (void)
 	    x &= mipsizemask;
 	    y &= mipsizemask;
 	    spot = x + (y * mipsize);
-	    *dest++ = ds_colormap[ds_mipmap_source[spot]];
+	    *dest++ = ColormapCache_Lookup(ds_colormap, ds_mipmap_source[spot]);
 	}
 	else
 	{
-	    *dest++ = ds_colormap[ds_source[spot]];
+	    *dest++ = ColormapCache_Lookup(ds_colormap, ds_source[spot]);
 	}
 
         position += step;
@@ -765,6 +806,8 @@ void R_DrawSpanLow (void)
 
     dest = ylookup[ds_y] + columnofs[ds_x1];
 
+    ColormapCache_Invalidate();
+
     do
     {
 	// Calculate current texture index in u,v.
@@ -783,13 +826,13 @@ void R_DrawSpanLow (void)
 	    x &= mipsizemask;
 	    y &= mipsizemask;
 	    spot = x + (y * mipsize);
-	    *dest++ = ds_colormap[ds_mipmap_source[spot]];
-	    *dest++ = ds_colormap[ds_mipmap_source[spot]];
+	    *dest++ = ColormapCache_Lookup(ds_colormap, ds_mipmap_source[spot]);
+	    *dest++ = ColormapCache_Lookup(ds_colormap, ds_mipmap_source[spot]);
 	}
 	else
 	{
-	    *dest++ = ds_colormap[ds_source[spot]];
-	    *dest++ = ds_colormap[ds_source[spot]];
+	    *dest++ = ColormapCache_Lookup(ds_colormap, ds_source[spot]);
+	    *dest++ = ColormapCache_Lookup(ds_colormap, ds_source[spot]);
 	}
 
 	position += step;
