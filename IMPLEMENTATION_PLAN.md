@@ -64,8 +64,8 @@
 - [x] Update CD-ROM config path in d_englsh.h
 - [x] Update "DOOM! -- Inferno" string in d_englsh.h
 - [x] Update "To continue the DOOM experience" string
-- [ ] Rename usemodernfx to goblin_modern_fx in m_config.c
-- [ ] Rename crosshair_* variables to dice_crosshair_*
+- [x] Rename usemodernfx to goblin_modern_fx in m_config.c
+- [x] Rename crosshair_* variables to dice_crosshair_*
 - [ ] Rename crit_boost_bonus to goblin_crit_boost_bonus
 - [ ] Rename exploding_dice_enabled to goblin_exploding_dice
 - [ ] Rename show_weapon_stats to goblin_weapon_stats

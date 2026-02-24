@@ -190,10 +190,10 @@ void R_TriggerScreenShake(fixed_t intensity, int duration);
 extern int goblin_modern_fx;
 
 // Goblin Dice Rollaz: Crosshair customization
-extern int crosshair_enabled;
-extern int crosshair_type;
-extern int crosshair_color;
-extern int crosshair_scale;
+extern int dice_crosshair_enabled;
+extern int dice_crosshair_type;
+extern int dice_crosshair_color;
+extern int dice_crosshair_scale;
 
 // Goblin Dice Rollaz: Render profiling functions
 void R_PrintRenderProfile(void);

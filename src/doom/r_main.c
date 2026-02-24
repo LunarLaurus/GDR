@@ -87,10 +87,10 @@ int				viewshake_duration;
 int				goblin_modern_fx;
 
 // Goblin Dice Rollaz: Crosshair customization
-int             crosshair_enabled;
-int             crosshair_type;
-int             crosshair_color;
-int             crosshair_scale;
+int             dice_crosshair_enabled;
+int             dice_crosshair_type;
+int             dice_crosshair_color;
+int             dice_crosshair_scale;
 
 angle_t			viewangle;
 

@@ -2063,7 +2063,7 @@ void ST_DrawCrosshair(void)
     int color;
     int size;
 
-    if (!crosshair_enabled)
+    if (!dice_crosshair_enabled)
         return;
 
     if (gamestate != GS_LEVEL || automapactive)
@@ -2072,14 +2072,14 @@ void ST_DrawCrosshair(void)
     cx = scaledviewwidth / 2;
     cy = viewheight / 2;
 
-    switch (crosshair_scale)
+    switch (dice_crosshair_scale)
     {
         case 0: size = 2; break;
         case 2: size = 6; break;
         default: size = 4; break;
     }
 
-    switch (crosshair_color)
+    switch (dice_crosshair_color)
     {
         case CROSSHAIR_COLOR_RED:    color = 0x9D; break;
         case CROSSHAIR_COLOR_GREEN:   color = 0x19; break;
@@ -2088,7 +2088,7 @@ void ST_DrawCrosshair(void)
         default:                      color = 0x00; break;
     }
 
-    switch (crosshair_type)
+    switch (dice_crosshair_type)
     {
         case CROSSHAIR_DOT:
             V_DrawFilledBox(cx - 1, cy - 1, 3, 3, color);
