@@ -684,6 +684,9 @@ static void CreateUpscaledTexture(boolean force)
 
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 
+    // Enable texture compression hint for GPU memory optimization
+    SDL_SetHint(SDL_HINT_RENDER_TEXTURE_COMPRESSION_HINT, "1");
+
     new_texture = SDL_CreateTexture(renderer,
                                 SDL_PIXELFORMAT_ARGB8888,
                                 SDL_TEXTUREACCESS_TARGET,
@@ -1390,6 +1393,10 @@ static void SetVideoMode(void)
     // resembles software scaling pretty well.
 
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
+
+    // Enable texture compression hint for GPU memory optimization
+    // when using hardware-accelerated renderers (OpenGL, Vulkan, etc.)
+    SDL_SetHint(SDL_HINT_RENDER_TEXTURE_COMPRESSION_HINT, "1");
 
     // Create the intermediate texture that the RGBA surface gets loaded into.
     // The SDL_TEXTUREACCESS_STREAMING flag means that this texture's content
