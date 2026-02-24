@@ -2,348 +2,190 @@
 
 ## Priority Tasks
 
-### Phase 1: Engine Setup (Complete)
-- [x] Clone Chocolate Doom source
-- [x] Set up CMakeLists.txt with project name
-- [x] Create Dockerfile
-- [x] Create GitHub Actions workflow
+### Phase 1: Determinism Fixes
+- [ ] Replace floating-point cos() with finecosine[] in p_pspr.c knockback
+- [ ] Replace floating-point sin() with finesine[] in p_pspr.c knockback
+- [ ] Replace rand() with M_Random() in m_menu.c particle system
+- [ ] Audit p_inter.c for floating-point damage calculations
+- [ ] Audit p_mobj.c for floating-point physics
+- [ ] Verify all RNG usage uses P_Random/M_Random tables
 
-### Phase 2: Game Identity (Complete)
-- [x] Update d_main.c with "Goblin Dice Rollaz" title
-- [x] Update banner/copyright text
-- [x] Update quit message
-- [x] Update screenshot filename
+### Phase 2: Rendering Performance
+- [ ] Implement hash table for visplane lookup in r_plane.c
+- [ ] Remove linear search in R_FindPlane function
+- [ ] Optimize R_CheckPlane overlap scanning
+- [ ] Pre-cache sprite patches in LRU cache r_things.c
+- [ ] Optimize O(n) drawseg traversal in sprite column rendering
+- [ ] Remove redundant clip array reinitialization per sprite
+- [ ] Add SIMD vectorization to R_DrawColumn inner loop
+- [ ] Add SIMD vectorization to R_DrawSpan loop
+- [ ] Optimize R_DrawFuzzColumn cache access pattern
+- [ ] Remove unused unrolled column loop in r_draw.c
+- [ ] Remove unused unrolled span loop in r_draw.c
+- [ ] Remove redundant xtoviewangle table recalculation
+- [ ] Increase MAXVISPLANES from 128 or make dynamic
+- [ ] Remove hardcoded &127 texture mask in r_draw.c
+- [ ] Fix RANGECHECK in r_bsp.c line 543
+- [ ] Optimize r_segs.c render loop branching
 
-### Phase 3: Fix CMakeLists.txt Binary Names
-- [x] Rename binary outputs from chocolate-doom to goblin-doom in src/CMakeLists.txt
-- [x] Update PROGRAM_PREFIX to use goblin-
+### Phase 3: Code Cleanup
+- [ ] Remove all #if 0 blocks in g_game.c
+- [ ] Remove all #if 0 blocks in p_pspr.c
+- [ ] Remove all #if 0 blocks in r_main.c
+- [ ] Remove all #if 0 blocks in r_draw.c
+- [ ] Remove all #if 0 blocks in p_doors.c
+- [ ] Remove all #if 0 blocks in p_floor.c
+- [ ] Remove all #if 0 blocks in p_maputl.c
+- [ ] Remove commented dead code in r_segs.c
+- [ ] Remove unused code in dstrings.c
+- [ ] Remove or convert RANGECHECK in r_things.c
+- [ ] Remove or convert RANGECHECK in r_draw.c
+- [ ] Remove or convert RANGECHECK in r_plane.c
+- [ ] Remove or convert RANGECHECK in p_sight.c
+- [ ] Split weapon debug overlay from st_stuff.c to st_weapon_debug.c
+- [ ] Create m_menu_gameopts.c for game settings submenu
+- [ ] Create m_menu_accessibility.c for accessibility options
+- [ ] Create p_ai_faction.c for faction AI system
 
-### Phase 4: GitHub Actions CI/CD
-- [x] Fix build.yml workflow - ensure it builds correctly
+### Phase 4: Rebranding
+- [ ] Rename "Based on Chocolate Doom engine" banner in d_main.c
+- [ ] Update CD-ROM config path in d_englsh.h
+- [ ] Update "DOOM! -- Inferno" string in d_englsh.h
+- [ ] Update "To continue the DOOM experience" string
+- [ ] Rename usemodernfx to goblin_modern_fx in m_config.c
+- [ ] Rename crosshair_* variables to dice_crosshair_*
+- [ ] Rename crit_boost_bonus to goblin_crit_boost_bonus
+- [ ] Rename exploding_dice_enabled to goblin_exploding_dice
+- [ ] Rename show_weapon_stats to goblin_weapon_stats
+- [ ] Rename status effect CVARs to goblin_status_*
+- [ ] Rename colorblind_mode to goblin_colorblind_mode
+- [ ] Rename reduce_motion to goblin_reduce_motion
+- [ ] Update README.md goblin references
+- [ ] Update AGENTS.md base engine reference
+- [ ] Update DESIGN.md project description
 
-### Phase 5: Game Content - Text Changes
-- [x] Update menu "Quit DOOM" to "Quit Game" in m_menu.c
-- [x] Update episode text to goblin theme in d_englsh.h
-- [x] Update skill level names if needed
+### Phase 5: Remove Demo Compatibility
+- [ ] Remove g_demo_test.c entirely
+- [ ] Remove GDT_Init function references
+- [ ] Remove GDT_RecordDemo function references
+- [ ] Remove GDT_PlayAndVerifyDemo function references
+- [ ] Remove InitGameVersion demo detection
+- [ ] Remove G_VanillaVersionCode function
+- [ ] Remove vanilla_demo_limit flag and handling
+- [ ] Remove longtics support
+- [ ] Remove DOOM_191_VERSION handling
+- [ ] Remove D_NonVanillaRecord function
+- [ ] Remove D_NonVanillaPlayback function
+- [ ] Remove -strictdemos command line option
+- [ ] Remove NET_PACKET_TYPE_ACK deprecated handling
+- [ ] Remove Lost Soul bounce compatibility in p_mobj.c
+- [ ] Remove gameversion >= exe_ultimate checks
+- [ ] Remove demo version mismatch error messages
+- [ ] Remove demo buffer expansion logic
+- [ ] Remove demo checksum computation
+- [ ] Remove demo share functionality in g_replay.c
 
-### Phase 6: Prepare for WAD-based Content
-- [x] Document how WAD files work for sprites
-- [x] Create spec for goblin sprite replacement
-- [x] Create spec for dwarf enemy sprites
-- [x] Create spec for dice weapon sprites
+### Phase 6: Audio System Cleanup
+- [ ] Remove redundant I_SoundIsPlaying check before stopping
+- [ ] Optimize S_UpdateSounds channel iteration
+- [ ] Remove redundant channel scanning in i_sdlsound.c
+- [ ] Remove profanity comment in s_sound.c line 322
+- [ ] Remove duplicate #include in s_sound.c line 40
+- [ ] Remove empty I_InitMusic stub
+- [ ] Remove empty I_ShutdownMusic stub
+- [ ] Remove unused snd_sbport config variable
+- [ ] Remove unused snd_sbirq config variable
+- [ ] Remove unused snd_sbdma config variable
+- [ ] Remove unused snd_mport config variable
+- [ ] Fix CheckVolumeSeparation to be inline
 
-### Phase 7: Gameplay Features
-- [x] Add d6 blaster weapon definition to d_items.c
-- [x] Add d20 cannon weapon definition
-- [x] Add dwarf enemy definitions to info.c
-- [x] Add critical hit system (percentile-based damage)
-- [x] Update README.md with Goblin Dice Rollaz identity
-- [x] Update config file references (goblin-doom.cfg)
+### Phase 7: Network System Cleanup
+- [ ] Remove NET_StartSecureDemo function
+- [ ] Remove NET_EndSecureDemo function
+- [ ] Remove securedemo_start_message variable
+- [ ] Remove unused NET_MASTER_PACKET_TYPE_GET_METADATA
+- [ ] Remove NET_OLD_MAGIC_NUMBER handling
+- [ ] Remove NET_TICDIFF_RAVEN legacy support
+- [ ] Remove NET_TICDIFF_STRIFE legacy support
+- [ ] Remove protocol_names unused slots
+- [ ] Remove #ifdef DROP_PACKETS testing code
+- [ ] Remove commented bandwidth monitoring code
+- [ ] Consolidate NET_Log functions under DEBUG_NET flag
+- [ ] Update master server address or remove master server queries
+- [ ] Fix InitPetName to not reseed rand() every call
+- [ ] Remove unused NET_PACKET_TYPE_ACK
 
-### Phase 8: UI/UX Enhancements
-- [x] Add damage number overlay system
-- [x] Add dice roll popup effects for critical hits
-- [x] Modify status bar for dice theme
-- [x] Add crit chance HUD indicator
+### Phase 8: Input System Cleanup
+- [ ] Remove empty I_Tactile function
+- [ ] Remove unused shiftxform keyboard translation table
+- [ ] Remove vanilla_keyboard_mapping if not needed
+- [ ] Implement SDL_SetTextInputRect in i_input.c
+- [ ] Fix XXX pointer undefined behavior in i_input.c
+- [ ] Implement UpdateFocus in i_video.c
+- [ ] Implement fullscreen toggle in i_video.c
+- [ ] Document Windows stack trace functions
+- [ ] Document Windows crash handler functions
 
-### Phase 9: Engine Improvements
-- [x] Add debug console command to show/hide FPS counter
-- [x] Add cheat code for infinite ammo (debug mode)
-- [x] Add console variable for mouse sensitivity scaling
-- [x] Optimize sprite rendering for modern hardware
+### Phase 9: Configuration Cleanup
+- [ ] Remove screenblocks duplicate of screensize
+- [ ] Remove detaillevel legacy variable
+- [ ] Remove Strife-only config variables
+- [ ] Remove Heretic-only config variables
+- [ ] Consolidate mouse_sensitivity bindings across games
+- [ ] Remove duplicate config bindings
+- [ ] Ensure goblin-doom.cfg is default config filename
+- [ ] Remove default.cfg references where applicable
+- [ ] Clean up string duplication in chat macro bindings
 
-### Phase 10: Additional Weapons
-- [x] Add d12 weapon (heavy impact weapon)
-- [x] Add percentile dice weapon (rolls 1-100 for damage)
-- [x] Add d4 throwing knives weapon
+### Phase 10: Memory Leak Fixes
+- [ ] Add V_DisableDiceIcon function to free saved_background
+- [ ] Add V_DisableDiceIcon function to free dice_data
+- [ ] Add free(gamedescription) in d_main.c shutdown
+- [ ] Remove unused Z_ChangeUser function
+- [ ] Remove unused Z_ZoneSize function
+- [ ] Remove broken Z_DumpHeap implementation
+- [ ] Remove broken Z_FileDumpHeap implementation
 
-### Phase 11: New Enemies
-- [x] Add dwarf berserker enemy (fast, melee)
-- [x] Add dwarf engineer enemy (uses explosives)
-- [x] Add goblin shaman enemy (casts spells)
+### Phase 11: TODO/FIXME Cleanup
+- [ ] Resolve i_video.c line 328 SDL2-TODO
+- [ ] Resolve i_video.c line 746 SDL2-TODO
+- [ ] Resolve i_input.c line 294 SDL2-TODO
+- [ ] Resolve i_endoom.c SDL2-TODO items
+- [ ] Resolve i_video.c fullscreen toggle TODO
+- [ ] Resolve net_server.c client rejection TODO
+- [ ] Resolve net_dedicated.c socket polling TODO
+- [ ] Resolve net_packet.c safe string TODO
+- [ ] Resolve p_mobj.c NOP function pointer FIXME
+- [ ] Resolve p_tick.c NOP FIXME
+- [ ] Resolve d_main.c demo numbers FIXME
+- [ ] Resolve viewangleoffset handling FIXME
+- [ ] Remove all STRIFE-TODO commented code
+- [ ] Remove all STRIFE-FIXME commented code
+- [ ] Resolve d_event.h TODO line 117
+- [ ] Resolve v_video.c TODO line 46
+- [ ] Resolve i_musicpack.c TODO line 58
+- [ ] Resolve i_oplmusic TODO items
+- [ ] Resolve heretic TODO items
+- [ ] Resolve hexen TODO items
+- [ ] Resolve setup TODO items
+- [ ] Resolve m_config.c TODO line 2866
+- [ ] Resolve d_loop.c TODO items
+- [ ] Resolve joystick.c XXX comment
 
-### Phase 12: Powerups
-- [x] Add Critical Hit powerup (increases crit chance for duration)
-- [x] Define crit bonus percentage and duration values
-- [x] Implement timed powerup thinker logic
-- [x] Ensure crit bonus stacks safely with existing crit system
-- [x] Add HUD timer indicator for active crit buff
-- [x] Add visual screen tint while active
-- [x] Add activation and expiration sound effects
-- [x] Add CVAR to configure crit powerup strength
-- [x] Add pickup sprite and map editor spawn ID
-- [x] Balance spawn frequency per difficulty level
-- [x] Add Double Damage powerup
-- [x] Apply 2x multiplier post-dice-roll calculation
-- [x] Ensure compatibility with crit multiplier logic
-- [x] Add distinct visual effect (screen glow or weapon aura)
-- [x] Add unique pickup sprite and sound
-- [x] Add duration timer and HUD display
-- [x] Prevent unintended stacking with other damage buffs
-- [x] Add difficulty-based spawn tuning
-- [x] Add multiplayer deterministic sync validation
-- [x] Add Dice Fortune powerup (guaranteed crit on next hit)
-- [x] Implement one-shot guaranteed crit flag
-- [x] Persist effect across weapon swaps
-- [x] Clear effect on successful hit
-- [x] Add HUD indicator ("Next Hit: CRIT")
-- [x] Add expiration fail-safe on player death
-- [x] Add unique pickup sprite variant
-- [x] Add audio cue when guaranteed crit triggers
-- [x] Add balance pass for rarity and placement
-- [x] Implement shared powerup framework for future buffs
-- [x] Add global powerup HUD slot system
-- [x] Add powerup debug command for testing
-- [x] Add powerup-only test map for tuning
+### Phase 12: Platform Code Consolidation
+- [ ] Move Windows stack trace to platform abstraction
+- [ ] Move Windows crash handler to platform abstraction
+- [ ] Document Windows CD-ROM path handling
+- [ ] Document macOS fullscreen modifier handling
+- [ ] Remove DOS keyboard shift translation table
+- [ ] Remove legacy keyboard mapping code
 
-### Phase 13: Map Themes
-- [x] Document mine/cavern map theme
-- [x] Define texture palette (rock, timber supports, rails)
-- [x] Define lighting rules (low light, warm torches)
-- [x] Define ambient sound profile (drips, rumble)
-- [x] Define primary enemy weighting (goblin-heavy)
-- [x] Define environmental hazards (cave-ins, pits)
-- [x] Provide example room archetypes (shafts, tunnels, chambers)
-- [x] Create mapper checklist for cavern layouts
-- [x] Document forge/lava map theme
-- [x] Define lava floor damage sector rules
-- [x] Define animated lava textures
-- [x] Define red/orange lighting bias
-- [x] Define dwarf-heavy enemy weighting
-- [x] Define environmental hazards (steam vents, molten spills)
-- [x] Define industrial props (anvils, chains, grates)
-- [x] Provide arena-style encounter layout examples
-- [x] Create mapper checklist for forge maps
-- [x] Document treasure chamber map theme
-- [x] Define gold/gem texture variants
-- [x] Define trap sector mechanics (pressure plates, drops)
-- [x] Define high-value powerup spawn weighting
-- [x] Define elite enemy spawn presets
-- [x] Define brighter lighting and echo ambience
-- [x] Provide vault room archetype examples
-- [x] Create mapper checklist for treasure rooms
-- [x] Create shared theme documentation template
-- [x] Provide example WAD demonstrating all themes
-- [x] Define encounter pacing guidelines per theme
-- [x] Add internal review checklist for map consistency
-
-### Phase 13.5: Arsenal & Enemy Expansion (Deep Content Pass)
-- [x] Refactor weapon system to support shared dice-roll backend (centralized roll + crit resolver)
-- [x] Add unique firing animations per die type (distinct silhouettes and recoil timing)
-- [x] Implement per-weapon crit modifiers (e.g., d4 high crit chance, d12 high crit multiplier)
-- [x] Add alternate fire modes (if engine constraints allow)
-- [x] d4: rapid burst throw
-- [x] d12: charged smash (long windup, bonus crit chance)
-- [x] d100: “Gamble Shot” (wider roll variance)
-- [x] Add ammo types per die category (Light Dice, Heavy Dice, Arcane Dice)
-- [x] Implement ammo pickup sprites themed to carved bone / rune dice
-- [x] Add weapon tier balancing pass (DPS, ammo efficiency, crit frequency)
-- [x] Add weapon selection UI icons for each die type
-- [x] Add weapon-specific sound profiles (distinct roll sounds per die)
-- [x] Add misfire mechanic for high-risk weapons (low percentile roll penalty)
-- [x] Add "Exploding Max Roll" support (optional rule toggle)
-- [x] Add weapon stat debug overlay (damage range, crit %, average roll)
-- [x] Add weapon spawn flags for map balancing
-- [x] Document all dice weapons in DESIGN.md with damage math breakdown
-- [x] Add d8 mid-tier weapon (balanced fire rate and crit rate)
-- [x] Add d10 ricochet weapon (projectiles bounce once)
-- [x] Add twin d6 scatter weapon (close-range burst)
-- [x] Add arcane d20 beam (continuous roll tick damage)
-- [x] Add cursed die weapon (high damage, self-risk mechanic)
-- [x] Refactor enemy definition templates for easier expansion (shared dwarf base struct)
-- [x] Implement per-enemy stat table (HP, speed, aggression, crit resistance)
-- [x] Add difficulty scaling hooks per enemy
-- [x] Dwarf Defender (shielded, frontal damage reduction)
-- [x] Dwarf Marksman (slow, high-damage ranged unit)
-- [x] Dwarf Miner (throws pickaxes, medium range)
-- [x] Elite Dwarf Captain (buffs nearby dwarves)
-- [x] Dwarf Bombardier (engineer subclass with timed explosives)
-- [x] Armored Dwarf (high HP, weak rear hitbox)
-- [x] Goblin Scout (low HP, high mobility)
-- [x] Goblin Sneak (ambush behavior, delayed aggro)
-- [x] Goblin Alchemist (throws volatile potion projectiles)
-- [x] Goblin Totemist (deploys buff/debuff totems)
-- [x] Goblin Shaman (complete spell kit)
-- [x] Firebolt projectile
-- [x] Freeze hex (slow effect)
-- [x] Minor heal on allies
-- [x] Randomized "Chaos Spell" ability
-- [x] Teleport reposition logic
-- [x] Spell cooldown system
-- [x] Add faction coordination (goblins prioritize flanking, dwarves hold formation)
-- [x] Add morale system (retreat if leader dies)
-- [x] Add crit resistance values per enemy type
-- [x] Add weak point logic (headshot or rear bonus multiplier)
-- [x] Add spawn group presets for map designers
-- [x] Unique death animations per elite unit (blocked: requires sprite assets)
-- [x] Resolve blocker: Cannot implement - no sprite artist available in current environment
-- [x] Critical hit reaction animations (blocked: requires sprite assets)
-- [x] Elemental status visual overlays (burn/freeze/glow)
-- [x] Add mini bestiary documentation in README or `/docs`
-
-## Phase 14: Spell & Status Effect System
-- [x] Implement generic status effect framework (duration-based effects in thinker loop)
-- [x] Add "Burning" effect (damage over time, fire visuals)
-- [x] Add "Frozen" effect (movement speed reduction)
-- [x] Add "Stunned" effect (temporary attack suppression)
-- [x] Add "Dice Curse" effect (randomized stat variance)
-- [x] Add HUD status effect indicators
-- [x] Expose status parameters via configurable constants
-
-## Phase 15: Advanced Enemy AI Behaviors
-- [x] Add tactical retreat logic for ranged dwarves
-- [x] Add group aggression triggers (pack behavior)
-- [x] Add engineer turret deployment logic
-- [x] Add shaman support logic (buff nearby enemies)
-- [x] Add per-enemy reaction time variance
-- [x] Implement difficulty-scaled AI parameters
-
-## Phase 16: Boss Encounters
-- [x] Design Goblin King boss (multi-phase fight)
-- [x] Design Dwarven War Machine boss (projectile-heavy)
-- [x] Implement phase transition triggers
-- [x] Add boss-specific music cues
-- [x] Add boss health bar overlay
-- [x] Add scripted arena lock system (vanilla-compatible)
-
-## Phase 17: Dice Mechanics Expansion
-- [x] Add "Exploding Dice" mechanic (max roll triggers reroll)
-- [x] Add "Advantage/Disadvantage" system (roll twice, take best/worst)
-- [x] Add combo multiplier system for consecutive crits
-- [x] Add luck stat affecting roll distribution
-- [x] Add configurable crit scaling curves
-
-## Phase 18: Progression System (Optional Mode)
-- [x] Add optional RPG progression mode toggle
-- [x] Implement experience tracking
-- [x] Add level-up stat selection screen
-- [x] Add permanent crit chance scaling
-- [x] Add weapon mastery modifiers
-- [x] Ensure vanilla mode remains unaffected
-
-## Phase 19: Audio Overhaul
-- [x] Add dice roll sound library (per die type)
-- [x] Add crit impact layered sound
-- [x] Add dwarf voice cues
-- [x] Add goblin chatter ambient sounds
-- [x] Add reverb zones for caves
-- [x] Add audio toggle options in setup tool
-
-## Phase 20: Visual Effects Layer
-- [x] Add dynamic screen shake on high rolls
-- [x] Add particle sparks for crit hits
-- [x] Add lava heat shimmer effect
-- [x] Add magic projectile trail rendering
-- [x] Add low-health screen tint
-- [x] Add optional modern FX toggle
-
-## Phase 21: Multiplayer Enhancements
-- [x] Ensure dice mechanics sync deterministically over netplay
-- [x] Add crit event broadcast messages
-- [x] Add optional PvP dice arena mode
-- [x] Add co-op shared crit buffs
-- [x] Add net desync debug logging
-
-## Phase 22: Modding & Extensibility
-- [x] Document dice weapon DEHACKED mappings
-- [x] Expose crit system parameters to config
-- [x] Add custom dice weapon template example
-- [x] Add enemy definition template
-- [x] Create example goblin-themed TC pack
-- [x] Write Modding Guide in `/docs`
-
-## Phase 23: Performance & Determinism Audit
-- [x] Profile thinker loop under heavy dice spam
-- [x] Validate deterministic RNG across platforms
-- [x] Audit floating-point usage (avoid nondeterminism)
-- [x] Benchmark sprite-heavy scenes
-- [x] Test low-spec hardware compatibility
-- [x] Add reproducible demo test suite
-
-## Phase 24: Release Engineering
-- [x] Create versioning scheme (SemVer or similar)
-- [x] Add changelog automation
-- [x] Add release packaging scripts (Linux/Windows/macOS)
-- [x] Create demo WAD bundle
-- [x] Publish first tagged release
-## Phase 35: Post-Release Polish
-- [x] Resolve blocker: Requires manual GitHub release creation and push to remote
-
-### Phase 35: Post-Release Polish
-- [x] Optimize projectile rendering for 100+ dice on screen
-- [x] Add weapon recoil visual feedback
-- [x] Implement kill confirmation popup
-- [x] Add damage statistics end-of-level screen
-- [x] Add cumulative session stats tracking
-- [x] Polish loading screen with dice animation
-- [x] Add region-specific content warnings
-- [x] Implement achievement notification toasts
-- [x] Add cross-platform save file migration utility
-- [x] Draft public roadmap
-
-## Phase 26: Quality of Life Improvements
-- [x] Add weapon quick-switch keybindings (1-9 number keys)
-- [x] Add reload/replace weapon function
-- [x] Add auto-switch to new weapon on pickup
-- [x] Add weapon cycle forward/backward keys
-- [x] Add show/hide HUD toggle
-- [x] Add damage log console command for review
-- [x] Add kill count display in end-level stats
-
-## Phase 27: Additional Game Modes
-- [x] Add endless survival mode (waves of enemies)
-- [x] Add time attack mode (speedrun)
-- [x] Add challenge mode presets (crit only, no powerups, etc.)
-
-## Phase 28: Configuration & Settings
-- [x] Add in-game settings menu accessible via ESC
-- [x] Add dice roll sound volume slider
-- [x] Add critical hit notification text toggle
-- [x] Add screen shake intensity slider
-- [x] Add damage number scale slider
-- [x] Add particle effects toggle
-
-## Phase 29: Save System Enhancements
-- [x] Add additional save slots (beyond 6)
-- [x] Add quicksave/quickload slots
-- [x] Add save game comments
-- [x] Add auto-save on level transition
-
-## Phase 30: Debug Tools & Developer Features
-- [x] Add console command to list all dice weapons and stats
-- [x] Add debug overlay showing damage calculations
-- [x] Add configurable minimum damage cap (prevent 0-damage rolls)
-- [x] Add screenshot hotkey with dice roll overlay capture
-- [x] Add demo recording/playback validation
-- [x] Add network packet debug logging for multiplayer
-- [x] Add weapon balance tuning constants file
-- [x] Add environment variable for IWAD path override
-- [x] Add startup crash handler with stack trace
-- [x] Add mod loader error reporting system
-
-## Phase 31: Network Optimizations
-- [x] Add client-side prediction for dice roll results
-- [x] Implement server-authoritative damage validation
-- [x] Add lag compensation for projectile hits
-- [x] Optimize network packet size for dice roll events
-
-## Phase 32: User Interface Polish
-- [x] Add main menu animated background
-- [x] Add dice-themed loading screen tips
-- [x] Implement crosshair customization options
-- [x] Add damage type indicator icons on hit
-
-## Phase 33: Accessibility Features
-- [x] Add colorblind mode options
-- [x] Add configurable HUD scale
-- [x] Add screen reader support for menu navigation
-- [x] Add option to reduce motion/screen shake
-
-## Phase 34: Community Features
-- [x] Add replay sharing functionality
-- [x] Add dice roll statistics tracking
-- [x] Add achievement system
-- [x] Add leaderboard for challenge modes
+### Phase 13: Build System Cleanup
+- [ ] Update configure.ac version if needed
+- [ ] Ensure goblin-doom binary name is consistent
 
 ## Current Status
-**Phase 1-8 complete**. Phase 9-13 ready for implementation.
+
+**V1 complete**. V2 Technical Improvements in progress - 13 phases, ~175 tasks.
+
+(End of file)

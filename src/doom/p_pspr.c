@@ -428,8 +428,9 @@ void P_FireAltWeapon (player_t* player)
         {
             angle_t pushAngle = R_PointToAngle2(player->mo->x, player->mo->y,
                                                 player->mo->target->x, player->mo->target->y);
-            player->mo->target->momx += FixedMul(chargeBonus * 20, cos(pushAngle));
-            player->mo->target->momy += FixedMul(chargeBonus * 20, sin(pushAngle));
+            int ang = pushAngle >> ANGLETOFINESHIFT;
+            player->mo->target->momx += FixedMul(chargeBonus * 20, finecosine[ang]);
+            player->mo->target->momy += FixedMul(chargeBonus * 20, finesine[ang]);
         }
         
         // Screen shake for charged attack crits or high rolls (>= 75% = 9 on d12)
