@@ -109,6 +109,9 @@ int			viewangletox[FINEANGLES/2];
 // from clipangle to -clipangle.
 angle_t			xtoviewangle[SCREENWIDTH+1];
 
+// Cached viewwidth to avoid redundant table recalculation
+static int		cached_viewwidth;
+
 lighttable_t*		scalelight[LIGHTLEVELS][MAXLIGHTSCALE];
 lighttable_t*		scalelightfixed[MAXLIGHTSCALE];
 lighttable_t*		zlight[LIGHTLEVELS][MAXLIGHTZ];
@@ -555,6 +558,13 @@ void R_InitTextureMapping (void)
     int			x;
     int			t;
     fixed_t		focallength;
+    
+    // Skip recalculation if viewwidth hasn't changed
+    if (cached_viewwidth == viewwidth)
+    {
+        return;
+    }
+    cached_viewwidth = viewwidth;
     
     // Use tangent table to generate viewangletox:
     //  viewangletox will give the next greatest x
