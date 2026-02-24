@@ -709,7 +709,11 @@ void R_ExecuteSetViewSize (void)
 
     if (!detailshift)
     {
+#if defined(__SSE2__) || defined(_M_X64) || (defined(_M_IX86_FP) && _M_IX86_FP >= 2)
+	colfunc = basecolfunc = R_DrawColumn_SSE2;
+#else
 	colfunc = basecolfunc = R_DrawColumn;
+#endif
 	fuzzcolfunc = R_DrawFuzzColumn;
 	transcolfunc = R_DrawTranslatedColumn;
 	spanfunc = R_DrawSpan;

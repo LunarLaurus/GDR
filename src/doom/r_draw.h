@@ -37,8 +37,12 @@ extern byte*		dc_source;
 // The span blitting interface.
 // Hook in assembler or system specific BLT
 //  here.
-void 	R_DrawColumn (void);
-void 	R_DrawColumnLow (void);
+void	R_DrawColumn (void);
+void	R_DrawColumnLow (void);
+
+#if defined(__SSE2__) || defined(_M_X64) || (defined(_M_IX86_FP) && _M_IX86_FP >= 2)
+void	R_DrawColumn_SSE2 (void);
+#endif
 
 // The Spectre/Invisibility effect.
 void 	R_DrawFuzzColumn (void);

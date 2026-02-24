@@ -92,6 +92,69 @@ byte*			dc_source;
 // just for profiling 
 int			dccount;
 
+#if defined(__SSE2__) || defined(_M_X64) || (defined(_M_IX86_FP) && _M_IX86_FP >= 2)
+#include <emmintrin.h>
+
+void R_DrawColumn_SSE2(void)
+{
+    int count;
+    pixel_t* dest;
+    fixed_t frac;
+    fixed_t fracstep;
+
+    count = dc_yh - dc_yl;
+
+    if (count < 0)
+        return;
+
+    dest = ylookup[dc_yl] + columnofs[dc_x];
+    fracstep = dc_iscale;
+    frac = dc_texturemid + (dc_yl - centery) * fracstep;
+
+    if (count >= 3)
+    {
+        const __m128i mask_127 = _mm_set1_epi32(127);
+
+        while (count >= 4)
+        {
+            __m128i fracs = _mm_set_epi32(
+                frac + fracstep * 3,
+                frac + fracstep * 2,
+                frac + fracstep,
+                frac
+            );
+
+            __m128i indices = _mm_and_si128(_mm_srai_epi32(fracs, FRACBITS), mask_127);
+            indices = _mm_packs_epi32(indices, _mm_setzero_si128());
+            indices = _mm_packus_epi16(indices, _mm_setzero_si128());
+
+            unsigned int idxpacked = _mm_cvtsi128_si32(indices);
+            byte idx0 = (byte)(idxpacked);
+            byte idx1 = (byte)(idxpacked >> 8);
+            byte idx2 = (byte)(idxpacked >> 16);
+            byte idx3 = (byte)(idxpacked >> 24);
+
+            dest[0] = dc_colormap[dc_source[idx0]];
+            dest[SCREENWIDTH] = dc_colormap[dc_source[idx1]];
+            dest[SCREENWIDTH * 2] = dc_colormap[dc_source[idx2]];
+            dest[SCREENWIDTH * 3] = dc_colormap[dc_source[idx3]];
+
+            dest += SCREENWIDTH * 4;
+            frac += fracstep * 4;
+            count -= 4;
+        }
+    }
+
+    while (count >= 0)
+    {
+        *dest = dc_colormap[dc_source[(frac >> FRACBITS) & 127]];
+        dest += SCREENWIDTH;
+        frac += fracstep;
+        count--;
+    }
+}
+#endif
+
 //
 // A column is a vertical slice/span from a wall texture that,
 //  given the DOOM style restrictions on the view orientation,
@@ -99,12 +162,12 @@ int			dccount;
 // Thus a special case loop for very fast rendering can
 //  be used. It has also been used with Wolfenstein 3D.
 // 
-void R_DrawColumn (void) 
+void R_DrawColumn (void)
 { 
     int			count; 
     pixel_t*		dest;
     fixed_t		frac;
-    fixed_t		fracstep;	 
+    fixed_t		fracstep;
  
     count = dc_yh - dc_yl; 
 
