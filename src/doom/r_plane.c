@@ -281,6 +281,8 @@ R_FindPlane
 //
 // R_CheckPlane
 //
+// Optimized overlap scanning using wider word comparisons
+//
 visplane_t*
 R_CheckPlane
 ( visplane_t*	pl,
@@ -292,7 +294,9 @@ R_CheckPlane
     int		unionl;
     int		unionh;
     int		x;
-	
+    byte*	p;
+    unsigned int check;
+    
     if (start < pl->minx)
     {
 	intrl = pl->minx;
@@ -315,9 +319,50 @@ R_CheckPlane
 	intrh = stop;
     }
 
-    for (x=intrl ; x<= intrh ; x++)
-	if (pl->top[x] != 0xff)
-	    break;
+    // Fast overlap check: scan using 32-bit comparisons
+    // We need to find any byte != 0xff (which indicates empty)
+    p = &pl->top[intrl];
+    x = intrl;
+
+    // Check unaligned bytes before 4-byte boundary
+    while (x < intrh && (((unsigned int)p) & 3))
+    {
+        if (*p != 0xff)
+            goto overlapfound;
+        p++;
+        x++;
+    }
+
+    // Check 4 bytes at a time using fast 32-bit comparison
+    // If any byte != 0xff, the dword != 0xffffffff
+    while (x + 4 <= intrh)
+    {
+        check = *(unsigned int*)p;
+        // Check if any byte is not 0xff
+        // Each byte should be 0xff (255). Combined: 0xffffffff if all 0xff
+        // If any byte != 0xff, then the dword != 0xffffffff
+        if (check != 0xffffffff)
+        {
+            // Found non-0xff, check which byte
+            if (p[0] != 0xff) goto overlapfound;
+            if (p[1] != 0xff) { p++; goto overlapfound; }
+            if (p[2] != 0xff) { p += 2; goto overlapfound; }
+            if (p[3] != 0xff) { p += 3; goto overlapfound; }
+        }
+        p += 4;
+        x += 4;
+    }
+
+    // Check remaining bytes
+    while (x <= intrh)
+    {
+        if (*p != 0xff)
+            goto overlapfound;
+        p++;
+        x++;
+    }
+
+overlapfound:
 
     if (x > intrh)
     {
