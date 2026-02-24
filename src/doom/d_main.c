@@ -1107,7 +1107,7 @@ static const char *copyright_banners[] =
 {
     "===========================================================================\n"
     "              GOBLIN DICE ROLLAZ - Slay dwarfs, roll dice!\n"
-    "                  Based on Chocolate Doom engine\n"
+    "               Powered by Goblin Dice Rollaz engine\n"
     "                      press enter to continue\n"
     "===========================================================================\n",
 

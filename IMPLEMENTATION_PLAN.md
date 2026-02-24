@@ -60,7 +60,7 @@
 - [x] Create p_ai_faction.c for faction AI system
 
 ### Phase 4: Rebranding
-- [ ] Rename "Based on Chocolate Doom engine" banner in d_main.c
+- [x] Rename "Based on Chocolate Doom engine" banner in d_main.c
 - [ ] Update CD-ROM config path in d_englsh.h
 - [ ] Update "DOOM! -- Inferno" string in d_englsh.h
 - [ ] Update "To continue the DOOM experience" string
