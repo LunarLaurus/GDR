@@ -53,7 +53,7 @@
 - [x] Remove or convert RANGECHECK in r_things.c
 - [x] Remove or convert RANGECHECK in r_draw.c
 - [x] Remove or convert RANGECHECK in r_plane.c
-- [ ] Remove or convert RANGECHECK in p_sight.c
+- [x] Remove or convert RANGECHECK in p_sight.c
 - [ ] Split weapon debug overlay from st_stuff.c to st_weapon_debug.c
 - [ ] Create m_menu_gameopts.c for game settings submenu
 - [ ] Create m_menu_accessibility.c for accessibility options
