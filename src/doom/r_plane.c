@@ -259,17 +259,6 @@ R_FindPlane
     
     if (lastvisplane - visplanes == MAXVISPLANES)
     {
-        // Hash table is full, fall back to linear search
-        // to find a free slot or return error
-        for (check = visplanes; check < lastvisplane; check++)
-        {
-            if (height == check->height
-	        && picnum == check->picnum
-	        && lightlevel == check->lightlevel)
-	    {
-	        return check;
-	    }
-        }
         I_Error ("R_FindPlane: no more visplanes");
     }
 		
