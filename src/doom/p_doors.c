@@ -38,18 +38,7 @@
 extern int arena_lock_tag;
 extern int arena_locked;
 
-#if 0
-//
-// Sliding door frame information
-//
-slidename_t	slideFrameNames[MAXSLIDEDOORS] =
-{
-    {"GDOORF1","GDOORF2","GDOORF3","GDOORF4",	// front
-     "GDOORB1","GDOORB2","GDOORB3","GDOORB4"},	// back
-	 
-    {"\0","\0","\0","\0"}
-};
-#endif
+
 
 
 //
@@ -638,10 +627,7 @@ int EV_DoArenaLock(int tag, boolean close)
 
 
 
-// UNUSED
-// Separate into p_slidoor.c?
 
-#if 0		// ABANDONED TO THE MISTS OF TIME!!!
 //
 // EV_SlidingDoor : slide a door horizontally
 // (animate midtexture, then set noblocking line)
@@ -826,26 +812,4 @@ EV_SlidingDoor
 	    return;
     }
     
-    // Init sliding door vars
-    if (!door)
-    {
-	door = Z_Malloc (sizeof(*door), PU_LEVSPEC, 0);
-	P_AddThinker (&door->thinker);
-	sec->specialdata = door;
-		
-	door->type = sdt_openAndClose;
-	door->status = sd_opening;
-	door->whichDoorIndex = P_FindSlidingDoorType(line);
 
-	if (door->whichDoorIndex < 0)
-	    I_Error("EV_SlidingDoor: Can't use texture for sliding door!");
-			
-	door->frontsector = sec;
-	door->backsector = line->backsector;
-	door->thinker.function = T_SlidingDoor;
-	door->timer = SWAITTICS;
-	door->frame = 0;
-	door->line = line;
-    }
-}
-#endif
