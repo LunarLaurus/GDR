@@ -5,7 +5,7 @@
 ### Phase 1: Determinism Fixes
 - [x] Replace floating-point cos() with finecosine[] in p_pspr.c knockback
 - [x] Replace floating-point sin() with finesine[] in p_pspr.c knockback
-- [ ] Replace rand() with M_Random() in m_menu.c particle system
+- [x] Replace rand() with M_Random() in m_menu.c particle system
 - [ ] Audit p_inter.c for floating-point damage calculations
 - [ ] Audit p_mobj.c for floating-point physics
 - [ ] Verify all RNG usage uses P_Random/M_Random tables

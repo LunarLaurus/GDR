@@ -36,6 +36,7 @@
 #include "i_timer.h"
 #include "i_video.h"
 #include "m_misc.h"
+#include "m_random.h"
 #include "v_video.h"
 #include "w_wad.h"
 #include "z_zone.h"
@@ -1252,13 +1253,13 @@ void M_InitMenuAnimation(void)
 
     for (i = 0; i < 16; i++)
     {
-        menu_particles[i].x = (rand() % (SCREENWIDTH - 40)) + 20;
-        menu_particles[i].y = rand() % SCREENHEIGHT;
-        menu_particles[i].die_type = 4 + (rand() % 7) * 2; // 4, 6, 8, 10, 12, 16(not used), 18(not used), 20
+        menu_particles[i].x = (M_Random() % (SCREENWIDTH - 40)) + 20;
+        menu_particles[i].y = M_Random() % SCREENHEIGHT;
+        menu_particles[i].die_type = 4 + (M_Random() % 7) * 2; // 4, 6, 8, 10, 12, 16(not used), 18(not used), 20
         if (menu_particles[i].die_type == 16 || menu_particles[i].die_type == 18)
             menu_particles[i].die_type = 20;
-        menu_particles[i].speed_y = 0.2f + (rand() % 30) / 100.0f;
-        menu_particles[i].color = 4 + (rand() % 8); // palette colors in dark range
+        menu_particles[i].speed_y = 0.2f + (M_Random() % 30) / 100.0f;
+        menu_particles[i].color = 4 + (M_Random() % 8); // palette colors in dark range
     }
     menu_anim_initialized = true;
 }
@@ -1306,7 +1307,7 @@ void M_DrawMenuBackground(void)
         if (menu_particles[i].y < -20)
         {
             menu_particles[i].y = SCREENHEIGHT + 20;
-            menu_particles[i].x = (rand() % (SCREENWIDTH - 40)) + 20;
+            menu_particles[i].x = (M_Random() % (SCREENWIDTH - 40)) + 20;
         }
 
         // Draw a simple representation of dice number using the number character
