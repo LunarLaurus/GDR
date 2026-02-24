@@ -16,9 +16,9 @@
 //
 
 #include <stdlib.h>
-#include <time.h>
 #include "doomtype.h"
 #include "m_misc.h"
+#include "m_random.h"
 
 static const char * const adjectives [] = {
     "Grumpy",
@@ -96,23 +96,12 @@ static const char * const nouns[] = {
     "Spectre",
 };
 
-/*
- * ideally we would export this and the caller would invoke it during
- * their setup routine. But, the two callers only invoke getRandomPetName
- * once, so the initialization might as well occur then.
- */
-static void InitPetName()
-{
-    srand((unsigned int)time(NULL));
-}
-
 char *NET_GetRandomPetName()
 {
     const char *a, *n;
 
-    InitPetName();
-    a = adjectives[rand() % arrlen(adjectives)];
-    n = nouns[rand() % arrlen(nouns)];
+    a = adjectives[M_Random() % arrlen(adjectives)];
+    n = nouns[M_Random() % arrlen(nouns)];
 
     return M_StringJoin(a, " ", n, NULL);
 }
