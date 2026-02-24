@@ -489,7 +489,7 @@ void R_DrawPlanes (void)
 	
 	// regular flat
         lumpnum = firstflat + flattranslation[pl->picnum];
-	ds_source = W_CacheLumpNum(lumpnum, PU_STATIC);
+	ds_source = W_CacheLumpNum(lumpnum, PU_CACHE);
 	
 	planeheight = abs(pl->height-viewz);
 	light = (pl->lightlevel >> LIGHTSEGSHIFT)+extralight;
@@ -504,8 +504,8 @@ void R_DrawPlanes (void)
 
 	pl->top[pl->maxx+1] = 0xff;
 	pl->top[pl->minx-1] = 0xff;
-		
-	stop = pl->maxx + 1;
+	
+        stop = pl->maxx + 1;
 
 	for (x=pl->minx ; x<= stop ; x++)
 	{
@@ -514,7 +514,5 @@ void R_DrawPlanes (void)
 			pl->top[x],
 			pl->bottom[x]);
 	}
-	
-        W_ReleaseLumpNum(lumpnum);
     }
 }

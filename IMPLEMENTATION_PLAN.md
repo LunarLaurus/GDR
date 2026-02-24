@@ -30,7 +30,7 @@
 - [x] Add sprite distance culling threshold
 - [x] Implement sprite billboarding optimization
 - [x] Add wall texture caching for repeated lookups
-- [ ] Optimize floor/ceiling texture mapping
+- [x] Optimize floor/ceiling texture mapping
 - [ ] Add parallel sector processing for large levels
 - [ ] Implement mipmap texture streaming
 - [ ] Add GPU texture compression support
