@@ -33,6 +33,10 @@
 // Needs access to LFB (guess what).
 #include "v_video.h"
 
+// Mask for texture column vertical position sampling.
+// Assumes texture columns are 128 pixels tall (power of 2 for fast masking).
+#define TEXTURECOL_HEIGHT_MASK 127
+
 // State.
 #include "doomstat.h"
 
@@ -147,7 +151,7 @@ void R_DrawColumn_SSE2(void)
 
     while (count >= 0)
     {
-        *dest = dc_colormap[dc_source[(frac >> FRACBITS) & 127]];
+        *dest = dc_colormap[dc_source[(frac >> FRACBITS) & TEXTURECOL_HEIGHT_MASK]];
         dest += SCREENWIDTH;
         frac += fracstep;
         count--;
@@ -260,7 +264,7 @@ void R_DrawColumn (void)
     {
 	// Re-map color indices from wall texture column
 	//  using a lighting/special effects LUT.
-	*dest = dc_colormap[dc_source[(frac>>FRACBITS)&127]];
+	*dest = dc_colormap[dc_source[(frac>>FRACBITS)&TEXTURECOL_HEIGHT_MASK]];
 	
 	dest += SCREENWIDTH; 
 	frac += fracstep;
@@ -308,7 +312,7 @@ void R_DrawColumnLow (void)
     do 
     {
 	// Hack. Does not work corretly.
-	*dest2 = *dest = dc_colormap[dc_source[(frac>>FRACBITS)&127]];
+	*dest2 = *dest = dc_colormap[dc_source[(frac>>FRACBITS)&TEXTURECOL_HEIGHT_MASK]];
 	dest += SCREENWIDTH;
 	dest2 += SCREENWIDTH;
 	frac += fracstep; 
