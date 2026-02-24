@@ -84,7 +84,7 @@ fixed_t			viewshake_y;
 int				viewshake_duration;
 
 // Goblin Dice Rollaz: Modern FX toggle (0 = off, 1 = on)
-int				usemodernfx;
+int				goblin_modern_fx;
 
 // Goblin Dice Rollaz: Crosshair customization
 int             crosshair_enabled;
@@ -890,7 +890,7 @@ void R_SetupFrame (player_t* player)
     viewplayer = player;
     
     // Apply screen shake if active and modern FX are enabled
-    if (usemodernfx && viewshake_duration > 0)
+    if (goblin_modern_fx && viewshake_duration > 0)
     {
         // Random shake offset within range
         viewshake_x = (M_Random() * viewshake_x * 2) / 256 - viewshake_x;

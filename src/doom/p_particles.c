@@ -49,7 +49,7 @@ void P_SpawnCritParticles(fixed_t x, fixed_t y, fixed_t z, int damage, int crit_
     int oldest_lifetime = 999;
     int color;
 
-    if (!usemodernfx)
+    if (!goblin_modern_fx)
         return;
     
     if (!crit_roll || crit_roll < 15)

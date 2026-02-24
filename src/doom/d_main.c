@@ -176,7 +176,7 @@ extern int      difficulty_hp_scale[5];
 int             debug_sync_check = 0;
 
 // Goblin Dice Rollaz: modern visual effects toggle
-extern int      usemodernfx;
+extern int      goblin_modern_fx;
 
 // Goblin Dice Rollaz: arena lock system
 int             arena_lock_tag = 666;
@@ -482,7 +482,7 @@ void D_BindVariables(void)
     M_BindIntVariable("lag_compensation_window",   &lag_compensation_window);
 
     // Goblin Dice Rollaz: modern visual effects toggle
-    M_BindIntVariable("usemodernfx",             &usemodernfx);
+    M_BindIntVariable("goblin_modern_fx",             &goblin_modern_fx);
 
     // Goblin Dice Rollaz: Crosshair customization
     M_BindIntVariable("crosshair_enabled",       &crosshair_enabled);
