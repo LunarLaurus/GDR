@@ -6,7 +6,7 @@
 - [x] Replace floating-point cos() with finecosine[] in p_pspr.c knockback
 - [x] Replace floating-point sin() with finesine[] in p_pspr.c knockback
 - [x] Replace rand() with M_Random() in m_menu.c particle system
-- [ ] Audit p_inter.c for floating-point damage calculations
+- [x] Audit p_inter.c for floating-point damage calculations
 - [ ] Audit p_mobj.c for floating-point physics
 - [ ] Verify all RNG usage uses P_Random/M_Random tables
 
@@ -27,6 +27,18 @@
 - [ ] Remove hardcoded &127 texture mask in r_draw.c
 - [ ] Fix RANGECHECK in r_bsp.c line 543
 - [ ] Optimize r_segs.c render loop branching
+- [ ] Add sprite distance culling threshold
+- [ ] Implement sprite billboarding optimization
+- [ ] Add wall texture caching for repeated lookups
+- [ ] Optimize floor/ceiling texture mapping
+- [ ] Add parallel sector processing for large levels
+- [ ] Implement mipmap texture streaming
+- [ ] Add GPU texture compression support
+- [ ] Optimize screen buffer blitting
+- [ ] Add palette lookup caching
+- [ ] Implement sky rendering optimization
+- [ ] Add detail level adjustment for performance
+- [ ] Profile and benchmark each rendering subsystem
 
 ### Phase 3: Code Cleanup
 - [ ] Remove all #if 0 blocks in g_game.c
@@ -69,6 +81,8 @@
 - [ ] Remove GDT_Init function references
 - [ ] Remove GDT_RecordDemo function references
 - [ ] Remove GDT_PlayAndVerifyDemo function references
+- [ ] Remove GDTChecksums function
+- [ ] Remove GDT_ComputeStateChecksum function
 - [ ] Remove InitGameVersion demo detection
 - [ ] Remove G_VanillaVersionCode function
 - [ ] Remove vanilla_demo_limit flag and handling
@@ -84,6 +98,15 @@
 - [ ] Remove demo buffer expansion logic
 - [ ] Remove demo checksum computation
 - [ ] Remove demo share functionality in g_replay.c
+- [ ] Remove G_ExportDemo function
+- [ ] Remove G_LoadSharedDemo function
+- [ ] Remove G_ShareDemo function
+- [ ] Remove demobuffer management code
+- [ ] Remove demo lump reading/writing
+- [ ] Remove IsDemoFile function dependencies
+- [ ] Remove demo1/demo2/demo3 lump handling
+- [ ] Remove D_CheckNetGame demo warnings
+- [ ] Clean up g_game.c demo recording section
 
 ### Phase 6: Audio System Cleanup
 - [ ] Remove redundant I_SoundIsPlaying check before stopping
@@ -98,6 +121,14 @@
 - [ ] Remove unused snd_sbdma config variable
 - [ ] Remove unused snd_mport config variable
 - [ ] Fix CheckVolumeSeparation to be inline
+- [ ] Remove PC speaker frequency table (i_pcsound.c)
+- [ ] Remove unused I_PCS_UpdateSoundParams stub
+- [ ] Clean up DOS sound configuration bindings
+- [ ] Remove DOS-specific sound module comments
+- [ ] Consolidate platform-specific sound detection
+- [ ] Add sound channel pooling optimization
+- [ ] Remove debug sound allocation logging
+- [ ] Clean up music module list compilation
 
 ### Phase 7: Network System Cleanup
 - [ ] Remove NET_StartSecureDemo function
@@ -110,10 +141,20 @@
 - [ ] Remove protocol_names unused slots
 - [ ] Remove #ifdef DROP_PACKETS testing code
 - [ ] Remove commented bandwidth monitoring code
-- [ ] Consolidate NET_Log functions under DEBUG_NET flag
-- [ ] Update master server address or remove master server queries
+- [ ] Consolidate NET_Log under DEBUG_NET flag
+- [ ] Update master server address or remove queries
 - [ ] Fix InitPetName to not reseed rand() every call
 - [ ] Remove unused NET_PACKET_TYPE_ACK
+- [ ] Clean up NET_MASTER_PACKET_TYPE_SIGN entries
+- [ ] Remove unused packet type definitions
+- [ ] Optimize reliable packet ACK handling
+- [ ] Remove unused NET_ExpandTicNum complexity
+- [ ] Simplify NET_Conn_ReliablePacket ACK logic
+- [ ] Remove unused net_client_recv_t memmove code
+- [ ] Clean up SendOneQuery rate limiting
+- [ ] Reduce MAX_MODULES if too large
+- [ ] Document network protocol for future reference
+- [ ] Add network protocol version stub
 
 ### Phase 8: Input System Cleanup
 - [ ] Remove empty I_Tactile function
@@ -184,8 +225,172 @@
 - [ ] Update configure.ac version if needed
 - [ ] Ensure goblin-doom binary name is consistent
 
+### Phase 14: New Dice Weapons
+- [ ] Add d2 Flip of Fate weapon (binary damage, 50% 1dmg/50% 2dmg)
+- [ ] Add d3 Skewered Luck weapon (guaranteed 1-3 damage, piercing)
+- [ ] Add d7 Seven Veins weapon (ore fragment splash, 14% crit)
+- [ ] Add d14 Fused Doubler weapon (dual dice, resonance explosion)
+- [ ] Add d24 Hourglass Cannon weapon (slows enemies, freezes on crit)
+- [ ] Add d30 Gear Grinder weapon (bonus vs armored dwarves)
+- [ ] Add d48 Forge Hammer weapon (molten effect on crit, fire dmg)
+- [ ] Add d50 Dwarf's Bane weapon (3x vs dwarf enemies)
+- [ ] Add d60 Elemental Chaos weapon (fire/ice/lightning/poison)
+- [ ] Add d100+1 Fumble Finder weapon (no fumbles, 4x on crit)
+- [ ] Add d3 Quake Boulder weapon (shockwave, stun)
+- [ ] Add Chain Reaction d12 weapon (sticks, chains to nearby)
+- [ ] Add Crystal d8 Shatter weapon (shard spray, shield break)
+- [ ] Add Splitting d20 weapon (splits into multiple dice)
+- [ ] Add Greed's d6 Gold Rush weapon (damage stacks on kills)
+- [ ] Add Mining Charge d10 weapon (proximity mines)
+- [ ] Add Swarm d6 Dice Storm weapon (rapid fire spread)
+- [ ] Add Runic Binding d12 weapon (random debuff on hit)
+
+### Phase 15: New Dwarf Enemies
+- [ ] Add Dwarf Flamethrower (area flame cone, low HP)
+- [ ] Add Dwarf Thunderer (war drum stuns, moderate HP)
+- [ ] Add Dwarf Ironclad (rotating minigun, very high HP)
+- [ ] Add Dwarf Stonecutter (hurls rock fragments, high impact)
+- [ ] Add Dwarf Thundermage (lightning arcs, medium range)
+- [ ] Add Dwarf Warlord (boss, 300 HP, immunity aura)
+- [ ] Add Dwarf Runesmith (reflective rune shields on ground)
+- [ ] Add Dwarf Runebearer (crit resistance aura, support)
+- [ ] Add Dwarf High Priest (heals wounded dwarves)
+- [ ] Add Dwarf Commander (focus fire orders on player)
+- [ ] Add Dwarf Steam Golem (steam cloud, fire vulnerable)
+- [ ] Add Dwarf Scrap Drone (swarms of 3-5, low HP each)
+- [ ] Add Dwarf Drill Tank (drills through thin walls)
+- [ ] Add Dwarf Siege Engine (stationary explosive cannon)
+- [ ] Add Dwarf Sky Miner (flying, hover attacks)
+- [ ] Add Dwarf Mine Layer (plants proximity mines)
+- [ ] Add Dwarf Tinkerer (repair drones for mechanicals)
+- [ ] Add Dwarf Barrel Drone (explosive chaser)
+- [ ] Add Dwarf Shadowblade (cloaked melee, invisible)
+- [ ] Add Dwarf Obsidian Guardian (volcanic glass, fire weak)
+- [ ] Add Dwarf Geologist (spawns rock Golems)
+- [ ] Add Dwarf Alchemist (throws volatile potions)
+- [ ] Add Dwarf Treasure Hunter (drops extra loot)
+- [ ] Add Dwarf Juggernaut (slow, devastating melee)
+- [ ] Add Dwarf Sapper (places explosives on walls)
+
+### Phase 16: New Map Environments
+- [ ] Add Molten Anvil forge map theme
+- [ ] Add Barracks of Stone Guard map theme
+- [ ] Add Great Hall of Maces (chandelier hazards)
+- [ ] Add Dwarven Armory Vaults (auto-arming traps)
+- [ ] Add Royal Treasury (pressure plate alarms)
+- [ ] Add Veinfall Chasm (minecart traps)
+- [ ] Add Flooded Shafts (electrocution hazard)
+- [ ] Add Crystalline Grotto (exploding crystals)
+- [ ] Add Abandoned Excavation (cave-in hazards)
+- [ ] Add Deep Drill map theme (crushing drill)
+- [ ] Add Crusher Press (timed piston hazards)
+- [ ] Add Steam Vent Corridors (periodic bursts)
+- [ ] Add Minecart Gauntlet (runaway carts)
+- [ ] Add Lever Room of Doom (puzzle traps)
+- [ ] Add Turret Foundry (spawning turrets)
+- [ ] Add Warren Warrens (goblin ambush tunnels)
+- [ ] Add Goblin Totem Chamber (totem buffs)
+- [ ] Add Slop Kitchen (environmental kills)
+- [ ] Add Scrap Metal Fortress (explosive barrels)
+- [ ] Add Bone Pit (released cage monsters)
+
+### Phase 17: New Powerups
+- [ ] Add Lucky Seven powerup (7 guaranteed crits)
+- [ ] Add Exploding Dice powerup (reroll max faces)
+- [ ] Add Advantage Roll powerup (roll twice take best)
+- [ ] Add Snake Eyes powerup (mark for double damage)
+- [ ] Add Dwarven Weakness powerup (2x vs dwarves)
+- [ ] Add Pickaxe Repellent powerup (dwarves flee)
+- [ ] Add Gold Fever powerup (attack speed vs treasure)
+- [ ] Add Greed Is Good powerup (ammo on dwarf kills)
+- [ ] Add Dash Token powerup (dash with iframes)
+- [ ] Add Ghost Step powerup (pass through enemies)
+- [ ] Add Wall Walker powerup (ceiling traversal)
+- [ ] Add Trap Sense powerup (highlight mines)
+- [ ] Add Vitality Crystal powerup (permanent +25 HP)
+- [ ] Add Luck Stone powerup (permanent +5% crit)
+- [ ] Add Ammo Pouch powerup (permanent +50% ammo)
+- [ ] Add Berserker Regen powerup (regen at low HP)
+- [ ] Add Cursed D4 powerup (3x dmg, lose armor)
+- [ ] Add Blood Pact powerup (infinite ammo, health drain)
+- [ ] Add Madness Die powerup (random +/- on kills)
+- [ ] Add Glass Cannon powerup (2x dmg, 50% HP)
+
+### Phase 18: Code Quality Improvements
+- [ ] Define DEFAULT_DICE_VOLUME constant in m_menu.c
+- [ ] Define DEFAULT_SHAKE_SCALE and DEFAULT_DAMAGE_SCALE
+- [ ] Define MAX_MENU_PARTICLES constant
+- [ ] Define SHAKE_LOW, SHAKE_MEDIUM, SHAKE_HIGH constants
+- [ ] Define CRIT_CHANCE_SCALE constant in p_inter.c
+- [ ] Define movement speed constants in g_game.c
+- [ ] Fix typo: indetermined -> undetermined in doomstat.c
+- [ ] Fix inconsistent naming: standardize snake_case for goblin vars
+- [ ] Add NULL check after malloc in m_menu.c
+- [ ] Add NULL check after malloc in d_main.c
+- [ ] Add NULL check after strdup in d_main.c
+- [ ] Add NULL check after calloc in w_wad.c
+- [ ] Add NULL check after malloc in p_saveg.c
+- [ ] Make video_driver const char* in i_video.c
+- [ ] Make window_position const char* in i_video.c
+- [ ] Make snd_musiccmd const char* in i_sound.c
+- [ ] Expand dice_str buffer from 4 to 8 bytes in m_menu.c
+- [ ] Expand level name buffer in m_menu.c line 1931
+
+### Phase 19: Additional Rendering Optimizations
+- [ ] Add sprite occlusion culling for off-screen sprites
+- [ ] Implement temporal AA for smooth sprite edges
+- [ ] Add texture LOD switching for distant walls
+- [ ] Optimize colormap lookups with caching
+- [ ] Add hardware acceleration detection and use
+- [ ] Implement variable draw distance for particles
+- [ ] Add batch rendering for similar sprites
+- [ ] Profile and optimize texture upload bandwidth
+
+### Phase 20: Additional Audio Features
+- [ ] Add 3D positional audio for dwarf voice cues
+- [ ] Add reverb zones for cave environments
+- [ ] Implement dynamic music intensity based on combat
+- [ ] Add dice roll sound variation per die type
+- [ ] Add critical hit layered sound effects
+- [ ] Implement audio LOD for distant sounds
+- [ ] Add volume slider for dice roll sounds in menu
+- [ ] Implement weapon-specific sound profiles
+
+### Phase 21: Save System Improvements
+- [ ] Add compressed save games
+- [ ] Add save game checksum validation
+- [ ] Add auto-save on player death
+- [ ] Add continue from last save option
+- [ ] Add save game comments with timestamp
+- [ ] Implement cloud save support stub
+- [ ] Add cross-version save compatibility
+
+### Phase 22: Modding Support
+- [ ] Add custom dice weapon DEHACKED template
+- [ ] Add custom enemy definition template
+- [ ] Document WAD sprite replacement requirements
+- [ ] Add mod loader error reporting
+- [ ] Add mod load order configuration
+- [ ] Implement mod compatibility checker
+
+### Phase 23: Testing Infrastructure
+- [ ] Add automated build test script
+- [ ] Add basic gameplay smoke test
+- [ ] Add deterministic replay test
+- [ ] Add memory leak detection test
+- [ ] Add save/load roundtrip test
+- [ ] Add config file parsing test
+- [ ] Add network basic functionality test
+
+### Phase 24: Performance Profiling
+- [ ] Add FPS counter debug overlay
+- [ ] Add frame time profiling
+- [ ] Add memory usage display
+- [ ] Add draw call counter
+- [ ] Add sprite batch count display
+- [ ] Add network latency display
+- [ ] Add think time profiler
+
 ## Current Status
 
-**V1 complete**. V2 Technical Improvements in progress - 13 phases, ~175 tasks.
-
-(End of file)
+**V1 complete**. V2 Technical Improvements in progress - 24 phases, ~380 tasks.
