@@ -28,7 +28,7 @@
 - [x] Fix RANGECHECK in r_bsp.c line 543
 - [x] Optimize r_segs.c render loop branching
 - [x] Add sprite distance culling threshold
-- [ ] Implement sprite billboarding optimization
+- [x] Implement sprite billboarding optimization
 - [ ] Add wall texture caching for repeated lookups
 - [ ] Optimize floor/ceiling texture mapping
 - [ ] Add parallel sector processing for large levels

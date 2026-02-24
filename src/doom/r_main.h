@@ -133,6 +133,11 @@ R_PointToAngle2
   fixed_t	x2,
   fixed_t	y2 );
 
+angle_t
+R_PointToAngleRel
+( fixed_t	x,
+  fixed_t	y );
+
 fixed_t
 R_PointToDist
 ( fixed_t	x,

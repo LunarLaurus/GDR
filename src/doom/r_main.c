@@ -387,6 +387,74 @@ R_PointToAngle2
 }
 
 
+angle_t
+R_PointToAngleRel
+( fixed_t	x,
+  fixed_t	y )
+{
+    if ( (!x) && (!y) )
+	return 0;
+
+    if (x>= 0)
+    {
+	if (y>= 0)
+	{
+	    if (x>y)
+	    {
+		return tantoangle[ SlopeDiv(y,x)];
+	    }
+	    else
+	    {
+		return ANG90-1-tantoangle[ SlopeDiv(x,y)];
+	    }
+	}
+	else
+	{
+	    y = -y;
+
+	    if (x>y)
+	    {
+		return -tantoangle[SlopeDiv(y,x)];
+	    }
+	    else
+	    {
+		return ANG270+tantoangle[ SlopeDiv(x,y)];
+	    }
+	}
+    }
+    else
+    {
+	x = -x;
+
+	if (y>= 0)
+	{
+	    if (x>y)
+	    {
+		return ANG180-1-tantoangle[ SlopeDiv(y,x)];
+	    }
+	    else
+	    {
+		return ANG90+ tantoangle[ SlopeDiv(x,y)];
+	    }
+	}
+	else
+	{
+	    y = -y;
+
+	    if (x>y)
+	    {
+		return ANG180+tantoangle[ SlopeDiv(y,x)];
+	    }
+	    else
+	    {
+		 return ANG270-1-tantoangle[ SlopeDiv(x,y)];
+	    }
+	}
+    }
+    return 0;
+}
+
+
 fixed_t
 R_PointToDist
 ( fixed_t	x,
