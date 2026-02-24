@@ -49,7 +49,7 @@
 - [x] Remove all #if 0 blocks in p_floor.c
 - [x] Remove all #if 0 blocks in p_maputl.c
 - [x] Remove commented dead code in r_segs.c
-- [ ] Remove unused code in dstrings.c
+- [x] Remove unused code in dstrings.c
 - [ ] Remove or convert RANGECHECK in r_things.c
 - [ ] Remove or convert RANGECHECK in r_draw.c
 - [ ] Remove or convert RANGECHECK in r_plane.c
@@ -489,6 +489,256 @@
 - [ ] Add vote kick functionality
 - [ ] Add admin tools
 
+### Phase 31: Integrate Strife Features
+- [ ] Import Strife dialog system into core engine
+- [ ] Import Strife inventory system (key items, quests)
+- [ ] Import Strife NPC interaction system
+- [ ] Import Strife quest tracking system
+- [ ] Import Strife quest journal UI
+- [ ] Import Strife multi-key binding system
+- [ ] Import Strife shop/merchant system
+- [ ] Import Strife weapon dropping/pickup system
+- [ ] Import Strife companion/follower system
+- [ ] Import Strife climbing/ledge grab mechanics
+- [ ] Import Strife view bobbing system
+- [ ] Import Strife macrotized textures
+- [ ] Import Strife macGuffin pickups
+
+### Phase 32: Integrate Heretic Features
+- [ ] Import Heretic artifact/pickup system
+- [ ] Import Heretic Tome of Power powerup
+- [ ] Import Heretic Wings of Wrath flight
+- [ ] Import Heretic ethereal ammo system
+- [ ] Import Heretic staff weapon mechanics
+- [ ] Import Heretic magic system (mana)
+- [ ] Import Heretic dragon attack patterns
+- [ ] Import Heretic iron lich phases
+- [ ] Import Heretic water/lava physics
+- [ ] Import Heretic day/night cycle lighting
+- [ ] Import Heretic spell casting UI
+- [ ] Import Heretic scroll pickup system
+
+### Phase 33: Integrate Hexen Features
+- [ ] Import Hexen class system (Corvus, Crusader, Necromancer)
+- [ ] Import Hexen class-specific abilities
+- [ ] Import Hexen mana/fetish system
+- [ ] Import Hexen class switching mechanic
+- [ ] Import Hexen artifact class restrictions
+- [ ] Import Hexen teleport sphere system
+- [ ] Import Hexen puzzle key system
+- [ ] Import Hexen class-based starting items
+- [ ] Import Hexen experience/leveling (optional)
+- [ ] Import Hexen class stat modifiers
+- [ ] Import Hexen class weapon proficiencies
+- [ ] Import Hexen ring of telefrag
+
+### Phase 34: Unified Engine Core
+- [ ] Create unified actor spawner system
+- [ ] Create unified weapon definition framework
+- [ ] Create unified enemy type registry
+- [ ] Create unified powerup system
+- [ ] Create unified inventory/item system
+- [ ] Create unified quest system
+- [ ] Create unified dialog system
+- [ ] Create unified shop/merchant system
+- [ ] Create unified NPC interaction system
+- [ ] Create unified class system
+- [ ] Create unified save/load format
+- [ ] Create unified config system
+- [ ] Create unified mod loading framework
+- [ ] Create unified content pack system
+- [ ] Create unified game mode selector
+- [ ] Create unified difficulty system
+- [ ] Create unified achievement system
+- [ ] Create unified statistics tracking
+- [ ] Create unified story/mission system
+
+### Phase 35: Deprecate Game-Specific Directories
+- [ ] Mark src/strife/ as deprecated
+- [ ] Mark src/heretic/ as deprecated
+- [ ] Mark src/hexen/ as deprecated
+- [ ] Update build system to hide deprecated games
+- [ ] Update config defaults to goblin-doom only
+- [ ] Update IWAD detection for main game only
+- [ ] Remove game selection from menu (default to goblin)
+- [ ] Add deprecation warnings to build logs
+- [ ] Update documentation to note deprecation
+- [ ] Create migration guide for mods
+
+### Phase 36: Remove Strife Code
+- [ ] Remove src/strife/ directory entirely
+- [ ] Remove Strife-specific functions from g_game.c
+- [ ] Remove Strife-specific functions from d_main.c
+- [ ] Remove Strife-specific functions from doomstat.c
+- [ ] Remove Strife-specific functions from d_net.c
+- [ ] Remove Strife-specific sound module
+- [ ] Remove Strife-specific savegamet
+- [ ] Remove Strife-specific HUD rendering
+- [ ] Remove Strife-specific map format support
+- [ ] Remove Strife-specific enemy types
+- [ ] Remove Strife-specific weapon types
+- [ ] Remove Strife-specific powerup types
+- [ ] Clean up #ifdef Strife from all files
+- [ ] Update CHANGELOG with Strife removal
+
+### Phase 37: Remove Heretic/Hexen Code
+- [ ] Remove src/heretic/ directory entirely
+- [ ] Remove src/hexen/ directory entirely
+- [ ] Remove Heretic-specific functions from g_game.c
+- [ ] Remove Hexen-specific functions from g_game.c
+- [ ] Remove Heretic-specific functions from d_main.c
+- [ ] Remove Hexen-specific functions from d_main.c
+- [ ] Remove Heretic-specific sound modules
+- [ ] Remove Hexen-specific sound modules
+- [ ] Remove Heretic-specific enemy types
+- [ ] Remove Hexen-specific enemy types
+- [ ] Remove Heretic weapon types
+- [ ] Remove Hexen weapon types
+- [ ] Remove Heretic powerup types
+- [ ] Remove Hexen powerup types
+- [ ] Remove class system from Hexen (move to unified)
+- [ ] Remove mana system (move to unified)
+- [ ] Clean up #ifdef Heretic from all files
+- [ ] Clean up #ifdef Hexen from all files
+- [ ] Update CHANGELOG with Heretic/Hexen removal
+
+### Phase 38: Finalize Unified Engine
+- [ ] Remove configure.ac game selection options
+- [ ] Remove CMake game-specific build options
+- [ ] Remove setup tool game selection
+- [ ] Remove doom/id/ references to other games
+- [ ] Update VERSION to Goblin Dice Rollaz only
+- [ ] Update copyright headers
+- [ ] Remove unused doom_build.h entries
+- [ ] Final cleanup of any remaining #ifdef GAME
+- [ ] Verify build produces single executable
+- [ ] Test all features still work
+- [ ] Update all documentation for unified engine
+- [ ] Create unified engine README
+
+### Phase 39: New Faction - Skeletons
+- [ ] Add Skeleton Warrior enemy (basic undead dwarf)
+- [ ] Add Skeleton Archer enemy (ranged attacks)
+- [ ] Add Skeleton Mage enemy (dark magic attacks)
+- [ ] Add Skeleton Champion enemy (elite warrior)
+- [ ] Add Skeleton King boss (summons minions)
+- [ ] Add Skeleton Priest enemy (heals undead)
+- [ ] Add Bone Golem enemy (constructed from dwarf bones)
+- [ ] Add Ghost Dwarf enemy (ethereal, phase through walls)
+- [ ] Add Lich Dwarf enemy (powerful necromancer)
+- [ ] Add Skeleton Dog enemy (fast swarm)
+- [ ] Add skeleton faction AI (fear fire, crave blood)
+- [ ] Add skeleton weakness to holy/light damage
+- [ ] Add skeleton drop table (bones, soul gems)
+
+### Phase 40: Additional Dwarf Content
+- [ ] Add Dwarf Veterans (experienced soldiers)
+- [ ] Add Dwarf Pyromaniac (explosives expert)
+- [ ] Add Dwarf Beastmaster (tames cave creatures)
+- [ ] Add Dwarf Courier (runs messages, low HP)
+- [ ] Add Dwarf Scholar (defensive magic)
+- [ ] Add Dwarf Ghost Hunter (anti-undead specialist)
+- [ ] Add Dwarf War Wagon (mobile fort)
+- [ ] Add Dwarf Ballista (stationary anti-air)
+- [ ] Add Elite Dwarf Guard (boss bodyguards)
+- [ ] Add Dwarf Queen (heals, buffs, royal)
+- [ ] Add dwarf veteran weapon upgrades
+- [ ] Add dwarf scar patterns for identification
+- [ ] Add dwarf clan banners (territory markers)
+
+### Phase 41: Elemental System
+- [ ] Define elemental damage types (Fire, Ice, Lightning, Poison, Holy, Dark)
+- [ ] Add elemental damage to weapon definitions
+- [ ] Add elemental weakness/resistance to enemy definitions
+- [ ] Implement elemental combo reactions (Fire + Ice = Steam blast)
+- [ ] Add elemental aura pickup items
+- [ ] Add elemental weapon modifications
+- [ ] Add elemental resistance status effect
+- [ ] Add burning damage over time
+- [ ] Add frozen/slowed status
+- [ ] Add lightning chain to nearby enemies
+- [ ] Add poison damage and weakening
+- [ ] Add holy damage vs undead
+- [ ] Add dark damage vs living
+- [ ] Add elemental particle effects
+- [ ] Add elemental damage numbers (color-coded)
+
+### Phase 42: Crafting System
+- [ ] Add material pickup system (ores, bones, herbs)
+- [ ] Add crafting menu UI
+- [ ] Add crafting recipes for weapons
+- [ ] Add crafting recipes for armor
+- [ ] Add crafting recipes for powerups
+- [ ] Add material drop tables for enemies
+- [ ] Add material spawners in levels
+- [ ] Add crafting station locations
+- [ ] Add material inventory UI
+- [ ] Add rare/legendary material types
+- [ ] Add disassembly of unwanted items
+- [ ] Add crafting skill level (improves yields)
+- [ ] Add recipe discovery system
+- [ ] Add crafting material exchange
+
+### Phase 43: Skill Trees
+- [ ] Define skill tree categories (Combat, Magic, Survival)
+- [ ] Add Combat skill tree (damage, speed, crit)
+- [ ] Add Magic skill tree (mana efficiency, spell power)
+- [ ] Add Survival skill tree (health, defense, recovery)
+- [ ] Add skill point acquisition system
+- [ ] Add skill point rewards from kills
+- [ ] Add skill point rewards from quests
+- [ ] Add skill reset option
+- [ ] Add skill tree UI display
+- [ ] Add passive ability unlocks
+- [ ] Add ultimate abilities at tree completion
+- [ ] Add skill respecing items
+- [ ] Add skill-based difficulty scaling
+
+### Phase 44: Rogue-like Mode
+- [ ] Add procedural level generation
+- [ ] Add permadeath system
+- [ ] Add per-run character progression
+- [ ] Add rogue-like run start loadout selection
+- [ ] Add roguelike item pickups
+- [ ] Add curse items (risk/reward)
+- [ ] Add floor curse system (difficulty scaling)
+- [ ] Add boss rush mode
+- [ ] Add daily challenge runs
+- [ ] Add high score tracking
+- [ ] Add run statistics
+- [ ] Add unlockable characters/classes
+- [ ] Add meta-progression between runs
+
+### Phase 45: Puzzle Dungeons
+- [ ] Add pressure plate triggers
+- [ ] Add switch/lever puzzles
+- [ ] Add timing-based puzzles
+- [ ] Add sequence puzzles
+- [ ] Add environment interaction puzzles
+- [ ] Add rune inscription puzzles
+- [ ] Add hidden switch discovery
+- [ ] Add puzzle solution rewards
+- [ ] Add puzzle hint system
+- [ ] Add puzzle room design templates
+- [ ] Add trap disarming mechanics
+- [ ] Add timed escape sequences
+- [ ] Add puzzle completion scoring
+
+### Phase 46: Siege Battles
+- [ ] Add large-scale battle AI (50+ enemies)
+- [ ] Add siege weapon interactions
+- [ ] Add defensive position combat
+- [ ] Add wave-based assault mode
+- [ ] Add objective-based siege (capture point)
+- [ ] Add allied NPC soldiers
+- [ ] Add destructible environment
+- [ ] Add siege engine vehicles
+- [ ] Add breach point combat
+- [ ] Add defend the champion mode
+- [ ] Add siege victory conditions
+- [ ] Add siege defeat conditions
+- [ ] Add siege arena builder
+
 ## Current Status
 
-**V1 complete**. V2 Technical Improvements in progress - 30 phases, ~600 tasks.
+**V1 complete**. V2 Technical Improvements in progress - 46 phases, ~750 tasks.
