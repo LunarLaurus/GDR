@@ -374,6 +374,33 @@ void R_GenerateLookup (int texnum)
 
 
 //
+// Texture column cache for wall rendering
+// Caches the last N texture column lookups to avoid repeated array accesses
+//
+
+#define TEXTURE_COLUMN_CACHE_SIZE 16
+
+typedef struct {
+    int tex;
+    int col;
+    byte* ptr;
+} texture_column_cache_entry_t;
+
+static texture_column_cache_entry_t texture_column_cache[TEXTURE_COLUMN_CACHE_SIZE];
+static int texture_column_cache_initialized = 0;
+
+static void R_InitTextureColumnCache(void)
+{
+    int i;
+    for (i = 0; i < TEXTURE_COLUMN_CACHE_SIZE; i++) {
+        texture_column_cache[i].tex = -1;
+        texture_column_cache[i].col = -1;
+        texture_column_cache[i].ptr = NULL;
+    }
+    texture_column_cache_initialized = 1;
+}
+
+//
 // R_GetColumn
 //
 byte*
@@ -383,18 +410,40 @@ R_GetColumn
 {
     int		lump;
     int		ofs;
-	
+    int         cache_idx;
+    byte*       result;
+    
+    if (!texture_column_cache_initialized) {
+        R_InitTextureColumnCache();
+    }
+
     col &= texturewidthmask[tex];
+
+    cache_idx = (tex + (col >> 2)) & (TEXTURE_COLUMN_CACHE_SIZE - 1);
+
+    if (texture_column_cache[cache_idx].tex == tex &&
+        texture_column_cache[cache_idx].col == col) {
+        return texture_column_cache[cache_idx].ptr;
+    }
+
     lump = texturecolumnlump[tex][col];
     ofs = texturecolumnofs[tex][col];
     
     if (lump > 0)
-	return (byte *)W_CacheLumpNum(lump,PU_CACHE)+ofs;
+        result = (byte *)W_CacheLumpNum(lump,PU_CACHE)+ofs;
+    else
+    {
+        if (!texturecomposite[tex])
+            R_GenerateComposite (tex);
 
-    if (!texturecomposite[tex])
-	R_GenerateComposite (tex);
+        result = texturecomposite[tex] + ofs;
+    }
 
-    return texturecomposite[tex] + ofs;
+    texture_column_cache[cache_idx].tex = tex;
+    texture_column_cache[cache_idx].col = col;
+    texture_column_cache[cache_idx].ptr = result;
+
+    return result;
 }
 
 
