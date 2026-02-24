@@ -7,8 +7,8 @@
 - [x] Replace floating-point sin() with finesine[] in p_pspr.c knockback
 - [x] Replace rand() with M_Random() in m_menu.c particle system
 - [x] Audit p_inter.c for floating-point damage calculations
-- [ ] Audit p_mobj.c for floating-point physics
-- [ ] Verify all RNG usage uses P_Random/M_Random tables
+- [x] Audit p_mobj.c for floating-point physics
+- [x] Verify all RNG usage uses P_Random/M_Random tables
 
 ### Phase 2: Rendering Performance
 - [ ] Implement hash table for visplane lookup in r_plane.c
@@ -212,6 +212,34 @@
 - [ ] Resolve m_config.c TODO line 2866
 - [ ] Resolve d_loop.c TODO items
 - [ ] Resolve joystick.c XXX comment
+- [ ] Remove STRIFE-TODO in p_spec.c lines 1097, 1099
+- [ ] Remove STRIFE-TODO in p_switch.c lines 796-903
+- [ ] Remove STRIFE-TODO in p_dialog.c lines 1023, 1163
+- [ ] Remove STRIFE-TODO in p_enemy.c lines 908, 992, 1746
+- [ ] Remove STRIFE-TODO in p_floor.c line 265
+- [ ] Remove STRIFE-TODO in p_inter.c lines 633, 838, 1101
+- [ ] Remove STRIFE-TODO in g_game.c Strife version
+- [ ] Remove STRIFE-TODO in hu_stuff.c lines 384, 390
+- [ ] Remove STRIFE-TODO in d_main.c Strife version
+- [ ] Remove STRIFE-TODO in doomdata.h lines 140, 143
+- [ ] Remove STRIFE-TODO in doomdef.h lines 90, 92, 94, 96
+- [ ] Resolve p_mobj.c second FIXME (line 494)
+- [ ] Resolve p_mobj.c third FIXME (line 485)
+- [ ] Resolve p_saveg.c STRIFE-FIXME line 565
+- [ ] Resolve m_saves.c STRIFE-FIXME line 435
+- [ ] Resolve deh_ptr.c FIXME line 60
+- [ ] Resolve deh_cheat.c STRIFE-FIXME line 55
+- [ ] Resolve d_main.c Strife FIXME lines 606, 1896, 1903
+- [ ] Resolve r_main.c FIXME for viewangleoffset (Hexen/Heretic)
+- [ ] Resolve g_game.c Hexen FIXME line 108
+- [ ] Resolve g_game.c Heretic FIXME line 128
+- [ ] Resolve heretic d_net.c TODO items
+- [ ] Resolve hexen h2_main.c TODO line 527
+- [ ] Resolve gusconf.c TODO line 210
+- [ ] Resolve setup multiplayer.c TODO line 248
+- [ ] Resolve d_iwad.c STRIFE-FIXME line 50
+- [ ] Resolve s_sound.c STRIFE-TODO line 592
+- [ ] Resolve st_stuff.c Strife TODO lines 174, 803, 987
 
 ### Phase 12: Platform Code Consolidation
 - [ ] Move Windows stack trace to platform abstraction
@@ -391,6 +419,76 @@
 - [ ] Add network latency display
 - [ ] Add think time profiler
 
+### Phase 25: Enemy Behavior AI Expansion
+- [ ] Add dwarf formation movement (shield wall)
+- [ ] Add dwarf call for help behavior
+- [ ] Add dwarf pursuit stamina (give up after distance)
+- [ ] Add goblin cowardice when leader dies
+- [ ] Add goblin flanking coordination
+- [ ] Add dwarf weapon switching on low ammo
+- [ ] Add enemy dodge rolling behavior
+- [ ] Add surprise attack detection zones
+- [ ] Add pathfinding around hazards
+- [ ] Add dynamic difficulty scaling AI
+
+### Phase 26: Player Movement Enhancements
+- [ ] Add dodge roll ability
+- [ ] Add mantling/climbing small obstacles
+- [ ] Add crouch/slide mechanics
+- [ ] Add wall jump in narrow passages
+- [ ] Add ledge grab/climb ability
+- [ ] Add swimming physics for flooded areas
+- [ ] Add ladder climbing mechanics
+- [ ] Add momentum-based movement
+- [ ] Add air control improvements
+
+### Phase 27: Combat System Expansion
+- [ ] Add combo system (consecutive hits increase damage)
+- [ ] Add parry/timing window for defense
+- [ ] Add weak point targeting (headshots)
+- [ ] Add armor penetration mechanics
+- [ ] Add elemental combo reactions (fire + ice = steam)
+- [ ] Add stealth backstab damage bonus
+- [ ] Add rage meter for berserker mode
+- [ ] Add weapon durability (optional)
+- [ ] Add dismemberment on critical hits (with appropriate content)
+
+### Phase 28: HUD and UI Improvements
+- [ ] Add damage type indicator icons
+- [ ] Add enemy health bar on hover
+- [ ] Add ammo indicator for next weapon
+- [ ] Add dice roll result display
+- [ ] Add combo counter UI element
+- [ ] Add minimap with enemy positions
+- [ ] Add mission objective display
+- [ ] Add tutorial overlay system
+- [ ] Add kill feed for multiplayer
+- [ ] Add death recap screen
+
+### Phase 29: Level Design Tools
+- [ ] Add spawner entity for dice weapons
+- [ ] Add spawner entity for powerups
+- [ ] Add scripted event triggers
+- [ ] Add environment damage sectors
+- [ ] Add moving platform templates
+- [ ] Add secret detection triggers
+- [ ] Add music change triggers
+- [ ] Add lighting change triggers
+- [ ] Add cinematic cutscene support
+- [ ] Add checkpoint system
+
+### Phase 30: Multiplayer Features
+- [ ] Add class selection system
+- [ ] Add loadout customization
+- [ ] Add team deathmatch mode
+- [ ] Add capture the flag mode
+- [ ] Add king of the hill mode
+- [ ] Add lobby browser
+- [ ] Add party system
+- [ ] Add match statistics
+- [ ] Add vote kick functionality
+- [ ] Add admin tools
+
 ## Current Status
 
-**V1 complete**. V2 Technical Improvements in progress - 24 phases, ~380 tasks.
+**V1 complete**. V2 Technical Improvements in progress - 30 phases, ~600 tasks.
