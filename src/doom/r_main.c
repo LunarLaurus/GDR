@@ -716,7 +716,11 @@ void R_ExecuteSetViewSize (void)
 #endif
 	fuzzcolfunc = R_DrawFuzzColumn;
 	transcolfunc = R_DrawTranslatedColumn;
+#if defined(__SSE2__) || defined(_M_X64) || (defined(_M_IX86_FP) && _M_IX86_FP >= 2)
+	spanfunc = R_DrawSpan_SSE2;
+#else
 	spanfunc = R_DrawSpan;
+#endif
     }
     else
     {

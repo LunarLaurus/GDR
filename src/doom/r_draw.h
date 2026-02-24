@@ -81,6 +81,10 @@ extern byte*		dc_translation;
 // No Sepctre effect needed.
 void 	R_DrawSpan (void);
 
+#if defined(__SSE2__) || defined(_M_X64) || (defined(_M_IX86_FP) && _M_IX86_FP >= 2)
+void	R_DrawSpan_SSE2 (void);
+#endif
+
 // Low resolution mode, 160x200?
 void 	R_DrawSpanLow (void);
 

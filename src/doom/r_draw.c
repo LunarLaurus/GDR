@@ -155,6 +155,67 @@ void R_DrawColumn_SSE2(void)
 }
 #endif
 
+#if defined(__SSE2__) || defined(_M_X64) || (defined(_M_IX86_FP) && _M_IX86_FP >= 2)
+void R_DrawSpan_SSE2(void)
+{
+    unsigned int position, step;
+    pixel_t *dest;
+    int count;
+
+    position = ((ds_xfrac << 10) & 0xffff0000)
+             | ((ds_yfrac >> 6)  & 0x0000ffff);
+    step = ((ds_xstep << 10) & 0xffff0000)
+         | ((ds_ystep >> 6)  & 0x0000ffff);
+
+    dest = ylookup[ds_y] + columnofs[ds_x1];
+    count = ds_x2 - ds_x1;
+
+    if (count >= 3)
+    {
+        const __m128i step_vec = _mm_set1_epi32(step);
+        const __m128i mask_0fc0 = _mm_set1_epi32(0x0fc0);
+        const __m128i four = _mm_set_epi32(3, 2, 1, 0);
+
+        __m128i pos_vec = _mm_set1_epi32(position);
+
+        while (count >= 4)
+        {
+            __m128i i_vec = _mm_mullo_epi32(four, step_vec);
+            __m128i positions = _mm_add_epi32(pos_vec, i_vec);
+
+            __m128i ytemp = _mm_and_si128(_mm_srli_epi32(positions, 4), mask_0fc0);
+            __m128i xtemp = _mm_srli_epi32(positions, 26);
+            __m128i spots = _mm_or_si128(xtemp, ytemp);
+
+            unsigned int sp0 = _mm_cvtsi128_si32(spots) & 0xFFFF;
+            unsigned int sp1 = (_mm_cvtsi128_si32(_mm_srli_si128(spots, 2))) & 0xFFFF;
+            unsigned int sp2 = (_mm_cvtsi128_si32(_mm_srli_si128(spots, 4))) & 0xFFFF;
+            unsigned int sp3 = (_mm_cvtsi128_si32(_mm_srli_si128(spots, 6))) & 0xFFFF;
+
+            dest[0] = ds_colormap[ds_source[sp0]];
+            dest[1] = ds_colormap[ds_source[sp1]];
+            dest[2] = ds_colormap[ds_source[sp2]];
+            dest[3] = ds_colormap[ds_source[sp3]];
+
+            pos_vec = _mm_add_epi32(pos_vec, _mm_set1_epi32(step * 4));
+            dest += 4;
+            count -= 4;
+        }
+    }
+
+    while (count >= 0)
+    {
+        unsigned int ytemp = (position >> 4) & 0x0fc0;
+        unsigned int xtemp = (position >> 26);
+        int spot = xtemp | ytemp;
+
+        *dest++ = ds_colormap[ds_source[spot]];
+        position += step;
+        count--;
+    }
+}
+#endif
+
 //
 // A column is a vertical slice/span from a wall texture that,
 //  given the DOOM style restrictions on the view orientation,

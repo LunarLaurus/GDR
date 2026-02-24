@@ -18,7 +18,7 @@
 - [x] Optimize O(n) drawseg traversal in sprite column rendering
 - [x] Remove redundant clip array reinitialization per sprite
 - [x] Add SIMD vectorization to R_DrawColumn inner loop
-- [ ] Add SIMD vectorization to R_DrawSpan loop
+- [x] Add SIMD vectorization to R_DrawSpan loop
 - [ ] Optimize R_DrawFuzzColumn cache access pattern
 - [ ] Remove unused unrolled column loop in r_draw.c
 - [ ] Remove unused unrolled span loop in r_draw.c
