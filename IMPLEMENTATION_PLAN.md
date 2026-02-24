@@ -51,7 +51,7 @@
 - [x] Remove commented dead code in r_segs.c
 - [x] Remove unused code in dstrings.c
 - [x] Remove or convert RANGECHECK in r_things.c
-- [ ] Remove or convert RANGECHECK in r_draw.c
+- [x] Remove or convert RANGECHECK in r_draw.c
 - [ ] Remove or convert RANGECHECK in r_plane.c
 - [ ] Remove or convert RANGECHECK in p_sight.c
 - [ ] Split weapon debug overlay from st_stuff.c to st_weapon_debug.c
