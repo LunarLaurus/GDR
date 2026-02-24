@@ -381,10 +381,12 @@ vissprite_t* R_NewVisSprite (void)
     if (vissprite_p == &vissprites[MAXVISSPRITES])
 	return &overflowsprite;
     
-    vissprite_p++;
+vissprite_p++;
     return vissprite_p-1;
 }
 
+static short sprite_clipbot[SCREENWIDTH];
+static short sprite_cliptop[SCREENWIDTH];
 
 
 //
@@ -895,8 +897,6 @@ void R_SortVisSprites (void)
 void R_DrawSprite (vissprite_t* spr)
 {
     drawseg_t*		ds;
-    short		clipbot[SCREENWIDTH];
-    short		cliptop[SCREENWIDTH];
     int			x;
     int			r1;
     int			r2;
@@ -908,7 +908,7 @@ void R_DrawSprite (vissprite_t* spr)
     r_sprite_pixels_drawn += (spr->x2 - spr->x1 + 1) * (spr->scale >> FRACBITS);
 		
     for (x = spr->x1 ; x<=spr->x2 ; x++)
-	clipbot[x] = cliptop[x] = -2;
+	sprite_clipbot[x] = sprite_cliptop[x] = -2;
     
     // Scan drawsegs from end to start for obscuring segs.
     // The first drawseg that has a greater scale
@@ -969,25 +969,25 @@ void R_DrawSprite (vissprite_t* spr)
 	{
 	    // bottom sil
 	    for (x=r1 ; x<=r2 ; x++)
-		if (clipbot[x] == -2)
-		    clipbot[x] = ds->sprbottomclip[x];
+		if (sprite_clipbot[x] == -2)
+		    sprite_clipbot[x] = ds->sprbottomclip[x];
 	}
 	else if (silhouette == 2)
 	{
 	    // top sil
 	    for (x=r1 ; x<=r2 ; x++)
-		if (cliptop[x] == -2)
-		    cliptop[x] = ds->sprtopclip[x];
+		if (sprite_cliptop[x] == -2)
+		    sprite_cliptop[x] = ds->sprtopclip[x];
 	}
 	else if (silhouette == 3)
 	{
 	    // both
 	    for (x=r1 ; x<=r2 ; x++)
 	    {
-		if (clipbot[x] == -2)
-		    clipbot[x] = ds->sprbottomclip[x];
-		if (cliptop[x] == -2)
-		    cliptop[x] = ds->sprtopclip[x];
+		if (sprite_clipbot[x] == -2)
+		    sprite_clipbot[x] = ds->sprbottomclip[x];
+		if (sprite_cliptop[x] == -2)
+		    sprite_cliptop[x] = ds->sprtopclip[x];
 	    }
 	}
 		
@@ -998,15 +998,15 @@ void R_DrawSprite (vissprite_t* spr)
     // check for unclipped columns
     for (x = spr->x1 ; x<=spr->x2 ; x++)
     {
-	if (clipbot[x] == -2)		
-	    clipbot[x] = viewheight;
+	if (sprite_clipbot[x] == -2)		
+	    sprite_clipbot[x] = viewheight;
 
-	if (cliptop[x] == -2)
-	    cliptop[x] = -1;
+	if (sprite_cliptop[x] == -2)
+	    sprite_cliptop[x] = -1;
     }
 		
-    mfloorclip = clipbot;
-    mceilingclip = cliptop;
+    mfloorclip = sprite_clipbot;
+    mceilingclip = sprite_cliptop;
     R_DrawVisSprite (spr, spr->x1, spr->x2);
 }
 
