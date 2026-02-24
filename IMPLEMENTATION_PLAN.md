@@ -13,8 +13,8 @@
 ### Phase 2: Rendering Performance
 - [x] Implement hash table for visplane lookup in r_plane.c
 - [x] Remove linear search in R_FindPlane function
-- [ ] Optimize R_CheckPlane overlap scanning
-- [ ] Pre-cache sprite patches in LRU cache r_things.c
+- [x] Optimize R_CheckPlane overlap scanning
+- [x] Pre-cache sprite patches in LRU cache r_things.c
 - [ ] Optimize O(n) drawseg traversal in sprite column rendering
 - [ ] Remove redundant clip array reinitialization per sprite
 - [ ] Add SIMD vectorization to R_DrawColumn inner loop
