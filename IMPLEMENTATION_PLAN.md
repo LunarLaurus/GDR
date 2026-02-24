@@ -26,7 +26,7 @@
 - [x] Increase MAXVISPLANES from 128 or make dynamic
 - [x] Remove hardcoded &127 texture mask in r_draw.c
 - [x] Fix RANGECHECK in r_bsp.c line 543
-- [ ] Optimize r_segs.c render loop branching
+- [x] Optimize r_segs.c render loop branching
 - [ ] Add sprite distance culling threshold
 - [ ] Implement sprite billboarding optimization
 - [ ] Add wall texture caching for repeated lookups

@@ -206,157 +206,254 @@ void R_RenderSegLoop (void)
     fixed_t		texturecolumn;
     int			top;
     int			bottom;
+    const boolean ceiling_marked = markceiling;
+    const boolean floor_marked = markfloor;
+    const boolean masked_mid = (midtexture != 0);
+    const boolean has_top = (toptexture != 0);
+    const boolean has_bottom = (bottomtexture != 0);
+    const boolean is_textured = segtextured;
 
-    for ( ; rw_x < rw_stopx ; rw_x++)
+    if (masked_mid)
     {
-	// mark floor / ceiling areas
-	yl = (topfrac+HEIGHTUNIT-1)>>HEIGHTBITS;
-
-	// no space above wall?
-	if (yl < ceilingclip[rw_x]+1)
-	    yl = ceilingclip[rw_x]+1;
-	
-	if (markceiling)
-	{
-	    top = ceilingclip[rw_x]+1;
-	    bottom = yl-1;
-
-	    if (bottom >= floorclip[rw_x])
-		bottom = floorclip[rw_x]-1;
-
-	    if (top <= bottom)
-	    {
-		ceilingplane->top[rw_x] = top;
-		ceilingplane->bottom[rw_x] = bottom;
-	    }
-	}
-		
-	yh = bottomfrac>>HEIGHTBITS;
-
-	if (yh >= floorclip[rw_x])
-	    yh = floorclip[rw_x]-1;
-
-	if (markfloor)
-	{
-	    top = yh+1;
-	    bottom = floorclip[rw_x]-1;
-	    if (top <= ceilingclip[rw_x])
-		top = ceilingclip[rw_x]+1;
-	    if (top <= bottom)
-	    {
-		floorplane->top[rw_x] = top;
-		floorplane->bottom[rw_x] = bottom;
-	    }
-	}
-	
-	// texturecolumn and lighting are independent of wall tiers
-	if (segtextured)
-	{
-	    // calculate texture offset
-	    angle = (rw_centerangle + xtoviewangle[rw_x])>>ANGLETOFINESHIFT;
-	    texturecolumn = rw_offset-FixedMul(finetangent[angle],rw_distance);
-	    texturecolumn >>= FRACBITS;
-	    // calculate lighting
-	    index = rw_scale>>LIGHTSCALESHIFT;
-
-	    if (index >=  MAXLIGHTSCALE )
-		index = MAXLIGHTSCALE-1;
-
-	    dc_colormap = walllights[index];
-	    dc_x = rw_x;
-	    dc_iscale = 0xffffffffu / (unsigned)rw_scale;
-	}
-        else
+        for ( ; rw_x < rw_stopx ; rw_x++)
         {
-            // purely to shut up the compiler
+            yl = (topfrac+HEIGHTUNIT-1)>>HEIGHTBITS;
 
-            texturecolumn = 0;
+            if (yl < ceilingclip[rw_x]+1)
+                yl = ceilingclip[rw_x]+1;
+
+            if (ceiling_marked)
+            {
+                top = ceilingclip[rw_x]+1;
+                bottom = yl-1;
+
+                if (bottom >= floorclip[rw_x])
+                    bottom = floorclip[rw_x]-1;
+
+                if (top <= bottom)
+                {
+                    ceilingplane->top[rw_x] = top;
+                    ceilingplane->bottom[rw_x] = bottom;
+                }
+            }
+
+            yh = bottomfrac>>HEIGHTBITS;
+
+            if (yh >= floorclip[rw_x])
+                yh = floorclip[rw_x]-1;
+
+            if (floor_marked)
+            {
+                top = yh+1;
+                bottom = floorclip[rw_x]-1;
+                if (top <= ceilingclip[rw_x])
+                    top = ceilingclip[rw_x]+1;
+                if (top <= bottom)
+                {
+                    floorplane->top[rw_x] = top;
+                    floorplane->bottom[rw_x] = bottom;
+                }
+            }
+
+            if (is_textured)
+            {
+                angle = (rw_centerangle + xtoviewangle[rw_x])>>ANGLETOFINESHIFT;
+                texturecolumn = rw_offset-FixedMul(finetangent[angle],rw_distance);
+                texturecolumn >>= FRACBITS;
+                index = rw_scale>>LIGHTSCALESHIFT;
+
+                if (index >=  MAXLIGHTSCALE )
+                    index = MAXLIGHTSCALE-1;
+
+                dc_colormap = walllights[index];
+                dc_x = rw_x;
+                dc_iscale = 0xffffffffu / (unsigned)rw_scale;
+            }
+            else
+            {
+                texturecolumn = 0;
+            }
+
+            dc_yl = yl;
+            dc_yh = yh;
+            dc_texturemid = rw_midtexturemid;
+            dc_source = R_GetColumn(midtexture,texturecolumn);
+            colfunc ();
+            ceilingclip[rw_x] = viewheight;
+            floorclip[rw_x] = -1;
+
+            rw_scale += rw_scalestep;
+            topfrac += topstep;
+            bottomfrac += bottomstep;
         }
-	
-	// draw the wall tiers
-	if (midtexture)
-	{
-	    // single sided line
-	    dc_yl = yl;
-	    dc_yh = yh;
-	    dc_texturemid = rw_midtexturemid;
-	    dc_source = R_GetColumn(midtexture,texturecolumn);
-	    colfunc ();
-	    ceilingclip[rw_x] = viewheight;
-	    floorclip[rw_x] = -1;
-	}
-	else
-	{
-	    // two sided line
-	    if (toptexture)
-	    {
-		// top wall
-		mid = pixhigh>>HEIGHTBITS;
-		pixhigh += pixhighstep;
+    }
+    else if (has_top || has_bottom)
+    {
+        for ( ; rw_x < rw_stopx ; rw_x++)
+        {
+            yl = (topfrac+HEIGHTUNIT-1)>>HEIGHTBITS;
 
-		if (mid >= floorclip[rw_x])
-		    mid = floorclip[rw_x]-1;
+            if (yl < ceilingclip[rw_x]+1)
+                yl = ceilingclip[rw_x]+1;
 
-		if (mid >= yl)
-		{
-		    dc_yl = yl;
-		    dc_yh = mid;
-		    dc_texturemid = rw_toptexturemid;
-		    dc_source = R_GetColumn(toptexture,texturecolumn);
-		    colfunc ();
-		    ceilingclip[rw_x] = mid;
-		}
-		else
-		    ceilingclip[rw_x] = yl-1;
-	    }
-	    else
-	    {
-		// no top wall
-		if (markceiling)
-		    ceilingclip[rw_x] = yl-1;
-	    }
-			
-	    if (bottomtexture)
-	    {
-		// bottom wall
-		mid = (pixlow+HEIGHTUNIT-1)>>HEIGHTBITS;
-		pixlow += pixlowstep;
+            if (ceiling_marked)
+            {
+                top = ceilingclip[rw_x]+1;
+                bottom = yl-1;
 
-		// no space above wall?
-		if (mid <= ceilingclip[rw_x])
-		    mid = ceilingclip[rw_x]+1;
-		
-		if (mid <= yh)
-		{
-		    dc_yl = mid;
-		    dc_yh = yh;
-		    dc_texturemid = rw_bottomtexturemid;
-		    dc_source = R_GetColumn(bottomtexture,
-					    texturecolumn);
-		    colfunc ();
-		    floorclip[rw_x] = mid;
-		}
-		else
-		    floorclip[rw_x] = yh+1;
-	    }
-	    else
-	    {
-		// no bottom wall
-		if (markfloor)
-		    floorclip[rw_x] = yh+1;
-	    }
-			
-	    if (maskedtexture)
-	    {
-		// save texturecol
-		//  for backdrawing of masked mid texture
-		maskedtexturecol[rw_x] = texturecolumn;
-	    }
-	}
-		
-	rw_scale += rw_scalestep;
-	topfrac += topstep;
-	bottomfrac += bottomstep;
+                if (bottom >= floorclip[rw_x])
+                    bottom = floorclip[rw_x]-1;
+
+                if (top <= bottom)
+                {
+                    ceilingplane->top[rw_x] = top;
+                    ceilingplane->bottom[rw_x] = bottom;
+                }
+            }
+
+            yh = bottomfrac>>HEIGHTBITS;
+
+            if (yh >= floorclip[rw_x])
+                yh = floorclip[rw_x]-1;
+
+            if (floor_marked)
+            {
+                top = yh+1;
+                bottom = floorclip[rw_x]-1;
+                if (top <= ceilingclip[rw_x])
+                    top = ceilingclip[rw_x]+1;
+                if (top <= bottom)
+                {
+                    floorplane->top[rw_x] = top;
+                    floorplane->bottom[rw_x] = bottom;
+                }
+            }
+
+            if (is_textured)
+            {
+                angle = (rw_centerangle + xtoviewangle[rw_x])>>ANGLETOFINESHIFT;
+                texturecolumn = rw_offset-FixedMul(finetangent[angle],rw_distance);
+                texturecolumn >>= FRACBITS;
+                index = rw_scale>>LIGHTSCALESHIFT;
+
+                if (index >=  MAXLIGHTSCALE )
+                    index = MAXLIGHTSCALE-1;
+
+                dc_colormap = walllights[index];
+                dc_x = rw_x;
+                dc_iscale = 0xffffffffu / (unsigned)rw_scale;
+            }
+            else
+            {
+                texturecolumn = 0;
+            }
+
+            if (has_top)
+            {
+                mid = pixhigh>>HEIGHTBITS;
+                pixhigh += pixhighstep;
+
+                if (mid >= floorclip[rw_x])
+                    mid = floorclip[rw_x]-1;
+
+                if (mid >= yl)
+                {
+                    dc_yl = yl;
+                    dc_yh = mid;
+                    dc_texturemid = rw_toptexturemid;
+                    dc_source = R_GetColumn(toptexture,texturecolumn);
+                    colfunc ();
+                    ceilingclip[rw_x] = mid;
+                }
+                else
+                    ceilingclip[rw_x] = yl-1;
+            }
+            else if (ceiling_marked)
+            {
+                ceilingclip[rw_x] = yl-1;
+            }
+
+            if (has_bottom)
+            {
+                mid = (pixlow+HEIGHTUNIT-1)>>HEIGHTBITS;
+                pixlow += pixlowstep;
+
+                if (mid <= ceilingclip[rw_x])
+                    mid = ceilingclip[rw_x]+1;
+
+                if (mid <= yh)
+                {
+                    dc_yl = mid;
+                    dc_yh = yh;
+                    dc_texturemid = rw_bottomtexturemid;
+                    dc_source = R_GetColumn(bottomtexture, texturecolumn);
+                    colfunc ();
+                    floorclip[rw_x] = mid;
+                }
+                else
+                    floorclip[rw_x] = yh+1;
+            }
+            else if (floor_marked)
+            {
+                floorclip[rw_x] = yh+1;
+            }
+
+            if (maskedtexture)
+            {
+                maskedtexturecol[rw_x] = texturecolumn;
+            }
+
+            rw_scale += rw_scalestep;
+            topfrac += topstep;
+            bottomfrac += bottomstep;
+        }
+    }
+    else
+    {
+        for ( ; rw_x < rw_stopx ; rw_x++)
+        {
+            yl = (topfrac+HEIGHTUNIT-1)>>HEIGHTBITS;
+
+            if (yl < ceilingclip[rw_x]+1)
+                yl = ceilingclip[rw_x]+1;
+
+            if (ceiling_marked)
+            {
+                top = ceilingclip[rw_x]+1;
+                bottom = yl-1;
+
+                if (bottom >= floorclip[rw_x])
+                    bottom = floorclip[rw_x]-1;
+
+                if (top <= bottom)
+                {
+                    ceilingplane->top[rw_x] = top;
+                    ceilingplane->bottom[rw_x] = bottom;
+                }
+            }
+
+            yh = bottomfrac>>HEIGHTBITS;
+
+            if (yh >= floorclip[rw_x])
+                yh = floorclip[rw_x]-1;
+
+            if (floor_marked)
+            {
+                top = yh+1;
+                bottom = floorclip[rw_x]-1;
+                if (top <= ceilingclip[rw_x])
+                    top = ceilingclip[rw_x]+1;
+                if (top <= bottom)
+                {
+                    floorplane->top[rw_x] = top;
+                    floorplane->bottom[rw_x] = bottom;
+                }
+            }
+
+            rw_scale += rw_scalestep;
+            topfrac += topstep;
+            bottomfrac += bottomstep;
+        }
     }
 }
 
