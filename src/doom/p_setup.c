@@ -880,6 +880,7 @@ void P_Init (void)
 {
     P_InitSwitchList ();
     P_InitPicAnims ();
+    R_InitSpriteLRU();
     R_InitSprites (sprnames);
 }
 

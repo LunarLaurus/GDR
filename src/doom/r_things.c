@@ -40,6 +40,55 @@
 #define MINZ				(FRACUNIT*4)
 #define BASEYCENTER			(SCREENHEIGHT/2)
 
+#define SPRITE_LRU_SIZE 32
+
+typedef struct {
+    lumpindex_t lumpnum;
+    patch_t*    patch;
+    unsigned    age;
+} sprite_lru_entry_t;
+
+static sprite_lru_entry_t sprite_lru[SPRITE_LRU_SIZE];
+static unsigned sprite_lru_counter = 0;
+
+static patch_t* R_GetSpritePatch(lumpindex_t lumpnum)
+{
+    int i;
+    int oldest_idx = 0;
+    unsigned oldest_age = 0;
+
+    for (i = 0; i < SPRITE_LRU_SIZE; i++)
+    {
+        if (sprite_lru[i].lumpnum == lumpnum)
+        {
+            sprite_lru[i].age = ++sprite_lru_counter;
+            return sprite_lru[i].patch;
+        }
+        if (sprite_lru[i].age > oldest_age)
+        {
+            oldest_age = sprite_lru[i].age;
+            oldest_idx = i;
+        }
+    }
+
+    sprite_lru[oldest_idx].lumpnum = lumpnum;
+    sprite_lru[oldest_idx].patch = W_CacheLumpNum(lumpnum, PU_CACHE);
+    sprite_lru[oldest_idx].age = ++sprite_lru_counter;
+
+    return sprite_lru[oldest_idx].patch;
+}
+
+void R_InitSpriteLRU(void)
+{
+    int i;
+    for (i = 0; i < SPRITE_LRU_SIZE; i++)
+    {
+        sprite_lru[i].lumpnum = 0;
+        sprite_lru[i].patch = NULL;
+        sprite_lru[i].age = 0;
+    }
+}
+
 //void R_DrawColumn (void);
 //void R_DrawFuzzColumn (void);
 
@@ -407,7 +456,7 @@ R_DrawVisSprite
     patch_t*		patch;
 	
 	
-    patch = W_CacheLumpNum (vis->patch+firstspritelump, PU_CACHE);
+    patch = R_GetSpritePatch(vis->patch+firstspritelump);
 
     dc_colormap = vis->colormap;
     
