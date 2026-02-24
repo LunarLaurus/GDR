@@ -376,9 +376,9 @@
 "you're stuck on The Shores of Hell.\n"\
 "The only way out is through.\n"\
 "\n"\
-"To continue the DOOM experience, play\n"\
-"The Shores of Hell and its amazing\n"\
-"sequel, Inferno!\n"
+"To continue the Goblin Dice Rollaz\n"\
+"experience, battle through the\n"\
+"mines and defeat the dwarf menace!\n"
 
 
 #define E2TEXT \
