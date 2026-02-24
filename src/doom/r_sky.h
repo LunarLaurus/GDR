@@ -31,7 +31,9 @@
 extern  int		skytexture;
 extern int		skytexturemid;
 
-// Called whenever the view size changes.
 void R_InitSkyMap (void);
+void R_PrecacheSkyColumns(void);
+void R_ClearSkyCache(void);
+byte* R_GetCachedSkyColumn(int angle);
 
 #endif

@@ -709,6 +709,7 @@ void G_DoLoadLevel (void)
         skytexturename = DEH_String(skytexturename);
 
         skytexture = R_TextureNumForName(skytexturename);
+        R_PrecacheSkyColumns();
     }
 
     levelstarttic = gametic;        // for time calculation
@@ -2212,6 +2213,8 @@ G_InitNew
         skytexturename = DEH_String(skytexturename);
         skytexture = R_TextureNumForName(skytexturename);
     }
+
+    R_PrecacheSkyColumns();
 
     G_DoLoadLevel ();
 }

@@ -20,15 +20,13 @@
 //  
 //
 
+#include <stdlib.h>
 
-
-// Needed for FRACUNIT.
+#include "config.h"
+#include "doomdef.h"
+#include "i_system.h"
 #include "m_fixed.h"
-
-// Needed for Flat retrieval.
 #include "r_data.h"
-
-
 #include "r_sky.h"
 
 //
@@ -38,7 +36,33 @@ int			skyflatnum;
 int			skytexture;
 int			skytexturemid;
 
+#define SKY_ANGLE_CACHE_SIZE 1024
+static byte* sky_column_cache[SKY_ANGLE_CACHE_SIZE];
+static boolean sky_cache_initialized = false;
 
+void R_PrecacheSkyColumns(void)
+{
+    int i;
+    for (i = 0; i < SKY_ANGLE_CACHE_SIZE; i++)
+    {
+        sky_column_cache[i] = R_GetColumn(skytexture, i);
+    }
+    sky_cache_initialized = true;
+}
+
+void R_ClearSkyCache(void)
+{
+    sky_cache_initialized = false;
+}
+
+byte* R_GetCachedSkyColumn(int angle)
+{
+    if (!sky_cache_initialized || skytexture == 0)
+    {
+        return R_GetColumn(skytexture, angle);
+    }
+    return sky_column_cache[angle & (SKY_ANGLE_CACHE_SIZE - 1)];
+}
 
 //
 // R_InitSkyMap
