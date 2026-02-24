@@ -56,7 +56,7 @@
 - [x] Remove or convert RANGECHECK in p_sight.c
 - [x] Split weapon debug overlay from st_stuff.c to st_weapon_debug.c
 - [x] Create m_menu_gameopts.c for game settings submenu
-- [ ] Create m_menu_accessibility.c for accessibility options
+- [x] Create m_menu_accessibility.c for accessibility options
 - [ ] Create p_ai_faction.c for faction AI system
 
 ### Phase 4: Rebranding

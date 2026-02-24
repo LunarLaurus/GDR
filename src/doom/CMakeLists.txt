@@ -83,6 +83,7 @@ add_library(doom STATIC
             st_stuff.c      st_stuff.h
             st_weapon_debug.c st_weapon_debug.h
             m_menu_gameopts.c m_menu_gameopts.h
+            m_menu_accessibility.c m_menu_accessibility.h
             wi_stuff.c      wi_stuff.h)
 
 target_include_directories(doom PRIVATE "../" "${CMAKE_CURRENT_BINARY_DIR}/../../")

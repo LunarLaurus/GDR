@@ -69,6 +69,7 @@
 #include "st_stuff.h"
 
 #include "m_menu_gameopts.h"
+#include "m_menu_accessibility.h"
 
 
 //
@@ -490,36 +491,6 @@ menu_t  LeaderboardDef =
     &MainDef,
     LeaderboardMenu,
     M_DrawLeaderboard,
-    60,37,
-    0
-};
-
-//
-// Goblin Dice Rollaz: ACCESSIBILITY MENU
-//
-enum
-{
-    accessibility_colorblind,
-    accessibility_hudscale,
-    accessibility_reducemotion,
-    accessibility_screenreader,
-    accessibility_end
-} accessibility_e;
-
-menuitem_t AccessibilityMenu[]=
-{
-    {1,"M_COLBLND", M_ColorblindMode, 'c'},
-    {2,"M_HUDSCAL", M_HUDScale, 'h'},
-    {1,"M_REDMOT", M_ReduceMotion, 'r'},
-    {1,"M_SCRNRD", M_ScreenReaderMode, 's'}
-};
-
-menu_t  AccessibilityDef =
-{
-    accessibility_end,
-    &MainDef,
-    AccessibilityMenu,
-    M_DrawAccessibility,
     60,37,
     0
 };
@@ -1492,122 +1463,6 @@ void M_DrawOptions(void)
 void M_Options(int choice)
 {
     M_SetupNextMenu(&OptionsDef);
-}
-
-//
-// Goblin Dice Rollaz: Accessibility Menu Functions
-//
-void M_Accessibility(int choice)
-{
-    M_SetupNextMenu(&AccessibilityDef);
-}
-
-void M_ColorblindMode(int choice)
-{
-    choice = 0;
-    colorblind_mode = (colorblind_mode + 1) % 3;
-    
-    if (colorblind_mode == 0)
-        players[consoleplayer].message = "Colorblind Mode: OFF";
-    else if (colorblind_mode == 1)
-        players[consoleplayer].message = "Colorblind Mode: Red-Green";
-    else
-        players[consoleplayer].message = "Colorblind Mode: Blue-Yellow";
-}
-
-void M_HUDScale(int choice)
-{
-    switch(choice)
-    {
-      case 0:
-          if (hud_scale > 0.5f)
-              hud_scale -= 0.1f;
-          break;
-      case 1:
-          if (hud_scale < 2.0f)
-              hud_scale += 0.1f;
-          break;
-    }
-}
-
-void M_ReduceMotion(int choice)
-{
-    choice = 0;
-    reduce_motion = 1 - reduce_motion;
-    
-    if (reduce_motion)
-    {
-        players[consoleplayer].message = "Reduce Motion: ON";
-        screen_shake_intensity = 0.0f;
-    }
-    else
-    {
-        players[consoleplayer].message = "Reduce Motion: OFF";
-        screen_shake_intensity = 1.0f;
-    }
-}
-
-void M_ScreenReaderMode(int choice)
-{
-    choice = 0;
-    screen_reader_enabled = 1 - screen_reader_enabled;
-    
-    if (screen_reader_enabled)
-    {
-        players[consoleplayer].message = "Screen Reader: ON";
-    }
-    else
-    {
-        players[consoleplayer].message = "Screen Reader: OFF";
-    }
-}
-
-static void M_AnnounceMenuItem(void)
-{
-    const char *itemname;
-    
-    if (!screen_reader_enabled || !menuactive)
-        return;
-    
-    itemname = DEH_String(currentMenu->menuitems[itemOn].name);
-    if (itemname && *itemname)
-    {
-        DEH_printf("[SCREENREADER] %s\n", itemname);
-    }
-}
-
-void M_DrawAccessibility(void)
-{
-    V_DrawPatchDirect(72, 15, W_CacheLumpName(DEH_String("M_OPTTTL"),
-                                               PU_CACHE));
-    
-    // Colorblind mode cycle
-    M_WriteText(AccessibilityDef.x - 80, AccessibilityDef.y, "Colorblind");
-    if (colorblind_mode == 0)
-        M_WriteText(AccessibilityDef.x + 120, AccessibilityDef.y, "OFF");
-    else if (colorblind_mode == 1)
-        M_WriteText(AccessibilityDef.x + 120, AccessibilityDef.y, "R/G");
-    else
-        M_WriteText(AccessibilityDef.x + 120, AccessibilityDef.y, "B/Y");
-    
-    // HUD scale slider
-    M_WriteText(AccessibilityDef.x - 80, AccessibilityDef.y + LINEHEIGHT * 1, "HUD Scale");
-    M_DrawThermo(AccessibilityDef.x, AccessibilityDef.y + LINEHEIGHT * 1,
-                 15, (int)(hud_scale * 10));
-    
-    // Reduce motion toggle
-    M_WriteText(AccessibilityDef.x - 80, AccessibilityDef.y + LINEHEIGHT * 2, "Reduce Mot");
-    V_DrawPatchDirect(AccessibilityDef.x + 120, 
-                      AccessibilityDef.y + LINEHEIGHT * 2,
-                      W_CacheLumpName(DEH_String(reduce_motion ? "M_YES" : "M_NO"),
-                                      PU_CACHE));
-    
-    // Screen reader toggle
-    M_WriteText(AccessibilityDef.x - 80, AccessibilityDef.y + LINEHEIGHT * 3, "Screen Rd");
-    V_DrawPatchDirect(AccessibilityDef.x + 120, 
-                      AccessibilityDef.y + LINEHEIGHT * 3,
-                      W_CacheLumpName(DEH_String(screen_reader_enabled ? "M_YES" : "M_NO"),
-                                      PU_CACHE));
 }
 
 //
