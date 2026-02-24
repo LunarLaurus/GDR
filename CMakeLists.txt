@@ -25,9 +25,15 @@ set(PACKAGE_LICENSE "GNU General Public License, version 2")
 if(MSVC)
     add_definitions("/D_CRT_SECURE_NO_WARNINGS" "/D_CRT_SECURE_NO_DEPRECATE"
                     "/D_CRT_NONSTDC_NO_DEPRECATE")
+    if(OpenMP_C_FOUND)
+        add_definitions("/DHAVE_OPENMP")
+    endif()
 else()
     add_compile_options("-Wall" "-Wdeclaration-after-statement"
                         "-Wredundant-decls")
+    if(OpenMP_C_FOUND)
+        add_compile_options("-fopenmp")
+    endif()
 endif()
 
 option(CMAKE_FIND_PACKAGE_PREFER_CONFIG
@@ -75,6 +81,15 @@ if(FluidSynth_FOUND AND ENABLE_SDL2_MIXER)
 endif()
 
 find_package(m)
+
+# Check for OpenMP
+find_package(OpenMP)
+if(OpenMP_C_FOUND)
+    set(HAVE_OPENMP TRUE)
+    message(STATUS "OpenMP found, enabling parallel processing support")
+else()
+    message(STATUS "OpenMP not found, parallel sector processing disabled")
+endif()
 
 include(CheckSymbolExists)
 include(CheckIncludeFile)

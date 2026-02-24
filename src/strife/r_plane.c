@@ -22,6 +22,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "config.h"
+
 #include "i_system.h"
 #include "z_zone.h"
 #include "w_wad.h"
@@ -366,6 +368,8 @@ void R_DrawPlanes (void)
     int			stop;
     int			angle;
     int                 lumpnum;
+    int                 numplanes;
+    int                 i;
 				
 #ifdef RANGECHECK
     if (ds_p - drawsegs > MAXDRAWSEGS)
@@ -381,8 +385,17 @@ void R_DrawPlanes (void)
 		 lastopening - openings);
 #endif
 
+    numplanes = lastvisplane - visplanes;
+
+#if defined(HAVE_OPENMP) && defined(OPENMP_PARALLEL_PLANES)
+    #pragma omp parallel for private(pl, light, x, stop, angle, lumpnum) schedule(dynamic)
+    for (i = 0; i < numplanes; i++)
+    {
+        pl = &visplanes[i];
+#else
     for (pl = visplanes ; pl < lastvisplane ; pl++)
     {
+#endif
 	if (pl->minx > pl->maxx)
 	    continue;
 
@@ -443,5 +456,8 @@ void R_DrawPlanes (void)
 	}
 	
         W_ReleaseLumpNum(lumpnum);
+
+#if defined(HAVE_OPENMP) && defined(OPENMP_PARALLEL_PLANES)
     }
+#endif
 }

@@ -17,6 +17,7 @@
 
 // HEADER FILES ------------------------------------------------------------
 
+#include "config.h"
 #include "h2def.h"
 #include "i_system.h"
 #include "r_local.h"
@@ -382,6 +383,8 @@ void R_DrawPlanes(void)
     int offset2;
     int skyTexture2;
     int scrollOffset;
+    int numplanes;
+    int i;
 
 #ifdef RANGECHECK
     if (ds_p - drawsegs > MAXDRAWSEGS)
@@ -401,8 +404,17 @@ void R_DrawPlanes(void)
     }
 #endif
 
+    numplanes = lastvisplane - visplanes;
+
+#if defined(HAVE_OPENMP) && defined(OPENMP_PARALLEL_PLANES)
+    #pragma omp parallel for private(pl, light, x, stop, angle, tempSource, source, source2, dest, count, offset, skyTexture, offset2, skyTexture2, scrollOffset) schedule(dynamic)
+    for (i = 0; i < numplanes; i++)
+    {
+        pl = &visplanes[i];
+#else
     for (pl = visplanes; pl < lastvisplane; pl++)
     {
+#endif
         if (pl->minx > pl->maxx)
         {
             continue;
@@ -575,5 +587,8 @@ void R_DrawPlanes(void)
                         pl->top[x], pl->bottom[x]);
         }
         W_ReleaseLumpNum(firstflat + flattranslation[pl->picnum]);
+
+#if defined(HAVE_OPENMP) && defined(OPENMP_PARALLEL_PLANES)
     }
+#endif
 }

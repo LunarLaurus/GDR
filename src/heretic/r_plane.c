@@ -16,6 +16,7 @@
 // R_planes.c
 
 #include <stdlib.h>
+#include "config.h"
 #include "doomdef.h"
 #include "deh_str.h"
 #include "i_system.h"
@@ -365,6 +366,7 @@ void R_MakeSpans(int x, int t1, int b1, int t2, int b2)
 = R_DrawPlanes
 =
 = At the end of each frame
+=
 ================
 */
 
@@ -376,6 +378,8 @@ void R_DrawPlanes(void)
     int lumpnum;
     int angle;
     byte *tempSource;
+    int numplanes;
+    int i;
 
     byte *dest;
     int count;
@@ -393,8 +397,17 @@ void R_DrawPlanes(void)
                 lastopening - openings);
 #endif
 
+    numplanes = lastvisplane - visplanes;
+
+#if defined(HAVE_OPENMP) && defined(OPENMP_PARALLEL_PLANES)
+    #pragma omp parallel for private(pl, light, x, stop, angle, tempSource, dest, count, frac, fracstep) schedule(dynamic)
+    for (i = 0; i < numplanes; i++)
+    {
+        pl = &visplanes[i];
+#else
     for (pl = visplanes; pl < lastvisplane; pl++)
     {
+#endif
         if (pl->minx > pl->maxx)
             continue;
         //
@@ -507,5 +520,8 @@ void R_DrawPlanes(void)
                         pl->bottom[x]);
 
         W_ReleaseLumpNum(lumpnum);
+
+#if defined(HAVE_OPENMP) && defined(OPENMP_PARALLEL_PLANES)
     }
+#endif
 }
