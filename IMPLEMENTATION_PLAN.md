@@ -50,7 +50,7 @@
 - [x] Remove all #if 0 blocks in p_maputl.c
 - [x] Remove commented dead code in r_segs.c
 - [x] Remove unused code in dstrings.c
-- [ ] Remove or convert RANGECHECK in r_things.c
+- [x] Remove or convert RANGECHECK in r_things.c
 - [ ] Remove or convert RANGECHECK in r_draw.c
 - [ ] Remove or convert RANGECHECK in r_plane.c
 - [ ] Remove or convert RANGECHECK in p_sight.c
