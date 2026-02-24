@@ -47,7 +47,16 @@
 int			viewangleoffset;
 
 // increment every time a check is made
-int			validcount = 1;		
+int			validcount = 1;
+
+// Goblin Dice Rollaz: Render profiling
+int r_render_profile_enabled = 0;
+int r_render_setup_time = 0;
+int r_render_bsp_time = 0;
+int r_render_plane_time = 0;
+int r_render_masked_time = 0;
+int r_render_total_time = 0;
+int r_render_frame_count = 0;
 
 
 lighttable_t*		fixedcolormap;
@@ -931,30 +940,94 @@ void R_SetupFrame (player_t* player)
 //
 void R_RenderPlayerView (player_t* player)
 {	
-    R_SetupFrame (player);
+    int frame_start = 0;
+    int stage_start = 0;
 
-    // Clear buffers.
+    if (r_render_profile_enabled)
+    {
+        frame_start = I_GetTimeMS();
+    }
+
+    stage_start = I_GetTimeMS();
+    R_SetupFrame (player);
     R_ClearClipSegs ();
     R_ClearDrawSegs ();
     R_ClearPlanes ();
     R_ClearSprites ();
+    if (r_render_profile_enabled)
+    {
+        r_render_setup_time += I_GetTimeMS() - stage_start;
+    }
     
     // check for new console commands.
     NetUpdate ();
 
     // The head node is the last node output.
+    stage_start = I_GetTimeMS();
     R_RenderBSPNode (numnodes-1);
+    if (r_render_profile_enabled)
+    {
+        r_render_bsp_time += I_GetTimeMS() - stage_start;
+    }
     
     // Check for new console commands.
     NetUpdate ();
     
+    stage_start = I_GetTimeMS();
     R_DrawPlanes ();
+    if (r_render_profile_enabled)
+    {
+        r_render_plane_time += I_GetTimeMS() - stage_start;
+    }
     
     // Check for new console commands.
     NetUpdate ();
     
+    stage_start = I_GetTimeMS();
     R_DrawMasked ();
+    if (r_render_profile_enabled)
+    {
+        r_render_masked_time += I_GetTimeMS() - stage_start;
+    }
 
     // Check for new console commands.
-    NetUpdate ();				
+    NetUpdate ();
+
+    if (r_render_profile_enabled)
+    {
+        r_render_total_time += I_GetTimeMS() - frame_start;
+        r_render_frame_count++;
+    }
+}
+
+void R_PrintRenderProfile(void)
+{
+    if (r_render_frame_count == 0)
+    {
+        DEH_printf("No render frames recorded.\n");
+        return;
+    }
+
+    DEH_printf("=== Render Profile ===\n");
+    DEH_printf("Frames: %d\n", r_render_frame_count);
+    DEH_printf("Total render time: %d ms\n", r_render_total_time);
+    DEH_printf("Avg frame time: %d ms\n", r_render_total_time / r_render_frame_count);
+    DEH_printf("Setup: %d ms (%d%%)\n", r_render_setup_time,
+        (r_render_setup_time * 100) / r_render_total_time);
+    DEH_printf("BSP: %d ms (%d%%)\n", r_render_bsp_time,
+        (r_render_bsp_time * 100) / r_render_total_time);
+    DEH_printf("Planes: %d ms (%d%%)\n", r_render_plane_time,
+        (r_render_plane_time * 100) / r_render_total_time);
+    DEH_printf("Masked: %d ms (%d%%)\n", r_render_masked_time,
+        (r_render_masked_time * 100) / r_render_total_time);
+}
+
+void R_ResetRenderProfile(void)
+{
+    r_render_setup_time = 0;
+    r_render_bsp_time = 0;
+    r_render_plane_time = 0;
+    r_render_masked_time = 0;
+    r_render_total_time = 0;
+    r_render_frame_count = 0;
 }

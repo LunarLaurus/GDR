@@ -961,6 +961,22 @@ boolean G_Responder (event_t* ev)
 	    G_ValidateDemo();
 	    return true;
 	}
+	// Goblin Dice Rollaz: F12 - Toggle render profiling
+	if (ev->type == ev_keydown && ev->data1 == KEY_F12)
+	{
+	    extern int r_render_profile_enabled;
+	    r_render_profile_enabled = !r_render_profile_enabled;
+	    if (r_render_profile_enabled)
+	    {
+		R_ResetRenderProfile();
+		DEH_printf("Render profiling enabled. Press F12 to disable and view stats.\n");
+	    }
+	    else
+	    {
+		R_PrintRenderProfile();
+	    }
+	    return true;
+	}
 	// Goblin Dice Rollaz: F8 - Print dice statistics
 	if (ev->type == ev_keydown && ev->data1 == KEY_F8)
 	{

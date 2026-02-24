@@ -38,7 +38,7 @@
 - [x] Add palette lookup caching
 - [x] Implement sky rendering optimization
 - [x] Add detail level adjustment for performance
-- [ ] Profile and benchmark each rendering subsystem
+- [x] Profile and benchmark each rendering subsystem
 
 ### Phase 3: Code Cleanup
 - [x] Remove all #if 0 blocks in g_game.c
@@ -46,7 +46,7 @@
 - [x] Remove all #if 0 blocks in r_main.c
 - [x] Remove all #if 0 blocks in r_draw.c
 - [x] Remove all #if 0 blocks in p_doors.c
-- [ ] Remove all #if 0 blocks in p_floor.c
+- [x] Remove all #if 0 blocks in p_floor.c
 - [ ] Remove all #if 0 blocks in p_maputl.c
 - [ ] Remove commented dead code in r_segs.c
 - [ ] Remove unused code in dstrings.c

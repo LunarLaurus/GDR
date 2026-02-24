@@ -94,6 +94,15 @@ extern  int     r_spritedetail;
 // Distance at which projectiles are culled (in fracunits)
 extern int r_projectile_farclip;
 
+// Goblin Dice Rollaz: Render profiling
+extern int r_render_profile_enabled;
+extern int r_render_setup_time;
+extern int r_render_bsp_time;
+extern int r_render_plane_time;
+extern int r_render_masked_time;
+extern int r_render_total_time;
+extern int r_render_frame_count;
+
 
 //
 // Function pointers to switch refresh/drawing functions.
@@ -186,5 +195,8 @@ extern int crosshair_type;
 extern int crosshair_color;
 extern int crosshair_scale;
 
+// Goblin Dice Rollaz: Render profiling functions
+void R_PrintRenderProfile(void);
+void R_ResetRenderProfile(void);
 
 #endif
