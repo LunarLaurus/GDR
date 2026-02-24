@@ -790,13 +790,30 @@ void I_FinishUpdate (void)
         }
     }
 
-    // Blit from the paletted 8-bit screen buffer to the intermediate
-    // 32-bit RGBA buffer and update the intermediate texture with the
-    // contents of the RGBA buffer.
-
-    SDL_LockTexture(texture, &blit_rect, &argbbuffer->pixels,
-                    &argbbuffer->pitch);
-    SDL_LowerBlit(screenbuffer, &blit_rect, argbbuffer, &blit_rect);
+    // Optimized: Direct pixel conversion from 8-bit indexed to ARGB texture
+    // This avoids the intermediate argbbuffer surface and SDL_LowerBlit overhead
+    
+    byte *texture_pixels;
+    int texture_pitch;
+    SDL_LockTexture(texture, &blit_rect, (void**)&texture_pixels, &texture_pitch);
+    
+    byte *src = (byte *)screenbuffer->pixels;
+    uint32_t *dst = (uint32_t *)texture_pixels;
+    int y;
+    
+    for (y = 0; y < SCREENHEIGHT; y++)
+    {
+        byte *src_row = src + y * screenbuffer->pitch;
+        uint32_t *dst_row = (uint32_t *)((byte *)dst + y * texture_pitch);
+        int x;
+        
+        for (x = 0; x < SCREENWIDTH; x++)
+        {
+            SDL_Color col = palette[src_row[x]];
+            dst_row[x] = (col.a << 24) | (col.r << 16) | (col.g << 8) | col.b;
+        }
+    }
+    
     SDL_UnlockTexture(texture);
 
     // Make sure the pillarboxes are kept clear each frame.

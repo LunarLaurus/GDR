@@ -34,7 +34,7 @@
 - [x] Add parallel sector processing for large levels
 - [x] Implement mipmap texture streaming
 - [x] Add GPU texture compression support
-- [ ] Optimize screen buffer blitting
+- [x] Optimize screen buffer blitting
 - [ ] Add palette lookup caching
 - [ ] Implement sky rendering optimization
 - [ ] Add detail level adjustment for performance
