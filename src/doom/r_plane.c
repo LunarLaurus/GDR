@@ -142,18 +142,8 @@ R_MapPlane
     angle_t	angle;
     fixed_t	distance;
     fixed_t	length;
-    unsigned	index;
+    unsigned index;
 	
-#ifdef RANGECHECK
-    if (x2 < x1
-     || x1 < 0
-     || x2 >= viewwidth
-     || y > viewheight)
-    {
-	I_Error ("R_MapPlane: %i, %i at %i",x1,x2,y);
-    }
-#endif
-
     if (planeheight != cachedheight[y])
     {
 	cachedheight[y] = planeheight;
@@ -460,20 +450,6 @@ void R_DrawPlanes (void)
     int                 numplanes;
     int                 i;
 				
-#ifdef RANGECHECK
-    if (ds_p - drawsegs > MAXDRAWSEGS)
-	I_Error ("R_DrawPlanes: drawsegs overflow (%td)",
-		 ds_p - drawsegs);
-    
-    if (lastvisplane - visplanes > MAXVISPLANES)
-	I_Error ("R_DrawPlanes: visplane overflow (%td)",
-		 lastvisplane - visplanes);
-    
-    if (lastopening - openings > MAXOPENINGS)
-	I_Error ("R_DrawPlanes: opening overflow (%td)",
-		 lastopening - openings);
-#endif
-
     numplanes = lastvisplane - visplanes;
 
 #if defined(HAVE_OPENMP) && defined(OPENMP_PARALLEL_PLANES)
