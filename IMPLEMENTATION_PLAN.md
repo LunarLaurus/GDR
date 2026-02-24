@@ -47,8 +47,8 @@
 - [x] Remove all #if 0 blocks in r_draw.c
 - [x] Remove all #if 0 blocks in p_doors.c
 - [x] Remove all #if 0 blocks in p_floor.c
-- [ ] Remove all #if 0 blocks in p_maputl.c
-- [ ] Remove commented dead code in r_segs.c
+- [x] Remove all #if 0 blocks in p_maputl.c
+- [x] Remove commented dead code in r_segs.c
 - [ ] Remove unused code in dstrings.c
 - [ ] Remove or convert RANGECHECK in r_things.c
 - [ ] Remove or convert RANGECHECK in r_draw.c
