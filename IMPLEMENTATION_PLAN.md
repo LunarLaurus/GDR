@@ -43,7 +43,7 @@
 ### Phase 3: Code Cleanup
 - [x] Remove all #if 0 blocks in g_game.c
 - [x] Remove all #if 0 blocks in p_pspr.c
-- [ ] Remove all #if 0 blocks in r_main.c
+- [x] Remove all #if 0 blocks in r_main.c
 - [ ] Remove all #if 0 blocks in r_draw.c
 - [ ] Remove all #if 0 blocks in p_doors.c
 - [ ] Remove all #if 0 blocks in p_floor.c
