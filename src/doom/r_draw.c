@@ -408,6 +408,7 @@ void R_DrawFuzzColumn (void)
 { 
     int			count; 
     pixel_t*		dest;
+    pixel_t*		fuzzcolormap;
 
     // Adjust borders. Low... 
     if (!dc_yl) 
@@ -434,24 +435,18 @@ void R_DrawFuzzColumn (void)
     
     dest = ylookup[dc_yl] + columnofs[dc_x];
 
-    // Looks like an attempt at dithering,
-    //  using the colormap #6 (of 0-31, a bit
-    //  brighter than average).
+    fuzzcolormap = colormaps + (6 * 256);
+
     do 
     {
-	// Lookup framebuffer, and retrieve
-	//  a pixel that is either one column
-	//  left or right of the current one.
-	// Add index from colormap to index.
-	*dest = colormaps[6*256+dest[fuzzoffset[fuzzpos]]]; 
+	*dest = fuzzcolormap[dest[fuzzoffset[fuzzpos]]]; 
 
-	// Clamp table lookup index.
 	if (++fuzzpos == FUZZTABLE) 
 	    fuzzpos = 0;
 	
 	dest += SCREENWIDTH;
     } while (count--); 
-} 
+}
 
 // low detail mode version
  
@@ -460,6 +455,7 @@ void R_DrawFuzzColumnLow (void)
     int			count; 
     pixel_t*		dest;
     pixel_t*		dest2;
+    pixel_t*		fuzzcolormap;
     int x;
 
     // Adjust borders. Low... 
@@ -492,26 +488,20 @@ void R_DrawFuzzColumnLow (void)
     dest = ylookup[dc_yl] + columnofs[x];
     dest2 = ylookup[dc_yl] + columnofs[x+1];
 
-    // Looks like an attempt at dithering,
-    //  using the colormap #6 (of 0-31, a bit
-    //  brighter than average).
+    fuzzcolormap = colormaps + (6 * 256);
+
     do 
     {
-	// Lookup framebuffer, and retrieve
-	//  a pixel that is either one column
-	//  left or right of the current one.
-	// Add index from colormap to index.
-	*dest = colormaps[6*256+dest[fuzzoffset[fuzzpos]]]; 
-	*dest2 = colormaps[6*256+dest2[fuzzoffset[fuzzpos]]]; 
+	*dest = fuzzcolormap[dest[fuzzoffset[fuzzpos]]]; 
+	*dest2 = fuzzcolormap[dest2[fuzzoffset[fuzzpos]]]; 
 
-	// Clamp table lookup index.
 	if (++fuzzpos == FUZZTABLE) 
 	    fuzzpos = 0;
 	
 	dest += SCREENWIDTH;
 	dest2 += SCREENWIDTH;
     } while (count--); 
-} 
+}
  
   
   
