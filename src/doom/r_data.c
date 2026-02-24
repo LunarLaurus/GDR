@@ -155,6 +155,12 @@ byte**			texturecomposite;
 int*		flattranslation;
 int*		texturetranslation;
 
+// Flat mipmap levels for distance optimization
+// flatmipmap[0] = original 64x64, flatmipmap[1] = 32x32, flatmipmap[2] = 16x16
+#define NUM_FLAT_MIPMAPS 3
+static byte** flatmipmap[NUM_FLAT_MIPMAPS];
+static boolean flatmipmaps_initialized = false;
+
 // needed for pre rendering
 fixed_t*	spritewidth;	
 fixed_t*	spriteoffset;
@@ -674,6 +680,14 @@ void R_InitTextures (void)
 void R_InitFlats (void)
 {
     int		i;
+    int		lump;
+    byte*	flatdata;
+    byte*	mipdata;
+    int		m;
+    int		mipwidth;
+    int		mipheight;
+    int		srcpitch;
+    int		dstpitch;
 	
     firstflat = W_GetNumForName (DEH_String("F_START")) + 1;
     lastflat = W_GetNumForName (DEH_String("F_END")) - 1;
@@ -684,6 +698,47 @@ void R_InitFlats (void)
     
     for (i=0 ; i<numflats ; i++)
 	flattranslation[i] = i;
+
+    if (flatmipmaps_initialized)
+	return;
+
+    for (m = 1; m < NUM_FLAT_MIPMAPS; m++)
+    {
+	flatmipmap[m] = Z_Malloc(numflats * sizeof(byte*), PU_STATIC, NULL);
+    }
+
+    for (i = 0; i < numflats; i++)
+    {
+	lump = firstflat + i;
+	flatdata = W_CacheLumpNum(lump, PU_CACHE);
+
+	for (m = 1; m < NUM_FLAT_MIPMAPS; m++)
+	{
+	    mipwidth = 64 >> m;
+	    mipheight = 64 >> m;
+	    srcpitch = 64;
+	    dstpitch = mipwidth;
+
+	    flatmipmap[m][i] = Z_Malloc(mipwidth * mipheight, PU_STATIC, NULL);
+	    mipdata = flatmipmap[m][i];
+
+	    for (int y = 0; y < mipheight; y++)
+	    {
+		for (int x = 0; x < mipwidth; x++)
+		{
+		    int sx = x * 2;
+		    int sy = y * 2;
+		    byte p00 = flatdata[sy * srcpitch + sx];
+		    byte p10 = flatdata[sy * srcpitch + sx + 1];
+		    byte p01 = flatdata[(sy + 1) * srcpitch + sx];
+		    byte p11 = flatdata[(sy + 1) * srcpitch + sx + 1];
+		    mipdata[y * dstpitch + x] = (p00 + p10 + p01 + p11) >> 2;
+		}
+	    }
+	}
+    }
+
+    flatmipmaps_initialized = true;
 }
 
 
@@ -772,6 +827,44 @@ int R_FlatNumForName(const char *name)
 	I_Error ("R_FlatNumForName: %s not found",namet);
     }
     return i - firstflat;
+}
+
+//
+// R_GetFlatMipmap
+// Returns the appropriate mipmap level for a flat based on distance.
+// Higher planeheight = more distant = lower resolution mipmap.
+//
+byte* R_GetFlatMipmap(int flatnum, fixed_t planeheight)
+{
+    int miplevel;
+
+    if (!flatmipmaps_initialized || flatnum < 0 || flatnum >= numflats)
+	return NULL;
+
+    if (planeheight <= 128*FRACUNIT)
+	miplevel = 0;
+    else if (planeheight <= 256*FRACUNIT)
+	miplevel = 1;
+    else if (planeheight <= 512*FRACUNIT)
+	miplevel = 2;
+    else
+	miplevel = 2;
+
+    if (miplevel == 0)
+	return NULL;
+
+    return flatmipmap[miplevel][flatnum];
+}
+
+//
+// R_GetFlatMipmapSize
+// Returns the size of the mipmap level (width = height for flats)
+//
+int R_GetFlatMipmapSize(int miplevel)
+{
+    if (miplevel < 1 || miplevel >= NUM_FLAT_MIPMAPS)
+	return 64;
+    return 64 >> miplevel;
 }
 
 

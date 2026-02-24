@@ -42,6 +42,10 @@ void R_PrecacheLevel (void);
 // lookup by name. For animation?
 int R_FlatNumForName(const char *name);
 
+// Flat mipmap functions for distance-based LOD
+byte* R_GetFlatMipmap(int flatnum, fixed_t planeheight);
+int R_GetFlatMipmapSize(int miplevel);
+
 
 // Called by P_Ticker for switches and animations,
 // returns the texture number for the texture name.

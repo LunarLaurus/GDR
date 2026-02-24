@@ -32,7 +32,7 @@
 - [x] Add wall texture caching for repeated lookups
 - [x] Optimize floor/ceiling texture mapping
 - [x] Add parallel sector processing for large levels
-- [ ] Implement mipmap texture streaming
+- [x] Implement mipmap texture streaming
 - [ ] Add GPU texture compression support
 - [ ] Optimize screen buffer blitting
 - [ ] Add palette lookup caching

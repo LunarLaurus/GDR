@@ -196,10 +196,26 @@ void R_DrawSpan_SSE2(void)
             unsigned int sp2 = (_mm_cvtsi128_si32(_mm_srli_si128(spots, 4))) & 0xFFFF;
             unsigned int sp3 = (_mm_cvtsi128_si32(_mm_srli_si128(spots, 6))) & 0xFFFF;
 
-            dest[0] = ds_colormap[ds_source[sp0]];
-            dest[1] = ds_colormap[ds_source[sp1]];
-            dest[2] = ds_colormap[ds_source[sp2]];
-            dest[3] = ds_colormap[ds_source[sp3]];
+            if (ds_mipmap_source)
+            {
+                int mipsize = 64 >> ds_mipmap_level;
+                int mipsizemask = mipsize - 1;
+                sp0 = ((sp0 >> ds_mipmap_level) & mipsizemask) + (((sp0 >> (ds_mipmap_level + 6)) & mipsizemask) * mipsize);
+                sp1 = ((sp1 >> ds_mipmap_level) & mipsizemask) + (((sp1 >> (ds_mipmap_level + 6)) & mipsizemask) * mipsize);
+                sp2 = ((sp2 >> ds_mipmap_level) & mipsizemask) + (((sp2 >> (ds_mipmap_level + 6)) & mipsizemask) * mipsize);
+                sp3 = ((sp3 >> ds_mipmap_level) & mipsizemask) + (((sp3 >> (ds_mipmap_level + 6)) & mipsizemask) * mipsize);
+                dest[0] = ds_colormap[ds_mipmap_source[sp0]];
+                dest[1] = ds_colormap[ds_mipmap_source[sp1]];
+                dest[2] = ds_colormap[ds_mipmap_source[sp2]];
+                dest[3] = ds_colormap[ds_mipmap_source[sp3]];
+            }
+            else
+            {
+                dest[0] = ds_colormap[ds_source[sp0]];
+                dest[1] = ds_colormap[ds_source[sp1]];
+                dest[2] = ds_colormap[ds_source[sp2]];
+                dest[3] = ds_colormap[ds_source[sp3]];
+            }
 
             pos_vec = _mm_add_epi32(pos_vec, _mm_set1_epi32(step * 4));
             dest += 4;
@@ -213,7 +229,17 @@ void R_DrawSpan_SSE2(void)
         unsigned int xtemp = (position >> 26);
         int spot = xtemp | ytemp;
 
-        *dest++ = ds_colormap[ds_source[spot]];
+        if (ds_mipmap_source)
+        {
+            int mipsize = 64 >> ds_mipmap_level;
+            int mipsizemask = mipsize - 1;
+            spot = ((spot >> ds_mipmap_level) & mipsizemask) + (((spot >> (ds_mipmap_level + 6)) & mipsizemask) * mipsize);
+            *dest++ = ds_colormap[ds_mipmap_source[spot]];
+        }
+        else
+        {
+            *dest++ = ds_colormap[ds_source[spot]];
+        }
         position += step;
         count--;
     }
@@ -625,6 +651,10 @@ fixed_t			ds_ystep;
 // start of a 64*64 tile image 
 byte*			ds_source;	
 
+// Flat mipmap support
+int				ds_mipmap_level;
+byte*			ds_mipmap_source;
+
 // just for profiling
 int			dscount;
 
@@ -675,7 +705,22 @@ void R_DrawSpan (void)
 
 	// Lookup pixel from flat texture tile,
 	//  re-index using light/colormap.
-	*dest++ = ds_colormap[ds_source[spot]];
+	// Use mipmap source if available
+	if (ds_mipmap_source)
+	{
+	    int x = (position >> 26);
+	    int y = (position >> 10) & 0x3f;
+	    int mipsize = 64 >> ds_mipmap_level;
+	    int mipsizemask = mipsize - 1;
+	    x &= mipsizemask;
+	    y &= mipsizemask;
+	    spot = x + (y * mipsize);
+	    *dest++ = ds_colormap[ds_mipmap_source[spot]];
+	}
+	else
+	{
+	    *dest++ = ds_colormap[ds_source[spot]];
+	}
 
         position += step;
 
@@ -729,8 +774,23 @@ void R_DrawSpanLow (void)
 
 	// Lowres/blocky mode does it twice,
 	//  while scale is adjusted appropriately.
-	*dest++ = ds_colormap[ds_source[spot]];
-	*dest++ = ds_colormap[ds_source[spot]];
+	if (ds_mipmap_source)
+	{
+	    int x = (position >> 26);
+	    int y = (position >> 10) & 0x3f;
+	    int mipsize = 64 >> ds_mipmap_level;
+	    int mipsizemask = mipsize - 1;
+	    x &= mipsizemask;
+	    y &= mipsizemask;
+	    spot = x + (y * mipsize);
+	    *dest++ = ds_colormap[ds_mipmap_source[spot]];
+	    *dest++ = ds_colormap[ds_mipmap_source[spot]];
+	}
+	else
+	{
+	    *dest++ = ds_colormap[ds_source[spot]];
+	    *dest++ = ds_colormap[ds_source[spot]];
+	}
 
 	position += step;
 

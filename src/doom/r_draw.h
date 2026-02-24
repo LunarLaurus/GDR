@@ -71,7 +71,11 @@ extern fixed_t		ds_xstep;
 extern fixed_t		ds_ystep;
 
 // start of a 64*64 tile image
-extern byte*		ds_source;		
+extern byte*		ds_source;
+
+// Flat mipmap support
+extern int			ds_mipmap_level;
+extern byte*			ds_mipmap_source;
 
 extern byte*		translationtables;
 extern byte*		dc_translation;

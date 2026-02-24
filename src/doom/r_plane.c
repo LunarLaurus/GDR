@@ -103,6 +103,9 @@ fixed_t			cacheddistance[SCREENHEIGHT];
 fixed_t			cachedxstep[SCREENHEIGHT];
 fixed_t			cachedystep[SCREENHEIGHT];
 
+int				ds_mipmap_level;
+byte*			ds_mipmap_source;
+
 
 
 //
@@ -125,6 +128,8 @@ void R_InitPlanes (void)
 //  baseyscale
 //  viewx
 //  viewy
+//  ds_mipmap_level
+//  ds_mipmap_source
 //
 // BASIC PRIMITIVE
 //
@@ -215,6 +220,9 @@ void R_ClearPlanes (void)
     
     // texture calculation
     memset (cachedheight, 0, sizeof(cachedheight));
+
+    ds_mipmap_level = 0;
+    ds_mipmap_source = NULL;
 
     // left to right mapping
     angle = (viewangle-ANG90)>>ANGLETOFINESHIFT;
@@ -510,9 +518,27 @@ void R_DrawPlanes (void)
 	
 	// regular flat
         lumpnum = firstflat + flattranslation[pl->picnum];
-	ds_source = W_CacheLumpNum(lumpnum, PU_CACHE);
 	
 	planeheight = abs(pl->height-viewz);
+
+	ds_mipmap_level = 0;
+	ds_mipmap_source = NULL;
+
+	if (planeheight > 256*FRACUNIT)
+	{
+	    byte* mip = R_GetFlatMipmap(pl->picnum, planeheight);
+	    if (mip)
+	    {
+		ds_mipmap_source = mip;
+		if (planeheight > 512*FRACUNIT)
+		    ds_mipmap_level = 2;
+		else
+		    ds_mipmap_level = 1;
+	    }
+	}
+
+	ds_source = W_CacheLumpNum(lumpnum, PU_CACHE);
+	
 	light = (pl->lightlevel >> LIGHTSEGSHIFT)+extralight;
 
 	if (light >= LIGHTLEVELS)
