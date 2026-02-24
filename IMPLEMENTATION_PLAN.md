@@ -27,7 +27,7 @@
 - [x] Remove hardcoded &127 texture mask in r_draw.c
 - [x] Fix RANGECHECK in r_bsp.c line 543
 - [x] Optimize r_segs.c render loop branching
-- [ ] Add sprite distance culling threshold
+- [x] Add sprite distance culling threshold
 - [ ] Implement sprite billboarding optimization
 - [ ] Add wall texture caching for repeated lookups
 - [ ] Optimize floor/ceiling texture mapping

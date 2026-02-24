@@ -129,6 +129,8 @@ boolean r_showspritestats = false;
 
 int r_projectile_farclip = 24*FRACUNIT;
 
+int r_sprite_farclip = 0;
+
 // constant arrays
 //  used for psprite clipping and initializing clipping
 short		negonearray[SCREENWIDTH];
@@ -548,6 +550,11 @@ void R_ProjectSprite (mobj_t* thing)
     // Goblin Dice Rollaz: Early culling for projectiles
     // Skip projectiles that are too far or behind the player
     if ((thing->flags & MF_MISSILE) && tz > r_projectile_farclip)
+	return;
+
+    // Goblin Dice Rollaz: Sprite distance culling
+    // Skip sprites beyond the configured distance threshold
+    if (r_sprite_farclip > 0 && tz > r_sprite_farclip)
 	return;
     
     xscale = FixedDiv(projection, tz);
