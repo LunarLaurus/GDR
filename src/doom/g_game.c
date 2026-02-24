@@ -838,13 +838,6 @@ boolean G_Responder (event_t* ev)
 
     if (gamestate == GS_LEVEL) 
     { 
-#if 0 
-	if (devparm && ev->type == ev_keydown && ev->data1 == ';') 
-	{ 
-	    G_DeathMatchSpawnPlayer (0); 
-	    return true; 
-	} 
-#endif 
 	if (ev->type == ev_keydown && ev->data1 == KEY_F5)
 	{
 	    showfps = !showfps;
