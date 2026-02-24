@@ -62,7 +62,7 @@
 ### Phase 4: Rebranding
 - [x] Rename "Based on Chocolate Doom engine" banner in d_main.c
 - [x] Update CD-ROM config path in d_englsh.h
-- [ ] Update "DOOM! -- Inferno" string in d_englsh.h
+- [x] Update "DOOM! -- Inferno" string in d_englsh.h
 - [ ] Update "To continue the DOOM experience" string
 - [ ] Rename usemodernfx to goblin_modern_fx in m_config.c
 - [ ] Rename crosshair_* variables to dice_crosshair_*

@@ -398,7 +398,7 @@
 "Hell.\n"\
 "\n" \
 "Now, it's on to the final chapter of\n"\
-"DOOM! -- Inferno."
+"Goblin Dice Rollaz!"
 
 
 #define E3TEXT \
