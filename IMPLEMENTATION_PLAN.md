@@ -57,7 +57,7 @@
 - [x] Split weapon debug overlay from st_stuff.c to st_weapon_debug.c
 - [x] Create m_menu_gameopts.c for game settings submenu
 - [x] Create m_menu_accessibility.c for accessibility options
-- [ ] Create p_ai_faction.c for faction AI system
+- [x] Create p_ai_faction.c for faction AI system
 
 ### Phase 4: Rebranding
 - [ ] Rename "Based on Chocolate Doom engine" banner in d_main.c

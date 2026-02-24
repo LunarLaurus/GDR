@@ -44,6 +44,7 @@ add_library(doom STATIC
             m_menu.c        m_menu.h
             m_tips.c        m_tips.h
             m_random.c      m_random.h
+            p_ai_faction.c   p_ai_faction.h
             p_ceilng.c
             p_doors.c
             p_enemy.c
