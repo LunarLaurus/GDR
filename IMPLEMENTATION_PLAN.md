@@ -31,7 +31,7 @@
 - [x] Implement sprite billboarding optimization
 - [x] Add wall texture caching for repeated lookups
 - [x] Optimize floor/ceiling texture mapping
-- [ ] Add parallel sector processing for large levels
+- [x] Add parallel sector processing for large levels
 - [ ] Implement mipmap texture streaming
 - [ ] Add GPU texture compression support
 - [ ] Optimize screen buffer blitting
