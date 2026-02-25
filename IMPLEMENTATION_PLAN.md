@@ -97,7 +97,7 @@
 - [x] Remove demo version mismatch error messages
 - [x] Remove demo buffer expansion logic
 - [x] Remove demo checksum computation
-- [ ] Remove demo share functionality in g_replay.c
+- [x] Remove demo share functionality in g_replay.c
 - [ ] Remove G_ExportDemo function
 - [ ] Remove G_LoadSharedDemo function
 - [ ] Remove G_ShareDemo function

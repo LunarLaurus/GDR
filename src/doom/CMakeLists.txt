@@ -30,7 +30,6 @@ add_library(doom STATIC
             g_game.c        g_game.h
             g_powerup.c     g_powerup.h
             g_achievement.c g_achievement.h
-            g_replay.c      g_replay.h
             g_rpg.c         g_rpg.h
             g_stats.c       g_stats.h
             g_status.c      g_status.h
