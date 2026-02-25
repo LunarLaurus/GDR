@@ -565,12 +565,6 @@ static default_t	doom_defaults_list[] =
 
 
     //!
-    // SoundBlaster IRQ.  Unused.
-    //
-
-    CONFIG_VARIABLE_INT(snd_sbirq),
-
-    //!
     // SoundBlaster DMA channel.  Unused.
     //
 
