@@ -102,9 +102,9 @@
 - [x] Remove G_LoadSharedDemo function
 - [x] Remove G_ShareDemo function
 - [x] Remove demobuffer management code
-- [ ] Remove demo lump reading/writing
-- [ ] Remove IsDemoFile function dependencies
-- [ ] Remove demo1/demo2/demo3 lump handling
+- [x] Remove demo lump reading/writing
+- [x] Remove IsDemoFile function dependencies
+- [x] Remove demo1/demo2/demo3 lump handling
 - [ ] Remove D_CheckNetGame demo warnings
 - [ ] Clean up g_game.c demo recording section
 
