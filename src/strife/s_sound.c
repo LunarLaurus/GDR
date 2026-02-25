@@ -81,6 +81,10 @@ typedef struct
 
 static channel_t *channels;
 
+// Channel pooling for O(1) channel allocation
+static int *free_channel_pool;
+static int free_channel_count;
+
 // Maximum volume of a sound effect.
 // Internal default is max out of 0-15.
 
@@ -149,6 +153,14 @@ void S_Init(int sfxVolume, int musicVolume, int voiceVolume)
     // simultaneously) within zone memory.
     channels = Z_Malloc(snd_channels*sizeof(channel_t), PU_STATIC, 0);
 
+    // Allocate channel pool for O(1) channel allocation
+    free_channel_pool = Z_Malloc(snd_channels*sizeof(int), PU_STATIC, 0);
+    free_channel_count = snd_channels;
+    for (i = 0; i < snd_channels; i++)
+    {
+        free_channel_pool[i] = i;
+    }
+
     // Free all channels for use
     for (i=0 ; i<snd_channels ; i++)
     {
@@ -206,6 +218,10 @@ static void S_StopChannel(int cnum)
 
         c->sfxinfo->usefulness--;
         c->sfxinfo = NULL;
+        c->origin = NULL;
+
+        // Return channel to pool for O(1) reuse
+        free_channel_pool[free_channel_count++] = cnum;
     }
 }
 
@@ -276,55 +292,57 @@ static int S_GetChannel(mobj_t *origin, sfxinfo_t *sfxinfo, boolean isvoice)
     
     channel_t*        c;
 
-    // Find an open channel
-    for (cnum=0 ; cnum<snd_channels ; cnum++)
+    // Fast path: try to get a free channel from pool (O(1))
+    if (free_channel_count > 0)
     {
+        cnum = free_channel_pool[--free_channel_count];
         if (!channels[cnum].sfxinfo)
         {
-            break;
-        } 
-        else if (origin && channels[cnum].origin == origin &&
-                 (isvoice || cnum != i_voicehandle)) // haleyjd
-        {
-            // haleyjd 20150220: [STRIFE] missing sound channel priority check
-            // Is a higher priority sound by same origin already playing?
-            if(!isvoice && sfxinfo->priority > channels[cnum].sfxinfo->priority)
-                return -1;
-
-            S_StopChannel(cnum);
-            break;
+            c = &channels[cnum];
+            c->sfxinfo = sfxinfo;
+            c->origin = origin;
+            return cnum;
         }
     }
 
-    // None available
-    if (cnum == snd_channels)
+    // Check if any channel has the same origin (can be replaced)
+    if (origin)
     {
-        // Look for lower priority
-        for (cnum=0 ; cnum<snd_channels ; cnum++)
+        for (cnum = 0; cnum < snd_channels; cnum++)
         {
-            if (channels[cnum].sfxinfo->priority >= sfxinfo->priority)
+            if (channels[cnum].origin == origin &&
+                (isvoice || cnum != i_voicehandle))
             {
-                // haleyjd 09/11/10: [STRIFE] voice has absolute priority
-                if (isvoice || cnum != i_voicehandle)
-                    break;
+                if (!isvoice && sfxinfo->priority > channels[cnum].sfxinfo->priority)
+                    return -1;
+
+                S_StopChannel(cnum);
+                c = &channels[cnum];
+                c->sfxinfo = sfxinfo;
+                c->origin = origin;
+                return cnum;
             }
         }
+    }
 
-        if (cnum == snd_channels)
+    // Fallback: look for lower priority channel
+    for (cnum = 0; cnum < snd_channels; cnum++)
+    {
+        if (channels[cnum].sfxinfo->priority >= sfxinfo->priority)
         {
-            // FUCK!  No lower priority.  Sorry, Charlie.    
-            return -1;
-        }
-        else
-        {
-            // Otherwise, kick out lower priority.
-            S_StopChannel(cnum);
+            if (isvoice || cnum != i_voicehandle)
+                break;
         }
     }
 
-    c = &channels[cnum];
+    if (cnum == snd_channels)
+    {
+        return -1;
+    }
 
-    // channel is decided to be cnum.
+    S_StopChannel(cnum);
+
+    c = &channels[cnum];
     c->sfxinfo = sfxinfo;
     c->origin = origin;
 

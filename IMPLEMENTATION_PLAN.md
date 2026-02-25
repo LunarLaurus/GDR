@@ -125,8 +125,8 @@
 - [x] Remove unused I_PCS_UpdateSoundParams stub
 - [x] Clean up DOS sound configuration bindings
 - [x] Remove DOS-specific sound module comments
-- [ ] Consolidate platform-specific sound detection
-- [ ] Add sound channel pooling optimization
+- [x] Consolidate platform-specific sound detection
+- [x] Add sound channel pooling optimization
 - [ ] Remove debug sound allocation logging
 - [ ] Clean up music module list compilation
 
