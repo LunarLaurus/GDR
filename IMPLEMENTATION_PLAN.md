@@ -109,7 +109,7 @@
 - [ ] Clean up g_game.c demo recording section
 
 ### Phase 6: Audio System Cleanup
-- [ ] Remove redundant I_SoundIsPlaying check before stopping
+- [x] Remove redundant I_SoundIsPlaying check before stopping
 - [ ] Optimize S_UpdateSounds channel iteration
 - [ ] Remove redundant channel scanning in i_sdlsound.c
 - [ ] Remove profanity comment in s_sound.c line 322

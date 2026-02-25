@@ -182,12 +182,7 @@ static void S_StopChannel(int cnum)
 
     if (c->sfxinfo)
     {
-        // stop the sound playing
-
-        if (I_SoundIsPlaying(c->handle))
-        {
-            I_StopSound(c->handle);
-        }
+        I_StopSound(c->handle);
 
         // check to see if other channels are playing the sound
 
