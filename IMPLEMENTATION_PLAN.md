@@ -96,7 +96,7 @@
 - [x] Remove gameversion >= exe_ultimate checks
 - [x] Remove demo version mismatch error messages
 - [x] Remove demo buffer expansion logic
-- [ ] Remove demo checksum computation
+- [x] Remove demo checksum computation
 - [ ] Remove demo share functionality in g_replay.c
 - [ ] Remove G_ExportDemo function
 - [ ] Remove G_LoadSharedDemo function

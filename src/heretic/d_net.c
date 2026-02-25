@@ -25,9 +25,6 @@
 #include "doomdef.h"
 #include "m_argv.h"
 #include "m_misc.h"
-#include "w_checksum.h"
-
-#include "deh_main.h"
 
 #include "d_loop.h"
 
@@ -165,11 +162,6 @@ static void InitConnectData(net_connect_data_t *connect_data)
 
     connect_data->lowres_turn = M_ParmExists("-record")
                              && !M_ParmExists("-longtics");
-
-    // Read checksums of our WAD directory and dehacked information
-
-    W_Checksum(connect_data->wad_sha1sum);
-    DEH_Checksum(connect_data->deh_sha1sum);
 
     connect_data->is_freedoom = 0;
 }
