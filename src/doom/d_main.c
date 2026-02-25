@@ -498,7 +498,7 @@ void D_BindVariables(void)
     M_BindIntVariable("difficulty_hp_nightmare",&difficulty_hp_scale[4]);
 
     // Goblin Dice Rollaz: weapon stat debug overlay
-    M_BindIntVariable("show_weapon_stats",        &show_weapon_stats);
+    M_BindIntVariable("goblin_weapon_stats",        &goblin_weapon_stats);
 
     // Goblin Dice Rollaz: status effect configuration
     M_BindIntVariable("burn_damage",              &burn_damage);

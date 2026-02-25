@@ -68,7 +68,7 @@
 - [x] Rename crosshair_* variables to dice_crosshair_*
 - [x] Rename crit_boost_bonus to goblin_crit_boost_bonus
 - [x] Rename exploding_dice_enabled to goblin_exploding_dice
-- [ ] Rename show_weapon_stats to goblin_weapon_stats
+- [x] Rename show_weapon_stats to goblin_weapon_stats
 - [ ] Rename status effect CVARs to goblin_status_*
 - [ ] Rename colorblind_mode to goblin_colorblind_mode
 - [ ] Rename reduce_motion to goblin_reduce_motion

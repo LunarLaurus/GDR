@@ -1628,7 +1628,7 @@ void ST_Drawer (boolean fullscreen, boolean refresh)
     else ST_diffDraw();
 
     // Goblin Dice Rollaz: Draw weapon stat debug overlay if enabled
-    if (show_weapon_stats)
+    if (goblin_weapon_stats)
     {
         ST_DrawWeaponStats(280, 20);
     }

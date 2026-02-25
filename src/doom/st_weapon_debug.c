@@ -34,7 +34,7 @@
 #include "st_lib.h"
 #include "r_local.h"
 
-int show_weapon_stats = 0;
+int goblin_weapon_stats = 0;
 static patch_t *st_weaponstat_font[HU_FONTSIZE];
 
 extern float hud_scale;
