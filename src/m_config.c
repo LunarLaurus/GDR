@@ -565,12 +565,6 @@ static default_t	doom_defaults_list[] =
 
 
     //!
-    // SoundBlaster DMA channel.  Unused.
-    //
-
-    CONFIG_VARIABLE_INT(snd_sbdma),
-
-    //!
     // Output port to use for OPL MIDI playback.  Unused.
     //
 

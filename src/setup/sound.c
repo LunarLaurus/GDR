@@ -119,7 +119,6 @@ float fsynth_gain = 1.0f;
 // doom and doom.exe
 
 
-static int snd_sbdma = 0;
 static int snd_mport = 0;
 
 static int snd_oplmode;
@@ -375,7 +374,6 @@ void BindSoundVariables(void)
 #endif // HAVE_FLUIDSYNTH
 
 
-    M_BindIntVariable("snd_sbdma",                &snd_sbdma);
     M_BindIntVariable("snd_mport",                &snd_mport);
     M_BindIntVariable("snd_maxslicetime_ms",      &snd_maxslicetime_ms);
     M_BindStringVariable("snd_musiccmd",          &snd_musiccmd);

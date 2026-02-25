@@ -118,7 +118,7 @@
 - [x] Remove empty I_ShutdownMusic stub
 - [x] Remove unused snd_sbport config variable
 - [x] Remove unused snd_sbirq config variable
-- [ ] Remove unused snd_sbdma config variable
+- [x] Remove unused snd_sbdma config variable
 - [ ] Remove unused snd_mport config variable
 - [ ] Fix CheckVolumeSeparation to be inline
 - [ ] Remove PC speaker frequency table (i_pcsound.c)

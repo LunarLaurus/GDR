@@ -82,7 +82,6 @@ static const music_module_t *active_music_module;
 
 
 
-static int snd_sbdma = 0;
 static int snd_mport = 0;
 
 // Compiled-in sound modules:
@@ -492,7 +491,6 @@ void I_BindSoundVariables(void)
     M_BindIntVariable("snd_musicdevice",         &snd_musicdevice);
     M_BindIntVariable("snd_sfxdevice",           &snd_sfxdevice);
 
-    M_BindIntVariable("snd_sbdma",               &snd_sbdma);
     M_BindIntVariable("snd_mport",               &snd_mport);
     M_BindIntVariable("snd_maxslicetime_ms",     &snd_maxslicetime_ms);
     M_BindStringVariable("snd_musiccmd",         &snd_musiccmd);
