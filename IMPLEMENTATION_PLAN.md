@@ -101,7 +101,7 @@
 - [x] Remove G_ExportDemo function
 - [x] Remove G_LoadSharedDemo function
 - [x] Remove G_ShareDemo function
-- [ ] Remove demobuffer management code
+- [x] Remove demobuffer management code
 - [ ] Remove demo lump reading/writing
 - [ ] Remove IsDemoFile function dependencies
 - [ ] Remove demo1/demo2/demo3 lump handling

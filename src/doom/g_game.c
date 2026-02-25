@@ -147,10 +147,10 @@ char           *demoname;
 boolean         demorecording; 
 boolean         demoplayback;
 boolean		netdemo; 
-byte*		demobuffer;
 byte*		demo_p;
 byte*		demoend; 
-boolean         singledemo;            	// quit after playing a demo from cmdline 
+byte*		demo_buffer_start;
+boolean         singledemo;            	// quit after playing a demo from cmdline
  
 boolean         precache = true;        // if true, load all graphics at start 
 
@@ -2303,10 +2303,11 @@ void G_RecordDemo (const char *name)
     i = M_CheckParmWithArgs("-maxdemo", 1);
     if (i)
 	maxsize = atoi(myargv[i+1])*1024;
-    demobuffer = Z_Malloc (maxsize,PU_STATIC,NULL); 
-    demoend = demobuffer + maxsize;
-	
-    demorecording = true; 
+    demo_buffer_start = Z_Malloc(maxsize, PU_STATIC, NULL);
+    demo_p = demo_buffer_start;
+    demoend = demo_p + maxsize;
+  	
+    demorecording = true;
 } 
 
 // Get the demo version code appropriate for the version set in gameversion.
@@ -2315,8 +2316,6 @@ void G_RecordDemo (const char *name)
 void G_BeginRecording (void) 
 { 
     int             i; 
-
-    demo_p = demobuffer;
 
     //!
     // @category demo
@@ -2368,8 +2367,7 @@ void G_DoPlayDemo (void)
 
     lumpnum = W_GetNumForName(defdemoname);
     gameaction = ga_nothing;
-    demobuffer = W_CacheLumpNum(lumpnum, PU_STATIC);
-    demo_p = demobuffer;
+    demo_p = W_CacheLumpNum(lumpnum, PU_STATIC);
 
     demoversion = *demo_p++;
 
@@ -2497,11 +2495,11 @@ boolean G_CheckDemoStatus (void)
     if (demorecording) 
     { 
 	*demo_p++ = DEMOMARKER; 
-	M_WriteFile (demoname, demobuffer, demo_p - demobuffer); 
-	Z_Free (demobuffer); 
+	M_WriteFile (demoname, demo_buffer_start, demo_p - demo_buffer_start); 
+	Z_Free (demo_buffer_start); 
 	demorecording = false; 
 	I_Error ("Demo %s recorded",demoname); 
-    } 
+    }
     return false; 
 }
 
@@ -2532,7 +2530,7 @@ void G_ValidateDemo(void)
     }
     else
     {
-        demo_buffer = demobuffer;
+        demo_buffer = demo_buffer_start;
         demo_ptr = demo_p;
         demo_end = demoend;
     }
@@ -2630,7 +2628,7 @@ void G_ValidateDemo(void)
     if (demorecording)
     {
         DEH_printf("Recording status: Active\n");
-        DEH_printf("Recorded tics so far: %d\n", (int)(demo_p - demobuffer));
+        DEH_printf("Recorded tics so far: %d\n", (int)(demo_p - demo_buffer_start));
     }
 
     DEH_printf("=== Validation Complete ===\n");
