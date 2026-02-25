@@ -134,7 +134,7 @@
 - [x] Remove NET_StartSecureDemo function
 - [x] Remove NET_EndSecureDemo function
 - [x] Remove securedemo_start_message variable
-- [ ] Remove unused NET_MASTER_PACKET_TYPE_GET_METADATA
+- [x] Remove unused NET_MASTER_PACKET_TYPE_GET_METADATA
 - [ ] Remove NET_OLD_MAGIC_NUMBER handling
 - [ ] Remove NET_TICDIFF_RAVEN legacy support
 - [ ] Remove NET_TICDIFF_STRIFE legacy support
