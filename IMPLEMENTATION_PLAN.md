@@ -120,7 +120,7 @@
 - [x] Remove unused snd_sbirq config variable
 - [x] Remove unused snd_sbdma config variable
 - [x] Remove unused snd_mport config variable
-- [ ] Fix CheckVolumeSeparation to be inline
+- [x] Fix CheckVolumeSeparation to be inline
 - [ ] Remove PC speaker frequency table (i_pcsound.c)
 - [ ] Remove unused I_PCS_UpdateSoundParams stub
 - [ ] Clean up DOS sound configuration bindings
