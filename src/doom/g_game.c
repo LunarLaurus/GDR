@@ -2655,10 +2655,6 @@ void G_ValidateDemo(void)
     {
         DEH_printf("Note: Appears to be an old-format demo (v0-v4).\n");
     }
-    else if (version == DOOM_191_VERSION)
-    {
-        DEH_printf("Format: Doom 1.91 extended format\n");
-    }
     else if (version == 106)
     {
         DEH_printf("Format: Doom 1.6/1.7/1.8\n");

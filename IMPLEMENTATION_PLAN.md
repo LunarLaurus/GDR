@@ -86,8 +86,8 @@
 - [x] Remove InitGameVersion demo detection
 - [x] Remove G_VanillaVersionCode function
 - [x] Remove vanilla_demo_limit flag and handling
-- [ ] Remove longtics support
-- [ ] Remove DOOM_191_VERSION handling
+- [x] Remove longtics support
+- [x] Remove DOOM_191_VERSION handling
 - [ ] Remove D_NonVanillaRecord function
 - [ ] Remove D_NonVanillaPlayback function
 - [ ] Remove -strictdemos command line option
