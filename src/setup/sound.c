@@ -118,7 +118,7 @@ float fsynth_gain = 1.0f;
 // so that the config file can be shared between chocolate
 // doom and doom.exe
 
-static int snd_sbport = 0;
+
 static int snd_sbirq = 0;
 static int snd_sbdma = 0;
 static int snd_mport = 0;
@@ -375,7 +375,7 @@ void BindSoundVariables(void)
     M_BindStringVariable("fsynth_sf_path",        &fsynth_sf_path);
 #endif // HAVE_FLUIDSYNTH
 
-    M_BindIntVariable("snd_sbport",               &snd_sbport);
+
     M_BindIntVariable("snd_sbirq",                &snd_sbirq);
     M_BindIntVariable("snd_sbdma",                &snd_sbdma);
     M_BindIntVariable("snd_mport",                &snd_mport);

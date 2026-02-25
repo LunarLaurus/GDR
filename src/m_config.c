@@ -563,11 +563,6 @@ static default_t	doom_defaults_list[] =
 
     CONFIG_VARIABLE_INT(snd_sfxdevice),
 
-    //!
-    // SoundBlaster I/O port. Unused.
-    //
-
-    CONFIG_VARIABLE_INT(snd_sbport),
 
     //!
     // SoundBlaster IRQ.  Unused.
