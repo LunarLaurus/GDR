@@ -90,9 +90,9 @@
 - [x] Remove DOOM_191_VERSION handling
 - [x] Remove D_NonVanillaRecord function
 - [x] Remove D_NonVanillaPlayback function
-- [ ] Remove -strictdemos command line option
-- [ ] Remove NET_PACKET_TYPE_ACK deprecated handling
-- [ ] Remove Lost Soul bounce compatibility in p_mobj.c
+- [x] Remove -strictdemos command line option
+- [x] Remove NET_PACKET_TYPE_ACK deprecated handling
+- [x] Remove Lost Soul bounce compatibility in p_mobj.c
 - [ ] Remove gameversion >= exe_ultimate checks
 - [ ] Remove demo version mismatch error messages
 - [ ] Remove demo buffer expansion logic
