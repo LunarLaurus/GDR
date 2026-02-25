@@ -556,8 +556,7 @@ static default_t	doom_defaults_list[] =
 
     //!
     // Sound effects device.  A value of zero disables in-game sound
-    // effects, a value of 1 enables PC speaker sound effects, while
-    // a value in the range 2-9 enables the "normal" digital sound
+    // effects, while a value in the range 2-9 enables digital sound
     // effects.
     //
 

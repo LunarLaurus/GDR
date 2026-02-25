@@ -37,7 +37,7 @@ struct sfxinfo_struct
     const char *tagname;
 
     // lump name.  If we are running with use_sfx_prefix=true, a
-    // 'DS' (or 'DP' for PC speaker sounds) is prepended to this.
+    // 'DS' prefix is prepended to this.
 
     char name[9];
 

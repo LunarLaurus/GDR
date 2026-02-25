@@ -12,7 +12,7 @@
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
-//	System interface for PC speaker sound.
+//      System interface for PC speaker sound emulation.
 //
 
 #include "SDL.h"
@@ -103,10 +103,6 @@ static boolean CachePCSLump(sfxinfo_t *sfxinfo)
 
     return true;
 }
-
-// These Doom PC speaker sounds are not played - this can be seen in the 
-// Heretic source code, where there are remnants of this left over
-// from Doom.
 
 static boolean IsDisabledSound(sfxinfo_t *sfxinfo)
 {
