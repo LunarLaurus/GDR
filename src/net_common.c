@@ -32,6 +32,10 @@
 #include "net_structrw.h"
 #include "net_defs.h"
 
+// Goblin Dice Rollaz: Network debug logging flag (set to 1 to enable compile-time)
+#define DEBUG_NET 0
+
+#if DEBUG_NET
 // Goblin Dice Rollaz: Network packet debug logging enhancements
 // Convert packet type enum to human-readable string for debug logging
 static const char *NET_PacketTypeName(unsigned int type)
@@ -58,6 +62,7 @@ static const char *NET_PacketTypeName(unsigned int type)
         default: return "UNKNOWN";
     }
 }
+#endif
 
 // connections time out after 30 seconds
 
@@ -77,7 +82,9 @@ struct net_reliable_packet_s
     net_reliable_packet_t *next;
 };
 
+#if DEBUG_NET
 static FILE *net_debug = NULL;
+#endif
 
 static void NET_Conn_Init(net_connection_t *conn, net_addr_t *addr,
                           net_protocol_t protocol)
@@ -482,6 +489,7 @@ boolean NET_ValidGameSettings(GameMode_t mode, GameMission_t mission,
     return true;
 }
 
+#if DEBUG_NET
 static void CloseLog(void)
 {
     if (net_debug != NULL)
@@ -533,7 +541,6 @@ void NET_LogPacket(net_packet_t *packet)
         return;
     }
 
-    // Goblin Dice Rollaz: Read and display packet type name
     if (packet->len >= 2)
     {
         packet_type = (packet->data[0] << 8) | packet->data[1];
@@ -545,7 +552,6 @@ void NET_LogPacket(net_packet_t *packet)
         return;
     }
     
-    // Goblin Dice Rollaz: Enhanced packet logging with type name
     fprintf(net_debug, "\t[PKT: %s (type=%d), len=%d]\n", 
             NET_PacketTypeName(packet_type), packet_type, packet->len);
     fprintf(net_debug, "\t%02x", packet->data[packet->pos]);
@@ -563,4 +569,9 @@ void NET_LogPacket(net_packet_t *packet)
     }
     fprintf(net_debug, "\n");
 }
+#else
+void NET_OpenLog(void)
+{
+}
+#endif
 

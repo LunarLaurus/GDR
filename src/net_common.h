@@ -99,8 +99,16 @@ boolean NET_ValidGameSettings(GameMode_t mode, GameMission_t mission,
                               net_gamesettings_t *settings);
 
 void NET_OpenLog(void);
+
+#if defined(DEBUG_NET) && DEBUG_NET
 void NET_Log(const char *fmt, ...);
 void NET_LogPacket(net_packet_t *packet);
+#define NET_LOG_ENABLED 1
+#else
+#define NET_LOG_ENABLED 0
+static inline void NET_Log(const char *fmt, ...) {(void)fmt;}
+static inline void NET_LogPacket(net_packet_t *packet) {(void)packet;}
+#endif
 
 #endif /* #ifndef NET_COMMON_H */
 

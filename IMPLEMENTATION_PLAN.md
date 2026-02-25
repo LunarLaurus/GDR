@@ -140,8 +140,8 @@
 - [x] Remove NET_TICDIFF_STRIFE legacy support
 - [x] Remove protocol_names unused slots
 - [x] Remove #ifdef DROP_PACKETS testing code
-- [ ] Remove commented bandwidth monitoring code
-- [ ] Consolidate NET_Log under DEBUG_NET flag
+- [x] Remove commented bandwidth monitoring code
+- [x] Consolidate NET_Log under DEBUG_NET flag
 - [ ] Update master server address or remove queries
 - [ ] Fix InitPetName to not reseed rand() every call
 - [ ] Remove unused NET_PACKET_TYPE_ACK
