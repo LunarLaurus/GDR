@@ -43,7 +43,7 @@
 #include "st_stuff.h"
 
 extern int goblin_colorblind_mode;
-extern int reduce_motion;
+extern int goblin_reduce_motion;
 extern int screen_reader_enabled;
 extern float hud_scale;
 extern float screen_shake_intensity;
@@ -112,9 +112,9 @@ void M_HUDScale(int choice)
 void M_ReduceMotion(int choice)
 {
     choice = 0;
-    reduce_motion = 1 - reduce_motion;
+    goblin_reduce_motion = 1 - goblin_reduce_motion;
     
-    if (reduce_motion)
+    if (goblin_reduce_motion)
     {
         players[consoleplayer].message = "Reduce Motion: ON";
         screen_shake_intensity = 0.0f;
@@ -161,7 +161,7 @@ void M_DrawAccessibility(void)
     M_WriteText(AccessibilityDef.x - 80, AccessibilityDef.y + LINEHEIGHT * 2, "Reduce Mot");
     V_DrawPatchDirect(AccessibilityDef.x + 120, 
                       AccessibilityDef.y + LINEHEIGHT * 2,
-                      W_CacheLumpName(DEH_String(reduce_motion ? "M_YES" : "M_NO"),
+                      W_CacheLumpName(DEH_String(goblin_reduce_motion ? "M_YES" : "M_NO"),
                                       PU_CACHE));
     
     M_WriteText(AccessibilityDef.x - 80, AccessibilityDef.y + LINEHEIGHT * 3, "Screen Rd");

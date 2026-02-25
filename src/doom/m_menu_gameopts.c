@@ -47,6 +47,7 @@ extern int crit_notification;
 extern float screen_shake_intensity;
 extern float damage_number_scale;
 extern int particle_effects;
+extern int goblin_reduce_motion;
 
 enum
 {
@@ -111,7 +112,7 @@ void M_CritNotification(int choice)
 
 void M_ScreenShake(int choice)
 {
-    if (reduce_motion)
+    if (goblin_reduce_motion)
         return;
 
     switch(choice)

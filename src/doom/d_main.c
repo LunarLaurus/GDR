@@ -527,7 +527,7 @@ void D_BindVariables(void)
     // Goblin Dice Rollaz: Accessibility Settings
     M_BindIntVariable("goblin_colorblind_mode",    &goblin_colorblind_mode);
     M_BindFloatVariable("hud_scale",              &hud_scale);
-    M_BindIntVariable("reduce_motion",            &reduce_motion);
+    M_BindIntVariable("goblin_reduce_motion",       &goblin_reduce_motion);
     M_BindIntVariable("screen_reader_enabled",    &screen_reader_enabled);
 
     // Goblin Dice Rollaz: Cross-platform save game migration

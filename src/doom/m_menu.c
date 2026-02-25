@@ -95,7 +95,7 @@ int			kill_confirm_enabled = 1;     // Show kill confirmation popups (0=off, 1=o
 // Goblin Dice Rollaz: Accessibility Settings
 int			goblin_colorblind_mode = 0;          // Colorblind mode (0=off, 1=red-green, 2=blue-yellow)
 float		hud_scale = 1.0f;              // HUD scale multiplier (0.5-2.0)
-int			reduce_motion = 0;            // Reduce motion effects (0=off, 1=on)
+int			goblin_reduce_motion = 0;            // Reduce motion effects (0=off, 1=on)
 int			screen_reader_enabled = 0;   // Screen reader mode (0=off, 1=on)
 
 // Goblin Dice Rollaz: Region settings for content warnings
