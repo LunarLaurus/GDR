@@ -120,9 +120,6 @@ typedef enum
     // number in this enum.
     NET_PROTOCOL_CHOCOLATE_DOOM_0,
 
-    // Add your own protocol here; be sure to add a name for it to the list
-    // in net_common.c too.
-
     NET_NUM_PROTOCOLS,
     NET_PROTOCOL_UNKNOWN,
 } net_protocol_t;
