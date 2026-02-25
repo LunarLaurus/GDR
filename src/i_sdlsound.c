@@ -1010,7 +1010,7 @@ static void I_SDL_UpdateSound(void)
 
     for (i=0; i<NUM_CHANNELS; ++i)
     {
-        if (channels_playing[i] && !I_SDL_SoundIsPlaying(i))
+        if (channels_playing[i] != NULL && !Mix_Playing(i))
         {
             // Sound has finished playing on this channel,
             // but sound data has not been released to cache

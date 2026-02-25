@@ -110,8 +110,8 @@
 
 ### Phase 6: Audio System Cleanup
 - [x] Remove redundant I_SoundIsPlaying check before stopping
-- [ ] Optimize S_UpdateSounds channel iteration
-- [ ] Remove redundant channel scanning in i_sdlsound.c
+- [x] Optimize S_UpdateSounds channel iteration
+- [x] Remove redundant channel scanning in i_sdlsound.c
 - [x] Remove profanity comment in s_sound.c line 322
 - [ ] Remove duplicate #include in s_sound.c line 40
 - [ ] Remove empty I_InitMusic stub
