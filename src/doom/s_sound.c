@@ -82,6 +82,10 @@ typedef struct
 
 static channel_t *channels;
 
+// Number of currently active sound channels for early-exit optimization
+
+static int active_channels;
+
 // Maximum volume of a sound effect.
 // Internal default is max out of 0-15.
 
@@ -149,6 +153,9 @@ void S_Init(int sfxVolume, int musicVolume)
         channels[i].sfxinfo = 0;
     }
 
+    // Initialize active channel counter
+    active_channels = 0;
+
     // no sounds are playing, and they are not mus_paused
     mus_paused = 0;
 
@@ -197,6 +204,7 @@ static void S_StopChannel(int cnum)
         // degrade usefulness of sound data
 
         c->sfxinfo->usefulness--;
+        active_channels--;
         c->sfxinfo = NULL;
         c->origin = NULL;
     }
@@ -329,6 +337,7 @@ static int S_GetChannel(mobj_t *origin, sfxinfo_t *sfxinfo)
     // channel is decided to be cnum.
     c->sfxinfo = sfxinfo;
     c->origin = origin;
+    active_channels++;
 
     return cnum;
 }
@@ -573,6 +582,12 @@ void S_UpdateSounds(mobj_t *listener)
     channel_t*        c;
 
     I_UpdateSound();
+
+    // Early exit if no sounds are playing
+    if (active_channels == 0)
+    {
+        return;
+    }
 
     for (cnum=0; cnum<snd_channels; cnum++)
     {
