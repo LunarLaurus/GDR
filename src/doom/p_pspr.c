@@ -807,7 +807,7 @@ static void DecreaseAmmo(player_t *player, int ammonum, int amount)
 //
 // Goblin Dice Rollaz: exploding dice global toggle
 //
-extern int exploding_dice_enabled;
+extern int goblin_exploding_dice;
 extern int advantage_mode;
 extern int luck;
 extern int crit_scaling_default;
@@ -992,9 +992,9 @@ P_CalculateDiceDamage (int weapon, int guaranteedCrit, int *outCritRoll, int *ou
     }
     
     // Goblin Dice Rollaz: Exploding Max Roll mechanic
-    // For gamble_shot weapons OR when exploding_dice_enabled is set globally,
+    // For gamble_shot weapons OR when goblin_exploding_dice is set globally,
     // max roll triggers additional rolls (exploding dice)
-    if ((dwi->gamble_shot || exploding_dice_enabled) && diceRoll == dwi->die_type)
+    if ((dwi->gamble_shot || goblin_exploding_dice) && diceRoll == dwi->die_type)
     {
         int explodeRolls = 0;
         int additionalDamage = 0;

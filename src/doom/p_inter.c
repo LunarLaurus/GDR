@@ -72,7 +72,7 @@ int	dice_arena_damage_mult = 150;
 
 // Goblin Dice Rollaz: Combo multiplier system
 int	goblin_crit_boost_bonus = CRIT_POWERUP_BONUS;
-int	exploding_dice_enabled = 0;
+int	goblin_exploding_dice = 0;
 
 // Goblin Dice Rollaz: Minimum damage cap
 // Ensures no attack deals less than this amount of damage

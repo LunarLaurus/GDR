@@ -136,7 +136,7 @@ int             show_diskicon = 1;
 
 // Goblin Dice Rollaz: crit powerup bonus configurable
 extern int      goblin_crit_boost_bonus;
-extern int      exploding_dice_enabled;
+extern int      goblin_exploding_dice;
 extern int      advantage_mode;
 extern int      luck;
 extern int      powerup_spawn_rate;
@@ -446,7 +446,7 @@ void D_BindVariables(void)
 
     // Goblin Dice Rollaz: crit powerup settings
     M_BindIntVariable("goblin_crit_boost_bonus", &goblin_crit_boost_bonus);
-    M_BindIntVariable("exploding_dice_enabled",  &exploding_dice_enabled);
+    M_BindIntVariable("goblin_exploding_dice",   &goblin_exploding_dice);
     M_BindIntVariable("advantage_mode",         &advantage_mode);
     M_BindIntVariable("luck",                   &luck);
     M_BindIntVariable("powerup_spawn_rate",       &powerup_spawn_rate);
