@@ -115,7 +115,7 @@
 - [x] Remove profanity comment in s_sound.c line 322
 - [x] Remove duplicate #include in s_sound.c line 40
 - [x] Remove empty I_InitMusic stub
-- [ ] Remove empty I_ShutdownMusic stub
+- [x] Remove empty I_ShutdownMusic stub
 - [ ] Remove unused snd_sbport config variable
 - [ ] Remove unused snd_sbirq config variable
 - [ ] Remove unused snd_sbdma config variable
