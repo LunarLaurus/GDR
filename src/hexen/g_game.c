@@ -2181,27 +2181,6 @@ void G_DoPlayDemo(void)
     episode = *demo_p++;
     map = *demo_p++;
 
-    // When recording we store some extra options inside the upper bits
-    // of the player 1 present byte. However, this is a non-vanilla extension.
-    // Note references to vvHeretic here; these are the extensions used by
-    // vvHeretic, which we're just reusing for Hexen demos too. There is no
-    // vvHexen.
-    if (D_NonVanillaPlayback((*demo_p & DEMOHEADER_LONGTICS) != 0,
-                             lumpnum, "vvHeretic longtics demo"))
-    {
-        longtics = true;
-    }
-    if (D_NonVanillaPlayback((*demo_p & DEMOHEADER_RESPAWN) != 0,
-                             lumpnum, "vvHeretic -respawn header flag"))
-    {
-        respawnparm = true;
-    }
-    if (D_NonVanillaPlayback((*demo_p & DEMOHEADER_NOMONSTERS) != 0,
-                             lumpnum, "vvHeretic -nomonsters header flag"))
-    {
-        nomonsters = true;
-    }
-
     for (i = 0; i < maxplayers; i++)
     {
         playeringame[i] = (*demo_p++) != 0;

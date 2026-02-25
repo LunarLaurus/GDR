@@ -2061,24 +2061,6 @@ void G_DoPlayDemo(void)
     episode = *demo_p++;
     map = *demo_p++;
 
-    // vvHeretic allows extra options to be stored in the upper bits of
-    // the player 1 present byte. However, this is a non-vanilla extension.
-    if (D_NonVanillaPlayback((*demo_p & DEMOHEADER_LONGTICS) != 0,
-                             lumpnum, "vvHeretic longtics demo"))
-    {
-        longtics = true;
-    }
-    if (D_NonVanillaPlayback((*demo_p & DEMOHEADER_RESPAWN) != 0,
-                             lumpnum, "vvHeretic -respawn header flag"))
-    {
-        respawnparm = true;
-    }
-    if (D_NonVanillaPlayback((*demo_p & DEMOHEADER_NOMONSTERS) != 0,
-                             lumpnum, "vvHeretic -nomonsters header flag"))
-    {
-        nomonsters = true;
-    }
-
     for (i = 0; i < MAXPLAYERS; i++)
         playeringame[i] = (*demo_p++) != 0;
 
