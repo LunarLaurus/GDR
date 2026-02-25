@@ -201,11 +201,6 @@ void NET_WriteTiccmdDiff(net_packet_t *packet, net_ticdiff_t *diff,
         NET_WriteInt8(packet, diff->cmd.consistancy);
     if (diff->diff & NET_TICDIFF_CHATCHAR)
         NET_WriteInt8(packet, diff->cmd.chatchar);
-    if (diff->diff & NET_TICDIFF_STRIFE)
-    {
-        NET_WriteInt8(packet, diff->cmd.buttons2);
-        NET_WriteInt16(packet, diff->cmd.inventory);
-    }
 }
 
 boolean NET_ReadTiccmdDiff(net_packet_t *packet, net_ticdiff_t *diff,
@@ -272,17 +267,6 @@ boolean NET_ReadTiccmdDiff(net_packet_t *packet, net_ticdiff_t *diff,
         diff->cmd.chatchar = val;
     }
 
-    if (diff->diff & NET_TICDIFF_STRIFE)
-    {
-        if (!NET_ReadInt8(packet, &val))
-            return false;
-        diff->cmd.buttons2 = val;
-
-        if (!NET_ReadInt16(packet, &val))
-            return false;
-        diff->cmd.inventory = val;
-    }
-
     return true;
 }
 
@@ -303,11 +287,6 @@ void NET_TiccmdDiff(ticcmd_t *tic1, ticcmd_t *tic2, net_ticdiff_t *diff)
         diff->diff |= NET_TICDIFF_CONSISTANCY;
     if (tic2->chatchar != 0)
         diff->diff |= NET_TICDIFF_CHATCHAR;
-
-    // Strife-specific
-
-    if (tic1->buttons2 != tic2->buttons2 || tic2->inventory != 0)
-        diff->diff |= NET_TICDIFF_STRIFE;
 }
 
 void NET_TiccmdPatch(ticcmd_t *src, net_ticdiff_t *diff, ticcmd_t *dest)
@@ -331,23 +310,11 @@ void NET_TiccmdPatch(ticcmd_t *src, net_ticdiff_t *diff, ticcmd_t *dest)
         dest->chatchar = diff->cmd.chatchar;
     else
         dest->chatchar = 0;
-
-    // Strife-specific:
-
-    if (diff->diff & NET_TICDIFF_STRIFE)
-    {
-        dest->buttons2 = diff->cmd.buttons2;
-        dest->inventory = diff->cmd.inventory;
-    }
-    else
-    {
-        dest->inventory = 0;
-    }
 }
 
 // 
 // net_full_ticcmd_t
-// 
+//
 
 boolean NET_ReadFullTiccmd(net_packet_t *packet, net_full_ticcmd_t *cmd, boolean lowres_turn)
 {
