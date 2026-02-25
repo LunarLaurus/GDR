@@ -166,15 +166,13 @@ static void InitMusicModule(void)
                             music_modules[i]->sound_devices,
                             music_modules[i]->num_sound_devices))
         {
-        #ifdef _WIN32
             // Skip the native Windows MIDI module if using Timidity.
 
             if (strcmp(timidity_cfg_path, "") &&
-                music_modules[i] == &music_win_module)
+                snd_musicdevice == SNDDEVICE_WINMM)
             {
                 continue;
             }
-        #endif
 
             // Initialize the module
 

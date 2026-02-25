@@ -1893,6 +1893,7 @@ static boolean I_WIN_MusicIsPlaying(void)
 
 static const snddevice_t music_win_devices[] =
 {
+    SNDDEVICE_WINMM,
     SNDDEVICE_PAS,
     SNDDEVICE_WAVEBLASTER,
     SNDDEVICE_SOUNDCANVAS,
