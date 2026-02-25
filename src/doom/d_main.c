@@ -1414,7 +1414,6 @@ void D_DoomMain (void)
 {
     int p;
     char file[256];
-    char demolumpname[9];
 
     I_AtExit(D_Endoom, false);
 
@@ -1808,20 +1807,6 @@ void D_DoomMain (void)
 
         free(uc_filename);
 
-        if (D_AddFile(file))
-        {
-            M_StringCopy(demolumpname, lumpinfo[numlumps - 1]->name,
-                         sizeof(demolumpname));
-        }
-        else
-        {
-            // If file failed to load, still continue trying to play
-            // the demo in the same way as Vanilla Doom.  This makes
-            // tricks like "-playdemo demo1" possible.
-
-            M_StringCopy(demolumpname, myargv[p + 1], sizeof(demolumpname));
-        }
-
         printf("Playing demo %s.\n", file);
     }
 
@@ -2121,14 +2106,14 @@ void D_DoomMain (void)
     if (p)
     {
 	singledemo = true;              // quit after one demo
-	G_DeferedPlayDemo (demolumpname);
+	G_DeferedPlayDemo (myargv[p+1]);
 	D_DoomLoop ();  // never returns
     }
 	
     p = M_CheckParmWithArgs("-timedemo", 1);
     if (p)
     {
-	G_TimeDemo (demolumpname);
+	G_TimeDemo (myargv[p+1]);
 	D_DoomLoop ();  // never returns
     }
 	

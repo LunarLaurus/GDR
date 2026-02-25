@@ -19,6 +19,7 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <math.h>
 
 #include "doomdef.h" 
@@ -150,6 +151,8 @@ boolean		netdemo;
 byte*		demo_p;
 byte*		demoend; 
 byte*		demo_buffer_start;
+byte*		demo_buffer;        // for demo playback from file
+size_t              demo_buffer_size;  // size of demo_buffer
 boolean         singledemo;            	// quit after playing a demo from cmdline
  
 boolean         precache = true;        // if true, load all graphics at start 
@@ -2350,7 +2353,7 @@ void G_BeginRecording (void)
 //
 
 static const char *defdemoname;
- 
+  
 void G_DeferedPlayDemo(const char *name)
 { 
     defdemoname = name; 
@@ -2361,13 +2364,43 @@ void G_DeferedPlayDemo(const char *name)
 void G_DoPlayDemo (void)
 {
     skill_t skill;
-    int i, lumpnum, episode, map;
+    int i, episode, map;
     int demoversion;
     boolean olddemo = false;
+    FILE *fp;
+    char demoname[16];
+    size_t size;
 
-    lumpnum = W_GetNumForName(defdemoname);
     gameaction = ga_nothing;
-    demo_p = W_CacheLumpNum(lumpnum, PU_STATIC);
+
+    M_snprintf(demoname, sizeof(demoname), "%s.lmp", defdemoname);
+    fp = fopen(demoname, "rb");
+    if (!fp)
+    {
+        I_Error("Could not open demo file: %s", demoname);
+    }
+
+    fseek(fp, 0, SEEK_END);
+    size = ftell(fp);
+    fseek(fp, 0, SEEK_SET);
+
+    demo_buffer = malloc(size);
+    if (!demo_buffer)
+    {
+        fclose(fp);
+        I_Error("Could not allocate demo buffer");
+    }
+
+    if (fread(demo_buffer, 1, size, fp) != size)
+    {
+        fclose(fp);
+        free(demo_buffer);
+        I_Error("Failed to read demo file");
+    }
+    fclose(fp);
+
+    demo_buffer_size = size;
+    demo_p = demo_buffer;
 
     demoversion = *demo_p++;
 
@@ -2473,8 +2506,12 @@ boolean G_CheckDemoStatus (void)
 	 
     if (demoplayback) 
     { 
-        W_ReleaseLumpName(defdemoname);
-	demoplayback = false; 
+        if (demo_buffer)
+        {
+            free(demo_buffer);
+            demo_buffer = NULL;
+        }
+	demoplayback = false;
 	netdemo = false;
 	netgame = false;
 	deathmatch = false;
@@ -2505,8 +2542,6 @@ boolean G_CheckDemoStatus (void)
 
 void G_ValidateDemo(void)
 {
-    int lumpnum;
-    byte *demo_buffer;
     byte *demo_ptr;
     byte *demo_end;
     int version;
@@ -2523,27 +2558,25 @@ void G_ValidateDemo(void)
 
     if (demoplayback)
     {
-        lumpnum = W_GetNumForName(defdemoname);
-        demo_buffer = W_CacheLumpNum(lumpnum, PU_STATIC);
         demo_ptr = demo_buffer;
-        demo_end = demo_buffer + W_LumpLength(lumpnum);
+        demo_end = demo_buffer + demo_buffer_size;
+        demo_size = demo_buffer_size;
     }
     else
     {
-        demo_buffer = demo_buffer_start;
         demo_ptr = demo_p;
         demo_end = demoend;
+        demo_size = demoend - demo_buffer_start;
     }
 
     DEH_printf("=== Demo Validation Report ===\n");
 
-    if (demo_end <= demo_buffer)
+    if (demo_end <= demo_ptr)
     {
         DEH_printf("ERROR: Demo buffer is empty or invalid.\n");
         goto cleanup;
     }
 
-    demo_size = demo_end - demo_buffer;
     DEH_printf("Demo size: %zu bytes\n", demo_size);
 
     if (demo_size < 16)
@@ -2634,10 +2667,7 @@ void G_ValidateDemo(void)
     DEH_printf("=== Validation Complete ===\n");
 
 cleanup:
-    if (demoplayback)
-    {
-        W_ReleaseLumpName(defdemoname);
-    }
+    return;
 }
 
 void G_ReloadWeapon(void)
