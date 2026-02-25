@@ -404,9 +404,9 @@ static void DMG_DrawDamageTypeIcon(int x, int y, damage_type_t dtype)
     if (dtype <= DAMAGETYPE_NORMAL || dtype >= DAMAGETYPE_MAX)
         return;
 
-    if (colorblind_mode == 1)
+    if (goblin_colorblind_mode == 1)
         col = colors_rg[dtype];
-    else if (colorblind_mode == 2)
+    else if (goblin_colorblind_mode == 2)
         col = colors_by[dtype];
     else
         col = colors_normal[dtype];

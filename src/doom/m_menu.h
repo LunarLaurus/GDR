@@ -69,7 +69,7 @@ extern float damage_number_scale;
 extern int particle_effects;
 
 // Goblin Dice Rollaz: Accessibility Settings
-extern int colorblind_mode;
+extern int goblin_colorblind_mode;
 extern float hud_scale;
 extern int reduce_motion;
 extern int screen_reader_enabled;

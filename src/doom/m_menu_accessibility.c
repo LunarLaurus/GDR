@@ -42,7 +42,7 @@
 
 #include "st_stuff.h"
 
-extern int colorblind_mode;
+extern int goblin_colorblind_mode;
 extern int reduce_motion;
 extern int screen_reader_enabled;
 extern float hud_scale;
@@ -84,11 +84,11 @@ void M_Accessibility(int choice)
 void M_ColorblindMode(int choice)
 {
     choice = 0;
-    colorblind_mode = (colorblind_mode + 1) % 3;
+    goblin_colorblind_mode = (goblin_colorblind_mode + 1) % 3;
     
-    if (colorblind_mode == 0)
+    if (goblin_colorblind_mode == 0)
         players[consoleplayer].message = "Colorblind Mode: OFF";
-    else if (colorblind_mode == 1)
+    else if (goblin_colorblind_mode == 1)
         players[consoleplayer].message = "Colorblind Mode: Red-Green";
     else
         players[consoleplayer].message = "Colorblind Mode: Blue-Yellow";
@@ -147,9 +147,9 @@ void M_DrawAccessibility(void)
                                                PU_CACHE));
     
     M_WriteText(AccessibilityDef.x - 80, AccessibilityDef.y, "Colorblind");
-    if (colorblind_mode == 0)
+    if (goblin_colorblind_mode == 0)
         M_WriteText(AccessibilityDef.x + 120, AccessibilityDef.y, "OFF");
-    else if (colorblind_mode == 1)
+    else if (goblin_colorblind_mode == 1)
         M_WriteText(AccessibilityDef.x + 120, AccessibilityDef.y, "R/G");
     else
         M_WriteText(AccessibilityDef.x + 120, AccessibilityDef.y, "B/Y");
