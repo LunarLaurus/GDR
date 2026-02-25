@@ -314,7 +314,7 @@ static int S_GetChannel(mobj_t *origin, sfxinfo_t *sfxinfo)
 
         if (cnum == snd_channels)
         {
-            // FUCK!  No lower priority.  Sorry, Charlie.
+            // No lower priority channel available.
             return -1;
         }
         else

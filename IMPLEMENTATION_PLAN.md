@@ -98,9 +98,9 @@
 - [x] Remove demo buffer expansion logic
 - [x] Remove demo checksum computation
 - [x] Remove demo share functionality in g_replay.c
-- [ ] Remove G_ExportDemo function
-- [ ] Remove G_LoadSharedDemo function
-- [ ] Remove G_ShareDemo function
+- [x] Remove G_ExportDemo function
+- [x] Remove G_LoadSharedDemo function
+- [x] Remove G_ShareDemo function
 - [ ] Remove demobuffer management code
 - [ ] Remove demo lump reading/writing
 - [ ] Remove IsDemoFile function dependencies
@@ -112,7 +112,7 @@
 - [x] Remove redundant I_SoundIsPlaying check before stopping
 - [ ] Optimize S_UpdateSounds channel iteration
 - [ ] Remove redundant channel scanning in i_sdlsound.c
-- [ ] Remove profanity comment in s_sound.c line 322
+- [x] Remove profanity comment in s_sound.c line 322
 - [ ] Remove duplicate #include in s_sound.c line 40
 - [ ] Remove empty I_InitMusic stub
 - [ ] Remove empty I_ShutdownMusic stub
