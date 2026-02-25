@@ -255,8 +255,6 @@ static void LockAllocatedSound(allocated_sound_t *snd)
 
     ++snd->use_count;
 
-    //printf("++ %s: Use count=%i\n", snd->sfxinfo->name, snd->use_count);
-
     // When we use a sound, re-link it into the list at the head, so
     // that the oldest sounds fall to the end of the list for freeing.
 
@@ -274,8 +272,6 @@ static void UnlockAllocatedSound(allocated_sound_t *snd)
     }
 
     --snd->use_count;
-
-    //printf("-- %s: Use count=%i\n", snd->sfxinfo->name, snd->use_count);
 }
 
 // Search through the list of allocated sounds and return the one that matches
@@ -822,16 +818,8 @@ static void I_SDL_PrecacheSounds(sfxinfo_t *sounds, int num_sounds)
     char namebuf[9];
     int i;
 
-    printf("I_SDL_PrecacheSounds: Precaching all sound effects..");
-
     for (i=0; i<num_sounds; ++i)
     {
-        if ((i % 6) == 0)
-        {
-            printf(".");
-            fflush(stdout);
-        }
-
         GetSfxLumpName(&sounds[i], namebuf, sizeof(namebuf));
 
         sounds[i].lumpnum = W_CheckNumForName(namebuf);
@@ -841,8 +829,6 @@ static void I_SDL_PrecacheSounds(sfxinfo_t *sounds, int num_sounds)
             CacheSFX(&sounds[i]);
         }
     }
-
-    printf("\n");
 }
 
 // Load a SFX chunk into memory and ensure that it is locked.
