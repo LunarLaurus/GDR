@@ -83,7 +83,7 @@
 - [x] Remove GDT_PlayAndVerifyDemo function references
 - [x] Remove GDTChecksums function
 - [x] Remove GDT_ComputeStateChecksum function
-- [ ] Remove InitGameVersion demo detection
+- [x] Remove InitGameVersion demo detection
 - [ ] Remove G_VanillaVersionCode function
 - [x] Remove vanilla_demo_limit flag and handling
 - [ ] Remove longtics support

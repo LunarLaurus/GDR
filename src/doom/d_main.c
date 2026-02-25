@@ -1169,12 +1169,8 @@ static const struct
 
 static void InitGameVersion(void)
 {
-    byte *demolump;
-    char demolumpname[6];
-    int demoversion;
     int p;
     int i;
-    boolean status;
 
     //!
     // @arg <version>
@@ -1230,50 +1226,7 @@ static void InitGameVersion(void)
         else if (gamemode == shareware || gamemode == registered
               || (gamemode == commercial && gamemission == doom2))
         {
-            // original
             gameversion = exe_doom_1_9;
-
-            // Detect version from demo lump
-            for (i = 1; i <= 3; ++i)
-            {
-                M_snprintf(demolumpname, 6, "demo%i", i);
-                if (W_CheckNumForName(demolumpname) > 0)
-                {
-                    demolump = W_CacheLumpName(demolumpname, PU_STATIC);
-                    demoversion = demolump[0];
-                    W_ReleaseLumpName(demolumpname);
-                    status = true;
-                    switch (demoversion)
-                    {
-                        case 0:
-                        case 1:
-                        case 2:
-                        case 3:
-                        case 4:
-                            gameversion = exe_doom_1_2;
-                            break;
-                        case 106:
-                            gameversion = exe_doom_1_666;
-                            break;
-                        case 107:
-                            gameversion = exe_doom_1_7;
-                            break;
-                        case 108:
-                            gameversion = exe_doom_1_8;
-                            break;
-                        case 109:
-                            gameversion = exe_doom_1_9;
-                            break;
-                        default:
-                            status = false;
-                            break;
-                    }
-                    if (status)
-                    {
-                        break;
-                    }
-                }
-            }
         }
         else if (gamemode == retail)
         {
