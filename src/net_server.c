@@ -656,13 +656,6 @@ static void NET_SV_ParseSYN(net_packet_t *packet, net_client_t *client,
         case NET_MAGIC_NUMBER:
             break;
 
-        case NET_OLD_MAGIC_NUMBER:
-            NET_Log("server: error: client using old magic number: %d", magic);
-            NET_SV_SendReject(addr,
-                "You are using an old client version that is not supported by "
-                "this server. This server is running " PACKAGE_STRING ".");
-            return;
-
         default:
             NET_Log("server: error: wrong magic number: %d", magic);
             return;
