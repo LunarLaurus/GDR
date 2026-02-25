@@ -149,9 +149,8 @@ static void SaveGameSettings(net_gamesettings_t *settings)
     settings->respawn_monsters = respawnparm;
     settings->timelimit = timelimit;
 
-    settings->lowres_turn = (M_ParmExists("-record")
-                         && !M_ParmExists("-longtics"))
-                          || M_ParmExists("-shorttics");
+    settings->lowres_turn = M_ParmExists("-record")
+                           || M_ParmExists("-shorttics");
 }
 
 static void InitConnectData(net_connect_data_t *connect_data)
@@ -204,9 +203,7 @@ static void InitConnectData(net_connect_data_t *connect_data)
 
     // Are we recording a demo? Possibly set lowres turn mode
 
-    connect_data->lowres_turn = (M_ParmExists("-record")
-                             && !M_ParmExists("-longtics"))
-                              || shorttics;
+    connect_data->lowres_turn = M_ParmExists("-record") || shorttics;
 
     // Read checksums of our WAD directory and dehacked information
 

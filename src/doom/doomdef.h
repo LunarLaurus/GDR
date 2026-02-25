@@ -33,9 +33,6 @@
 // DOOM version
 #define DOOM_VERSION 109
 
-// Version code for cph's longtics hack ("v1.91")
-#define DOOM_191_VERSION 111
-
 
 // If rangecheck is undefined,
 // most parameter validation debugging code will not be compiled
