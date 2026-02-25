@@ -2112,12 +2112,9 @@ G_InitNew
     if (skill > sk_challenge_hardcore)
 	skill = sk_challenge_hardcore;
 
-    if (gameversion >= exe_ultimate)
+    if (episode == 0)
     {
-        if (episode == 0)
-        {
-            episode = 4;
-        }
+        episode = 4;
     }
     else
     {

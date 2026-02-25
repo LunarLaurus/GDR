@@ -93,7 +93,7 @@
 - [x] Remove -strictdemos command line option
 - [x] Remove NET_PACKET_TYPE_ACK deprecated handling
 - [x] Remove Lost Soul bounce compatibility in p_mobj.c
-- [ ] Remove gameversion >= exe_ultimate checks
+- [x] Remove gameversion >= exe_ultimate checks
 - [ ] Remove demo version mismatch error messages
 - [ ] Remove demo buffer expansion logic
 - [ ] Remove demo checksum computation

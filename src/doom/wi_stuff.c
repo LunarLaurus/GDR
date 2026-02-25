@@ -1757,13 +1757,13 @@ static void WI_loadUnloadData(load_callback_t callback)
     {
         M_StringCopy(name, DEH_String("INTERPIC"), sizeof(name));
     }
-    else if (gameversion >= exe_ultimate && wbs->epsd == 3)
+    else if (wbs->epsd == 3)
     {
         M_StringCopy(name, DEH_String("INTERPIC"), sizeof(name));
     }
     else
     {
-	DEH_snprintf(name, sizeof(name), "WIMAP%d", wbs->epsd);
+ 	DEH_snprintf(name, sizeof(name), "WIMAP%d", wbs->epsd);
     }
 
     // Draw backdrop and save to a temporary buffer
@@ -1851,15 +1851,12 @@ void WI_initVariables(wbstartstruct_t* wbstartstruct)
 #ifdef RANGECHECKING
     if (gamemode != commercial)
     {
-      if (gameversion >= exe_ultimate)
-	RNGCHECK(wbs->epsd, 0, 3);
-      else
-	RNGCHECK(wbs->epsd, 0, 2);
+      RNGCHECK(wbs->epsd, 0, 3);
     }
     else
     {
-	RNGCHECK(wbs->last, 0, 8);
-	RNGCHECK(wbs->next, 0, 8);
+ 	RNGCHECK(wbs->last, 0, 8);
+ 	RNGCHECK(wbs->next, 0, 8);
     }
     RNGCHECK(wbs->pnum, 0, MAXPLAYERS);
     RNGCHECK(wbs->pnum, 0, MAXPLAYERS);

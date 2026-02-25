@@ -671,14 +671,7 @@ static void F_ArtScreenDrawer(void)
         switch (gameepisode)
         {
             case 1:
-                if (gameversion >= exe_ultimate)
-                {
-                    lumpname = "CREDIT";
-                }
-                else
-                {
-                    lumpname = "HELP2";
-                }
+                lumpname = "CREDIT";
                 break;
             case 2:
                 lumpname = "VICTORY2";

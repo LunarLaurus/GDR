@@ -772,10 +772,7 @@ void D_DoAdvanceDemo (void)
 	{
 	    pagetic = 200;
 
-	    if (gameversion >= exe_ultimate)
-	      pagename = DEH_String("CREDIT");
-	    else
-	      pagename = DEH_String("HELP2");
+	    pagename = DEH_String("CREDIT");
 	}
 	break;
       case 5:

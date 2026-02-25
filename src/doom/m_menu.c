@@ -2542,10 +2542,7 @@ boolean M_Responder (event_t* ev)
         {
 	    M_StartControlPanel ();
 
-	    if (gameversion >= exe_ultimate)
-	      currentMenu = &ReadDef2;
-	    else
-	      currentMenu = &ReadDef1;
+	    currentMenu = &ReadDef2;
 
 	    itemOn = 0;
 	    S_StartSound(NULL,sfx_swtchn);
@@ -2981,11 +2978,8 @@ void M_Init (void)
 
     // The same hacks were used in the original Doom EXEs.
 
-    if (gameversion >= exe_ultimate)
-    {
-        MainMenu[readthis].routine = M_ReadThis2;
-        ReadDef2.prevMenu = NULL;
-    }
+    MainMenu[readthis].routine = M_ReadThis2;
+    ReadDef2.prevMenu = NULL;
 
     if (gameversion >= exe_final && gameversion <= exe_final2)
     {
