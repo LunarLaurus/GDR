@@ -187,10 +187,6 @@ static boolean NET_SDL_InitClient(void)
     
     recvpacket = SDLNet_AllocPacket(1500);
 
-#ifdef DROP_PACKETS
-    srand(time(NULL));
-#endif
-
     initted = true;
 
     return true;
@@ -217,9 +213,6 @@ static boolean NET_SDL_InitServer(void)
     }
 
     recvpacket = SDLNet_AllocPacket(1500);
-#ifdef DROP_PACKETS
-    srand(time(NULL));
-#endif
 
     initted = true;
 
@@ -255,11 +248,6 @@ static void NET_SDL_SendPacket(net_addr_t *addr, net_packet_t *packet)
             this_second_sent = 0;
         }
     }
-#endif
-
-#ifdef DROP_PACKETS
-    if ((rand() % 4) == 0)
-        return;
 #endif
 
     sdl_packet.channel = 0;

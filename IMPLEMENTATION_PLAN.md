@@ -137,9 +137,9 @@
 - [x] Remove unused NET_MASTER_PACKET_TYPE_GET_METADATA
 - [x] Remove NET_OLD_MAGIC_NUMBER handling
 - [x] Remove NET_TICDIFF_RAVEN legacy support
-- [ ] Remove NET_TICDIFF_STRIFE legacy support
-- [ ] Remove protocol_names unused slots
-- [ ] Remove #ifdef DROP_PACKETS testing code
+- [x] Remove NET_TICDIFF_STRIFE legacy support
+- [x] Remove protocol_names unused slots
+- [x] Remove #ifdef DROP_PACKETS testing code
 - [ ] Remove commented bandwidth monitoring code
 - [ ] Consolidate NET_Log under DEBUG_NET flag
 - [ ] Update master server address or remove queries
