@@ -1858,7 +1858,6 @@ void D_DoomMain (void)
     // startup. Start low-level sound init here too.
     I_InitTimer();
     I_InitSound(strife);
-    I_InitMusic();
 
     if(devparm) // [STRIFE]
         printf ("NET_Init: Init network subsystem.\n");

@@ -1846,7 +1846,6 @@ void D_DoomMain (void)
     I_InitTimer();
     I_InitJoystick();
     I_InitSound(doom);
-    I_InitMusic();
 
     printf ("NET_Init: Init network subsystem.\n");
     NET_Init ();
