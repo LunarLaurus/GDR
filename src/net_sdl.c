@@ -234,22 +234,6 @@ static void NET_SDL_SendPacket(net_addr_t *addr, net_packet_t *packet)
         ip = *((IPaddress *) addr->handle);
     }
 
-#if 0
-    {
-        static int this_second_sent = 0;
-        static int lasttime;
-
-        this_second_sent += packet->len + 64;
-
-        if (I_GetTime() - lasttime > TICRATE)
-        {
-            printf("%i bytes sent in the last second\n", this_second_sent);
-            lasttime = I_GetTime();
-            this_second_sent = 0;
-        }
-    }
-#endif
-
     sdl_packet.channel = 0;
     sdl_packet.data = packet->data;
     sdl_packet.len = packet->len;
