@@ -86,7 +86,6 @@ static void SensibleDefaults(void)
     joybspeed = 29;                 // Always run
     vanilla_savegame_limit = 0;
     vanilla_keyboard_mapping = 0;
-    vanilla_demo_limit = 0;
     graphical_startup = 0;
     show_endoom = 0;
     dclick_use = 0;

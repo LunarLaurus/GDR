@@ -235,7 +235,6 @@ mobj_t*		bodyque[BODYQUESIZE];
 //int       bodyqueslot; [STRIFE] unused
  
 int             vanilla_savegame_limit = 1;
-int             vanilla_demo_limit = 1;
  
 
 int G_CmdChecksum (ticcmd_t* cmd) 
@@ -2211,20 +2210,8 @@ void G_WriteDemoTiccmd (ticcmd_t* cmd)
 
     if (demo_p > demoend - 16)
     {
-        if (vanilla_demo_limit)
-        {
-            // no more space 
-            G_CheckDemoStatus (); 
-            return; 
-        }
-        else
-        {
-            // Vanilla demo limit disabled: unlimited
-            // demo lengths!
-
-            IncreaseDemoBuffer();
-        }
-    } 
+        IncreaseDemoBuffer();
+    }
 
     G_ReadDemoTiccmd (cmd);         // make SURE it is exactly the same 
 } 

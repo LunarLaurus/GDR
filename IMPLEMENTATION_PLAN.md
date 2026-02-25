@@ -78,14 +78,14 @@
 
 ### Phase 5: Remove Demo Compatibility
 - [x] Remove g_demo_test.c entirely
-- [ ] Remove GDT_Init function references
-- [ ] Remove GDT_RecordDemo function references
-- [ ] Remove GDT_PlayAndVerifyDemo function references
-- [ ] Remove GDTChecksums function
-- [ ] Remove GDT_ComputeStateChecksum function
+- [x] Remove GDT_Init function references
+- [x] Remove GDT_RecordDemo function references
+- [x] Remove GDT_PlayAndVerifyDemo function references
+- [x] Remove GDTChecksums function
+- [x] Remove GDT_ComputeStateChecksum function
 - [ ] Remove InitGameVersion demo detection
 - [ ] Remove G_VanillaVersionCode function
-- [ ] Remove vanilla_demo_limit flag and handling
+- [x] Remove vanilla_demo_limit flag and handling
 - [ ] Remove longtics support
 - [ ] Remove DOOM_191_VERSION handling
 - [ ] Remove D_NonVanillaRecord function

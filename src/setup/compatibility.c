@@ -25,7 +25,6 @@
 #define WINDOW_HELP_URL "https://www.chocolate-doom.org/setup-compat"
 
 int vanilla_savegame_limit = 1;
-int vanilla_demo_limit = 1;
 
 void CompatibilitySettings(TXT_UNCAST_ARG(widget), void *user_data)
 {
@@ -38,14 +37,11 @@ void CompatibilitySettings(TXT_UNCAST_ARG(widget), void *user_data)
     TXT_AddWidgets(window,
                    TXT_NewCheckBox("Vanilla savegame limit",
                                    &vanilla_savegame_limit),
-                   TXT_NewCheckBox("Vanilla demo limit",
-                                   &vanilla_demo_limit),
                    NULL);
 }
 
 void BindCompatibilityVariables(void)
 {
     M_BindIntVariable("vanilla_savegame_limit", &vanilla_savegame_limit);
-    M_BindIntVariable("vanilla_demo_limit",     &vanilla_demo_limit);
 }
 
