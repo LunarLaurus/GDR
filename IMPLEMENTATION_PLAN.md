@@ -94,7 +94,7 @@
 - [x] Remove NET_PACKET_TYPE_ACK deprecated handling
 - [x] Remove Lost Soul bounce compatibility in p_mobj.c
 - [x] Remove gameversion >= exe_ultimate checks
-- [ ] Remove demo version mismatch error messages
+- [x] Remove demo version mismatch error messages
 - [ ] Remove demo buffer expansion logic
 - [ ] Remove demo checksum computation
 - [ ] Remove demo share functionality in g_replay.c

@@ -2393,46 +2393,6 @@ void G_DeferedPlayDemo(const char *name)
     gameaction = ga_playdemo; 
 } 
 
-// Generate a string describing a demo version
-
-static const char *DemoVersionDescription(int version)
-{
-    static char resultbuf[16];
-
-    switch (version)
-    {
-        case 104:
-            return "v1.4";
-        case 105:
-            return "v1.5";
-        case 106:
-            return "v1.6/v1.666";
-        case 107:
-            return "v1.7/v1.7a";
-        case 108:
-            return "v1.8";
-        case 109:
-            return "v1.9";
-        case 111:
-            return "v1.91 hack demo?";
-        default:
-            break;
-    }
-
-    // Unknown version.  Perhaps this is a pre-v1.4 IWAD?  If the version
-    // byte is in the range 0-4 then it can be a v1.0-v1.2 demo.
-
-    if (version >= 0 && version <= 4)
-    {
-        return "v1.0/v1.1/v1.2";
-    }
-    else
-    {
-        M_snprintf(resultbuf, sizeof(resultbuf),
-                   "%i.%i (unknown)", version / 100, version % 100);
-        return resultbuf;
-    }
-}
 
 void G_DoPlayDemo (void)
 {
@@ -2454,23 +2414,7 @@ void G_DoPlayDemo (void)
         demo_p--;
     }
 
-    if (demoversion != G_VanillaVersionCode() &&
-             !(gameversion <= exe_doom_1_2 && olddemo))
-    {
-        const char *message = "Demo is from a different game version!\n"
-                              "(read %i, should be %i)\n"
-                              "\n"
-                              "*** You may need to upgrade your version "
-                                  "of Doom to v1.9. ***\n"
-                              "    See: https://www.doomworld.com/classicdoom"
-                                        "/info/patches.php\n"
-                              "    This appears to be %s.";
-
-        I_Error(message, demoversion, G_VanillaVersionCode(),
-                         DemoVersionDescription(demoversion));
-    }
-
-    skill = *demo_p++; 
+    skill = *demo_p++;
     episode = *demo_p++; 
     map = *demo_p++; 
     if (!olddemo)
@@ -2671,16 +2615,6 @@ void G_ValidateDemo(void)
     else if (version == 110 || version == 111)
     {
         DEH_printf("Format: Doom 1.9.3/Ultimate DOOM\n");
-    }
-    else
-    {
-        DEH_printf("WARNING: Unknown demo version byte!\n");
-    }
-
-    if (version != G_VanillaVersionCode() && !(gameversion <= exe_doom_1_2 && version >= 0 && version <= 4))
-    {
-        DEH_printf("WARNING: Demo version mismatch! (demo: %d, engine: %d)\n",
-                   version, G_VanillaVersionCode());
     }
 
     demo_ptr++;
