@@ -105,7 +105,7 @@
 - [x] Remove demo lump reading/writing
 - [x] Remove IsDemoFile function dependencies
 - [x] Remove demo1/demo2/demo3 lump handling
-- [ ] Remove D_CheckNetGame demo warnings
+- [x] Remove D_CheckNetGame demo warnings
 - [ ] Clean up g_game.c demo recording section
 
 ### Phase 6: Audio System Cleanup
