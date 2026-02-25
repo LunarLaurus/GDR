@@ -70,11 +70,11 @@
 - [x] Rename exploding_dice_enabled to goblin_exploding_dice
 - [x] Rename show_weapon_stats to goblin_weapon_stats
 - [x] Rename status effect CVARs to goblin_status_*
-- [ ] Rename colorblind_mode to goblin_colorblind_mode
-- [ ] Rename reduce_motion to goblin_reduce_motion
-- [ ] Update README.md goblin references
-- [ ] Update AGENTS.md base engine reference
-- [ ] Update DESIGN.md project description
+- [x] Rename colorblind_mode to goblin_colorblind_mode
+- [x] Rename reduce_motion to goblin_reduce_motion
+- [x] Update README.md goblin references
+- [x] Update AGENTS.md base engine reference
+- [x] Update DESIGN.md project description
 
 ### Phase 5: Remove Demo Compatibility
 - [ ] Remove g_demo_test.c entirely
