@@ -119,8 +119,6 @@ float fsynth_gain = 1.0f;
 // doom and doom.exe
 
 
-static int snd_mport = 0;
-
 static int snd_oplmode;
 
 static void UpdateSndDevices(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(data))
@@ -374,7 +372,6 @@ void BindSoundVariables(void)
 #endif // HAVE_FLUIDSYNTH
 
 
-    M_BindIntVariable("snd_mport",                &snd_mport);
     M_BindIntVariable("snd_maxslicetime_ms",      &snd_maxslicetime_ms);
     M_BindStringVariable("snd_musiccmd",          &snd_musiccmd);
     M_BindStringVariable("snd_dmxoption",         &snd_dmxoption);

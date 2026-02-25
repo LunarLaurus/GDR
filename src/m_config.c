@@ -564,13 +564,7 @@ static default_t	doom_defaults_list[] =
     CONFIG_VARIABLE_INT(snd_sfxdevice),
 
 
-    //!
-    // Output port to use for OPL MIDI playback.  Unused.
-    //
 
-    CONFIG_VARIABLE_INT(snd_mport),
-
-    //!
     // Gamma correction level.  A value of zero disables gamma
     // correction, while a value in the range 1-4 gives increasing
     // levels of gamma correction.
