@@ -64,8 +64,6 @@
 #include "g_game.h"
 #include "g_status.h"
 #include "g_achievement.h"
-#include "g_leaderboard.h"
-#include "g_demo_test.h"
 #include "g_balance.h"
 #include "g_achievement.h"
 #include "dice_predict.h"
@@ -1964,9 +1962,6 @@ void D_DoomMain (void)
     I_InitJoystick();
     I_InitSound(doom);
     I_InitMusic();
-
-    // Goblin Dice Rollaz: Initialize demo test suite
-    GDT_Init();
 
     printf ("NET_Init: Init network subsystem.\n");
     NET_Init ();

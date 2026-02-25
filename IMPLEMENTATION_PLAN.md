@@ -77,7 +77,7 @@
 - [x] Update DESIGN.md project description
 
 ### Phase 5: Remove Demo Compatibility
-- [ ] Remove g_demo_test.c entirely
+- [x] Remove g_demo_test.c entirely
 - [ ] Remove GDT_Init function references
 - [ ] Remove GDT_RecordDemo function references
 - [ ] Remove GDT_PlayAndVerifyDemo function references
