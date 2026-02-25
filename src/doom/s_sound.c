@@ -37,9 +37,7 @@
 #include "w_wad.h"
 #include "z_zone.h"
 
-#include "i_sound.h"
 
-// when to clip out sounds
 // Does not fit the large outdoor areas.
 
 #define S_CLIPPING_DIST (1200 * FRACUNIT)
