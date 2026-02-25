@@ -814,26 +814,6 @@ static boolean StrictDemos(void)
     return M_ParmExists("-strictdemos");
 }
 
-// If the provided conditional value is true, we're trying to record
-// a demo file that will include a non-vanilla extension. The function
-// will return true if the conditional is true and it's allowed to use
-// this extension (no extensions are allowed if -strictdemos is given
-// on the command line). A warning is shown on the console using the
-// provided string describing the non-vanilla expansion.
-boolean D_NonVanillaRecord(boolean conditional, const char *feature)
-{
-    if (!conditional || StrictDemos())
-    {
-        return false;
-    }
-
-    printf("Warning: Recording a demo file with a non-vanilla extension "
-           "(%s). Use -strictdemos to disable this extension.\n",
-           feature);
-
-    return true;
-}
-
 // Returns true if the given lump number corresponds to data from a .lmp
 // file, as opposed to a WAD.
 static boolean IsDemoFile(int lumpnum)

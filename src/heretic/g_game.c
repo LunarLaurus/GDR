@@ -1964,8 +1964,7 @@ void G_RecordDemo(skill_t skill, int numplayers, int episode, int map,
     // Record or playback a demo with high resolution turning.
     //
 
-    longtics = D_NonVanillaRecord(M_ParmExists("-longtics"),
-                                  "vvHeretic longtics demo");
+    longtics = M_ParmExists("-longtics");
 
     // If not recording a longtics demo, record in low res
 
@@ -2012,7 +2011,7 @@ void G_RecordDemo(skill_t skill, int numplayers, int episode, int map,
     //   0x02 = -nomonsters
 
     *demo_p = 1; // assume player one exists
-    if (D_NonVanillaRecord(respawnparm, "vvHeretic -respawn header flag"))
+    if (respawnparm)
     {
         *demo_p |= DEMOHEADER_RESPAWN;
     }
@@ -2020,7 +2019,7 @@ void G_RecordDemo(skill_t skill, int numplayers, int episode, int map,
     {
         *demo_p |= DEMOHEADER_LONGTICS;
     }
-    if (D_NonVanillaRecord(nomonsters, "vvHeretic -nomonsters header flag"))
+    if (nomonsters)
     {
         *demo_p |= DEMOHEADER_NOMONSTERS;
     }

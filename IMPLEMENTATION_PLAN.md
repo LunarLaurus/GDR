@@ -88,7 +88,7 @@
 - [x] Remove vanilla_demo_limit flag and handling
 - [x] Remove longtics support
 - [x] Remove DOOM_191_VERSION handling
-- [ ] Remove D_NonVanillaRecord function
+- [x] Remove D_NonVanillaRecord function
 - [ ] Remove D_NonVanillaPlayback function
 - [ ] Remove -strictdemos command line option
 - [ ] Remove NET_PACKET_TYPE_ACK deprecated handling
