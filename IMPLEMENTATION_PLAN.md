@@ -95,7 +95,7 @@
 - [x] Remove Lost Soul bounce compatibility in p_mobj.c
 - [x] Remove gameversion >= exe_ultimate checks
 - [x] Remove demo version mismatch error messages
-- [ ] Remove demo buffer expansion logic
+- [x] Remove demo buffer expansion logic
 - [ ] Remove demo checksum computation
 - [ ] Remove demo share functionality in g_replay.c
 - [ ] Remove G_ExportDemo function
