@@ -885,7 +885,7 @@ static char *GetGameName(const char *gamename)
             {
                 I_Error("GetGameName: Failed to allocate new string");
             }
-            version = G_VanillaVersionCode();
+            version = GOBLIN_VERSION;
             DEH_snprintf(deh_gamename, gamename_size, banners[i],
                          version / 100, version % 100);
 

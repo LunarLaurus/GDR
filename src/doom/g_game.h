@@ -73,7 +73,8 @@ boolean G_Responder (event_t*	ev);
 void G_ScreenShot (void);
 
 void G_DrawMouseSpeedBox(void);
-int G_VanillaVersionCode(void);
+#define GOBLIN_VERSION 1
+
 void G_ReloadWeapon(void);
 
 extern int vanilla_savegame_limit;

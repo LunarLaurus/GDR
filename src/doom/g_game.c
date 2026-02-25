@@ -2371,21 +2371,7 @@ void G_RecordDemo (const char *name)
 } 
 
 // Get the demo version code appropriate for the version set in gameversion.
-int G_VanillaVersionCode(void)
-{
-    switch (gameversion)
-    {
-        case exe_doom_1_666:
-            return 106;
-        case exe_doom_1_7:
-            return 107;
-        case exe_doom_1_8:
-            return 108;
-        case exe_doom_1_9:
-        default:  // All other versions are variants on v1.9:
-            return 109;
-    }
-}
+#define G_VanillaVersionCode() GOBLIN_VERSION
 
 void G_BeginRecording (void) 
 { 

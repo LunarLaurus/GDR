@@ -84,7 +84,7 @@
 - [x] Remove GDTChecksums function
 - [x] Remove GDT_ComputeStateChecksum function
 - [x] Remove InitGameVersion demo detection
-- [ ] Remove G_VanillaVersionCode function
+- [x] Remove G_VanillaVersionCode function
 - [x] Remove vanilla_demo_limit flag and handling
 - [ ] Remove longtics support
 - [ ] Remove DOOM_191_VERSION handling
