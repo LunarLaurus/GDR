@@ -123,7 +123,7 @@
 - [x] Fix CheckVolumeSeparation to be inline
 - [x] Remove PC speaker frequency table (i_pcsound.c)
 - [x] Remove unused I_PCS_UpdateSoundParams stub
-- [ ] Clean up DOS sound configuration bindings
+- [x] Clean up DOS sound configuration bindings
 - [ ] Remove DOS-specific sound module comments
 - [ ] Consolidate platform-specific sound detection
 - [ ] Add sound channel pooling optimization

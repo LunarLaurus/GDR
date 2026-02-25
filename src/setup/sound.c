@@ -114,11 +114,6 @@ float fsynth_reverb_width = 4.0f;
 float fsynth_gain = 1.0f;
 #endif // HAVE_FLUIDSYNTH
 
-// DOS specific variables: these are unused but should be maintained
-// so that the config file can be shared between chocolate
-// doom and doom.exe
-
-
 static int snd_oplmode;
 
 static void UpdateSndDevices(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(data))

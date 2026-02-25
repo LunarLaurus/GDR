@@ -76,14 +76,6 @@ static boolean music_packs_active = false;
 static const music_module_t *active_music_module;
 
 
-// DOS-specific options: These are unused but should be maintained
-// so that the config file can be shared between chocolate
-// doom and doom.exe
-
-
-
-
-
 static const sound_module_t *sound_modules[] =
 {
 #ifndef DISABLE_SDL2MIXER
