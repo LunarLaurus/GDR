@@ -2367,7 +2367,7 @@ void A_ShamanSpell (mobj_t* actor)
                 {
                     if (!G_StatusEffectIsActive(target, st_enraged))
                     {
-                        G_StatusEffectApply(target, st_enraged, enraged_tics);
+                        G_StatusEffectApply(target, st_enraged, goblin_status_enraged_tics);
                         buff_count++;
                     }
                 }

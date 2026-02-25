@@ -26,16 +26,16 @@
 
 extern status_info_t status_effects[NUMSTATUSEFFECTS];
 
-extern int burn_damage;
-extern int burn_tics;
-extern int frozen_speed_mul;
-extern int frozen_tics;
-extern int stunned_tics;
-extern int dice_curse_tics;
-extern int dice_curse_variance_min;
-extern int dice_curse_variance_max;
-extern int enraged_tics;
-extern int enraged_damage_mult;
+extern int goblin_status_burn_damage;
+extern int goblin_status_burn_tics;
+extern int goblin_status_frozen_speed_mul;
+extern int goblin_status_frozen_tics;
+extern int goblin_status_stunned_tics;
+extern int goblin_status_dice_curse_tics;
+extern int goblin_status_dice_curse_variance_min;
+extern int goblin_status_dice_curse_variance_max;
+extern int goblin_status_enraged_tics;
+extern int goblin_status_enraged_damage_mult;
 
 boolean G_StatusEffectIsActive(mobj_t* target, int effect_id);
 int     G_StatusEffectTimeRemaining(mobj_t* target, int effect_id);

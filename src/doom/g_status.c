@@ -35,27 +35,27 @@
 #define ENRAGED_TICS      (8 * TICRATE)
 #define ENRAGED_DAMAGE_MULT 150
 
-int burn_damage = BURNING_DAMAGE;
-int burn_tics = BURNING_TICS;
-int frozen_speed_mul = FROZEN_SPEED_MUL;
-int frozen_tics = FROZEN_TICS;
-int stunned_tics = STUNNED_TICS;
-int dice_curse_tics = DICE_CURSE_TICS;
-int dice_curse_variance_min = 25;
-int dice_curse_variance_max = 150;
-int enraged_tics = ENRAGED_TICS;
-int enraged_damage_mult = ENRAGED_DAMAGE_MULT;
+int goblin_status_burn_damage = BURNING_DAMAGE;
+int goblin_status_burn_tics = BURNING_TICS;
+int goblin_status_frozen_speed_mul = FROZEN_SPEED_MUL;
+int goblin_status_frozen_tics = FROZEN_TICS;
+int goblin_status_stunned_tics = STUNNED_TICS;
+int goblin_status_dice_curse_tics = DICE_CURSE_TICS;
+int goblin_status_dice_curse_variance_min = 25;
+int goblin_status_dice_curse_variance_max = 150;
+int goblin_status_enraged_tics = ENRAGED_TICS;
+int goblin_status_enraged_damage_mult = ENRAGED_DAMAGE_MULT;
 
 void G_UpdateStatusEffectInfo(void)
 {
-    status_effects[st_burning].default_duration = burn_tics;
-    status_effects[st_burning].damage_per_second = burn_damage;
-    status_effects[st_frozen].default_duration = frozen_tics;
-    status_effects[st_frozen].move_speed_multiplier = frozen_speed_mul;
-    status_effects[st_stunned].default_duration = stunned_tics;
-    status_effects[st_dicecurse].default_duration = dice_curse_tics;
-    status_effects[st_enraged].default_duration = enraged_tics;
-    status_effects[st_enraged].damage_multiplier = enraged_damage_mult;
+    status_effects[st_burning].default_duration = goblin_status_burn_tics;
+    status_effects[st_burning].damage_per_second = goblin_status_burn_damage;
+    status_effects[st_frozen].default_duration = goblin_status_frozen_tics;
+    status_effects[st_frozen].move_speed_multiplier = goblin_status_frozen_speed_mul;
+    status_effects[st_stunned].default_duration = goblin_status_stunned_tics;
+    status_effects[st_dicecurse].default_duration = goblin_status_dice_curse_tics;
+    status_effects[st_enraged].default_duration = goblin_status_enraged_tics;
+    status_effects[st_enraged].damage_multiplier = goblin_status_enraged_damage_mult;
 }
 
 status_info_t status_effects[NUMSTATUSEFFECTS] = {
@@ -126,7 +126,7 @@ int G_GetDiceCurseDamageMultiplier(mobj_t* target)
     if (!G_StatusEffectIsActive(target, st_dicecurse))
         return 100;
 
-    int variance = (P_Random() % (dice_curse_variance_max - dice_curse_variance_min + 1)) + dice_curse_variance_min;
+    int variance = (P_Random() % (goblin_status_dice_curse_variance_max - goblin_status_dice_curse_variance_min + 1)) + goblin_status_dice_curse_variance_min;
     return variance;
 }
 

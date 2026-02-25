@@ -501,14 +501,14 @@ void D_BindVariables(void)
     M_BindIntVariable("goblin_weapon_stats",        &goblin_weapon_stats);
 
     // Goblin Dice Rollaz: status effect configuration
-    M_BindIntVariable("burn_damage",              &burn_damage);
-    M_BindIntVariable("burn_tics",               &burn_tics);
-    M_BindIntVariable("frozen_speed_mul",        &frozen_speed_mul);
-    M_BindIntVariable("frozen_tics",             &frozen_tics);
-    M_BindIntVariable("stunned_tics",            &stunned_tics);
-    M_BindIntVariable("dice_curse_tics",         &dice_curse_tics);
-    M_BindIntVariable("dice_curse_variance_min", &dice_curse_variance_min);
-    M_BindIntVariable("dice_curse_variance_max", &dice_curse_variance_max);
+    M_BindIntVariable("goblin_status_burn_damage",       &goblin_status_burn_damage);
+    M_BindIntVariable("goblin_status_burn_tics",        &goblin_status_burn_tics);
+    M_BindIntVariable("goblin_status_frozen_speed_mul", &goblin_status_frozen_speed_mul);
+    M_BindIntVariable("goblin_status_frozen_tics",      &goblin_status_frozen_tics);
+    M_BindIntVariable("goblin_status_stunned_tics",     &goblin_status_stunned_tics);
+    M_BindIntVariable("goblin_status_dice_curse_tics",  &goblin_status_dice_curse_tics);
+    M_BindIntVariable("goblin_status_dice_curse_variance_min", &goblin_status_dice_curse_variance_min);
+    M_BindIntVariable("goblin_status_dice_curse_variance_max", &goblin_status_dice_curse_variance_max);
 
     // Goblin Dice Rollaz: RPG Progression Mode
     M_BindIntVariable("rpg_mode",                &rpg_mode);
