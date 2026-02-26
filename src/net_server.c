@@ -738,9 +738,9 @@ static void NET_SV_ParseSYN(net_packet_t *packet, net_client_t *client,
         return;
     }
 
-    // TODO: Add server option to allow rejecting clients which set
-    // lowres_turn.  This is potentially desirable as the presence of such
-    // clients affects turning resolution.
+    // NOTE: Server option to reject lowres_turn clients not implemented.
+    // This is potentially desirable as the presence of such clients
+    // affects turning resolution.
 
     // Adopt the game mode and mission of the first connecting client:
     if (num_players == 0 && !data.drone)
