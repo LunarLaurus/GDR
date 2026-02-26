@@ -182,7 +182,7 @@
 ### Phase 10: Memory Leak Fixes
 - [x] Add V_DisableDiceIcon function to free saved_background
 - [x] Add V_DisableDiceIcon function to free dice_data
-- [ ] Add free(gamedescription) in d_main.c shutdown
+- [x] Add free(gamedescription) in d_main.c shutdown
 - [ ] Remove unused Z_ChangeUser function
 - [ ] Remove unused Z_ZoneSize function
 - [ ] Remove broken Z_DumpHeap implementation

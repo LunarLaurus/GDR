@@ -1032,6 +1032,15 @@ static void D_SetGameDescription(void)
     }
 }
 
+static void D_FreeGameDescription(void)
+{
+    if (gamedescription != NULL)
+    {
+        free(gamedescription);
+        gamedescription = NULL;
+    }
+}
+
 //      print title for every printed line
 char            title[128];
 
@@ -1573,6 +1582,9 @@ void D_DoomMain (void)
 
     // Save configuration at exit.
     I_AtExit(M_SaveDefaults, false);
+
+    // Free dynamically allocated game description string
+    I_AtExit(D_FreeGameDescription, true);
 
     // Find main IWAD file and load it.
     iwadfile = D_FindIWAD(IWAD_MASK_DOOM, &gamemission);
