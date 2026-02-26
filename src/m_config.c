@@ -151,32 +151,7 @@ static default_t	doom_defaults_list[] =
 
     CONFIG_VARIABLE_INT(music_volume),
 
-    //!
-    // @game strife
-    //
-    // If non-zero, dialogue text is displayed over characters' pictures
-    // when engaging actors who have voices.
-    //
 
-    CONFIG_VARIABLE_INT(show_talk),
-
-    //!
-    // @game strife
-    //
-    // Volume of voice sound effects, range 0-15.
-    //
-
-    CONFIG_VARIABLE_INT(voice_volume),
-
-    //!
-    // @game doom
-    //
-    // If non-zero, messages are displayed on the heads-up display
-    // in the game ("picked up a clip", etc).  If zero, these messages
-    // are not displayed.
-    //
-
-    CONFIG_VARIABLE_INT(show_messages),
 
     //!
     // Keyboard key to turn right.
@@ -213,14 +188,6 @@ static default_t	doom_defaults_list[] =
     //
 
     CONFIG_VARIABLE_KEY(key_straferight),
-
-    //!
-    // @game strife
-    //
-    // Keyboard key to use health.
-    //
-
-    CONFIG_VARIABLE_KEY(key_useHealth),
 
     //!
     // @game hexen
@@ -278,125 +245,7 @@ static default_t	doom_defaults_list[] =
 
     CONFIG_VARIABLE_KEY(key_lookcenter),
 
-    //!
-    // @game strife
-    //
-    // Keyboard key to query inventory.
-    //
 
-    CONFIG_VARIABLE_KEY(key_invquery),
-
-    //!
-    // @game strife
-    //
-    // Keyboard key to display mission objective.
-    //
-
-    CONFIG_VARIABLE_KEY(key_mission),
-
-    //!
-    // @game strife
-    //
-    // Keyboard key to display inventory popup.
-    //
-
-    CONFIG_VARIABLE_KEY(key_invPop),
-
-    //!
-    // @game strife
-    //
-    // Keyboard key to display keys popup.
-    //
-
-    CONFIG_VARIABLE_KEY(key_invKey),
-
-    //!
-    // @game strife
-    //
-    // Keyboard key to jump to start of inventory.
-    //
-
-    CONFIG_VARIABLE_KEY(key_invHome),
-
-    //!
-    // @game strife
-    //
-    // Keyboard key to jump to end of inventory.
-    //
-
-    CONFIG_VARIABLE_KEY(key_invEnd),
-
-    //!
-    // @game heretic hexen
-    //
-    // Keyboard key to scroll left in the inventory.
-    //
-
-    CONFIG_VARIABLE_KEY(key_invleft),
-
-    //!
-    // @game heretic hexen
-    //
-    // Keyboard key to scroll right in the inventory.
-    //
-
-    CONFIG_VARIABLE_KEY(key_invright),
-
-    //!
-    // @game strife
-    //
-    // Keyboard key to scroll left in the inventory.
-    //
-
-    CONFIG_VARIABLE_KEY(key_invLeft),
-
-    //!
-    // @game strife
-    //
-    // Keyboard key to scroll right in the inventory.
-    //
-
-    CONFIG_VARIABLE_KEY(key_invRight),
-
-    //!
-    // @game heretic hexen
-    //
-    // Keyboard key to use the current item in the inventory.
-    //
-
-    CONFIG_VARIABLE_KEY(key_useartifact),
-
-    //!
-    // @game strife
-    //
-    // Keyboard key to use inventory item.
-    //
-
-    CONFIG_VARIABLE_KEY(key_invUse),
-
-    //!
-    // @game strife
-    //
-    // Keyboard key to drop an inventory item.
-    //
-
-    CONFIG_VARIABLE_KEY(key_invDrop),
-
-    //!
-    // @game strife
-    //
-    // Keyboard key to look up.
-    //
-
-    CONFIG_VARIABLE_KEY(key_lookUp),
-
-    //!
-    // @game strife
-    //
-    // Keyboard key to look down.
-    //
-
-    CONFIG_VARIABLE_KEY(key_lookDown),
 
     //!
     // Keyboard key to fire the currently selected weapon.
@@ -576,27 +425,7 @@ static default_t	doom_defaults_list[] =
 
     CONFIG_VARIABLE_INT(messageson),
 
-    //!
-    // @game strife
-    //
-    // Name of background flat used by view border.
-    //
 
-    CONFIG_VARIABLE_STRING(back_flat),
-
-    //!
-    // @game strife
-    //
-    // Multiplayer nickname (?).
-    //
-
-    CONFIG_VARIABLE_STRING(nickname),
-
-    //!
-    // Multiplayer chat macro: message to send when alt+0 is pressed.
-    //
-
-    CONFIG_VARIABLE_STRING(chatmacro0),
 
     //!
     // Multiplayer chat macro: message to send when alt+1 is pressed.
@@ -651,14 +480,6 @@ static default_t	doom_defaults_list[] =
     //
 
     CONFIG_VARIABLE_STRING(chatmacro9),
-
-    //!
-    // @game strife
-    //
-    // Serial port number to use for SERSETUP.EXE (unused).
-    //
-
-    CONFIG_VARIABLE_INT(comport),
 };
 
 static default_collection_t doom_defaults =

@@ -170,8 +170,8 @@
 
 ### Phase 9: Configuration Cleanup
 - [x] Remove screenblocks duplicate of screensize
-- [ ] Remove detaillevel legacy variable
-- [ ] Remove Strife-only config variables
+- [x] Remove detaillevel legacy variable
+- [x] Remove Strife-only config variables
 - [ ] Remove Heretic-only config variables
 - [ ] Consolidate mouse_sensitivity bindings across games
 - [ ] Remove duplicate config bindings
