@@ -219,34 +219,58 @@
 - [x] Resolve d_loop.c TODO items
 - [x] Resolve joystick.c XXX comment
 - [ ] Remove STRIFE-TODO in p_spec.c lines 1097, 1099
+  - [ ] Resolve blocker: src/strife/ will be removed in Phase 36
 - [ ] Remove STRIFE-TODO in p_switch.c lines 796-903
+  - [ ] Resolve blocker: src/strife/ will be removed in Phase 36
 - [ ] Remove STRIFE-TODO in p_dialog.c lines 1023, 1163
+  - [ ] Resolve blocker: src/strife/ will be removed in Phase 36
 - [ ] Remove STRIFE-TODO in p_enemy.c lines 908, 992, 1746
+  - [ ] Resolve blocker: src/strife/ will be removed in Phase 36
 - [ ] Remove STRIFE-TODO in p_floor.c line 265
+  - [ ] Resolve blocker: src/strife/ will be removed in Phase 36
 - [ ] Remove STRIFE-TODO in p_inter.c lines 633, 838, 1101
+  - [ ] Resolve blocker: src/strife/ will be removed in Phase 36
 - [ ] Remove STRIFE-TODO in g_game.c Strife version
+  - [ ] Resolve blocker: src/strife/ will be removed in Phase 36
 - [ ] Remove STRIFE-TODO in hu_stuff.c lines 384, 390
+  - [ ] Resolve blocker: src/strife/ will be removed in Phase 36
 - [ ] Remove STRIFE-TODO in d_main.c Strife version
+  - [ ] Resolve blocker: src/strife/ will be removed in Phase 36
 - [ ] Remove STRIFE-TODO in doomdata.h lines 140, 143
+  - [ ] Resolve blocker: src/strife/ will be removed in Phase 36
 - [ ] Remove STRIFE-TODO in doomdef.h lines 90, 92, 94, 96
+  - [ ] Resolve blocker: src/strife/ will be removed in Phase 36
 - [ ] Resolve p_mobj.c second FIXME (line 494)
+  - [ ] Resolve blocker: src/strife/p_mobj.c will be removed in Phase 36
 - [ ] Resolve p_mobj.c third FIXME (line 485)
+  - [ ] Resolve blocker: src/strife/p_mobj.c will be removed in Phase 36
 - [ ] Resolve p_saveg.c STRIFE-FIXME line 565
+  - [ ] Resolve blocker: src/strife/ will be removed in Phase 36
 - [ ] Resolve m_saves.c STRIFE-FIXME line 435
+  - [ ] Resolve blocker: src/strife/ will be removed in Phase 36
 - [ ] Resolve deh_ptr.c FIXME line 60
+  - [ ] Resolve blocker: src/strife/ will be removed in Phase 36
 - [ ] Resolve deh_cheat.c STRIFE-FIXME line 55
+  - [ ] Resolve blocker: src/strife/ will be removed in Phase 36
 - [ ] Resolve d_main.c Strife FIXME lines 606, 1896, 1903
+  - [ ] Resolve blocker: src/strife/ will be removed in Phase 36
 - [ ] Resolve r_main.c FIXME for viewangleoffset (Hexen/Heretic)
+  - [ ] Resolve blocker: src/heretic/ and src/hexen/ will be removed in Phase 37
 - [ ] Resolve g_game.c Hexen FIXME line 108
+  - [ ] Resolve blocker: Hexen code will be removed in Phase 37
 - [ ] Resolve g_game.c Heretic FIXME line 128
+  - [ ] Resolve blocker: Heretic code will be removed in Phase 37
 - [ ] Resolve heretic d_net.c TODO items
+  - [ ] Resolve blocker: src/heretic/ will be removed in Phase 37
 - [ ] Resolve hexen h2_main.c TODO line 527
   - [ ] Resolve blocker: Hexen code will be removed in Phase 37
 - [x] Resolve gusconf.c TODO line 210
-- [ ] Resolve setup multiplayer.c TODO line 248
+- [x] Resolve setup multiplayer.c TODO line 248
 - [x] Resolve d_iwad.c STRIFE-FIXME line 50
 - [ ] Resolve s_sound.c STRIFE-TODO line 592
+  - [ ] Resolve blocker: src/strife/ will be removed in Phase 36
 - [ ] Resolve st_stuff.c Strife TODO lines 174, 803, 987
+  - [ ] Resolve blocker: src/strife/ will be removed in Phase 36
 
 ### Phase 12: Platform Code Consolidation
 - [ ] Move Windows stack trace to platform abstraction
