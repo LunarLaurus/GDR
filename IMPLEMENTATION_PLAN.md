@@ -282,10 +282,10 @@
 
 ### Phase 13: Build System Cleanup
 - [x] Update configure.ac version if needed
-- [ ] Ensure goblin-doom binary name is consistent
+- [x] Ensure goblin-doom binary name is consistent
 
 ### Phase 14: New Dice Weapons
-- [ ] Add d2 Flip of Fate weapon (binary damage, 50% 1dmg/50% 2dmg)
+- [x] Add d2 Flip of Fate weapon (binary damage, 50% 1dmg/50% 2dmg)
 - [ ] Add d3 Skewered Luck weapon (guaranteed 1-3 damage, piercing)
 - [ ] Add d7 Seven Veins weapon (ore fragment splash, 14% crit)
 - [ ] Add d14 Fused Doubler weapon (dual dice, resonance explosion)
