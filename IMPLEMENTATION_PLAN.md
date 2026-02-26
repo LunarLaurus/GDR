@@ -200,7 +200,7 @@
 - [x] Resolve p_mobj.c NOP function pointer FIXME
 - [x] Resolve p_tick.c NOP FIXME
 - [x] Resolve d_main.c demo numbers FIXME
-- [ ] Resolve viewangleoffset handling FIXME
+- [x] Resolve viewangleoffset handling FIXME
 - [ ] Remove all STRIFE-TODO commented code
 - [ ] Remove all STRIFE-FIXME commented code
 - [ ] Resolve d_event.h TODO line 117

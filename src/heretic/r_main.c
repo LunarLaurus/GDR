@@ -725,8 +725,6 @@ void R_SetupFrame(player_t * player)
 
     //drawbsp = 1;
     viewplayer = player;
-    // haleyjd: removed WATCOMC
-    // haleyjd FIXME: viewangleoffset handling?
     viewangle = player->mo->angle + viewangleoffset;
     tableAngle = viewangle >> ANGLETOFINESHIFT;
     if (player->chickenTics && player->chickenPeck)
