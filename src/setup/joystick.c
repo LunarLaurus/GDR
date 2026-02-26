@@ -586,7 +586,6 @@ static const known_joystick_t known_joysticks[] =
     // Names seen so far:
     //     'SFC30 Joystick' (OS X)
     //     'SFC30              SFC30 Joystick' (Fedora 24; RHEL7)
-    // XXX: there is probably a SNES30 variant of this too
     {
         "SFC30 *",
         4, 12, 1,

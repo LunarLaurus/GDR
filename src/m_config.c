@@ -2533,7 +2533,5 @@ char *M_GetAutoloadDir(const char *iwadname)
     result = M_StringJoin(autoload_path, DIR_SEPARATOR_S, iwadname, NULL);
     M_MakeDirectory(result);
 
-    // TODO: Add README file
-
     return result;
 }

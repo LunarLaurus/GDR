@@ -417,12 +417,6 @@ void D_StartNetGame(net_gamesettings_t *settings,
     {
         I_Error("D_StartNetGame: invalid ticdup value (%d)", ticdup);
     }
-
-    // TODO: Message disabled until we fix new_sync.
-    //if (!new_sync)
-    //{
-    //    printf("Syncing netgames like Vanilla Doom.\n");
-    //}
 }
 
 boolean D_InitNetGame(net_connect_data_t *connect_data)

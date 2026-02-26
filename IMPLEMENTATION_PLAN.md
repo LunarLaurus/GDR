@@ -202,17 +202,22 @@
 - [x] Resolve d_main.c demo numbers FIXME
 - [x] Resolve viewangleoffset handling FIXME
 - [ ] Remove all STRIFE-TODO commented code
-- [ ] Remove all STRIFE-FIXME commented code
-- [ ] Resolve d_event.h TODO line 117
-- [ ] Resolve v_video.c TODO line 46
+  - [ ] Resolve blocker: All STRIFE-TODO in src/strife/ will be removed with Phase 36 directory removal
+- [x] Remove all STRIFE-FIXME commented code
+  - [x] Removed from src/d_iwad.c (non-Strife code)
+  - [ ] Resolve blocker: Rest in src/strife/ will be removed with Phase 36 directory removal
+- [x] Resolve d_event.h TODO line 117
+- [x] Resolve v_video.c TODO line 46
 - [ ] Resolve i_musicpack.c TODO line 58
+  - [ ] Resolve blocker: Cannot resolve until SDL2_mixer minimum version is bumped to 2.6.0+
 - [ ] Resolve i_oplmusic TODO items
-- [ ] Resolve heretic TODO items
-- [ ] Resolve hexen TODO items
-- [ ] Resolve setup TODO items
-- [ ] Resolve m_config.c TODO line 2866
-- [ ] Resolve d_loop.c TODO items
-- [ ] Resolve joystick.c XXX comment
+  - [ ] Resolve blocker: Requires implementation work (lines 1086, 1447, 1499)
+- [x] Resolve heretic TODO items
+- [x] Resolve hexen TODO items
+- [x] Resolve setup TODO items
+- [x] Resolve m_config.c TODO line 2866
+- [x] Resolve d_loop.c TODO items
+- [x] Resolve joystick.c XXX comment
 - [ ] Remove STRIFE-TODO in p_spec.c lines 1097, 1099
 - [ ] Remove STRIFE-TODO in p_switch.c lines 796-903
 - [ ] Remove STRIFE-TODO in p_dialog.c lines 1023, 1163
