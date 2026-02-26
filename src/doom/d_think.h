@@ -53,6 +53,9 @@ typedef union
 //  an actor.
 typedef actionf_t  think_t;
 
+// Sentinel value to mark a thinker for removal
+#define THINKER_REMOVED NULL
+
 
 // Doubly linked list of actors.
 typedef struct thinker_s

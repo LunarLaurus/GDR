@@ -197,8 +197,8 @@
 - [ ] Resolve net_server.c client rejection TODO
 - [ ] Resolve net_dedicated.c socket polling TODO
 - [ ] Resolve net_packet.c safe string TODO
-- [ ] Resolve p_mobj.c NOP function pointer FIXME
-- [ ] Resolve p_tick.c NOP FIXME
+- [x] Resolve p_mobj.c NOP function pointer FIXME
+- [x] Resolve p_tick.c NOP FIXME
 - [ ] Resolve d_main.c demo numbers FIXME
 - [ ] Resolve viewangleoffset handling FIXME
 - [ ] Remove all STRIFE-TODO commented code

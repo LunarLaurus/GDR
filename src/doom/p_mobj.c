@@ -447,18 +447,16 @@ void P_MobjThinker (mobj_t* mobj)
     {
 	P_XYMovement (mobj);
 
-	// FIXME: decent NOP/NULL/Nil function pointer please.
-	if (mobj->thinker.function.acv == (actionf_v) (-1))
+	if (mobj->thinker.function.acv == THINKER_REMOVED)
 	    return;		// mobj was removed
     }
     if ( (mobj->z != mobj->floorz)
 	 || mobj->momz )
     {
- 	P_ZMovement (mobj);
- 	
- 	// FIXME: decent NOP/NULL/Nil function pointer please.
- 	if (mobj->thinker.function.acv == (actionf_v) (-1))
- 	    return;		// mobj was removed
+  	P_ZMovement (mobj);
+  	
+  	if (mobj->thinker.function.acv == THINKER_REMOVED)
+  	    return;		// mobj was removed
     }
 
     if ((mobj->flags & MF_MISSILE) && (mobj->flags & MF_MAGICTRAIL))
