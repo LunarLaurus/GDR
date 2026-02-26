@@ -346,7 +346,7 @@
 - [ ] Add Glass Cannon powerup (2x dmg, 50% HP)
 
 ### Phase 18: Code Quality Improvements
-- [ ] Define DEFAULT_DICE_VOLUME constant in m_menu.c
+- [x] Define DEFAULT_DICE_VOLUME constant in m_menu.c
 - [ ] Define DEFAULT_SHAKE_SCALE and DEFAULT_DAMAGE_SCALE
 - [ ] Define MAX_MENU_PARTICLES constant
 - [ ] Define SHAKE_LOW, SHAKE_MEDIUM, SHAKE_HIGH constants
