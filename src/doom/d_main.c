@@ -482,10 +482,10 @@ void D_BindVariables(void)
     M_BindIntVariable("goblin_modern_fx",             &goblin_modern_fx);
 
     // Goblin Dice Rollaz: Crosshair customization
-    M_BindIntVariable("crosshair_enabled",       &dice_crosshair_enabled);
-    M_BindIntVariable("crosshair_type",         &dice_crosshair_type);
-    M_BindIntVariable("crosshair_color",        &dice_crosshair_color);
-    M_BindIntVariable("crosshair_scale",        &dice_crosshair_scale);
+    M_BindIntVariable("dice_crosshair_enabled", &dice_crosshair_enabled);
+    M_BindIntVariable("dice_crosshair_type", &dice_crosshair_type);
+    M_BindIntVariable("dice_crosshair_color", &dice_crosshair_color);
+    M_BindIntVariable("dice_crosshair_scale", &dice_crosshair_scale);
 
     // Goblin Dice Rollaz: difficulty scaling
     M_BindIntVariable("difficulty_hp_baby",       &difficulty_hp_scale[0]);

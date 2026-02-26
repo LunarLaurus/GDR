@@ -174,7 +174,7 @@
 - [x] Remove Strife-only config variables
 - [x] Remove Heretic-only config variables
 - [x] Consolidate mouse_sensitivity bindings across games
-- [ ] Remove duplicate config bindings
+- [x] Remove duplicate config bindings
 - [ ] Ensure goblin-doom.cfg is default config filename
 - [ ] Remove default.cfg references where applicable
 - [ ] Clean up string duplication in chat macro bindings
