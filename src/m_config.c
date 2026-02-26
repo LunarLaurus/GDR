@@ -44,7 +44,7 @@
 //
 
 // Location where all configuration data is stored - 
-// default.cfg, savegames, etc.
+// goblin-doom.cfg, savegames, etc.
 
 const char *configdir;
 
@@ -2370,7 +2370,7 @@ static char *GetDefaultConfigDir(void)
 // SetConfigDir:
 //
 // Sets the location of the configuration directory, where configuration
-// files are stored - default.cfg, chocolate-doom.cfg, savegames, etc.
+// files are stored - goblin-doom.cfg, savegames, etc.
 //
 
 void M_SetConfigDir(const char *dir)

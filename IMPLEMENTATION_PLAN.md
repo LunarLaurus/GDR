@@ -175,8 +175,8 @@
 - [x] Remove Heretic-only config variables
 - [x] Consolidate mouse_sensitivity bindings across games
 - [x] Remove duplicate config bindings
-- [ ] Ensure goblin-doom.cfg is default config filename
-- [ ] Remove default.cfg references where applicable
+- [x] Ensure goblin-doom.cfg is default config filename
+- [x] Remove default.cfg references where applicable
 - [ ] Clean up string duplication in chat macro bindings
 
 ### Phase 10: Memory Leak Fixes

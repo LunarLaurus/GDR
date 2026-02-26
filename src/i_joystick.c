@@ -38,7 +38,7 @@ static SDL_Joystick *joystick = NULL;
 
 // Configuration variables:
 
-// Standard default.cfg Joystick enable/disable
+// Standard goblin-doom.cfg Joystick enable/disable
 
 static int usejoystick = 0;
 
