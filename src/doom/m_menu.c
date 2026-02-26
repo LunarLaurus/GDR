@@ -2434,26 +2434,12 @@ boolean M_Responder (event_t* ev)
 	    break;
 
 	  default:
-            // Savegame name entry. This is complicated.
-            // Vanilla has a bug where the shift key is ignored when entering
-            // a savegame name. If vanilla_keyboard_mapping is on, we want
-            // to emulate this bug by using ev->data1. But if it's turned off,
-            // it implies the user doesn't care about Vanilla emulation:
-            // instead, use ev->data3 which gives the fully-translated and
-            // modified key input.
-
+            // Savegame name entry using native keyboard mapping.
             if (ev->type != ev_keydown)
             {
                 break;
             }
-            if (vanilla_keyboard_mapping)
-            {
-                ch = ev->data1;
-            }
-            else
-            {
-                ch = ev->data3;
-            }
+            ch = ev->data3;
 
             ch = toupper(ch);
 

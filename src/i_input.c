@@ -30,48 +30,6 @@
 
 static const int scancode_translate_table[] = SCANCODE_TO_KEYS_ARRAY;
 
-// Lookup table for mapping ASCII characters to their equivalent when
-// shift is pressed on a US layout keyboard. This is the original table
-// as found in the Doom sources, comments and all.
-static const char shiftxform[] =
-{
-    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-    11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-    21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
-    31, ' ', '!', '"', '#', '$', '%', '&',
-    '"', // shift-'
-    '(', ')', '*', '+',
-    '<', // shift-,
-    '_', // shift--
-    '>', // shift-.
-    '?', // shift-/
-    ')', // shift-0
-    '!', // shift-1
-    '@', // shift-2
-    '#', // shift-3
-    '$', // shift-4
-    '%', // shift-5
-    '^', // shift-6
-    '&', // shift-7
-    '*', // shift-8
-    '(', // shift-9
-    ':',
-    ':', // shift-;
-    '<',
-    '+', // shift-=
-    '>', '?', '@',
-    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
-    'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-    '[', // shift-[
-    '!', // shift-backslash - OH MY GOD DOES WATCOM SUCK
-    ']', // shift-]
-    '"', '_',
-    '\'', // shift-`
-    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
-    'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-    '{', '|', '}', '~', 127
-};
-
 // If true, I_StartTextInput() has been called, and we are populating
 // the data3 field of ev_keydown events.
 static boolean text_input_enabled = true;
@@ -84,11 +42,6 @@ static unsigned int mouse_button_state = 0;
 // This is an int to allow saving to config file
 int novert = 0;
 
-// If true, keyboard mapping is ignored, like in Vanilla Doom.
-// The sensible thing to do is to disable this if you have a non-US
-// keyboard.
-
-int vanilla_keyboard_mapping = true;
 
 // Mouse acceleration
 //
@@ -139,23 +92,14 @@ static int TranslateKey(SDL_Keysym *sym)
 // shift-, alt-, etc.)
 static int GetLocalizedKey(SDL_Keysym *sym)
 {
-    // When using Vanilla mapping, we just base everything off the scancode
-    // and always pretend the user is using a US layout keyboard.
-    if (vanilla_keyboard_mapping)
-    {
-        return TranslateKey(sym);
-    }
-    else
-    {
-        int result = sym->sym;
+    int result = sym->sym;
 
-        if (result < 0 || result >= 128)
-        {
-            result = 0;
-        }
-
-        return result;
+    if (result < 0 || result >= 128)
+    {
+        result = 0;
     }
+
+    return result;
 }
 
 // Get the equivalent ASCII (Unicode?) character for a keypress.
@@ -168,77 +112,57 @@ static int GetTypedChar(SDL_Keysym *sym)
         return 0;
     }
 
-    // If we're strictly emulating Vanilla, we should always act like
-    // we're using a US layout keyboard (in ev_keydown, data1=data2).
-    // Otherwise we should use the native key mapping.
-    if (vanilla_keyboard_mapping)
+    SDL_Event next_event;
+
+    // Special cases, where we always return a fixed value.
+    switch (sym->sym)
     {
-        int result = TranslateKey(sym);
-
-        // If shift is held down, apply the original uppercase
-        // translation table used under DOS.
-        if ((SDL_GetModState() & KMOD_SHIFT) != 0
-         && result >= 0 && result < arrlen(shiftxform))
-        {
-            result = shiftxform[result];
-        }
-
-        return result;
+        case SDLK_BACKSPACE: return KEY_BACKSPACE;
+        case SDLK_RETURN:    return KEY_ENTER;
+        default:
+            break;
     }
-    else
+
+    // The following is a gross hack, but I don't see an easier way
+    // of doing this within the SDL2 API (in SDL1 it was easier).
+    // We want to get the fully transformed input character associated
+    // with this keypress - correct keyboard layout, appropriately
+    // transformed by any modifier keys, etc. So peek ahead in the SDL
+    // event queue and see if the key press is immediately followed by
+    // an SDL_TEXTINPUT event. If it is, it's reasonable to assume the
+    // key press and the text input are connected. Technically the SDL
+    // API does not guarantee anything of the sort, but in practice this
+    // is what happens and I've verified it through manual inspect of
+    // the SDL source code.
+    //
+    // In an ideal world we'd split out ev_keydown into a separate
+    // ev_textinput event, as SDL2 has done. But this doesn't work
+    // (I experimented with the idea), because lots of Doom's code is
+    // based around different responders "eating" events to stop them
+    // being passed on to another responder. If code is listening for
+    // a text input, it cannot block the corresponding keydown events
+    // which can affect other responders.
+    //
+    // So we're stuck with this as a rather fragile alternative.
+
+    if (SDL_PeepEvents(&next_event, 1, SDL_PEEKEVENT,
+                       SDL_FIRSTEVENT, SDL_LASTEVENT) == 1
+     && next_event.type == SDL_TEXTINPUT)
     {
-        SDL_Event next_event;
-
-        // Special cases, where we always return a fixed value.
-        switch (sym->sym)
+        // If an SDL_TEXTINPUT event is found, we always assume it
+        // matches the key press. The input text must be a single
+        // ASCII character - if it isn't, it's possible the input
+        // char is a Unicode value instead; better to send a null
+        // character than the unshifted key.
+        if (strlen(next_event.text.text) == 1
+         && (next_event.text.text[0] & 0x80) == 0)
         {
-            case SDLK_BACKSPACE: return KEY_BACKSPACE;
-            case SDLK_RETURN:    return KEY_ENTER;
-            default:
-                break;
+            return next_event.text.text[0];
         }
-
-        // The following is a gross hack, but I don't see an easier way
-        // of doing this within the SDL2 API (in SDL1 it was easier).
-        // We want to get the fully transformed input character associated
-        // with this keypress - correct keyboard layout, appropriately
-        // transformed by any modifier keys, etc. So peek ahead in the SDL
-        // event queue and see if the key press is immediately followed by
-        // an SDL_TEXTINPUT event. If it is, it's reasonable to assume the
-        // key press and the text input are connected. Technically the SDL
-        // API does not guarantee anything of the sort, but in practice this
-        // is what happens and I've verified it through manual inspect of
-        // the SDL source code.
-        //
-        // In an ideal world we'd split out ev_keydown into a separate
-        // ev_textinput event, as SDL2 has done. But this doesn't work
-        // (I experimented with the idea), because lots of Doom's code is
-        // based around different responders "eating" events to stop them
-        // being passed on to another responder. If code is listening for
-        // a text input, it cannot block the corresponding keydown events
-        // which can affect other responders.
-        //
-        // So we're stuck with this as a rather fragile alternative.
-
-        if (SDL_PeepEvents(&next_event, 1, SDL_PEEKEVENT,
-                           SDL_FIRSTEVENT, SDL_LASTEVENT) == 1
-         && next_event.type == SDL_TEXTINPUT)
-        {
-            // If an SDL_TEXTINPUT event is found, we always assume it
-            // matches the key press. The input text must be a single
-            // ASCII character - if it isn't, it's possible the input
-            // char is a Unicode value instead; better to send a null
-            // character than the unshifted key.
-            if (strlen(next_event.text.text) == 1
-             && (next_event.text.text[0] & 0x80) == 0)
-            {
-                return next_event.text.text[0];
-            }
-        }
-
-        // Failed to find anything :/
-        return 0;
     }
+
+    // Failed to find anything :/
+    return 0;
 }
 
 void I_HandleKeyboardEvent(SDL_Event *sdlevent)
@@ -287,22 +211,16 @@ void I_StartTextInput(int x1, int y1, int x2, int y2)
 {
     text_input_enabled = true;
 
-    if (!vanilla_keyboard_mapping)
-    {
-        SDL_Rect rect = {x1, y1, x2 - x1, y2 - y1};
-        SDL_SetTextInputRect(&rect);
-        SDL_StartTextInput();
-    }
+    SDL_Rect rect = {x1, y1, x2 - x1, y2 - y1};
+    SDL_SetTextInputRect(&rect);
+    SDL_StartTextInput();
 }
 
 void I_StopTextInput(void)
 {
     text_input_enabled = false;
 
-    if (!vanilla_keyboard_mapping)
-    {
-        SDL_StopTextInput();
-    }
+    SDL_StopTextInput();
 }
 
 static void UpdateMouseButtonState(unsigned int button, boolean on)
@@ -465,6 +383,5 @@ void I_BindInputVariables(void)
 {
     M_BindFloatVariable("mouse_acceleration",      &mouse_acceleration);
     M_BindIntVariable("mouse_threshold",           &mouse_threshold);
-    M_BindIntVariable("vanilla_keyboard_mapping",  &vanilla_keyboard_mapping);
     M_BindIntVariable("novert",                    &novert);
 }

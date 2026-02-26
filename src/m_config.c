@@ -1114,14 +1114,6 @@ static default_t extra_defaults_list[] =
     CONFIG_VARIABLE_INT(vanilla_savegame_limit),
 
     //!
-    // If non-zero, the game behaves like Vanilla Doom, always assuming
-    // an American keyboard mapping.  If this has a value of zero, the
-    // native keyboard mapping of the keyboard is used.
-    //
-
-    CONFIG_VARIABLE_INT(vanilla_keyboard_mapping),
-
-    //!
     // Name to use in network games for identification.  This is only
     // used on the "waiting" screen while waiting for the game to start.
     //

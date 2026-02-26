@@ -82,7 +82,6 @@ void I_EnableLoadingDisk(int xoffs, int yoffs);
 extern char *video_driver;
 extern boolean screenvisible;
 
-extern int vanilla_keyboard_mapping;
 extern boolean screensaver_mode;
 extern int usegamma;
 extern pixel_t *I_VideoBuffer;
