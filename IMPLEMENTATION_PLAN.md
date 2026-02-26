@@ -177,7 +177,7 @@
 - [x] Remove duplicate config bindings
 - [x] Ensure goblin-doom.cfg is default config filename
 - [x] Remove default.cfg references where applicable
-- [ ] Clean up string duplication in chat macro bindings
+- [x] Clean up string duplication in chat macro bindings
 
 ### Phase 10: Memory Leak Fixes
 - [x] Add V_DisableDiceIcon function to free saved_background
