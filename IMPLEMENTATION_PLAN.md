@@ -145,7 +145,7 @@
 - [x] Update master server address or remove queries
 - [x] Fix InitPetName to not reseed rand() every call
 - [x] Remove unused NET_PACKET_TYPE_ACK
-- [ ] Clean up NET_MASTER_PACKET_TYPE_SIGN entries
+- [x] Clean up NET_MASTER_PACKET_TYPE_SIGN entries
 - [ ] Remove unused packet type definitions
 - [ ] Optimize reliable packet ACK handling
 - [ ] Remove unused NET_ExpandTicNum complexity
