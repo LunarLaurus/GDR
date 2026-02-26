@@ -23,7 +23,7 @@
 #include "net_io.h"
 #include "z_zone.h"
 
-#define MAX_MODULES 16
+#define MAX_MODULES 5
 
 struct _net_context_s
 {

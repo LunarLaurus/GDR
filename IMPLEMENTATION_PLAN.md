@@ -153,7 +153,7 @@
 - [ ] Remove unused net_client_recv_t memmove code
   - [ ] Resolve blocker: memmove code in NET_SV_AdvanceWindow and NET_CL_AdvanceWindow is actively used for network sliding window - cannot be removed without breaking networking
 - [x] Clean up SendOneQuery rate limiting
-- [ ] Reduce MAX_MODULES if too large
+- [x] Reduce MAX_MODULES if too large
 - [ ] Document network protocol for future reference
 - [ ] Add network protocol version stub
 
