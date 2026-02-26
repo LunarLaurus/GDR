@@ -120,6 +120,9 @@ typedef enum
     // number in this enum.
     NET_PROTOCOL_CHOCOLATE_DOOM_0,
 
+    // Goblin Dice Rollaz protocol - initial version
+    NET_PROTOCOL_GOBLIN_DICE_ROLLAZ_0,
+
     NET_NUM_PROTOCOLS,
     NET_PROTOCOL_UNKNOWN,
 } net_protocol_t;

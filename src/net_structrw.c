@@ -32,6 +32,7 @@ static struct
     const char *name;
 } protocol_names[] = {
     {NET_PROTOCOL_CHOCOLATE_DOOM_0, "CHOCOLATE_DOOM_0"},
+    {NET_PROTOCOL_GOBLIN_DICE_ROLLAZ_0, "GOBLIN_DICE_ROLLAZ_0"},
 };
 
 void NET_WriteConnectData(net_packet_t *packet, net_connect_data_t *data)

@@ -155,7 +155,7 @@
 - [x] Clean up SendOneQuery rate limiting
 - [x] Reduce MAX_MODULES if too large
 - [x] Document network protocol for future reference
-- [ ] Add network protocol version stub
+- [x] Add network protocol version stub
 
 ### Phase 8: Input System Cleanup
 - [x] Remove empty I_Tactile function
