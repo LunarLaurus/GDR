@@ -166,7 +166,7 @@
 - [x] Implement UpdateFocus in i_video.c
 - [x] Implement fullscreen toggle in i_video.c
 - [x] Document Windows stack trace functions
-- [ ] Document Windows crash handler functions
+- [x] Document Windows crash handler functions
 
 ### Phase 9: Configuration Cleanup
 - [ ] Remove screenblocks duplicate of screensize

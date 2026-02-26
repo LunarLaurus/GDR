@@ -82,6 +82,11 @@ void I_PrintBanner(const char *text);
 void I_PrintDivider(void);
 
 // Initialize crash handler for catching unhandled exceptions.
+// Windows: Uses SetUnhandledExceptionFilter to catch unhandled exceptions.
+//          Stack traces generated via DBGHELP.DLL (StackWalk64, SymGetLineFromAddr64).
+//          Outputs exception code, instruction pointer, and call stack with source lines.
+// Unix-like: Registers signal handlers for SIGSEGV, SIGFPE, SIGILL, SIGABRT.
+//            Uses execinfo.h (backtrace/backtrace_symbols) for stack traces.
 
 void I_InitCrashHandler(void);
 
