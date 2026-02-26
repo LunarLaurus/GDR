@@ -325,12 +325,6 @@ static void HandleWindowEvent(SDL_WindowEvent *event)
 
     switch (event->event)
     {
-#if 0 // SDL2-TODO
-        case SDL_ACTIVEEVENT:
-            // need to update our focus state
-            UpdateFocus();
-            break;
-#endif
         case SDL_WINDOWEVENT_EXPOSED:
             palette_to_set = true;
             break;
@@ -359,10 +353,12 @@ static void HandleWindowEvent(SDL_WindowEvent *event)
 
         case SDL_WINDOWEVENT_FOCUS_GAINED:
             window_focused = true;
+            UpdateFocus();
             break;
 
         case SDL_WINDOWEVENT_FOCUS_LOST:
             window_focused = false;
+            UpdateFocus();
             break;
 
         // We want to save the user's preferred monitor to use for running the
@@ -508,6 +504,11 @@ void I_StartTic (void)
 void I_UpdateNoBlit (void)
 {
     // what is this?
+}
+
+static void UpdateFocus(void)
+{
+    UpdateGrab();
 }
 
 static void UpdateGrab(void)
@@ -1503,8 +1504,7 @@ void I_InitGraphics(void)
     I_SetPalette(doompal);
     SDL_SetPaletteColors(screenbuffer->format->palette, palette, 0, 256);
 
-    // SDL2-TODO UpdateFocus();
-    UpdateGrab();
+    UpdateFocus();
 
     // On some systems, it takes a second or so for the screen to settle
     // after changing modes.  We include the option to add a delay when
