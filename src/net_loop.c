@@ -142,6 +142,12 @@ static net_addr_t *NET_CL_ResolveAddress(const char *address)
     }
 }
 
+static boolean NET_CL_WaitForData(int timeout_ms)
+{
+    (void)timeout_ms;
+    return false;
+}
+
 net_module_t net_loop_client_module =
 {
     NET_CL_InitClient,
@@ -151,6 +157,7 @@ net_module_t net_loop_client_module =
     NET_CL_AddrToString,
     NET_CL_FreeAddress,
     NET_CL_ResolveAddress,
+    NET_CL_WaitForData,
 };
 
 //-----------------------------------------------------------------------------
@@ -217,6 +224,12 @@ static net_addr_t *NET_SV_ResolveAddress(const char *address)
     }
 }
 
+static boolean NET_SV_WaitForData(int timeout_ms)
+{
+    (void)timeout_ms;
+    return false;
+}
+
 net_module_t net_loop_server_module =
 {
     NET_SV_InitClient,
@@ -226,6 +239,7 @@ net_module_t net_loop_server_module =
     NET_SV_AddrToString,
     NET_SV_FreeAddress,
     NET_SV_ResolveAddress,
+    NET_SV_WaitForData,
 };
 
 

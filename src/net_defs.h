@@ -88,6 +88,12 @@ struct _net_module_s
     // Try to resolve a name to an address
 
     net_addr_t *(*ResolveAddress)(const char *addr);
+
+    // Wait for data to arrive on the socket
+    // timeout_ms: maximum time to wait in milliseconds
+    // Returns true if data is available
+
+    boolean (*WaitForData)(int timeout_ms);
 };
 
 // net_addr_t

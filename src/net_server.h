@@ -34,6 +34,11 @@ void NET_SV_Shutdown(void);
 
 void NET_SV_AddModule(net_module_t *module);
 
+// Wait for data to arrive on any registered module
+// timeout_ms: maximum time to wait in milliseconds
+
+void NET_SV_WaitForData(int timeout_ms);
+
 // Register server with master server.
 
 void NET_SV_RegisterWithMaster(void);

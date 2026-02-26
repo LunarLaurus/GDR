@@ -2025,6 +2025,28 @@ void NET_SV_Run(void)
     }
 }
 
+void NET_SV_WaitForData(int timeout_ms)
+{
+    int i;
+
+    if (server_context == NULL)
+    {
+        return;
+    }
+
+    for (i = 0; i < MAX_MODULES; ++i)
+    {
+        if (server_context->modules[i] != NULL &&
+            server_context->modules[i]->WaitForData != NULL)
+        {
+            if (server_context->modules[i]->WaitForData(timeout_ms))
+            {
+                return;
+            }
+        }
+    }
+}
+
 void NET_SV_Shutdown(void)
 {
     int i;

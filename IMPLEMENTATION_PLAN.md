@@ -195,7 +195,7 @@
 - [x] Resolve i_endoom.c SDL2-TODO items
 - [x] Resolve i_video.c fullscreen toggle TODO
 - [x] Resolve net_server.c client rejection TODO
-- [ ] Resolve net_dedicated.c socket polling TODO
+- [x] Resolve net_dedicated.c socket polling TODO
 - [ ] Resolve net_packet.c safe string TODO
 - [x] Resolve p_mobj.c NOP function pointer FIXME
 - [x] Resolve p_tick.c NOP FIXME

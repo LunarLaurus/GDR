@@ -45,6 +45,7 @@ static boolean initted = false;
 static int port = DEFAULT_PORT;
 static UDPsocket udpsocket;
 static UDPpacket *recvpacket;
+static SDLNet_SocketSet socket_set = NULL;
 
 typedef struct
 {
@@ -339,6 +340,26 @@ net_addr_t *NET_SDL_ResolveAddress(const char *address)
     }
 }
 
+static boolean NET_SDL_WaitForData(int timeout_ms)
+{
+    if (!initted || udpsocket == NULL)
+    {
+        return false;
+    }
+
+    if (socket_set == NULL)
+    {
+        socket_set = SDLNet_AllocSocketSet(1);
+        if (socket_set == NULL)
+        {
+            return false;
+        }
+        SDLNet_UDP_AddSocket(socket_set, udpsocket);
+    }
+
+    return SDLNet_CheckSockets(socket_set, timeout_ms) > 0;
+}
+
 // Complete module
 
 net_module_t net_sdl_module =
@@ -350,6 +371,7 @@ net_module_t net_sdl_module =
     NET_SDL_AddrToString,
     NET_SDL_FreeAddress,
     NET_SDL_ResolveAddress,
+    NET_SDL_WaitForData,
 };
 
 
@@ -398,6 +420,13 @@ net_addr_t *NET_NULL_ResolveAddress(const char *address)
 }
 
 
+static boolean NET_NULL_WaitForData(int timeout_ms)
+{
+    (void)timeout_ms;
+    return false;
+}
+
+
 net_module_t net_sdl_module =
 {
     NET_NULL_InitClient,
@@ -407,6 +436,7 @@ net_module_t net_sdl_module =
     NET_NULL_AddrToString,
     NET_NULL_FreeAddress,
     NET_NULL_ResolveAddress,
+    NET_NULL_WaitForData,
 };
 
 
