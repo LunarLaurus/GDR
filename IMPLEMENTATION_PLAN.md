@@ -273,7 +273,7 @@
   - [ ] Resolve blocker: src/strife/ will be removed in Phase 36
 
 ### Phase 12: Platform Code Consolidation
-- [ ] Move Windows stack trace to platform abstraction
+- [x] Move Windows stack trace to platform abstraction
 - [ ] Move Windows crash handler to platform abstraction
 - [ ] Document Windows CD-ROM path handling
 - [ ] Document macOS fullscreen modifier handling

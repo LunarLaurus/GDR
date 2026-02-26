@@ -90,5 +90,10 @@ void I_PrintDivider(void);
 
 void I_InitCrashHandler(void);
 
+#ifdef _WIN32
+void I_WindowsStackTrace(void *ExceptionInfo);
+long I_HandleException(void *ExceptionInfo);
+#endif
+
 #endif
 
