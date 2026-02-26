@@ -146,7 +146,7 @@
 - [x] Fix InitPetName to not reseed rand() every call
 - [x] Remove unused NET_PACKET_TYPE_ACK
 - [x] Clean up NET_MASTER_PACKET_TYPE_SIGN entries
-- [ ] Remove unused packet type definitions
+- [x] Remove unused packet type definitions
 - [ ] Optimize reliable packet ACK handling
 - [ ] Remove unused NET_ExpandTicNum complexity
 - [ ] Simplify NET_Conn_ReliablePacket ACK logic
