@@ -393,19 +393,18 @@ static void I_ToggleFullScreen(void)
 {
     unsigned int flags = 0;
 
-    // TODO: Consider implementing fullscreen toggle for SDL_WINDOW_FULLSCREEN
-    // (mode-changing) setup. This is hard because we have to shut down and
-    // restart again.
-    if (fullscreen_width != 0 || fullscreen_height != 0)
-    {
-        return;
-    }
-
     fullscreen = !fullscreen;
 
     if (fullscreen)
     {
-        flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+        if (fullscreen_width != 0 && fullscreen_height != 0)
+        {
+            flags |= SDL_WINDOW_FULLSCREEN;
+        }
+        else
+        {
+            flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+        }
     }
 
     SDL_SetWindowFullscreen(screen, flags);
@@ -415,6 +414,8 @@ static void I_ToggleFullScreen(void)
         AdjustWindowSize();
         SDL_SetWindowSize(screen, window_width, window_height);
     }
+
+    CreateUpscaledTexture(true);
 }
 
 void I_GetEvent(void)

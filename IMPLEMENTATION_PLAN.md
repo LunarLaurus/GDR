@@ -164,7 +164,7 @@
 - [x] Implement SDL_SetTextInputRect in i_input.c
 - [x] Fix XXX pointer undefined behavior in i_input.c
 - [x] Implement UpdateFocus in i_video.c
-- [ ] Implement fullscreen toggle in i_video.c
+- [x] Implement fullscreen toggle in i_video.c
 - [ ] Document Windows stack trace functions
 - [ ] Document Windows crash handler functions
 
