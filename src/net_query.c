@@ -48,6 +48,10 @@
 
 #define QUERY_MAX_ATTEMPTS 3
 
+// Rate limiting: minimum time between queries in milliseconds.
+
+#define QUERY_RATE_LIMIT_MS 50
+
 typedef enum
 {
     QUERY_TARGET_SERVER,       // Normal server target.
@@ -432,9 +436,7 @@ static void SendOneQuery(void)
 
     now = I_GetTimeMS();
 
-    // Rate limit - only send one query every 50ms.
-
-    if (now - last_query_time < 50)
+    if (now - last_query_time < QUERY_RATE_LIMIT_MS)
     {
         return;
     }
