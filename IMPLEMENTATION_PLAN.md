@@ -275,7 +275,7 @@
 ### Phase 12: Platform Code Consolidation
 - [x] Move Windows stack trace to platform abstraction
 - [x] Move Windows crash handler to platform abstraction
-- [ ] Document Windows CD-ROM path handling
+- [x] Document Windows CD-ROM path handling
 - [ ] Document macOS fullscreen modifier handling
 - [ ] Remove DOS keyboard shift translation table
 - [ ] Remove legacy keyboard mapping code

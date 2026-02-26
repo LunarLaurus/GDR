@@ -1522,8 +1522,17 @@ void D_DoomMain (void)
     // @platform windows
     // @vanilla
     //
-    // Save configuration data and savegames in c:\doomdata,
+    // Save configuration data and savegames to c:\doomdata\,
     // allowing play from CD.
+    //
+    // Windows CD-ROM Mode:
+    // This is a legacy DOS feature that allowed the game to be played
+    // from a read-only CD while storing mutable data (configs, saves)
+    // on the local hard drive. When -cdrom is specified:
+    //   - Config directory: c:\doomdata\ (or c:\goblin\ for Goblin Dice Rollaz)
+    //   - Savegames: Same directory as configs
+    // This feature is Windows-specific and largely obsolete, but preserved
+    // for compatibility with existing setups and legacy batch scripts.
     //
 
     if (M_ParmExists("-cdrom"))
