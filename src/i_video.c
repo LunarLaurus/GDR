@@ -748,14 +748,15 @@ void I_FinishUpdate (void)
 
     UpdateGrab();
 
-#if 0 // SDL2-TODO
-    // Don't update the screen if the window isn't visible.
-    // Not doing this breaks under Windows when we alt-tab away 
+    // Don't update the screen if the window is minimized.
+    // Not doing this breaks under Windows when we alt-tab away
     // while fullscreen.
 
-    if (!(SDL_GetAppState() & SDL_APPACTIVE))
-        return;
-#endif
+    {
+        uint32_t flags = SDL_GetWindowFlags(screen);
+        if (flags & SDL_WINDOW_MINIMIZED)
+            return;
+    }
 
     // draws little dots on the bottom of the screen
 
