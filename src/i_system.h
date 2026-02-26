@@ -54,7 +54,6 @@ void I_Quit (void) NORETURN;
 
 void I_Error (const char *error, ...) NORETURN PRINTF_ATTR(1, 2);
 
-void I_Tactile (int on, int off, int total);
 
 void *I_Realloc(void *ptr, size_t size);
 

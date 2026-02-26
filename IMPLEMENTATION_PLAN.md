@@ -158,7 +158,7 @@
 - [ ] Add network protocol version stub
 
 ### Phase 8: Input System Cleanup
-- [ ] Remove empty I_Tactile function
+- [x] Remove empty I_Tactile function
 - [ ] Remove unused shiftxform keyboard translation table
 - [ ] Remove vanilla_keyboard_mapping if not needed
 - [ ] Implement SDL_SetTextInputRect in i_input.c

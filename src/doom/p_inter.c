@@ -1529,7 +1529,7 @@ P_DamageMobj
 	temp = damage < 100 ? damage : 100;
 
 	if (player == &players[consoleplayer])
-	    I_Tactile (40,10,40+temp*2);
+	    ;
     }
 
     // Goblin Dice Rollaz: Dice Arena PvP damage boost
