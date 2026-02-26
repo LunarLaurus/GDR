@@ -169,7 +169,7 @@
 - [x] Document Windows crash handler functions
 
 ### Phase 9: Configuration Cleanup
-- [ ] Remove screenblocks duplicate of screensize
+- [x] Remove screenblocks duplicate of screensize
 - [ ] Remove detaillevel legacy variable
 - [ ] Remove Strife-only config variables
 - [ ] Remove Heretic-only config variables

@@ -521,18 +521,6 @@ static default_t	doom_defaults_list[] =
     CONFIG_VARIABLE_INT(screenblocks),
 
     //!
-    // @game strife
-    //
-    // Screen size, range 3-11.
-    //
-    // A value of 11 gives a full-screen view with the status bar not
-    // displayed.  A value of 10 gives a full-screen view with the
-    // status bar displayed.
-    //
-
-    CONFIG_VARIABLE_INT(screensize),
-
-    //!
     // @game doom
     //
     // Screen detail.  Zero gives normal "high detail" mode, while
