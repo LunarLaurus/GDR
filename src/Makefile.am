@@ -33,7 +33,7 @@ i_pcstack.c                               \
 m_argv.c             m_argv.h              \
 m_misc.c             m_misc.h
 
-# Dedicated server (chocolate-server):
+# Dedicated server (goblin-server):
 
 DEDSERV_FILES=\
 d_dedicated.c                              \
@@ -55,7 +55,7 @@ z_native.c           z_zone.h
 @PROGRAM_PREFIX@server_SOURCES=$(COMMON_SOURCE_FILES) $(DEDSERV_FILES)
 @PROGRAM_PREFIX@server_LDADD = @LDFLAGS@ @SDLNET_LIBS@
 
-# Source files used by the game binaries (chocolate-doom, etc.)
+# Source files used by the game binaries (goblin-doom, etc.)
 
 GAME_BASE_FILES=\
 aes_prng.c           aes_prng.h            \
