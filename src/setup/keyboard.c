@@ -436,9 +436,6 @@ void ConfigKeyboard(TXT_UNCAST_ARG(widget), void *user_data)
                    TXT_NewSeparator("Misc."),
                    run_control = TXT_NewCheckBox("Always run", &always_run),
                    TXT_TABLE_EOL,
-                   TXT_NewInvertedCheckBox("Use native keyboard mapping",
-                                           &vanilla_keyboard_mapping),
-                   TXT_TABLE_EOL,
                    NULL);
 
     TXT_SignalConnect(run_control, "changed", UpdateJoybSpeed, NULL);

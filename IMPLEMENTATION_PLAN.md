@@ -278,7 +278,7 @@
 - [x] Document Windows CD-ROM path handling
 - [x] Document macOS fullscreen modifier handling
 - [x] Remove DOS keyboard shift translation table
-- [ ] Remove legacy keyboard mapping code
+- [x] Remove legacy keyboard mapping code
 
 ### Phase 13: Build System Cleanup
 - [x] Update configure.ac version if needed
