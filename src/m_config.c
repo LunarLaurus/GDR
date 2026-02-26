@@ -1820,37 +1820,6 @@ static default_t *SearchCollection(default_collection_t *collection, const char 
     return NULL;
 }
 
-// Mapping from DOS keyboard scan code to internal key code (as defined
-// in doomkey.h). I think I (fraggle) reused this from somewhere else
-// but I can't find where. Anyway, notes:
-//  * KEY_PAUSE is wrong - it's in the KEY_NUMLOCK spot. This shouldn't
-//    matter in terms of Vanilla compatibility because neither of
-//    those were valid for key bindings.
-//  * There is no proper scan code for PrintScreen (on DOS machines it
-//    sends an interrupt). So I added a fake scan code of 126 for it.
-//    The presence of this is important so we can bind PrintScreen as
-//    a screenshot key.
-static const int scantokey[128] =
-{
-    0  ,    27,     '1',    '2',    '3',    '4',    '5',    '6',
-    '7',    '8',    '9',    '0',    '-',    '=',    KEY_BACKSPACE, 9,
-    'q',    'w',    'e',    'r',    't',    'y',    'u',    'i',
-    'o',    'p',    '[',    ']',    13,		KEY_RCTRL, 'a',    's',
-    'd',    'f',    'g',    'h',    'j',    'k',    'l',    ';',
-    '\'',   '`',    KEY_RSHIFT,'\\',   'z',    'x',    'c',    'v',
-    'b',    'n',    'm',    ',',    '.',    '/',    KEY_RSHIFT,KEYP_MULTIPLY,
-    KEY_RALT,  ' ',  KEY_CAPSLOCK,KEY_F1,  KEY_F2,   KEY_F3,   KEY_F4,   KEY_F5,
-    KEY_F6,   KEY_F7,   KEY_F8,   KEY_F9,   KEY_F10,  /*KEY_NUMLOCK?*/KEY_PAUSE,KEY_SCRLCK,KEY_HOME,
-    KEY_UPARROW,KEY_PGUP,KEY_MINUS,KEY_LEFTARROW,KEYP_5,KEY_RIGHTARROW,KEYP_PLUS,KEY_END,
-    KEY_DOWNARROW,KEY_PGDN,KEY_INS,KEY_DEL,0,   0,      0,      KEY_F11,
-    KEY_F12,  0,      0,      0,      0,      0,      0,      0,
-    0,      0,      0,      0,      0,      0,      0,      0,
-    0,      0,      0,      0,      0,      0,      0,      0,
-    0,      0,      0,      0,      0,      0,      0,      0,
-    0,      0,      0,      0,      0,      0,      KEY_PRTSCR, 0
-};
-
-
 static void SaveDefaultCollection(default_collection_t *collection)
 {
     default_t *defaults;
@@ -1887,45 +1856,11 @@ static void SaveDefaultCollection(default_collection_t *collection)
         {
             case DEFAULT_KEY:
 
-                // use the untranslated version if we can, to reduce
-                // the possibility of screwing up the user's config
-                // file
-                
                 v = *defaults[i].location.i;
-
-                if (v == KEY_RSHIFT)
-                {
-                    // Special case: for shift, force scan code for
-                    // right shift, as this is what Vanilla uses.
-                    // This overrides the change check below, to fix
-                    // configuration files made by old versions that
-                    // mistakenly used the scan code for left shift.
-
-                    v = 54;
-                }
-                else if (defaults[i].untranslated
+                if (defaults[i].untranslated
                       && v == defaults[i].original_translated)
                 {
-                    // Has not been changed since the last time we
-                    // read the config file.
-
                     v = defaults[i].untranslated;
-                }
-                else
-                {
-                    // search for a reverse mapping back to a scancode
-                    // in the scantokey table
-
-                    int s;
-
-                    for (s=0; s<128; ++s)
-                    {
-                        if (scantokey[s] == v)
-                        {
-                            v = s;
-                            break;
-                        }
-                    }
                 }
 
 	        fprintf(f, "%i", v);
@@ -1987,20 +1922,8 @@ static void SetVariable(default_t *def, const char *value)
 
         case DEFAULT_KEY:
 
-            // translate scancodes read from config
-            // file (save the old value in untranslated)
-
             intparm = ParseIntParameter(value);
             def->untranslated = intparm;
-            if (intparm >= 0 && intparm < 128)
-            {
-                intparm = scantokey[intparm];
-            }
-            else
-            {
-                intparm = 0;
-            }
-
             def->original_translated = intparm;
             *def->location.i = intparm;
             break;

@@ -277,7 +277,7 @@
 - [x] Move Windows crash handler to platform abstraction
 - [x] Document Windows CD-ROM path handling
 - [x] Document macOS fullscreen modifier handling
-- [ ] Remove DOS keyboard shift translation table
+- [x] Remove DOS keyboard shift translation table
 - [ ] Remove legacy keyboard mapping code
 
 ### Phase 13: Build System Cleanup
