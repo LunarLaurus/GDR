@@ -756,7 +756,7 @@
 - [ ] Add puzzle completion scoring
 
 ### Phase 46: Siege Battles
-- [ ] Add large-scale battle AI (50+ enemies)
+- [x] Add large-scale battle AI (50+ enemies)
 - [ ] Add siege weapon interactions
 - [ ] Add defensive position combat
 - [ ] Add wave-based assault mode

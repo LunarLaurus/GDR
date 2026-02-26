@@ -58,6 +58,7 @@ add_library(doom STATIC
             p_pspr.c        p_pspr.h
             p_saveg.c       p_saveg.h
             p_setup.c       p_setup.h
+            p_siege.c       p_siege.h
             p_sight.c
             p_spec.c        p_spec.h
             p_switch.c
