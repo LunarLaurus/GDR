@@ -245,7 +245,6 @@ static void StartGame(int multiplayer)
 
     if (warptype == WARP_ExMy)
     {
-        // TODO: select IWAD based on warp type
         AddCmdLineParameter(exec, "-warp %i %i", warpepisode, warpmap);
     }
     else if (warptype == WARP_MAPxy)

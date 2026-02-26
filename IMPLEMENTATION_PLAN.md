@@ -241,9 +241,10 @@
 - [ ] Resolve g_game.c Heretic FIXME line 128
 - [ ] Resolve heretic d_net.c TODO items
 - [ ] Resolve hexen h2_main.c TODO line 527
-- [ ] Resolve gusconf.c TODO line 210
+  - [ ] Resolve blocker: Hexen code will be removed in Phase 37
+- [x] Resolve gusconf.c TODO line 210
 - [ ] Resolve setup multiplayer.c TODO line 248
-- [ ] Resolve d_iwad.c STRIFE-FIXME line 50
+- [x] Resolve d_iwad.c STRIFE-FIXME line 50
 - [ ] Resolve s_sound.c STRIFE-TODO line 592
 - [ ] Resolve st_stuff.c Strife TODO lines 174, 803, 987
 
