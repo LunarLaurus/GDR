@@ -248,6 +248,14 @@ state_t	states[NUMSTATES] = {
     {SPR_D6B1,2,4,{NULL},S_D2_4,0,0},	// S_D2_3 - follow through
     {SPR_D6B1,1,5,{A_ReFire},S_D2,0,0},	// S_D2_4 - refire
     {SPR_D6BF,32768,5,{A_Light1},S_LIGHTDONE,0,0},	// S_D2FLASH
+    {SPR_D6B1,0,1,{A_WeaponReady},S_D3,0,0},	// S_D3 - Skewered Luck ready
+    {SPR_D6B1,0,1,{A_Lower},S_D3DOWN,0,0},	// S_D3DOWN
+    {SPR_D6B1,0,1,{A_Raise},S_D3UP,0,0},	// S_D3UP
+    {SPR_D6B1,0,3,{NULL},S_D3_2,0,0},	// S_D3_1 - windup
+    {SPR_D6B1,1,5,{A_FireD3},S_D3_3,0,0},	// S_D3_2 - fire
+    {SPR_D6B1,2,4,{NULL},S_D3_4,0,0},	// S_D3_3 - follow through
+    {SPR_D6B1,1,5,{A_ReFire},S_D3,0,0},	// S_D3_4 - refire
+    {SPR_D6BF,32768,5,{A_Light1},S_LIGHTDONE,0,0},	// S_D3FLASH
     {SPR_SHTG,0,1,{A_WeaponReady},S_SGUN,0,0},	// S_SGUN
     {SPR_SHTG,0,1,{A_Lower},S_SGUNDOWN,0,0},	// S_SGUNDOWN
     {SPR_SHTG,0,1,{A_Raise},S_SGUNUP,0,0},	// S_SGUNUP
@@ -2903,6 +2911,32 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 	1,		// damage (base, modified by dice roll at fire time)
 	sfx_None,		// activesound
 	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_MAGICTRAIL,		// flags
+	S_NULL		// raisestate
+    },
+
+    {		// MT_D3PROJECTILE - Goblin Dice Rollaz d3 Skewered Luck projectile (piercing)
+	-1,		// doomednum
+	S_PLASBALL,		// spawnstate (reuse plasma ball sprite)
+	1000,		// spawnhealth
+	S_NULL,		// seestate
+	sfx_dice_d6,		// seesound
+	8,		// reactiontime
+	sfx_None,		// attacksound
+	S_NULL,		// painstate
+	0,		// painchance
+	sfx_None,		// painsound
+	S_NULL,		// meleestate
+	S_NULL,		// missilestate
+	S_PLASEXP,		// deathstate
+	S_NULL,		// xdeathstate
+	sfx_firxpl,		// deathsound
+	25*FRACUNIT,		// speed (slightly slower, piercing)
+	4*FRACUNIT,		// radius (smaller)
+	4*FRACUNIT,		// height (smaller)
+	30,		// mass (lighter)
+	1,		// damage (base, modified by dice roll at fire time)
+	sfx_None,		// activesound
+	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_MAGICTRAIL,		// flags (piercing via damage type)
 	S_NULL		// raisestate
     },
 

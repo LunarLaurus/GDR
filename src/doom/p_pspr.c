@@ -68,7 +68,8 @@ static const fixed_t weapon_recoil_values[NUMWEAPONS] = {
     FRACUNIT/2,    // wp_twind6 - Goblin Dice Rollaz
     FRACUNIT/4,    // wp_arcaned20 - Goblin Dice Rollaz
     FRACUNIT,      // wp_cursed - Goblin Dice Rollaz
-    FRACUNIT/5     // wp_d2 - Goblin Dice Rollaz (low recoil)
+    FRACUNIT/5,    // wp_d2 - Goblin Dice Rollaz (low recoil)
+    FRACUNIT/5     // wp_d3 - Goblin Dice Rollaz (low recoil, piercing)
 };
 
 
@@ -1556,6 +1557,59 @@ A_FireD2
     else if (diceRoll >= 2)
     {
         R_TriggerScreenShake(FRACUNIT * 1, 4);
+    }
+}
+
+
+//
+// A_FireD3 - Goblin Dice Rollaz d3 Skewered Luck weapon
+// Guaranteed 1-3 damage, piercing projectile
+// Crit: double the result (2-6 damage)
+// 
+void
+A_FireD3
+( player_t*	player,
+  pspdef_t*	psp ) 
+{
+    int damage;
+    int guaranteedCrit = 0;
+    int critRoll = 0;
+    int diceRoll = 0;
+    mobj_t* missile;
+    
+    S_StartSound (player->mo, sfx_dice_d6);
+
+    P_SetMobjState (player->mo, S_PLAY_ATK2);
+    DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
+
+    P_SetPsprite (player,
+		  ps_flash,
+		  weaponinfo[player->readyweapon].flashstate+(P_Random ()&1));
+
+    if (player->powers[pw_dicefortune])
+    {
+        guaranteedCrit = 1;
+        player->powers[pw_dicefortune] = 0;
+        player->message = "CRITICAL!";
+    }
+
+    damage = P_CalculateDiceDamage(wp_d3, guaranteedCrit, &critRoll, NULL, &diceRoll, player);
+
+    player->weapon_recoil = weapon_recoil_values[wp_d3];
+
+    missile = P_SpawnPlayerMissile (player->mo, MT_D3PROJECTILE, wp_d3);
+    if (missile)
+    {
+        missile->damage = damage;
+    }
+
+    if (critRoll > 0)
+    {
+        R_TriggerScreenShake(FRACUNIT * 2, 5);
+    }
+    else
+    {
+        R_TriggerScreenShake(FRACUNIT * 1, 3);
     }
 }
 

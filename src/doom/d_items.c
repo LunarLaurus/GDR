@@ -198,14 +198,23 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
      	S_CURSED_1,
      	S_CURSEDFLASH
      },
+    {
+  	// d2 Flip of Fate weapon (binary damage: 50% 1dmg/50% 2dmg)
+  	am_lightdice,
+  	S_D2DOWN,
+  	S_D2UP,
+  	S_D2,
+  	S_D2_1,
+  	S_D2FLASH
+     },
      {
- 	// d2 Flip of Fate weapon (binary damage: 50% 1dmg/50% 2dmg)
+ 	// d3 Skewered Luck weapon (guaranteed 1-3 damage, piercing)
  	am_lightdice,
- 	S_D2DOWN,
- 	S_D2UP,
- 	S_D2,
- 	S_D2_1,
- 	S_D2FLASH
+ 	S_D3DOWN,
+ 	S_D3UP,
+ 	S_D3,
+ 	S_D3_1,
+ 	S_D3FLASH
      },
 };
 
@@ -356,6 +365,18 @@ dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
         0,      // ricochet_bounces: no
         0, 0,   // No misfire
         SPF_EARLY_GAME, 55, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_NORMAL  // Early game weapon, common spawn
+    },
+    {   // wp_d3 - Skewered Luck (guaranteed 1-3 damage, piercing)
+        3,      // die_type: d3
+        33,     // crit_chance: 33% (roll of 3 = crit)
+        2,      // crit_multiplier: 2x on crit
+        1,      // min_damage
+        3,      // crit_roll: 3
+        {1, 2, 2, 0, 0, 0, 4},  // Guaranteed 1-3: 1=1, 2-3=2, crit(3*2=4)
+        0,      // gamble_shot: no
+        0,      // ricochet_bounces: no
+        0, 0,   // No misfire
+        SPF_EARLY_GAME, 50, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_PIERCING  // Early game piercing weapon
     },
 };
 

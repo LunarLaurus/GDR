@@ -121,6 +121,7 @@ typedef enum
     wp_arcaned20,     // arcane d20 beam (continuous roll tick damage)
     wp_cursed,        // cursed die (high damage, self-risk mechanic)
     wp_d2,            // d2 Flip of Fate (binary damage, 50% 1dmg/50% 2dmg)
+    wp_d3,            // d3 Skewered Luck (guaranteed 1-3 damage, piercing)
 
     NUMWEAPONS,
     
