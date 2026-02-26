@@ -262,6 +262,8 @@
 // Screen shake
 #define SCREEN_SHAKE_MIN_ROLL     4       // Roll amount for min shake
 #define SCREEN_SHAKE_CRIT_BONUS   2       // Additional roll per crit tier
+#define DEFAULT_SHAKE_SCALE       1.0f    // Default screen shake intensity
+#define DEFAULT_DAMAGE_SCALE      1.0f    // Default damage number scale
 
 // ============================================================================
 // DEBUG / DEVELOPMENT

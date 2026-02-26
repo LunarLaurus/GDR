@@ -25,6 +25,7 @@
 #include "doomdef.h"
 #include "doomkeys.h"
 #include "dstrings.h"
+#include "g_balance.h"
 
 #include "d_main.h"
 #include "deh_main.h"
@@ -90,8 +91,8 @@ int			rpg_mode = 0;
 // Goblin Dice Rollaz: Game Settings
 int			dice_sound_volume = DEFAULT_DICE_VOLUME;       // Dice roll sound volume (0-15)
 int			crit_notification = 1;        // Show crit text notifications (0=off, 1=on)
-float		screen_shake_intensity = 1.0f; // Screen shake multiplier (0.0-2.0)
-float		damage_number_scale = 1.0f;    // Damage number size multiplier (0.5-2.0)
+float		screen_shake_intensity = DEFAULT_SHAKE_SCALE; // Screen shake multiplier (0.0-2.0)
+float		damage_number_scale = DEFAULT_DAMAGE_SCALE;    // Damage number size multiplier (0.5-2.0)
 int			particle_effects = 1;         // Enable particle effects (0=off, 1=on)
 int			kill_confirm_enabled = 1;     // Show kill confirmation popups (0=off, 1=on)
 

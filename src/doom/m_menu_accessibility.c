@@ -21,6 +21,7 @@
 #include "doomdef.h"
 #include "doomkeys.h"
 #include "dstrings.h"
+#include "g_balance.h"
 
 #include "d_main.h"
 #include "deh_main.h"
@@ -122,7 +123,7 @@ void M_ReduceMotion(int choice)
     else
     {
         players[consoleplayer].message = "Reduce Motion: OFF";
-        screen_shake_intensity = 1.0f;
+        screen_shake_intensity = DEFAULT_SHAKE_SCALE;
     }
 }
 

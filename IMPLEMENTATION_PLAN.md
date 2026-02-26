@@ -377,7 +377,7 @@
 
 ### Phase 18: Code Quality Improvements
 - [x] Define DEFAULT_DICE_VOLUME constant in m_menu.c
-- [ ] Define DEFAULT_SHAKE_SCALE and DEFAULT_DAMAGE_SCALE
+- [x] Define DEFAULT_SHAKE_SCALE and DEFAULT_DAMAGE_SCALE
 - [ ] Define MAX_MENU_PARTICLES constant
 - [ ] Define SHAKE_LOW, SHAKE_MEDIUM, SHAKE_HIGH constants
 - [ ] Define CRIT_CHANCE_SCALE constant in p_inter.c
