@@ -382,7 +382,7 @@
 - [ ] Define SHAKE_LOW, SHAKE_MEDIUM, SHAKE_HIGH constants
 - [ ] Define CRIT_CHANCE_SCALE constant in p_inter.c
 - [ ] Define movement speed constants in g_game.c
-- [ ] Fix typo: indetermined -> undetermined in doomstat.c
+- [x] Fix typo: indetermined -> undetermined in doomstat.c
 - [ ] Fix inconsistent naming: standardize snake_case for goblin vars
 - [ ] Add NULL check after malloc in m_menu.c
 - [ ] Add NULL check after malloc in d_main.c
