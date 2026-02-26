@@ -216,14 +216,10 @@ char *NET_ReadSafeString(net_packet_t *packet)
         return NULL;
     }
 
-    // w is always <= r, so we never produce a longer string than the original.
     w = result;
     for (r = result; *r != '\0'; ++r)
     {
-        // TODO: This is a very naive way of producing a safe string; only
-        // ASCII characters are allowed. Probably this should really support
-        // UTF-8 characters as well.
-        if (isprint(*r) || *r == '\n')
+        if (isprint(*r) || *r == '\n' || (*r & 0x80))
         {
             *w = *r;
             ++w;
