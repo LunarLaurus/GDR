@@ -161,7 +161,7 @@
 - [x] Remove empty I_Tactile function
 - [ ] Remove unused shiftxform keyboard translation table
 - [ ] Remove vanilla_keyboard_mapping if not needed
-- [ ] Implement SDL_SetTextInputRect in i_input.c
+- [x] Implement SDL_SetTextInputRect in i_input.c
 - [ ] Fix XXX pointer undefined behavior in i_input.c
 - [ ] Implement UpdateFocus in i_video.c
 - [ ] Implement fullscreen toggle in i_video.c

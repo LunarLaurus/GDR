@@ -291,7 +291,8 @@ void I_StartTextInput(int x1, int y1, int x2, int y2)
 
     if (!vanilla_keyboard_mapping)
     {
-        // SDL2-TODO: SDL_SetTextInputRect(...);
+        SDL_Rect rect = {x1, y1, x2 - x1, y2 - y1};
+        SDL_SetTextInputRect(&rect);
         SDL_StartTextInput();
     }
 }
