@@ -379,6 +379,9 @@ static void HandleWindowEvent(SDL_WindowEvent *event)
     }
 }
 
+// ToggleFullScreenKeyShortcut: Checks if the key combo for toggling fullscreen is pressed.
+// On Windows/Linux: Alt+Enter or Alt+NumPad Enter
+// On macOS: Cmd+Enter, Cmd+NumPad Enter, or Alt+Enter (Command key = GUI modifier)
 static boolean ToggleFullScreenKeyShortcut(SDL_Keysym *sym)
 {
     Uint16 flags = (KMOD_LALT | KMOD_RALT);
