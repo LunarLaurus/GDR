@@ -65,6 +65,7 @@ void A_FireD10();
 void A_FireTwinD6();
 void A_FireArcaneD20();
 void A_FireCursed();
+void A_FireD2();
 void A_Light1();
 void A_FireShotgun();
 void A_Light2();
@@ -239,6 +240,14 @@ state_t	states[NUMSTATES] = {
     {SPR_D6B1,2,5,{NULL},S_CURSED_4,0,0},	// S_CURSED_3 - follow through
     {SPR_D6B1,1,6,{A_ReFire},S_CURSED,0,0},	// S_CURSED_4 - refire
     {SPR_D6BF,32768,6,{A_Light1},S_LIGHTDONE,0,0},	// S_CURSEDFLASH
+    {SPR_D6B1,0,1,{A_WeaponReady},S_D2,0,0},	// S_D2 - Flip of Fate ready
+    {SPR_D6B1,0,1,{A_Lower},S_D2DOWN,0,0},	// S_D2DOWN
+    {SPR_D6B1,0,1,{A_Raise},S_D2UP,0,0},	// S_D2UP
+    {SPR_D6B1,0,3,{NULL},S_D2_2,0,0},	// S_D2_1 - windup
+    {SPR_D6B1,1,5,{A_FireD2},S_D2_3,0,0},	// S_D2_2 - fire
+    {SPR_D6B1,2,4,{NULL},S_D2_4,0,0},	// S_D2_3 - follow through
+    {SPR_D6B1,1,5,{A_ReFire},S_D2,0,0},	// S_D2_4 - refire
+    {SPR_D6BF,32768,5,{A_Light1},S_LIGHTDONE,0,0},	// S_D2FLASH
     {SPR_SHTG,0,1,{A_WeaponReady},S_SGUN,0,0},	// S_SGUN
     {SPR_SHTG,0,1,{A_Lower},S_SGUNDOWN,0,0},	// S_SGUNDOWN
     {SPR_SHTG,0,1,{A_Raise},S_SGUNUP,0,0},	// S_SGUNUP
@@ -2866,6 +2875,32 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 	8*FRACUNIT,		// height
 	100,		// mass
 	5,		// damage (modified by dice roll at fire time)
+	sfx_None,		// activesound
+	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_MAGICTRAIL,		// flags
+	S_NULL		// raisestate
+    },
+
+    {		// MT_D2PROJECTILE - Goblin Dice Rollaz d2 Flip of Fate projectile
+	-1,		// doomednum
+	S_PLASBALL,		// spawnstate (reuse plasma ball sprite)
+	1000,		// spawnhealth
+	S_NULL,		// seestate
+	sfx_dice_d6,		// seesound
+	8,		// reactiontime
+	sfx_None,		// attacksound
+	S_NULL,		// painstate
+	0,		// painchance
+	sfx_None,		// painsound
+	S_NULL,		// meleestate
+	S_NULL,		// missilestate
+	S_PLASEXP,		// deathstate
+	S_NULL,		// xdeathstate
+	sfx_firxpl,		// deathsound
+	30*FRACUNIT,		// speed (faster than cursed die)
+	6*FRACUNIT,		// radius
+	6*FRACUNIT,		// height
+	50,		// mass
+	1,		// damage (base, modified by dice roll at fire time)
 	sfx_None,		// activesound
 	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_MAGICTRAIL,		// flags
 	S_NULL		// raisestate

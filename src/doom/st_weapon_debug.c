@@ -103,7 +103,8 @@ void ST_PrintWeaponStats(void)
         "D10",
         "Twin D6",
         "Arcane D20",
-        "Cursed"
+        "Cursed",
+        "D2 Flip"
     };
 
     DEH_printf("\n=== Dice Weapon Stats ===\n");

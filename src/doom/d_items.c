@@ -190,14 +190,23 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
     	S_ARCANED20FLASH
     },
     {
-    	// cursed die weapon (high damage, self-risk)
-    	am_heavydice,
-    	S_CURSEDDOWN,
-    	S_CURSEDUP,
-    	S_CURSED,
-    	S_CURSED_1,
-    	S_CURSEDFLASH
-    },
+     	// cursed die weapon (high damage, self-risk)
+     	am_heavydice,
+     	S_CURSEDDOWN,
+     	S_CURSEDUP,
+     	S_CURSED,
+     	S_CURSED_1,
+     	S_CURSEDFLASH
+     },
+     {
+ 	// d2 Flip of Fate weapon (binary damage: 50% 1dmg/50% 2dmg)
+ 	am_lightdice,
+ 	S_D2DOWN,
+ 	S_D2UP,
+ 	S_D2,
+ 	S_D2_1,
+ 	S_D2FLASH
+     },
 };
 
 // Goblin Dice Rollaz: Dice weapon configuration table
@@ -335,6 +344,18 @@ dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
         2,      // misfire_roll: roll 1-2 triggers self-damage (33% chance)
         -1,     // misfire_penalty: -1 means self-damage instead of damage penalty
         SPF_RARE | SPF_LATE_GAME, 15, CRIT_SCALING_EXPONENTIAL, 2, DAMAGETYPE_CURSE  // Rare, high-risk weapon - exponential scaling
+    },
+    {   // wp_d2 - Flip of Fate (binary damage: 50% 1dmg/50% 2dmg)
+        2,      // die_type: d2
+        50,     // crit_chance: 50% (roll of 2 = crit)
+        2,      // crit_multiplier: 2x on crit
+        1,      // min_damage
+        2,      // crit_roll: 2
+        {1, 0, 0, 0, 0, 0, 2},  // Binary: 1=1, 2=crit(2*2=4)
+        0,      // gamble_shot: no
+        0,      // ricochet_bounces: no
+        0, 0,   // No misfire
+        SPF_EARLY_GAME, 55, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_NORMAL  // Early game weapon, common spawn
     },
 };
 

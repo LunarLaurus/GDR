@@ -120,6 +120,7 @@ typedef enum
     wp_twind6,        // twin d6 scatter weapon (close-range burst)
     wp_arcaned20,     // arcane d20 beam (continuous roll tick damage)
     wp_cursed,        // cursed die (high damage, self-risk mechanic)
+    wp_d2,            // d2 Flip of Fate (binary damage, 50% 1dmg/50% 2dmg)
 
     NUMWEAPONS,
     

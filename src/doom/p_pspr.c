@@ -67,7 +67,8 @@ static const fixed_t weapon_recoil_values[NUMWEAPONS] = {
     FRACUNIT/2,    // wp_d10 - Goblin Dice Rollaz
     FRACUNIT/2,    // wp_twind6 - Goblin Dice Rollaz
     FRACUNIT/4,    // wp_arcaned20 - Goblin Dice Rollaz
-    FRACUNIT       // wp_cursed - Goblin Dice Rollaz
+    FRACUNIT,      // wp_cursed - Goblin Dice Rollaz
+    FRACUNIT/5     // wp_d2 - Goblin Dice Rollaz (low recoil)
 };
 
 
@@ -1502,6 +1503,59 @@ A_FireCursed
     {
         int shakeIntensity = (critRoll > 0) ? (FRACUNIT * 4) : (FRACUNIT * 2);
         R_TriggerScreenShake(shakeIntensity, 6);
+    }
+}
+
+
+//
+// A_FireD2 - Goblin Dice Rollaz d2 Flip of Fate weapon
+// Binary damage: 50% chance for 1 damage, 50% chance for 2 damage
+// Crit: double the result (2 or 4 damage)
+// 
+void
+A_FireD2
+( player_t*	player,
+  pspdef_t*	psp ) 
+{
+    int damage;
+    int guaranteedCrit = 0;
+    int critRoll = 0;
+    int diceRoll = 0;
+    mobj_t* missile;
+    
+    S_StartSound (player->mo, sfx_dice_d6);
+
+    P_SetMobjState (player->mo, S_PLAY_ATK2);
+    DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
+
+    P_SetPsprite (player,
+		  ps_flash,
+		  weaponinfo[player->readyweapon].flashstate+(P_Random ()&1));
+
+    if (player->powers[pw_dicefortune])
+    {
+        guaranteedCrit = 1;
+        player->powers[pw_dicefortune] = 0;
+        player->message = "CRITICAL!";
+    }
+
+    damage = P_CalculateDiceDamage(wp_d2, guaranteedCrit, &critRoll, NULL, &diceRoll, player);
+
+    player->weapon_recoil = weapon_recoil_values[wp_d2];
+
+    missile = P_SpawnPlayerMissile (player->mo, MT_D2PROJECTILE, wp_d2);
+    if (missile)
+    {
+        missile->damage = damage;
+    }
+
+    if (critRoll > 0)
+    {
+        R_TriggerScreenShake(FRACUNIT * 3, 6);
+    }
+    else if (diceRoll >= 2)
+    {
+        R_TriggerScreenShake(FRACUNIT * 1, 4);
     }
 }
 

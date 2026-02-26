@@ -267,7 +267,8 @@ static const char* weapon_names[NUMWEAPONS] = {
     "D10",
     "Twin D6",
     "Arcane D20",
-    "Cursed Die"
+    "Cursed Die",
+    "D2 Flip"
 };
 
 void G_InitPlayerWeaponMastery(player_t* player)
