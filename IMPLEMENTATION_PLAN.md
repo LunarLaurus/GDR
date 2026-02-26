@@ -281,7 +281,7 @@
 - [ ] Remove legacy keyboard mapping code
 
 ### Phase 13: Build System Cleanup
-- [ ] Update configure.ac version if needed
+- [x] Update configure.ac version if needed
 - [ ] Ensure goblin-doom binary name is consistent
 
 ### Phase 14: New Dice Weapons

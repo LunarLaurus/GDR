@@ -1,14 +1,14 @@
-AC_INIT(Chocolate Doom, 3.1.1,
-        chocolate-doom-dev-list@chocolate-doom.org, chocolate-doom)
+AC_INIT([Goblin Dice Rollaz], [1.0.0],
+        [goblin-dice-rollaz-dev@github.com], [goblin-dice-rollaz])
 
-PACKAGE_SHORTNAME=${PACKAGE_NAME% Doom}
-PACKAGE_SHORTDESC="Conservative source port"
+PACKAGE_SHORTNAME="Goblin"
+PACKAGE_SHORTDESC="Dice-rolling Doom source port"
 PACKAGE_COPYRIGHT="Copyright (C) 1993-2025"
 PACKAGE_LICENSE="GNU General Public License, version 2"
-PACKAGE_MAINTAINER="Simon Howard"
-PACKAGE_URL="https://www.chocolate-doom.org/"
-PACKAGE_RDNS="org.chocolate_doom"
-PACKAGE_BUGREPORT="https://github.com/chocolate-doom/chocolate-doom/issues"
+PACKAGE_MAINTAINER="Goblin Dice Rollaz Team"
+PACKAGE_URL="https://github.com/anomalyco/GoblinDiceRollaz"
+PACKAGE_RDNS="com.goblindicerollaz"
+PACKAGE_BUGREPORT="https://github.com/anomalyco/GoblinDiceRollaz/issues"
 
 dnl Check for Emscripten environment so we can set necessary environment variables
 AC_ARG_ENABLE(
