@@ -200,14 +200,10 @@ static void NET_Conn_ParseReliableACK(net_connection_t *conn, net_packet_t *pack
 //
 // Returns true if the packet should be discarded (incorrect sequence)
 
-static boolean NET_Conn_ReliablePacket(net_connection_t *conn, 
+static boolean NET_Conn_ReliablePacket(net_connection_t *conn,
                                        net_packet_t *packet)
 {
     unsigned int seq;
-    net_packet_t *reply;
-    boolean result;
-
-    // Read the sequence number
 
     if (!NET_ReadInt8(packet, &seq))
     {
@@ -216,38 +212,25 @@ static boolean NET_Conn_ReliablePacket(net_connection_t *conn,
 
     if (seq != (unsigned int)(conn->reliable_recv_seq & 0xff))
     {
-        // This is not the next expected packet in the sequence!
-        //
-        // Discard the packet.  If we were smart, we would use a proper
-        // sliding window protocol to do this, but I'm lazy.
-
-        result = true;
+        return true;
     }
-    else
+
+    conn->reliable_recv_seq = (conn->reliable_recv_seq + 1) & 0xff;
+
     {
-        // Now we can receive the next packet in the sequence.
+        net_packet_t *reply;
 
-        conn->reliable_recv_seq = (conn->reliable_recv_seq + 1) & 0xff;
-    
-        result = false;
+        reply = NET_NewPacket(10);
+
+        NET_WriteInt16(reply, NET_PACKET_TYPE_RELIABLE_ACK);
+        NET_WriteInt8(reply, conn->reliable_recv_seq & 0xff);
+
+        NET_Conn_SendPacket(conn, reply);
+
+        NET_FreePacket(reply);
     }
 
-    // Send an acknowledgement
-
-    // Note: this is braindead.  It would be much more sensible to 
-    // include this in the next packet, rather than the overhead of
-    // sending a complete packet just for one byte of information.
-
-    reply = NET_NewPacket(10);
-
-    NET_WriteInt16(reply, NET_PACKET_TYPE_RELIABLE_ACK);
-    NET_WriteInt8(reply, conn->reliable_recv_seq & 0xff);
-
-    NET_Conn_SendPacket(conn, reply);
-
-    NET_FreePacket(reply);
-
-    return result;
+    return false;
 }
 
 // Process a packet received by the server

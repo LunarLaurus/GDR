@@ -149,7 +149,7 @@
 - [x] Remove unused packet type definitions
 - [x] Optimize reliable packet ACK handling
 - [x] Remove unused NET_ExpandTicNum complexity
-- [ ] Simplify NET_Conn_ReliablePacket ACK logic
+- [x] Simplify NET_Conn_ReliablePacket ACK logic
 - [ ] Remove unused net_client_recv_t memmove code
 - [ ] Clean up SendOneQuery rate limiting
 - [ ] Reduce MAX_MODULES if too large
