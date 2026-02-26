@@ -22,6 +22,8 @@
 #include <dbghelp.h>
 #include <stdio.h>
 
+#include "i_crash.h"
+
 // I_WindowsStackTrace - Generates and prints a stack trace on Windows using DBGHELP.DLL
 // Uses StackWalk64 to walk the call stack and SymGetLineFromAddr64 for source file/line info.
 // Requires symbols (PDB) to be available for meaningful output.
