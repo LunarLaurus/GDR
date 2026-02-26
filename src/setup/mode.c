@@ -103,7 +103,7 @@ static GameSelectCallback game_selected_callback;
 
 static int showMessages = 1;
 static int screenblocks = 9;
-static int detailLevel = 0;
+// Goblin Dice Rollaz: Removed detailLevel - always high detail
 static char *savedir = NULL;
 static char *executable = NULL;
 static const char *game_title = "Doom";
@@ -115,7 +115,7 @@ static void BindMiscVariables(void)
 {
     if (gamemission == doom)
     {
-        M_BindIntVariable("detaillevel",   &detailLevel);
+        // Goblin Dice Rollaz: Removed detaillevel - always high detail
         M_BindIntVariable("show_messages", &showMessages);
     }
 

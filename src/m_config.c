@@ -527,9 +527,9 @@ static default_t	doom_defaults_list[] =
     // a non-zero value gives "low detail" mode.
     //
 
-    CONFIG_VARIABLE_INT(detaillevel),
+    // Goblin Dice Rollaz: Removed detaillevel - always high detail
 
-    //!
+    //
     // Number of sounds that will be played simultaneously.
     //
 

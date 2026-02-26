@@ -661,8 +661,9 @@ void R_Init(void)
     R_InitData();
     R_InitPointToAngle();
     R_InitTables();
-    // viewwidth / viewheight / detailLevel are set by the defaults
-    R_SetViewSize(screenblocks, detailLevel);
+    // viewwidth / viewheight are set by the defaults
+    // Goblin Dice Rollaz: detailLevel removed - always high detail
+    R_SetViewSize(screenblocks, 0);
     R_InitPlanes();
     R_InitLightTables();
     R_InitSkyMap();

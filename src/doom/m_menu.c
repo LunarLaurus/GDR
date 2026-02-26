@@ -120,11 +120,8 @@ static boolean menu_anim_initialized = false;
 
 void M_InitMenuAnimation(void);
 void M_DrawMenuBackground(void);
-
-	
-
-// Blocky mode, has default, 0 = high, 1 = normal
-int			detailLevel = 0;
+  
+// Goblin Dice Rollaz: detailLevel removed - always high detail
 int			screenblocks = 9;
 
 // temp for screenblocks (0-9)
@@ -445,7 +442,7 @@ menuitem_t OptionsMenu[]=
     {1,"M_SNDvol", M_Sound, 's'},
     {1,"M_SENS",  M_ChangeSensitivity, 's'},
     {1,"M_QUICK", M_QuickSave2, 'q'},
-    {1,"M_AUTOM", M_ChangeDetail, 'a'},
+    // Goblin Dice Rollaz: Removed detail level - always high detail
     {1,"M_ENDGC", M_EndGame, 'e'}
 };
 
@@ -1995,14 +1992,8 @@ void M_ChangeSensitivity(int choice)
 void M_ChangeDetail(int choice)
 {
     choice = 0;
-    detailLevel = 1 - detailLevel;
-
-    R_SetViewSize (screenblocks, detailLevel);
-
-    if (!detailLevel)
-	players[consoleplayer].message = DEH_String(DETAILHI);
-    else
-	players[consoleplayer].message = DEH_String(DETAILLO);
+    // Goblin Dice Rollaz: detail level removed - always high detail
+    players[consoleplayer].message = DEH_String("High Detail");
 }
 
 
@@ -2029,7 +2020,7 @@ void M_SizeDisplay(int choice)
     }
 	
 
-    R_SetViewSize (screenblocks, detailLevel);
+    R_SetViewSize (screenblocks, 0);
 }
 
 

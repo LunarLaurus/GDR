@@ -784,11 +784,12 @@ void R_Init (void)
         printf (".");
 
     R_InitTables ();
-    // viewwidth / viewheight / detailLevel are set by the defaults
+    // viewwidth / viewheight are set by the defaults
+    // Goblin Dice Rollaz: detailLevel removed - always high detail
     if(devparm)
         printf (".");
 
-    R_SetViewSize (screenblocks, detailLevel);
+    R_SetViewSize (screenblocks, 0);
     R_InitPlanes ();
     if(devparm)
         printf (".");

@@ -1047,7 +1047,7 @@ static boolean SCScreenSize(int option)
     {
         screenblocks--;
     }
-    R_SetViewSize(screenblocks, detailLevel);
+    R_SetViewSize(screenblocks, 0);
     return true;
 }
 

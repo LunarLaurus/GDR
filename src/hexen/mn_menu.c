@@ -1155,7 +1155,7 @@ static void SCScreenSize(int option)
     {
         screenblocks--;
     }
-    R_SetViewSize(screenblocks, detailLevel);
+    R_SetViewSize(screenblocks, 0);
 }
 
 //---------------------------------------------------------------------------

@@ -698,7 +698,7 @@ R_SetViewSize
 {
     setsizeneeded = true;
     setblocks = blocks;
-    setdetail = detail;
+    setdetail = 0;
 }
 
 
@@ -716,6 +716,8 @@ void R_ExecuteSetViewSize (void)
 
     setsizeneeded = false;
 
+    detailshift = 0;
+
     if (setblocks == 11)
     {
 	scaledviewwidth = SCREENWIDTH;
@@ -727,7 +729,7 @@ void R_ExecuteSetViewSize (void)
 	viewheight = (setblocks*168/10)&~7;
     }
     
-    detailshift = setdetail;
+
     viewwidth = scaledviewwidth>>detailshift;
 	
     centery = viewheight/2;
@@ -820,10 +822,11 @@ void R_Init (void)
     R_InitPointToAngle ();
     printf (".");
     R_InitTables ();
-    // viewwidth / viewheight / detailLevel are set by the defaults
+    // viewwidth / viewheight are set by the defaults
+    // Goblin Dice Rollaz: detailLevel removed - always high detail
     printf (".");
 
-    R_SetViewSize (screenblocks, detailLevel);
+    R_SetViewSize (screenblocks, 0);
     R_InitPlanes ();
     printf (".");
     R_InitLightTables ();

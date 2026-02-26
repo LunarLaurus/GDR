@@ -52,7 +52,7 @@ void M_Init (void);
 void M_StartControlPanel (void);
 
 
-extern int detailLevel;
+// Goblin Dice Rollaz: detailLevel removed - always high detail
 extern int screenblocks;
 
 extern boolean inhelpscreens;

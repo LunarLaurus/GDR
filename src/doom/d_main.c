@@ -433,7 +433,7 @@ void D_BindVariables(void)
     M_BindIntVariable("music_volume",           &musicVolume);
     M_BindIntVariable("show_messages",          &showMessages);
     M_BindIntVariable("screenblocks",           &screenblocks);
-    M_BindIntVariable("detaillevel",            &detailLevel);
+    // Goblin Dice Rollaz: Removed detaillevel - always high detail
     M_BindIntVariable("r_spritedetail",         &r_spritedetail);
     M_BindIntVariable("r_projectile_farclip",   &r_projectile_farclip);
     M_BindIntVariable("snd_channels",           &snd_channels);

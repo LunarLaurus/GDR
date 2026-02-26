@@ -1390,7 +1390,7 @@ void M_SizeDisplay(int choice)
         break;
     }
 
-    R_SetViewSize (screenblocks, detailLevel);
+    R_SetViewSize (screenblocks, 0);
 }
 
 
