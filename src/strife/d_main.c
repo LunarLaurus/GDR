@@ -442,7 +442,7 @@ void D_BindVariables(void)
     // * screenblocks -> screensize
     // * Added nickname, comport
 
-    M_BindIntVariable("mouse_sensitivity",      &mouseSensitivity);
+    // Goblin Dice Rollaz: mouse_sensitivity bound in doom/d_main.c
     M_BindIntVariable("sfx_volume",             &sfxVolume);
     M_BindIntVariable("music_volume",           &musicVolume);
     M_BindIntVariable("voice_volume",           &voiceVolume); 
