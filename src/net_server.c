@@ -1942,14 +1942,11 @@ static void UpdateMasterServer(void)
 
 void NET_SV_RegisterWithMaster(void)
 {
-    //!
-    // @category net
-    //
-    // When running a server, don't register with the global master server.
-    // Implies -server.
-    //
+    // Goblin Dice Rollaz does not use a global master server.
+    // Servers operate in private mode by default.
+    // Use -publicserver to attempt registration (requires master server).
 
-    if (!M_CheckParm("-privateserver"))
+    if (M_CheckParm("-publicserver"))
     {
         master_server = NET_Query_ResolveMaster(server_context);
     }

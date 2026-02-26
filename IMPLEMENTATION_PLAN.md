@@ -142,7 +142,7 @@
 - [x] Remove #ifdef DROP_PACKETS testing code
 - [x] Remove commented bandwidth monitoring code
 - [x] Consolidate NET_Log under DEBUG_NET flag
-- [ ] Update master server address or remove queries
+- [x] Update master server address or remove queries
 - [ ] Fix InitPetName to not reseed rand() every call
 - [ ] Remove unused NET_PACKET_TYPE_ACK
 - [ ] Clean up NET_MASTER_PACKET_TYPE_SIGN entries
