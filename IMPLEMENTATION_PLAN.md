@@ -160,6 +160,7 @@
 ### Phase 8: Input System Cleanup
 - [x] Remove empty I_Tactile function
 - [ ] Remove unused shiftxform keyboard translation table
+  - [ ] Resolve blocker: shiftxform is used when vanilla_keyboard_mapping is true (i_input.c:180-184). Need to remove vanilla_keyboard_mapping option first (task 163) or set it to false by default.
 - [ ] Remove vanilla_keyboard_mapping if not needed
 - [x] Implement SDL_SetTextInputRect in i_input.c
 - [ ] Fix XXX pointer undefined behavior in i_input.c
