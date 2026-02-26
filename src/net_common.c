@@ -165,6 +165,8 @@ static void NET_Conn_ParseDisconnectACK(net_connection_t *conn,
 static void NET_Conn_ParseReliableACK(net_connection_t *conn, net_packet_t *packet)
 {
     unsigned int seq;
+    net_reliable_packet_t *rp;
+    net_reliable_packet_t **prev;
 
     if (!NET_ReadInt8(packet, &seq))
     {
@@ -175,21 +177,22 @@ static void NET_Conn_ParseReliableACK(net_connection_t *conn, net_packet_t *pack
     {
         return;
     }
-            
-    // Is this an acknowledgement for the first packet in the list?
 
-    if (seq == (unsigned int)((conn->reliable_packets->seq + 1) & 0xff))
+    prev = &conn->reliable_packets;
+    rp = *prev;
+
+    while (rp != NULL)
     {
-        net_reliable_packet_t *rp;
+        if (seq == (unsigned int)((rp->seq + 1) & 0xff))
+        {
+            *prev = rp->next;
+            NET_FreePacket(rp->packet);
+            free(rp);
+            break;
+        }
 
-        // Discard it, then.
-        // Unlink from the list.
-
-        rp = conn->reliable_packets;
-        conn->reliable_packets = rp->next;
-        
-        NET_FreePacket(rp->packet);
-        free(rp);
+        prev = &rp->next;
+        rp = rp->next;
     }
 }
 

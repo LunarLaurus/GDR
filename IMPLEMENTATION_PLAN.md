@@ -147,7 +147,7 @@
 - [x] Remove unused NET_PACKET_TYPE_ACK
 - [x] Clean up NET_MASTER_PACKET_TYPE_SIGN entries
 - [x] Remove unused packet type definitions
-- [ ] Optimize reliable packet ACK handling
+- [x] Optimize reliable packet ACK handling
 - [ ] Remove unused NET_ExpandTicNum complexity
 - [ ] Simplify NET_Conn_ReliablePacket ACK logic
 - [ ] Remove unused net_client_recv_t memmove code
