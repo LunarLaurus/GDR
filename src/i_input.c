@@ -243,8 +243,6 @@ static int GetTypedChar(SDL_Keysym *sym)
 
 void I_HandleKeyboardEvent(SDL_Event *sdlevent)
 {
-    // XXX: passing pointers to event for access after this function
-    // has terminated is undefined behaviour
     event_t event;
 
     switch (sdlevent->type)
@@ -458,8 +456,6 @@ void I_ReadMouse(void)
             ev.data3 = 0;
         }
 
-        // XXX: undefined behaviour since event is scoped to
-        // this function
         D_PostEvent(&ev);
     }
 }

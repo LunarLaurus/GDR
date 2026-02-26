@@ -163,7 +163,7 @@
   - [ ] Resolve blocker: shiftxform is used when vanilla_keyboard_mapping is true (i_input.c:180-184). Need to remove vanilla_keyboard_mapping option first (task 163) or set it to false by default.
 - [ ] Remove vanilla_keyboard_mapping if not needed
 - [x] Implement SDL_SetTextInputRect in i_input.c
-- [ ] Fix XXX pointer undefined behavior in i_input.c
+- [x] Fix XXX pointer undefined behavior in i_input.c
 - [ ] Implement UpdateFocus in i_video.c
 - [ ] Implement fullscreen toggle in i_video.c
 - [ ] Document Windows stack trace functions
