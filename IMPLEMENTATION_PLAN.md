@@ -154,7 +154,7 @@
   - [ ] Resolve blocker: memmove code in NET_SV_AdvanceWindow and NET_CL_AdvanceWindow is actively used for network sliding window - cannot be removed without breaking networking
 - [x] Clean up SendOneQuery rate limiting
 - [x] Reduce MAX_MODULES if too large
-- [ ] Document network protocol for future reference
+- [x] Document network protocol for future reference
 - [ ] Add network protocol version stub
 
 ### Phase 8: Input System Cleanup
