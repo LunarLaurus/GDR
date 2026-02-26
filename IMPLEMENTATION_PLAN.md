@@ -183,10 +183,10 @@
 - [x] Add V_DisableDiceIcon function to free saved_background
 - [x] Add V_DisableDiceIcon function to free dice_data
 - [x] Add free(gamedescription) in d_main.c shutdown
-- [ ] Remove unused Z_ChangeUser function
-- [ ] Remove unused Z_ZoneSize function
-- [ ] Remove broken Z_DumpHeap implementation
-- [ ] Remove broken Z_FileDumpHeap implementation
+- [x] Remove unused Z_ChangeUser function
+- [x] Remove unused Z_ZoneSize function
+- [x] Remove broken Z_DumpHeap implementation
+- [x] Remove broken Z_FileDumpHeap implementation
 
 ### Phase 11: TODO/FIXME Cleanup
 - [ ] Resolve i_video.c line 328 SDL2-TODO
