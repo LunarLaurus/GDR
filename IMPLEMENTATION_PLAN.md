@@ -380,7 +380,7 @@
 - [x] Define DEFAULT_SHAKE_SCALE and DEFAULT_DAMAGE_SCALE
 - [ ] Define MAX_MENU_PARTICLES constant
 - [ ] Define SHAKE_LOW, SHAKE_MEDIUM, SHAKE_HIGH constants
-- [ ] Define CRIT_CHANCE_SCALE constant in p_inter.c
+- [x] Define CRIT_CHANCE_SCALE constant in p_inter.c
 - [ ] Define movement speed constants in g_game.c
 - [x] Fix typo: indetermined -> undetermined in doomstat.c
 - [ ] Fix inconsistent naming: standardize snake_case for goblin vars

@@ -31,6 +31,7 @@
 // Crit scaling configuration
 #define DEFAULT_CRIT_SCALING_TYPE      CRIT_SCALING_LINEAR  // 0=linear, 1=exp, 2=flat, 3=pct, 4=chance
 #define DEFAULT_CRIT_SCALING_PARAM      2       // Parameter for scaling curve
+#define CRIT_CHANCE_SCALE              10      // Denominator for crit chance multiplier formula
 
 // Crit combo system
 #define DEFAULT_CRIT_COMBO_TIMEOUT     (TICRATE * 3)    // Tics before combo resets

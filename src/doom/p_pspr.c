@@ -28,6 +28,7 @@
 #include "d_items.h"
 #include "s_sound.h"
 #include "g_rpg.h"
+#include "g_balance.h"
 #include "g_stats.h"
 #include "r_main.h"
 
@@ -1134,9 +1135,9 @@ P_ApplyCritScaling (int baseDamage, int critRoll, int dieType, crit_scaling_type
         case CRIT_SCALING_CRIT_CHANCE:
         {
             // Crit chance affects the multiplier - higher base chance = lower multiplier
-            // Implemented as: multiplier = baseMultiplier / (critChance / 10 + 1)
+            // Implemented as: multiplier = baseMultiplier * CRIT_CHANCE_SCALE / (critChance + CRIT_CHANCE_SCALE)
             int critChance = scalingParam > 0 ? scalingParam : 10;
-            multiplier = 2 * 10 / (critChance + 10);
+            multiplier = DEFAULT_CRIT_MULTIPLIER * CRIT_CHANCE_SCALE / (critChance + CRIT_CHANCE_SCALE);
             if (multiplier < 1) multiplier = 1;
             break;
         }
