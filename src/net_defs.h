@@ -129,7 +129,6 @@ typedef enum
 typedef enum
 {
     NET_PACKET_TYPE_SYN,
-    NET_PACKET_TYPE_ACK, // deprecated
     NET_PACKET_TYPE_REJECTED,
     NET_PACKET_TYPE_KEEPALIVE,
     NET_PACKET_TYPE_WAITING_DATA,
