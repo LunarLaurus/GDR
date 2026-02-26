@@ -226,3 +226,18 @@ void V_RestoreDiceBackground(void)
     
     dice_drawn = false;
 }
+
+void V_DisableDiceIcon(void)
+{
+    if (saved_background != NULL)
+    {
+        Z_Free(saved_background);
+        saved_background = NULL;
+    }
+    
+    if (dice_data != NULL)
+    {
+        Z_Free(dice_data);
+        dice_data = NULL;
+    }
+}

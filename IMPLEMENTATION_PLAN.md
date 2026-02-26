@@ -180,8 +180,8 @@
 - [ ] Clean up string duplication in chat macro bindings
 
 ### Phase 10: Memory Leak Fixes
-- [ ] Add V_DisableDiceIcon function to free saved_background
-- [ ] Add V_DisableDiceIcon function to free dice_data
+- [x] Add V_DisableDiceIcon function to free saved_background
+- [x] Add V_DisableDiceIcon function to free dice_data
 - [ ] Add free(gamedescription) in d_main.c shutdown
 - [ ] Remove unused Z_ChangeUser function
 - [ ] Remove unused Z_ZoneSize function

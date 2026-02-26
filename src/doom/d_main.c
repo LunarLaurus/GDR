@@ -634,6 +634,7 @@ void D_DoomLoop (void)
     I_InitGraphics();
     EnableLoadingDisk();
     V_EnableDiceIcon();
+    I_AtExit(V_DisableDiceIcon, true);
 
     TryRunTics();
 

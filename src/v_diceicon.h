@@ -25,5 +25,6 @@
 void V_EnableDiceIcon(void);
 void V_DrawDiceIcon(void);
 void V_RestoreDiceBackground(void);
+void V_DisableDiceIcon(void);
 
 #endif
