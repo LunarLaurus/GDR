@@ -450,20 +450,16 @@ net_packet_t *NET_Conn_NewReliable(net_connection_t *conn, int packet_type)
 
 unsigned int NET_ExpandTicNum(unsigned int relative, unsigned int b)
 {
-    unsigned int l, h;
-    unsigned int result;
+    unsigned int low = relative & 0xff;
+    unsigned int high = relative & ~0xff;
+    int diff = (int)b - (int)low;
 
-    h = relative & ~0xff;
-    l = relative & 0xff;
+    if (diff < -128)
+        diff += 256;
+    else if (diff > 128)
+        diff -= 256;
 
-    result = h | b;
-
-    if (l < 0x40 && b > 0xb0)
-        result -= 0x100;
-    if (l > 0xb0 && b < 0x40)
-        result += 0x100;
-    
-    return result;
+    return high + low + diff;
 }
 
 // Check that game settings are valid
