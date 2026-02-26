@@ -143,7 +143,7 @@
 - [x] Remove commented bandwidth monitoring code
 - [x] Consolidate NET_Log under DEBUG_NET flag
 - [x] Update master server address or remove queries
-- [ ] Fix InitPetName to not reseed rand() every call
+- [x] Fix InitPetName to not reseed rand() every call
 - [ ] Remove unused NET_PACKET_TYPE_ACK
 - [ ] Clean up NET_MASTER_PACKET_TYPE_SIGN entries
 - [ ] Remove unused packet type definitions
