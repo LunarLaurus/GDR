@@ -199,7 +199,7 @@
 - [ ] Resolve net_packet.c safe string TODO
 - [x] Resolve p_mobj.c NOP function pointer FIXME
 - [x] Resolve p_tick.c NOP FIXME
-- [ ] Resolve d_main.c demo numbers FIXME
+- [x] Resolve d_main.c demo numbers FIXME
 - [ ] Resolve viewangleoffset handling FIXME
 - [ ] Remove all STRIFE-TODO commented code
 - [ ] Remove all STRIFE-FIXME commented code

@@ -703,7 +703,6 @@ void D_AdvanceDemo (void)
 
 //
 // This cycles through the demo sequences.
-// FIXME - version dependend demo numbers?
 //
 void D_DoAdvanceDemo (void)
 {
