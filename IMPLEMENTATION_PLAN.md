@@ -190,9 +190,9 @@
 
 ### Phase 11: TODO/FIXME Cleanup
 - [x] Resolve i_video.c line 328 SDL2-TODO
-- [ ] Resolve i_video.c line 746 SDL2-TODO
-- [ ] Resolve i_input.c line 294 SDL2-TODO
-- [ ] Resolve i_endoom.c SDL2-TODO items
+- [x] Resolve i_video.c line 746 SDL2-TODO
+- [x] Resolve i_input.c line 294 SDL2-TODO
+- [x] Resolve i_endoom.c SDL2-TODO items
 - [ ] Resolve i_video.c fullscreen toggle TODO
 - [ ] Resolve net_server.c client rejection TODO
 - [ ] Resolve net_dedicated.c socket polling TODO
