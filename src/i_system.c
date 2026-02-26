@@ -54,6 +54,9 @@
 #define MIN_RAM     4  /* MiB */
 
 #ifdef _WIN32
+// I_WindowsStackTrace - Generates and prints a stack trace on Windows using DBGHELP.DLL
+// Uses StackWalk64 to walk the call stack and SymGetLineFromAddr64 for source file/line info.
+// Requires symbols (PDB) to be available for meaningful output.
 static void I_WindowsStackTrace(EXCEPTION_POINTERS *ExceptionInfo)
 {
     HANDLE process = GetCurrentProcess();
@@ -102,6 +105,10 @@ static void I_WindowsStackTrace(EXCEPTION_POINTERS *ExceptionInfo)
     SymCleanup(process);
 }
 
+// I_HandleException - Windows unhandled exception filter callback
+// Called by the OS when an unhandled exception occurs.
+// Prints exception code and instruction pointer, then generates stack trace.
+// Returns EXCEPTION_EXECUTE_HANDLER to allow cleanup.
 static long __stdcall I_HandleException(EXCEPTION_POINTERS *ExceptionInfo)
 {
     fprintf(stderr, "\nCRASH: Unhandled exception code 0x%lx at 0x%lx\n",
@@ -114,6 +121,9 @@ static long __stdcall I_HandleException(EXCEPTION_POINTERS *ExceptionInfo)
 }
 #endif
 
+// I_PrintStackTrace - Signal handler for Unix-like systems that prints a stack trace
+// Uses backtrace() and backtrace_symbols() from execinfo.h to generate the trace.
+// On Windows, this is not used as the exception filter handles crashes.
 static void I_PrintStackTrace(int sig)
 {
     fprintf(stderr, "\nCRASH: Signal %d (%s) received.\n", sig, strsignal(sig));
@@ -141,6 +151,9 @@ static void I_PrintStackTrace(int sig)
     fflush(stderr);
 }
 
+// I_InitCrashHandler - Initializes platform-specific crash handling
+// Windows: Sets up SetUnhandledExceptionFilter to catch unhandled exceptions
+// Unix-like: Registers signal handlers for SIGSEGV, SIGFPE, SIGILL, SIGABRT
 void I_InitCrashHandler(void)
 {
 #ifdef _WIN32
