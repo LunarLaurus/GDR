@@ -65,6 +65,10 @@ char *P_SaveGameFile(int slot)
     {
         filename_size = strlen(savegamedir) + 32;
         filename = malloc(filename_size);
+        if (filename == NULL)
+        {
+            I_Error("G_SaveGameFileName: Failed to allocate filename buffer");
+        }
     }
 
     DEH_snprintf(basename, 32, SAVEGAMENAME "%d.dsg", slot);
