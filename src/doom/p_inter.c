@@ -1492,7 +1492,8 @@ P_DamageMobj
                     target->type == MT_DWARF_HIGHPRIEST ||
                     target->type == MT_DWARF_COMMANDER ||
                     target->type == MT_DWARF_TINKERER ||
-                    target->type == MT_DWARF_BARRELELITE)
+                    target->type == MT_DWARF_BARRELELITE ||
+                    target->type == MT_DWARF_SHADOWBLADE)
                 {
                     // 3x damage vs dwarf enemies
                     damage = damage * 3;

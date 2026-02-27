@@ -1662,6 +1662,7 @@ typedef enum {
     MT_RUNE_SHIELD,          // Goblin Dice Rollaz: Reflective rune shield (placed by Runesmith)
     MT_CRIT_AURA,            // Goblin Dice Rollaz: Crit resistance aura (placed by Runebearer)
     MT_DWARF_BARRELELITE,    // Goblin Dice Rollaz: Dwarf Barrel Drone (explosive chaser)
+    MT_DWARF_SHADOWBLADE,    // Goblin Dice Rollaz: Dwarf Shadowblade (cloaked melee, invisible)
     NUMMOBJTYPES
 
 } mobjtype_t;

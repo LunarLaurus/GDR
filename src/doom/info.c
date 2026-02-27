@@ -4915,6 +4915,37 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 	0		// phase2_health (no phases)
     },
 
+    {		// MT_DWARF_SHADOWBLADE - Goblin Dice Rollaz: Dwarf Shadowblade (cloaked melee, invisible)
+	8117,		// doomednum (custom mapthing number)
+	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations)
+	50,		// spawnhealth (moderate HP - assassin type)
+	S_SPOS_RUN1,		// seestate
+	sfx_posit2,		// seesound (whisper/stealth)
+	8,		// reactiontime
+	sfx_None,		// attacksound (blade swing)
+	S_SPOS_PAIN,		// painstate
+	30,		// painchance (moderate)
+	sfx_popain,		// painsound
+	S_SPOS_ATK1,		// meleestate (knife attack)
+	0,		// missilestate (none)
+	S_SPOS_DIE1,		// deathstate
+	S_SPOS_XDIE1,		// xdeathstate
+	sfx_barexp,		// deathsound
+	12*FRACUNIT,		// speed (fast - stealth assassin)
+	16*FRACUNIT,		// radius
+	56*FRACUNIT,		// height (tall, cloaked)
+	100,		// mass
+	35,		// damage (high precision hit)
+	sfx_posact,		// activesound
+	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL|MF_AMBUSH,		// flags (AMBUSH for surprise)
+	S_SPOS_RAISE1,		// raisestate
+	25,		// crit_resistance (moderate)
+	100,		// aggression (maximum - attacks from behind)
+	0,		// shield_reduction (none)
+	0,		// rear_weakness (none)
+	0		// phase2_health (no phases)
+    },
+
     {		// MT_MISC17
 	2048,		// doomednum
 	S_AMMO,		// spawnstate
