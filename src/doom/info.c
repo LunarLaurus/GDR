@@ -4977,6 +4977,68 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 	0		// phase2_health (no phases)
     },
 
+    {		// MT_DWARF_GEOLOGIST - Goblin Dice Rollaz: Dwarf Geologist (spawns rock Golems)
+	8119,		// doomednum (custom mapthing number)
+	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations)
+	120,		// spawnhealth (moderate HP - support unit)
+	S_SPOS_RUN1,		// seestate
+	sfx_posit2,		// seesound (battle cry)
+	8,		// reactiontime
+	sfx_None,		// attacksound (summoning chant)
+	S_SPOS_PAIN,		// painstate
+	30,		// painchance (moderate)
+	sfx_popain,		// painsound
+	0,		// meleestate (none - summons from range)
+	S_SPOS_ATK1,		// missilestate (summon rock golem)
+	S_SPOS_DIE1,		// deathstate
+	S_SPOS_XDIE1,		// xdeathstate
+	sfx_posdie,		// deathsound
+	3*FRACUNIT,		// speed (slow - support unit)
+	20*FRACUNIT,		// radius
+	56*FRACUNIT,		// height (medium height)
+	150,		// mass (medium)
+	20,		// damage (summoning rock chunk)
+	sfx_posact,		// activesound
+	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+	S_SPOS_RAISE1,		// raisestate
+	20,		// crit_resistance (low - fragile summoner)
+	70,		// aggression (high - stays back and summons)
+	0,		// shield_reduction (none)
+	10,		// rear_weakness (low)
+	0		// phase2_health (no phases)
+    },
+
+    {		// MT_ROCK_GOLEM - Goblin Dice Rollaz: Rock Golem spawned by Geologist
+	8120,		// doomednum (custom mapthing number)
+	S_BOSS_STND,		// spawnstate (reuses Boss animations)
+	80,		// spawnhealth (low HP - summoned minion)
+	S_BOSS_RUN1,		// seestate
+	sfx_bgsit1,		// seesound (earthen rumble)
+	8,		// reactiontime
+	sfx_None,		// attacksound (rock crunch)
+	S_BOSS_PAIN,		// painstate
+	50,		// painchance (high - stone breaks easily)
+	sfx_bgdth1,		// painsound (rock crumble)
+	S_BOSS_ATK1,		// meleestate (rock slam)
+	0,		// missilestate (none)
+	S_BOSS_DIE1,		// deathstate
+	S_BOSS_XDIE1,		// xdeathstate
+	sfx_bgdth1,		// deathsound (rock collapse)
+	3*FRACUNIT,		// speed (slow - lumbering golem)
+	24*FRACUNIT,		// radius (large - hulking)
+	64*FRACUNIT,		// height (tall - imposing)
+	300,		// mass (very heavy)
+	25,		// damage (heavy rock slam)
+	sfx_bgsit2,		// activesound (earthen groan)
+	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+	S_BOSS_RAISE1,		// raisestate
+	40,		// crit_resistance (moderate - stone)
+	50,		// aggression (moderate)
+	30,		// shield_reduction (moderate - stone armor)
+	0,		// rear_weakness (none)
+	0		// phase2_health (no phases)
+    },
+
     {		// MT_MISC17
 	2048,		// doomednum
 	S_AMMO,		// spawnstate

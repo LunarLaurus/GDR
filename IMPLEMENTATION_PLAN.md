@@ -326,7 +326,7 @@
 - [x] Add Dwarf Barrel Drone (explosive chaser)
 - [x] Add Dwarf Shadowblade (cloaked melee, invisible)
 - [x] Add Dwarf Obsidian Guardian (volcanic glass, fire weak)
-- [ ] Add Dwarf Geologist (spawns rock Golems)
+- [x] Add Dwarf Geologist (spawns rock Golems)
 - [ ] Add Dwarf Alchemist (throws volatile potions)
 - [ ] Add Dwarf Treasure Hunter (drops extra loot)
 - [ ] Add Dwarf Juggernaut (slow, devastating melee)

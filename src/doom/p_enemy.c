@@ -1320,212 +1320,53 @@ void A_SPosAttack (mobj_t* actor)
         return;
     }
 
-    if (actor->type == MT_GOBLIN_ALCHEMIST)
+    // Goblin Dice Rollaz: Dwarf Geologist - Spawn Rock Golems
+    if (actor->type == MT_DWARF_GEOLOGIST)
     {
-        A_FaceTarget (actor);
-        S_StartSound (actor, sfx_pistol);
-        mo = P_SpawnMissile (actor, actor->target, MT_ALCHEMIST_POTION);
-        if (mo)
+        sector_t* sec;
+        int golemCount = 0;
+        int spawnRadius = 20 * FRACUNIT;
+        
+        sec = actor->subsector->sector;
+        
+        // Count existing rock golems
+        for (mo = sec->thinglist; mo; mo = mo->snext)
         {
-            mo->special1 = 0;
+            if (mo->type == MT_ROCK_GOLEM && mo->target == actor)
+                golemCount++;
         }
-        return;
-    }
-
-    S_StartSound (actor, sfx_shotgn);
-    A_FaceTarget (actor);
-    bangle = actor->angle;
-    slope = P_AimLineAttack (actor, bangle, MISSILERANGE);
-
-    for (i=0 ; i<3 ; i++)
-    {
-	angle = bangle + (P_SubRandom() << 20);
-	damage = ((P_Random()%5)+1)*3;
-	P_LineAttack (actor, angle, MISSILERANGE, slope, damage);
-    }
-}
-
-void A_CPosAttack (mobj_t* actor)
-{
-    int		angle;
-    int		bangle;
-    int		damage;
-    int		slope;
-	
-    if (!actor->target)
-	return;
-
-    S_StartSound (actor, sfx_shotgn);
-    A_FaceTarget (actor);
-    bangle = actor->angle;
-    slope = P_AimLineAttack (actor, bangle, MISSILERANGE);
-
-    angle = bangle + (P_SubRandom() << 20);
-    damage = ((P_Random()%5)+1)*3;
-    P_LineAttack (actor, angle, MISSILERANGE, slope, damage);
-}
-
-void A_TotemistDeploy(mobj_t* actor)
-{
-    mobj_t* mo;
-    int numTotems;
-    
-    if (!actor->target)
-        return;
-    
-    A_FaceTarget(actor);
-    
-    numTotems = P_Random() % 2;
-    
-    if (numTotems == 0)
-    {
-        mo = P_SpawnMobj(actor->x + 24*FRACUNIT, actor->y, actor->z - 20*FRACUNIT, MT_BUFF_TOTEM);
-        if (mo)
+        
+        // Only spawn if we have less than 2 active golems
+        if (golemCount < 2)
         {
-            mo->angle = actor->angle;
-            mo->flags |= MF_TELESTICK;
-            S_StartSound(actor, sfx_itmbk);
-        }
-    }
-    else
-    {
-        mo = P_SpawnMobj(actor->x - 24*FRACUNIT, actor->y, actor->z - 20*FRACUNIT, MT_DEBUFF_TOTEM);
-        if (mo)
-        {
-            mo->angle = actor->angle;
-            mo->flags |= MF_TELESTICK;
-            S_StartSound(actor, sfx_itmbk);
-        }
-    }
-    
-    if (P_Random() < 128)
-    {
-        mo = P_SpawnMobj(actor->x, actor->y + 24*FRACUNIT, actor->z - 20*FRACUNIT, MT_BUFF_TOTEM);
-        if (mo)
-        {
-            mo->angle = actor->angle;
-            mo->flags |= MF_TELESTICK;
-        }
-    }
-}
-
-void A_EngineerDeployTurret(mobj_t* actor)
-{
-    mobj_t* mo;
-    fixed_t spawnX, spawnY;
-    
-    if (!actor->target)
-        return;
-    
-    A_FaceTarget(actor);
-    
-    spawnX = actor->x + 48 * FRACUNIT;
-    spawnY = actor->y;
-    
-    mo = P_SpawnMobj(spawnX, spawnY, ONFLOORZ, MT_DWARF_TURRET);
-    if (mo)
-    {
-        mo->angle = actor->angle;
-        mo->flags |= MF_TELESTICK;
-        mo->special1 = 0;
-        mo->special2 = 0;
-        S_StartSound(actor, sfx_itmbk);
-    }
-}
-
-void A_TurretAttack(mobj_t* actor)
-{
-    mobj_t* mo;
-    
-    if (!actor->target)
-        return;
-    
-    if (!P_CheckSight(actor, actor->target))
-        return;
-    
-    A_FaceTarget(actor);
-    S_StartSound(actor, sfx_rlaunc);
-    
-    mo = P_SpawnMissile(actor, actor->target, MT_DWARF_BOMB);
-    if (mo)
-    {
-        mo->special1 = 0;
-        mo->damage = 30;
-    }
-}
-
-void A_TurretThink(mobj_t* actor)
-{
-    player_t* player;
-    
-    if (!actor->target)
-    {
-        for (player = players; player < &players[MAXPLAYERS]; player++)
-        {
-            if (player->mo && player->mo->health > 0 && P_CheckSight(actor, player->mo))
+            fixed_t spawnX, spawnY, spawnZ;
+            angle_t angle;
+            
+            A_FaceTarget(actor);
+            S_StartSound(actor, sfx_bgsit1); // Summoning sound
+            
+            // Spawn golem at a random angle from the geologist
+            angle = P_Random() << (FRACBITS - 7);
+            spawnX = actor->x + FixedMul(spawnRadius, finecosine[angle]);
+            spawnY = actor->y + FixedMul(spawnRadius, finesine[angle]);
+            spawnZ = actor->z;
+            
+            mo = P_SpawnMobj(spawnX, spawnY, spawnZ, MT_ROCK_GOLEM);
+            if (mo)
             {
-                actor->target = player->mo;
-                break;
+                mo->target = actor; // Track who summoned this golem
+                // Make the golem hostile towards the player
+                if (players[0].mo)
+                {
+                    mo->target = players[0].mo;
+                }
+                S_StartSound(mo, sfx_bgsit1); // Golem awakening sound
             }
         }
+        return;
     }
+
     
-    if (actor->target && actor->target->health <= 0)
-    {
-        actor->target = NULL;
-    }
-    
-    actor->special2++;
-    if (actor->special2 >= TICRATE)
-    {
-        actor->special2 = 0;
-        if (actor->special1 < 3)
-        {
-            A_TurretAttack(actor);
-        }
-    }
-}
-
-void A_CPosRefire (mobj_t* actor)
-{	
-    // keep firing unless target got out of sight
-    A_FaceTarget (actor);
-
-    if (P_Random () < 40)
-	return;
-
-    if (!actor->target
-	|| actor->target->health <= 0
-	|| !P_CheckSight (actor, actor->target) )
-    {
-	P_SetMobjState (actor, actor->info->seestate);
-    }
-}
-
-
-void A_SpidRefire (mobj_t* actor)
-{	
-    // keep firing unless target got out of sight
-    A_FaceTarget (actor);
-
-    if (P_Random () < 10)
-	return;
-
-    if (!actor->target
-	|| actor->target->health <= 0
-	|| !P_CheckSight (actor, actor->target) )
-    {
-	P_SetMobjState (actor, actor->info->seestate);
-    }
-}
-
-void A_BspiAttack (mobj_t *actor)
-{	
-    if (!actor->target)
-	return;
-		
-    A_FaceTarget (actor);
-
     // launch a missile
     P_SpawnMissile (actor, actor->target, MT_ARACHPLAZ);
 }
