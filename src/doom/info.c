@@ -77,6 +77,7 @@ void A_FireD60();
 void A_FireQuake();
 void A_FireChainReaction();
 void A_FireCrystalShatter();
+void A_FireSplittingD20();
 void A_Light1();
 void A_FireShotgun();
 void A_Light2();
@@ -323,6 +324,14 @@ state_t	states[NUMSTATES] = {
     {SPR_D6B1,2,5,{NULL},S_CRYSTALSHATTER_4,0,0},	// S_CRYSTALSHATTER_3 - follow through
     {SPR_D6B1,1,6,{A_ReFire},S_CRYSTALSHATTER,0,0},	// S_CRYSTALSHATTER_4 - refire
     {SPR_D6BF,32768,5,{A_Light1},S_LIGHTDONE,0,0},	// S_CRYSTALSHATTERFLASH
+    {SPR_D6B1,0,1,{A_WeaponReady},S_SPLITTINGD20,0,0},	// S_SPLITTINGD20 - Splitting d20 ready
+    {SPR_D6B1,0,1,{A_Lower},S_SPLITTINGD20DOWN,0,0},	// S_SPLITTINGD20DOWN
+    {SPR_D6B1,0,1,{A_Raise},S_SPLITTINGD20UP,0,0},	// S_SPLITTINGD20UP
+    {SPR_D6B1,0,4,{NULL},S_SPLITTINGD20_2,0,0},	// S_SPLITTINGD20_1 - windup
+    {SPR_D6B1,1,6,{A_FireSplittingD20},S_SPLITTINGD20_3,0,0},	// S_SPLITTINGD20_2 - fire (splitting)
+    {SPR_D6B1,2,5,{NULL},S_SPLITTINGD20_4,0,0},	// S_SPLITTINGD20_3 - follow through
+    {SPR_D6B1,1,6,{A_ReFire},S_SPLITTINGD20,0,0},	// S_SPLITTINGD20_4 - refire
+    {SPR_D6BF,32768,5,{A_Light1},S_LIGHTDONE,0,0},	// S_SPLITTINGD20FLASH
     {SPR_D6B1,0,1,{A_WeaponReady},S_D3,0,0},	// S_D3 - Skewered Luck ready
     {SPR_D6B1,0,1,{A_Lower},S_D3DOWN,0,0},	// S_D3DOWN
     {SPR_D6B1,0,1,{A_Raise},S_D3UP,0,0},	// S_D3UP

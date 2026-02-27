@@ -80,6 +80,7 @@ static const fixed_t weapon_recoil_values[NUMWEAPONS] = {
     FRACUNIT,      // wp_d100plus1 - Goblin Dice Rollaz (no fumbles, 4x on crit)
     FRACUNIT*3/4,  // wp_quake - Goblin Dice Rollaz (shockwave, stun)
     FRACUNIT/3,    // wp_crystalshatter - Goblin Dice Rollaz (shard spray, shield break)
+    FRACUNIT/3,    // wp_splittingd20 - Goblin Dice Rollaz (splits into multiple dice)
 };
 
 
@@ -811,6 +812,72 @@ A_FireCrystalShatter
     else
     {
         R_TriggerScreenShake(FRACUNIT * 1, 2);
+    }
+}
+
+// A_FireSplittingD20 - Goblin Dice Rollaz Splitting d20 weapon
+// Splits into multiple dice on hit
+//
+void
+A_FireSplittingD20
+( player_t*	player,
+  pspdef_t*	psp ) 
+{
+    int damage;
+    int guaranteedCrit = 0;
+    int critRoll = 0;
+    int diceRoll = 0;
+    mobj_t* missile;
+    
+    S_StartSound (player->mo, sfx_dice_d20);
+
+    P_SetMobjState (player->mo, S_PLAY_ATK2);
+    DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
+
+    P_SetPsprite (player,
+		  ps_flash,
+		  weaponinfo[player->readyweapon].flashstate+(P_Random ()&1));
+
+    if (player->powers[pw_dicefortune])
+    {
+        guaranteedCrit = 1;
+        player->powers[pw_dicefortune] = 0;
+        player->message = "CRITICAL!";
+    }
+
+    damage = P_CalculateDiceDamage(wp_splittingd20, guaranteedCrit, &critRoll, NULL, &diceRoll, player);
+
+    player->weapon_recoil = weapon_recoil_values[wp_splittingd20];
+
+    missile = P_SpawnPlayerMissile (player->mo, MT_DICE_GLOW, wp_splittingd20);
+    if (missile)
+    {
+        missile->damage = damage;
+        missile->flags |= MF_SPLITTINGDICE;  // Mark missile as splitting for spawn behavior
+        if (critRoll > 0)
+        {
+            missile->flags |= MF_CRITDICE;  // Enhanced split on crit
+        }
+    }
+
+    if (critRoll > 0)
+    {
+        R_TriggerScreenShake(FRACUNIT * 5, 10);
+        player->message = "SPLITTING CRITICAL!";
+    }
+    else if (diceRoll >= 15)
+    {
+        R_TriggerScreenShake(FRACUNIT * 4, 8);
+        player->message = "SPLIT HIT!";
+    }
+    else if (diceRoll >= 10)
+    {
+        R_TriggerScreenShake(FRACUNIT * 3, 6);
+        player->message = "MULTI HIT!";
+    }
+    else
+    {
+        R_TriggerScreenShake(FRACUNIT * 2, 4);
     }
 }
 

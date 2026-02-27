@@ -204,6 +204,9 @@ typedef enum
     // Goblin Dice Rollaz: Crystal Shatter weapon spawns shards
     MF_CRYSTALDICE     = 0x80000000,
 
+    // Goblin Dice Rollaz: Splitting d20 weapon spawns additional dice
+    MF_SPLITTINGDICE   = 0x200000,  // Available flag in the mid-range
+
     // Player sprites in multiplayer modes are modified
     //  using an internal color lookup table for re-indexing.
     // If 0x4 0x8 or 0xc,

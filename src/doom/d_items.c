@@ -306,6 +306,15 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
         	S_CRYSTALSHATTER_1,
         	S_CRYSTALSHATTERFLASH
         },
+        {
+        	// Splitting d20 weapon (splits into multiple dice)
+        	am_heavydice,
+        	S_SPLITTINGD20DOWN,
+        	S_SPLITTINGD20UP,
+        	S_SPLITTINGD20,
+        	S_SPLITTINGD20_1,
+        	S_SPLITTINGD20FLASH
+        },
 };
 
 // Goblin Dice Rollaz: Dice weapon configuration table
@@ -617,6 +626,19 @@ dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
         3,       // chain_targets: shatters into 3 shards
         0, 0,    // No misfire
         SPF_NONE, 35, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_ARMOR  // Mid-tier, armor piercing (shield break)
+    },
+    {   // wp_splittingd20 - d20 Splitting Die (splits into multiple dice on hit)
+        20,      // die_type: d20
+        10,      // crit_chance: 10% (roll of 20)
+        2,       // crit_multiplier: 2x on crit
+        3,       // min_damage
+        20,      // crit_roll: 20
+        {3, 5, 8, 12, 18, 25, 40},  // Splitting: 1-2=3, 3-4=5, 5-6=8, 7-10=12, 11-14=18, 15-19=25, 20=crit(40*2=80)
+        0,       // gamble_shot: no
+        0,       // ricochet_bounces: no
+        2,       // chain_targets: splits into 2 additional dice
+        0, 0,    // No misfire
+        SPF_NONE, 30, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_NORMAL  // Mid-tier, splitting damage
     },
 };
 

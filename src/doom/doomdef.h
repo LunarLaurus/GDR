@@ -133,6 +133,7 @@ typedef enum
     wp_quake,        // d3 Quake Boulder (shockwave, stun)
     wp_chainreaction,    // d12 Chain Reaction (sticks, chains to nearby)
     wp_crystalshatter,   // Crystal d8 Shatter (shard spray, shield break)
+    wp_splittingd20,     // d20 Splitting Die (splits into multiple dice)
 
     NUMWEAPONS,
     

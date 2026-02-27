@@ -299,7 +299,7 @@
 - [x] Add d3 Quake Boulder weapon (shockwave, stun)
 - [x] Add Chain Reaction d12 weapon (sticks, chains to nearby)
 - [x] Add Crystal d8 Shatter weapon (shard spray, shield break)
-- [ ] Add Splitting d20 weapon (splits into multiple dice)
+- [x] Add Splitting d20 weapon (splits into multiple dice)
 - [ ] Add Greed's d6 Gold Rush weapon (damage stacks on kills)
 - [ ] Add Mining Charge d10 weapon (proximity mines)
 - [ ] Add Swarm d6 Dice Storm weapon (rapid fire spread)
@@ -393,7 +393,7 @@
 - [ ] Make video_driver const char* in i_video.c
 - [ ] Make window_position const char* in i_video.c
 - [ ] Make snd_musiccmd const char* in i_sound.c
-- [ ] Expand dice_str buffer from 4 to 8 bytes in m_menu.c
+- [x] Expand dice_str buffer from 4 to 8 bytes in m_menu.c
 - [ ] Expand level name buffer in m_menu.c line 1931
 
 ### Phase 19: Additional Rendering Optimizations
