@@ -1645,6 +1645,8 @@ typedef enum {
     MT_DWARF_STONECUTTER,    // Goblin Dice Rollaz: Dwarf hurls rock fragments
     MT_DWARF_THUNDERMAGE,    // Goblin Dice Rollaz: Dwarf with lightning arc attacks
     MT_DWARF_WARLORD,        // Goblin Dice Rollaz: Dwarf boss with immunity aura
+    MT_DWARF_RUNESMITH,      // Goblin Dice Rollaz: Dwarf that places reflective rune shields
+    MT_RUNE_SHIELD,          // Goblin Dice Rollaz: Reflective rune shield (placed by Runesmith)
     NUMMOBJTYPES
 
 } mobjtype_t;

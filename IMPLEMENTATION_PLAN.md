@@ -312,7 +312,7 @@
 - [x] Add Dwarf Stonecutter (hurls rock fragments, high impact)
 - [x] Add Dwarf Thundermage (lightning arcs, medium range)
 - [x] Add Dwarf Warlord (boss, 300 HP, immunity aura)
-- [ ] Add Dwarf Runesmith (reflective rune shields on ground)
+- [x] Add Dwarf Runesmith (reflective rune shields on ground)
 - [ ] Add Dwarf Runebearer (crit resistance aura, support)
 - [ ] Add Dwarf High Priest (heals wounded dwarves)
 - [ ] Add Dwarf Commander (focus fire orders on player)

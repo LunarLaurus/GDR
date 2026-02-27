@@ -4388,6 +4388,63 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 	150		// phase2_health (phase transition at 50%)
     },
 
+    {		// MT_DWARF_RUNESMITH - Goblin Dice Rollaz: Dwarf that places reflective rune shields
+	8105,		// doomednum (custom mapthing number)
+	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations)
+	35,		// spawnhealth (support unit - low HP)
+	S_SPOS_RUN1,		// seestate
+	sfx_posit2,		// seesound
+	8,		// reactiontime
+	sfx_None,		// attacksound (rune activation)
+	S_SPOS_PAIN,		// painstate
+	150,		// painchance (fragile - easily distracted)
+	sfx_popain,		// painsound
+	0,		// meleestate (no melee)
+	S_SPOS_ATK1,		// missilestate (places rune shield)
+	S_SPOS_DIE1,		// deathstate
+	S_SPOS_XDIE1,		// xdeathstate
+	sfx_podth2,		// deathsound
+	3,		// speed (slow - support caster)
+	16*FRACUNIT,		// radius
+	44*FRACUNIT,		// height
+	150,		// mass
+	0,		// damage (places shields, no direct damage)
+	sfx_posact,		// activesound
+	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+	S_SPOS_RAISE1,		// raisestate
+	15,		// crit_resistance (low - fragile support)
+	30,		// aggression (low - places defenses rather than attacks)
+	0,		// shield_reduction (none - support unit)
+	0,		// rear_weakness (none)
+	0		// phase2_health (no phases)
+    },
+
+    {		// MT_RUNE_SHIELD - Goblin Dice Rollaz: Reflective rune shield (placed by Runesmith)
+	-1,		// doomednum
+	S_BRBALL1,		// spawnstate (reuses fireball visual)
+	1000,		// spawnhealth
+	S_NULL,		// seestate
+	sfx_None,		// seesound
+	8,		// reactiontime
+	sfx_None,		// attacksound
+	S_NULL,		// painstate
+	0,		// painchance
+	sfx_None,		// painsound
+	S_NULL,		// meleestate
+	S_NULL,		// missilestate
+	S_BRBALLX1,		// deathstate (dissipate)
+	S_NULL,		// xdeathstate
+	sfx_None,		// deathsound
+	0,		// speed (stationary)
+	12*FRACUNIT,		// radius
+	4*FRACUNIT,		// height (low to ground)
+	100,		// mass
+	0,		// damage (reflects, doesn't damage)
+	sfx_None,		// activesound
+	MF_SOLID|MF_NOBLOCKMAP|MF_MISSILE,		// flags (solid to reflect, no blockmap)
+	S_NULL		// raisestate
+    },
+
     {		// MT_MISC17
 	2048,		// doomednum
 	S_AMMO,		// spawnstate
