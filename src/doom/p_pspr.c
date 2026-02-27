@@ -28,6 +28,7 @@
 #include "d_items.h"
 #include "s_sound.h"
 #include "g_rpg.h"
+#include "g_powerup.h"
 #include "g_balance.h"
 #include "g_stats.h"
 #include "r_main.h"
@@ -1464,13 +1465,22 @@ P_CalculateDiceDamage (int weapon, int guaranteedCrit, int *outCritRoll, int *ou
     dice_weapon_info_t *dwi;
     int masteryBonus = 0;
     int masteryCritBonus = 0;
-    
+
     if (outCritRoll)
         *outCritRoll = 0;
     if (outMisfire)
         *outMisfire = 0;
     if (outDiceRoll)
         *outDiceRoll = 0;
+
+    if (player)
+    {
+        int bonusCrits = G_GetAndConsumeGuaranteedCrits(player);
+        if (bonusCrits > 0)
+        {
+            guaranteedCrit += bonusCrits;
+        }
+    }
     
     if (weapon < 0 || weapon >= NUMWEAPONS)
         return 1;

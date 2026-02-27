@@ -355,7 +355,7 @@
 - [ ] Add Bone Pit (released cage monsters)
 
 ### Phase 17: New Powerups
-- [ ] Add Lucky Seven powerup (7 guaranteed crits)
+- [x] Add Lucky Seven powerup (7 guaranteed crits)
 - [ ] Add Exploding Dice powerup (reroll max faces)
 - [ ] Add Advantage Roll powerup (roll twice take best)
 - [ ] Add Snake Eyes powerup (mark for double damage)

@@ -134,6 +134,18 @@ powerup_info_t powerups[NUMPOWERS] = {
         MT_DICEFORTUNE,
         SPR_PFTR,
         50
+    },
+    {
+        pw_luckyseven,
+        "Lucky Seven",
+        7,
+        POWERUP_FLAG_ONESHOT | POWERUP_FLAG_GUARANTEED_CRITS,
+        "LUCKY SEVEN!",
+        CRITCOLORMAP,
+        sfx_critup,
+        MT_NADA,
+        SPR_PCRT,
+        25
     }
 };
 
@@ -308,4 +320,23 @@ void G_PowerupShareWithNearbyPlayers(player_t* activator, int powerup_id)
             }
         }
     }
+}
+
+int G_GetAndConsumeGuaranteedCrits(player_t* player)
+{
+    int crits = 0;
+
+    if (player->powers[pw_dicefortune])
+    {
+        crits += 1;
+        player->powers[pw_dicefortune] = 0;
+    }
+
+    if (player->powers[pw_luckyseven] > 0)
+    {
+        crits += player->powers[pw_luckyseven];
+        player->powers[pw_luckyseven] = 0;
+    }
+
+    return crits;
 }

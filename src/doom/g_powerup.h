@@ -29,6 +29,7 @@
 #define POWERUP_FLAG_EXCLUSIVE    0x0004
 #define POWERUP_FLAG_STACKABLE    0x0008
 #define POWERUP_FLAG_PERMANENT    0x0010
+#define POWERUP_FLAG_GUARANTEED_CRITS 0x0020
 
 typedef struct
 {
@@ -54,6 +55,7 @@ boolean G_PowerupCanPickup(player_t* player, int powerup_id);
 void    G_PowerupOnHit(player_t* player, int powerup_id);
 int     G_GetActivePowerupCount(player_t* player);
 void    G_PowerupShareWithNearbyPlayers(player_t* activator, int powerup_id);
+int     G_GetAndConsumeGuaranteedCrits(player_t* player);
 
 #define POWERUP(c) powerups[c]
 
