@@ -382,7 +382,7 @@
 - [x] Define MAX_MENU_PARTICLES constant
 - [x] Define SHAKE_LOW, SHAKE_MEDIUM, SHAKE_HIGH constants
 - [x] Define CRIT_CHANCE_SCALE constant in p_inter.c
-- [ ] Define movement speed constants in g_game.c
+- [x] Define movement speed constants in g_game.c
 - [x] Fix typo: indetermined -> undetermined in doomstat.c
 - [ ] Fix inconsistent naming: standardize snake_case for goblin vars
 - [ ] Add NULL check after malloc in m_menu.c

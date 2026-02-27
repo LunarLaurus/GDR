@@ -166,12 +166,15 @@ wbstartstruct_t wminfo;               	// parms for world map / intermission
  
 byte		consistancy[MAXPLAYERS][BACKUPTICS]; 
  
-#define MAXPLMOVE		(forwardmove[1]) 
- 
-#define TURBOTHRESHOLD	0x32
+#define MOVESPEED_SLOW      0x19
+#define MOVESPEED_FAST      0x32
+#define SIDESPEED_SLOW      0x18
+#define SIDESPEED_FAST      0x28
+#define TURBOTHRESHOLD      0x32
+#define MAXPLMOVE           (MOVESPEED_FAST)
 
-fixed_t         forwardmove[2] = {0x19, 0x32}; 
-fixed_t         sidemove[2] = {0x18, 0x28}; 
+fixed_t         forwardmove[2] = {MOVESPEED_SLOW, MOVESPEED_FAST};
+fixed_t         sidemove[2] = {SIDESPEED_SLOW, SIDESPEED_FAST};
 fixed_t         angleturn[3] = {640, 1280, 320};    // + slow turn 
 
 static int *weapon_keys[] = {
