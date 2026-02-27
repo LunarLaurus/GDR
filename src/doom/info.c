@@ -68,6 +68,7 @@ void A_FireCursed();
 void A_FireD2();
 void A_FireD3();
 void A_FireD7();
+void A_FireD14();
 void A_Light1();
 void A_FireShotgun();
 void A_Light2();
@@ -266,6 +267,14 @@ state_t	states[NUMSTATES] = {
     {SPR_D6B1,2,4,{NULL},S_D7_4,0,0},	// S_D7_3 - follow through
     {SPR_D6B1,1,5,{A_ReFire},S_D7,0,0},	// S_D7_4 - refire
     {SPR_D6BF,32768,5,{A_Light1},S_LIGHTDONE,0,0},	// S_D7FLASH
+    {SPR_D6B1,0,1,{A_WeaponReady},S_D14,0,0},	// S_D14 - Fused Doubler ready
+    {SPR_D6B1,0,1,{A_Lower},S_D14DOWN,0,0},	// S_D14DOWN
+    {SPR_D6B1,0,1,{A_Raise},S_D14UP,0,0},	// S_D14UP
+    {SPR_D6B1,0,3,{NULL},S_D14_2,0,0},	// S_D14_1 - windup
+    {SPR_D6B1,1,5,{A_FireD14},S_D14_3,0,0},	// S_D14_2 - fire (dual dice)
+    {SPR_D6B1,2,4,{NULL},S_D14_4,0,0},	// S_D14_3 - follow through
+    {SPR_D6B1,1,5,{A_ReFire},S_D14,0,0},	// S_D14_4 - refire
+    {SPR_D6BF,32768,5,{A_Light1},S_LIGHTDONE,0,0},	// S_D14FLASH
     {SPR_SHTG,0,1,{A_WeaponReady},S_SGUN,0,0},	// S_SGUN
     {SPR_SHTG,0,1,{A_Lower},S_SGUNDOWN,0,0},	// S_SGUNDOWN
     {SPR_SHTG,0,1,{A_Raise},S_SGUNUP,0,0},	// S_SGUNUP
@@ -2969,6 +2978,32 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 	22*FRACUNIT,		// speed (mid-range)
 	5*FRACUNIT,		// radius (medium)
 	5*FRACUNIT,		// height (medium)
+	40,		// mass
+	1,		// damage (base, modified by dice roll at fire time)
+	sfx_None,		// activesound
+	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_MAGICTRAIL,		// flags (splash via explosion)
+	S_NULL		// raisestate
+    },
+
+    {		// MT_D14PROJECTILE - Goblin Dice Rollaz d14 Fused Doubler projectile (resonance explosion)
+	-1,		// doomednum
+	S_PLASBALL,		// spawnstate (reuse plasma ball sprite)
+	1000,		// spawnhealth
+	S_NULL,		// seestate
+	sfx_dice_d20,		// seesound
+	8,		// reactiontime
+	sfx_None,		// attacksound
+	S_NULL,		// painstate
+	0,		// painchance
+	sfx_None,		// painsound
+	S_NULL,		// meleestate
+	S_NULL,		// missilestate
+	S_PLASEXP,		// deathstate (explodes on impact with resonance)
+	S_NULL,		// xdeathstate
+	sfx_firxpl,		// deathsound
+	25*FRACUNIT,		// speed (faster than d7)
+	6*FRACUNIT,		// radius (larger)
+	6*FRACUNIT,		// height (larger)
 	40,		// mass
 	1,		// damage (base, modified by dice roll at fire time)
 	sfx_None,		// activesound

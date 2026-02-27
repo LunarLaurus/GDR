@@ -70,7 +70,8 @@ static const fixed_t weapon_recoil_values[NUMWEAPONS] = {
     FRACUNIT,      // wp_cursed - Goblin Dice Rollaz
     FRACUNIT/5,    // wp_d2 - Goblin Dice Rollaz (low recoil)
     FRACUNIT/5,    // wp_d3 - Goblin Dice Rollaz (low recoil, piercing)
-    FRACUNIT/4     // wp_d7 - Goblin Dice Rollaz (ore fragment splash)
+    FRACUNIT/4,    // wp_d7 - Goblin Dice Rollaz (ore fragment splash)
+    FRACUNIT*3/4  // wp_d14 - Goblin Dice Rollaz (dual dice, resonance bonus)
 };
 
 
@@ -1662,6 +1663,80 @@ A_FireD7
         R_TriggerScreenShake(FRACUNIT * 3, 6);
     }
     else if (diceRoll >= 5)
+    {
+        R_TriggerScreenShake(FRACUNIT * 2, 4);
+    }
+    else
+    {
+        R_TriggerScreenShake(FRACUNIT * 1, 3);
+    }
+}
+
+
+//
+// A_FireD14 - Goblin Dice Rollaz d14 Fused Doubler weapon
+// Fires two d14 dice - resonance (same roll on both) causes explosion
+// Dual dice rolled, combined damage with bonus for matching numbers
+// 
+void
+A_FireD14
+( player_t*	player,
+  pspdef_t*	psp ) 
+{
+    int damage1;
+    int damage2;
+    int guaranteedCrit = 0;
+    int critRoll1 = 0;
+    int critRoll2 = 0;
+    int diceRoll1 = 0;
+    int diceRoll2 = 0;
+    mobj_t* missile;
+    int resonanceBonus = 0;
+    
+    S_StartSound (player->mo, sfx_dice_d20);
+
+    P_SetMobjState (player->mo, S_PLAY_ATK2);
+    DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
+
+    P_SetPsprite (player,
+		  ps_flash,
+		  weaponinfo[player->readyweapon].flashstate+(P_Random ()&1));
+
+    if (player->powers[pw_dicefortune])
+    {
+        guaranteedCrit = 1;
+        player->powers[pw_dicefortune] = 0;
+        player->message = "CRITICAL!";
+    }
+
+    damage1 = P_CalculateDiceDamage(wp_d14, guaranteedCrit, &critRoll1, NULL, &diceRoll1, player);
+    damage2 = P_CalculateDiceDamage(wp_d14, guaranteedCrit, &critRoll2, NULL, &diceRoll2, player);
+
+    if (diceRoll1 == diceRoll2 && diceRoll1 > 0)
+    {
+        resonanceBonus = diceRoll1 * 2;
+        player->message = "RESONANCE!";
+    }
+
+    damage1 += resonanceBonus;
+
+    player->weapon_recoil = weapon_recoil_values[wp_d14];
+
+    missile = P_SpawnPlayerMissile (player->mo, MT_D14PROJECTILE, wp_d14);
+    if (missile)
+    {
+        missile->damage = damage1;
+    }
+
+    if (resonanceBonus > 0)
+    {
+        R_TriggerScreenShake(FRACUNIT * 4, 8);
+    }
+    else if (critRoll1 > 0 || critRoll2 > 0)
+    {
+        R_TriggerScreenShake(FRACUNIT * 3, 6);
+    }
+    else if (diceRoll1 >= 10 || diceRoll2 >= 10)
     {
         R_TriggerScreenShake(FRACUNIT * 2, 4);
     }

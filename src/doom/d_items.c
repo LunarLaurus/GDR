@@ -216,15 +216,24 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
   	S_D3_1,
   	S_D3FLASH
       },
-      {
-      	// d7 Seven Veils weapon (ore fragment splash, 14% crit)
-      	am_lightdice,
-      	S_D7DOWN,
-      	S_D7UP,
-      	S_D7,
-      	S_D7_1,
-      	S_D7FLASH
-      },
+       {
+       	// d7 Seven Veils weapon (ore fragment splash, 14% crit)
+       	am_lightdice,
+       	S_D7DOWN,
+       	S_D7UP,
+       	S_D7,
+       	S_D7_1,
+       	S_D7FLASH
+       },
+       {
+       	// d14 Fused Doubler weapon (dual dice, resonance explosion)
+       	am_lightdice,
+       	S_D14DOWN,
+       	S_D14UP,
+       	S_D14,
+       	S_D14_1,
+       	S_D14FLASH
+       },
 };
 
 // Goblin Dice Rollaz: Dice weapon configuration table
@@ -398,6 +407,18 @@ dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
         0,      // ricochet_bounces: no
         0, 0,   // No misfire
         SPF_NONE, 35, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_EXPLOSIVE  // Mid-tier weapon, ore splash
+    },
+    {   // wp_d14 - Fused Doubler (dual dice, resonance explosion)
+        14,     // die_type: d14 (fired as dual dice)
+        7,      // crit_chance: 7% per die (roll of 14)
+        2,      // crit_multiplier: 2x on crit per die
+        2,      // min_damage
+        14,     // crit_roll: 14
+        {2, 3, 4, 5, 7, 9, 12},  // 1-2=2, 3-4=3, 5-6=4, 7-8=5, 9-11=7, 12-13=9, 14=crit(12*2=24)
+        0,      // gamble_shot: no
+        0,      // ricochet_bounces: no
+        0, 0,   // No misfire (resonance provides bonus instead)
+        SPF_NONE, 25, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_EXPLOSIVE  // Late mid-tier, resonance bonus
     },
 };
 
