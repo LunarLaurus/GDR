@@ -329,8 +329,8 @@
 - [x] Add Dwarf Geologist (spawns rock Golems)
 - [x] Add Dwarf Alchemist (throws volatile potions)
 - [x] Add Dwarf Treasure Hunter (drops extra loot)
-- [ ] Add Dwarf Juggernaut (slow, devastating melee)
-- [ ] Add Dwarf Sapper (places explosives on walls)
+- [x] Add Dwarf Juggernaut (slow, devastating melee)
+- [x] Add Dwarf Sapper (places explosives on walls)
 
 ### Phase 16: New Map Environments
 - [ ] Add Molten Anvil forge map theme

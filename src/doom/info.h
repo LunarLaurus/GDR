@@ -1669,6 +1669,8 @@ typedef enum {
     MT_DWARF_GEOLOGIST,      // Goblin Dice Rollaz: Dwarf Geologist (spawns rock Golems)
     MT_DWARF_TREASUREHUNTER, // Goblin Dice Rollaz: Dwarf Treasure Hunter (drops extra loot)
     MT_ROCK_GOLEM,           // Goblin Dice Rollaz: Rock Golem spawned by Geologist
+    MT_DWARF_JUGGERNAUT,     // Goblin Dice Rollaz: Dwarf Juggernaut (slow, devastating melee)
+    MT_DWARF_SAPPER,          // Goblin Dice Rollaz: Dwarf Sapper (places explosives on walls)
     NUMMOBJTYPES
 
 } mobjtype_t;

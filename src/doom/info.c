@@ -5127,6 +5127,68 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 	0		// phase2_health (no phases)
     },
 
+    {		// MT_DWARF_JUGGERNAUT - Goblin Dice Rollaz: Dwarf Juggernaut (slow, devastating melee)
+	8121,		// doomednum (custom mapthing number)
+	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations)
+	200,		// spawnhealth (tanky - high HP)
+	S_SPOS_RUN1,		// seestate
+	sfx_posit2,		// seesound
+	8,		// reactiontime
+	sfx_None,		// attacksound
+	S_SPOS_PAIN,		// painstate
+	50,		// painchance (moderate - armored but not invulnerable)
+	sfx_popain,		// painsound
+	S_SPOS_ATK1,		// meleestate (devastating melee attack)
+	0,		// missilestate (none - melee focused)
+	S_SPOS_DIE1,		// deathstate
+	S_SPOS_XDIE1,		// xdeathstate
+	sfx_bossdth,		// deathsound
+	3*FRACUNIT,		// speed (very slow - lumbering juggernaut)
+	40*FRACUNIT,		// radius (massive)
+	80*FRACUNIT,		// height (huge)
+	1000,		// mass (extremely heavy)
+	50,		// damage (devastating melee hits)
+	sfx_bmact,		// activesound
+	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+	S_SPOS_RAISE1,		// raisestate
+	30,		// crit_resistance (moderate - armored)
+	90,		// aggression (high - relentless)
+	60,		// shield_reduction (very high - heavy armor)
+	0,		// rear_weakness (none - full armor)
+	0		// phase2_health (no phases)
+    },
+
+    {		// MT_DWARF_SAPPER - Goblin Dice Rollaz: Dwarf Sapper (places explosives on walls)
+	8122,		// doomednum (custom mapthing number)
+	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations)
+	60,		// spawnhealth (moderate - combat engineer)
+	S_SPOS_RUN1,		// seestate
+	sfx_posit2,		// seesound
+	8,		// reactiontime
+	sfx_None,		// attacksound
+	S_SPOS_PAIN,		// painstate
+	100,		// painchance (moderate)
+	sfx_popain,		// painsound
+	0,		// meleestate (no melee - ranged specialist)
+	S_SPOS_ATK1,		// missilestate (places explosives)
+	S_SPOS_DIE1,		// deathstate
+	S_SPOS_XDIE1,		// xdeathstate
+	sfx_bossdth,		// deathsound
+	8*FRACUNIT,		// speed (moderate - tactical movement)
+	20*FRACUNIT,		// radius (standard)
+	56*FRACUNIT,		// height (standard)
+	200,		// mass (moderate)
+	15,		// damage (explosive charge damage)
+	sfx_bmact,		// activesound
+	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+	S_SPOS_RAISE1,		// raisestate
+	20,		// crit_resistance (low - explosive expert)
+	70,		// aggression (moderate - tactical)
+	20,		// shield_reduction (low - lighter armor)
+	0,		// rear_weakness (none)
+	0		// phase2_health (no phases)
+    },
+
     {		// MT_MISC17
 	2048,		// doomednum
 	S_AMMO,		// spawnstate
