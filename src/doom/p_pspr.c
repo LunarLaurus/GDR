@@ -745,6 +745,70 @@ A_FireQuake
     }
 }
 
+//
+// A_FireChainReaction - Goblin Dice Rollaz d12 Chain Reaction weapon
+// Projectile sticks to enemy and chains to nearby targets
+// Critical hits increase chain count
+// 
+void
+A_FireChainReaction
+( player_t*	player,
+  pspdef_t*	psp ) 
+{
+    int damage;
+    int guaranteedCrit = 0;
+    int critRoll = 0;
+    int diceRoll = 0;
+    mobj_t* missile;
+    
+    S_StartSound (player->mo, sfx_dice_d12);
+
+    P_SetMobjState (player->mo, S_PLAY_ATK2);
+    DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
+
+    P_SetPsprite (player,
+		  ps_flash,
+		  weaponinfo[player->readyweapon].flashstate+(P_Random ()&1));
+
+    if (player->powers[pw_dicefortune])
+    {
+        guaranteedCrit = 1;
+        player->powers[pw_dicefortune] = 0;
+        player->message = "CRITICAL!";
+    }
+
+    damage = P_CalculateDiceDamage(wp_chainreaction, guaranteedCrit, &critRoll, NULL, &diceRoll, player);
+
+    player->weapon_recoil = weapon_recoil_values[wp_chainreaction];
+
+    missile = P_SpawnPlayerMissile (player->mo, MT_DICE_GLOW, wp_chainreaction);
+    if (missile)
+    {
+        missile->damage = damage;
+        missile->flags |= MF_STICKYDICE;  // Mark missile as sticky for chain behavior
+        if (critRoll > 0)
+        {
+            missile->flags |= MF_CRITDICE;  // Mark for enhanced chain on crit
+        }
+    }
+
+    if (critRoll > 0)
+    {
+        R_TriggerScreenShake(FRACUNIT * 5, 10);
+        player->message = "CHAIN REACTION!";
+    }
+    else if (diceRoll >= 8)
+    {
+        R_TriggerScreenShake(FRACUNIT * 3, 6);
+        player->message = "PIERCING HIT!";
+    }
+    else
+    {
+        R_TriggerScreenShake(FRACUNIT * 2, 4);
+    }
+}
+
+
 
 
 

@@ -131,6 +131,7 @@ typedef enum
     wp_d60,           // d60 Elemental Chaos (fire/ice/lightning/poison)
     wp_d100plus1,    // d100+1 Fumble Finder (no fumbles, 4x on crit)
     wp_quake,        // d3 Quake Boulder (shockwave, stun)
+    wp_chainreaction,    // d12 Chain Reaction (sticks, chains to nearby)
 
     NUMWEAPONS,
     

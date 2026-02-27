@@ -92,6 +92,7 @@ typedef struct
     int damage_table[7];    // Damage mapping for roll ranges
     int gamble_shot;        // Wide variance mode (exploding rolls, misfire chance)
     int ricochet_bounces;   // Number of ricochets allowed (0 = no ricochet)
+    int chain_targets;      // Number of additional targets to chain to (0 = no chain)
     int misfire_roll;       // Roll at or below this triggers misfire (0 = no misfire)
     int misfire_penalty;    // Damage multiplier on misfire (e.g., 25 = quarter damage)
     weapon_spawn_flags_t spawn_flags;  // Map balancing flags

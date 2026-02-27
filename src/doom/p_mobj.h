@@ -195,6 +195,12 @@ typedef enum
     // Goblin Dice Rollaz: Quake weapon applies stun on impact
     MF_STUN             = 0x10000000,
 
+    // Goblin Dice Rollaz: Chain Reaction weapon sticks to target
+    MF_STICKYDICE      = 0x20000000,
+
+    // Goblin Dice Rollaz: Chain Reaction crit enhances chain count
+    MF_CRITDICE        = 0x40000000,
+
     // Player sprites in multiplayer modes are modified
     //  using an internal color lookup table for re-indexing.
     // If 0x4 0x8 or 0xc,
