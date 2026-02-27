@@ -109,7 +109,8 @@ int			content_warning_accepted = 0;  // Has user acknowledged warning
 
 // Goblin Dice Rollaz: Main menu animated background
 #define MENU_ANIM_FRAMES 8
-#define MENU_ANIM_SPEED 4  // frames per second
+#define MENU_ANIM_SPEED 4
+#define MAX_MENU_PARTICLES 16
 typedef struct {
     int x;
     int y;
@@ -119,7 +120,7 @@ typedef struct {
 } menu_dice_particle_t;
 
 static int menu_anim_tic = 0;
-static menu_dice_particle_t menu_particles[16];
+static menu_dice_particle_t menu_particles[MAX_MENU_PARTICLES];
 static boolean menu_anim_initialized = false;
 
 void M_InitMenuAnimation(void);
