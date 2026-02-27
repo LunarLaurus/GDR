@@ -632,7 +632,7 @@ static default_t extra_defaults_list[] =
     // If non-zero, modern effects like screen shake and particles are enabled.
     // If zero, these effects are disabled for a classic experience.
     //
-    CONFIG_VARIABLE_INT(usemodernfx),
+    CONFIG_VARIABLE_INT(goblin_modern_fx),
 
     // Goblin Dice Rollaz: Crosshair customization
     // If non-zero, crosshair is displayed at center of view.

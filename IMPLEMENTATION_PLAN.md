@@ -384,7 +384,7 @@
 - [x] Define CRIT_CHANCE_SCALE constant in p_inter.c
 - [x] Define movement speed constants in g_game.c
 - [x] Fix typo: indetermined -> undetermined in doomstat.c
-- [ ] Fix inconsistent naming: standardize snake_case for goblin vars
+- [x] Fix inconsistent naming: standardize snake_case for goblin vars
 - [ ] Add NULL check after malloc in m_menu.c
 - [ ] Add NULL check after malloc in d_main.c
 - [x] Add NULL check after strdup in d_main.c
