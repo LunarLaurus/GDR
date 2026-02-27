@@ -270,6 +270,15 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
         	S_D60_1,
         	S_D60FLASH
         },
+        {
+        	// d100+1 Fumble Finder weapon (no fumbles, 4x on crit)
+        	am_lightdice,
+        	S_D100PLUS1DOWN,
+        	S_D100PLUS1UP,
+        	S_D100PLUS1,
+        	S_D100PLUS1_1,
+        	S_D100PLUS1FLASH
+        },
 };
 
 // Goblin Dice Rollaz: Dice weapon configuration table
@@ -515,6 +524,18 @@ dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
         0,      // ricochet_bounces: no
         0, 0,   // No misfire
         SPF_LATE_GAME, 20, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_ELEMENTAL  // Late game, random elemental
+    },
+    {   // wp_d100plus1 - Fumble Finder (no fumbles, 4x on crit)
+        100,    // die_type: d100+1
+        1,      // crit_chance: 1% (roll of 100)
+        4,      // crit_multiplier: 4x on crit (key feature!)
+        5,      // min_damage
+        100,    // crit_roll: 100
+        {5, 10, 20, 35, 50, 75, 150},  // 1-10=5, 11-30=10, 31-50=20, 51-70=35, 71-90=50, 91-99=75, 100=crit(150*4=600)
+        0,      // gamble_shot: no
+        0,      // ricochet_bounces: no
+        0, 0,   // No misfire (no fumbles!)
+        SPF_LATE_GAME, 15, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_NORMAL  // Late game, no fumble
     },
 };
 

@@ -288,6 +288,14 @@ state_t	states[NUMSTATES] = {
     {SPR_D6B1,2,5,{NULL},S_D60_4,0,0},	// S_D60_3 - follow through
     {SPR_D6B1,1,6,{A_ReFire},S_D60,0,0},	// S_D60_4 - refire
     {SPR_D6BF,32768,5,{A_Light1},S_LIGHTDONE,0,0},	// S_D60FLASH
+    {SPR_D6B1,0,1,{A_WeaponReady},S_D100PLUS1,0,0},	// S_D100PLUS1 - Fumble Finder ready
+    {SPR_D6B1,0,1,{A_Lower},S_D100PLUS1DOWN,0,0},	// S_D100PLUS1DOWN
+    {SPR_D6B1,0,1,{A_Raise},S_D100PLUS1UP,0,0},	// S_D100PLUS1UP
+    {SPR_D6B1,0,4,{NULL},S_D100PLUS1_2,0,0},	// S_D100PLUS1_1 - windup
+    {SPR_D6B1,1,6,{A_FireD100Plus1},S_D100PLUS1_3,0,0},	// S_D100PLUS1_2 - fire (fumble finder strike)
+    {SPR_D6B1,2,5,{NULL},S_D100PLUS1_4,0,0},	// S_D100PLUS1_3 - follow through
+    {SPR_D6B1,1,6,{A_ReFire},S_D100PLUS1,0,0},	// S_D100PLUS1_4 - refire
+    {SPR_D6BF,32768,5,{A_Light1},S_LIGHTDONE,0,0},	// S_D100PLUS1FLASH
     {SPR_D6B1,0,1,{A_WeaponReady},S_D3,0,0},	// S_D3 - Skewered Luck ready
     {SPR_D6B1,0,1,{A_Lower},S_D3DOWN,0,0},	// S_D3DOWN
     {SPR_D6B1,0,1,{A_Raise},S_D3UP,0,0},	// S_D3UP

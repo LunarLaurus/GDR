@@ -295,7 +295,7 @@
 - [x] Add d48 Forge Hammer weapon (molten effect on crit, fire dmg)
 - [x] Add d50 Dwarf's Bane weapon (3x vs dwarf enemies)
 - [x] Add d60 Elemental Chaos weapon (fire/ice/lightning/poison)
-- [ ] Add d100+1 Fumble Finder weapon (no fumbles, 4x on crit)
+- [x] Add d100+1 Fumble Finder weapon (no fumbles, 4x on crit)
 - [ ] Add d3 Quake Boulder weapon (shockwave, stun)
 - [ ] Add Chain Reaction d12 weapon (sticks, chains to nearby)
 - [ ] Add Crystal d8 Shatter weapon (shard spray, shield break)

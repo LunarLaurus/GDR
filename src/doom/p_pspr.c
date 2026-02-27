@@ -77,6 +77,7 @@ static const fixed_t weapon_recoil_values[NUMWEAPONS] = {
     FRACUNIT,      // wp_d48 - Goblin Dice Rollaz (molten effect on crit, fire dmg)
     FRACUNIT*3/4,  // wp_d50 - Goblin Dice Rollaz (3x vs dwarf enemies)
     FRACUNIT,      // wp_d60 - Goblin Dice Rollaz (elemental chaos, random element)
+    FRACUNIT,      // wp_d100plus1 - Goblin Dice Rollaz (no fumbles, 4x on crit)
 };
 
 
@@ -608,10 +609,79 @@ void A_ReFire
     }
     else
     {
-	player->refire = 0;
-	P_CheckAmmo (player);
+        R_TriggerScreenShake(FRACUNIT * 1, 2);
     }
 }
+
+
+//
+// A_FireD100Plus1 - Goblin Dice Rollaz d100+1 Fumble Finder weapon
+// No fumbles - rolling 1 still deals minimum damage
+// 4x damage multiplier on crit (rolling 100)
+// 
+void
+A_FireD100Plus1
+( player_t*	player,
+  pspdef_t*	psp ) 
+{
+    int damage;
+    int guaranteedCrit = 0;
+    int critRoll = 0;
+    int diceRoll = 0;
+    mobj_t* missile;
+    
+    S_StartSound (player->mo, sfx_dice_d20);
+
+    P_SetMobjState (player->mo, S_PLAY_ATK2);
+    DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
+
+    P_SetPsprite (player,
+		  ps_flash,
+		  weaponinfo[player->readyweapon].flashstate+(P_Random ()&1));
+
+    if (player->powers[pw_dicefortune])
+    {
+        guaranteedCrit = 1;
+        player->powers[pw_dicefortune] = 0;
+        player->message = "CRITICAL!";
+    }
+
+    damage = P_CalculateDiceDamage(wp_d100plus1, guaranteedCrit, &critRoll, NULL, &diceRoll, player);
+
+    player->weapon_recoil = weapon_recoil_values[wp_d100plus1];
+
+    missile = P_SpawnPlayerMissile (player->mo, MT_DICE_GLOW, wp_d100plus1);
+    if (missile)
+    {
+        missile->damage = damage;
+    }
+
+    if (critRoll > 0)
+    {
+        R_TriggerScreenShake(FRACUNIT * 8, 16);
+        player->message = "FUMBLE PROOF!";
+    }
+    else if (diceRoll >= 80)
+    {
+        R_TriggerScreenShake(FRACUNIT * 5, 10);
+        player->message = "EXTREME LUCK!";
+    }
+    else if (diceRoll >= 50)
+    {
+        R_TriggerScreenShake(FRACUNIT * 3, 6);
+        player->message = "GREAT ROLL!";
+    }
+    else if (diceRoll >= 25)
+    {
+        R_TriggerScreenShake(FRACUNIT * 2, 4);
+    }
+    else
+    {
+        R_TriggerScreenShake(FRACUNIT * 1, 2);
+    }
+}
+
+
 
 
 void
