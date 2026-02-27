@@ -380,7 +380,7 @@
 - [x] Define DEFAULT_DICE_VOLUME constant in m_menu.c
 - [x] Define DEFAULT_SHAKE_SCALE and DEFAULT_DAMAGE_SCALE
 - [x] Define MAX_MENU_PARTICLES constant
-- [ ] Define SHAKE_LOW, SHAKE_MEDIUM, SHAKE_HIGH constants
+- [x] Define SHAKE_LOW, SHAKE_MEDIUM, SHAKE_HIGH constants
 - [x] Define CRIT_CHANCE_SCALE constant in p_inter.c
 - [ ] Define movement speed constants in g_game.c
 - [x] Fix typo: indetermined -> undetermined in doomstat.c
