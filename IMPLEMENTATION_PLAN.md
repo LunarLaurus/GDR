@@ -317,7 +317,7 @@
 - [x] Add Dwarf High Priest (heals wounded dwarves)
 - [x] Add Dwarf Commander (focus fire orders on player)
 - [x] Add Dwarf Steam Golem (steam cloud, fire vulnerable)
-- [ ] Add Dwarf Scrap Drone (swarms of 3-5, low HP each)
+- [x] Add Dwarf Scrap Drone (swarms of 3-5, low HP each)
 - [ ] Add Dwarf Drill Tank (drills through thin walls)
 - [ ] Add Dwarf Siege Engine (stationary explosive cannon)
 - [ ] Add Dwarf Sky Miner (flying, hover attacks)

@@ -4513,34 +4513,65 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
     },
 
     {		// MT_DWARF_STEAMGOLEM - Goblin Dice Rollaz: Dwarf Steam Golem with steam cloud attack
- 	8109,		// doomednum (custom mapthing number)
- 	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations - mechanical)
- 	200,		// spawnhealth (high HP - steam golem is tough)
- 	S_SPOS_RUN1,		// seestate
- 	sfx_posit2,		// seesound (mechanical whir)
- 	8,		// reactiontime
- 	sfx_None,		// attacksound (steam hiss)
- 	S_SPOS_PAIN,		// painstate
- 	20,		// painchance (mechanical - resistant to pain)
- 	sfx_popain,		// painsound
- 	0,		// meleestate (no melee - uses steam)
- 	S_SPOS_ATK1,		// missilestate (steam cloud attack)
- 	S_SPOS_DIE1,		// deathstate
- 	S_SPOS_XDIE1,		// xdeathstate
- 	sfx_podth2,		// deathsound (mechanical explosion)
- 	3,		// speed (slow - stationary turret)
- 	24*FRACUNIT,		// radius (large golem)
- 	60*FRACUNIT,		// height (tall)
- 	400,		// mass (heavy)
- 	0,		// damage (melee - not used)
- 	sfx_posact,		// activesound (steam venting)
- 	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
- 	S_SPOS_RAISE1,		// raisestate
- 	15,		// crit_resistance (low - vulnerable to crits)
- 	60,		// aggression (moderate - defensive)
- 	0,		// shield_reduction (none - no shield)
- 	0,		// rear_weakness (none)
- 	0		// phase2_health (no phases)
+  	8109,		// doomednum (custom mapthing number)
+  	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations - mechanical)
+  	200,		// spawnhealth (high HP - steam golem is tough)
+  	S_SPOS_RUN1,		// seestate
+  	sfx_posit2,		// seesound (mechanical whir)
+  	8,		// reactiontime
+  	sfx_None,		// attacksound (steam hiss)
+  	S_SPOS_PAIN,		// painstate
+  	20,		// painchance (mechanical - resistant to pain)
+  	sfx_popain,		// painsound
+  	0,		// meleestate (no melee - uses steam)
+  	S_SPOS_ATK1,		// missilestate (steam cloud attack)
+  	S_SPOS_DIE1,		// deathstate
+  	S_SPOS_XDIE1,		// xdeathstate
+  	sfx_podth2,		// deathsound (mechanical explosion)
+  	3,		// speed (slow - stationary turret)
+  	24*FRACUNIT,		// radius (large golem)
+  	60*FRACUNIT,		// height (tall)
+  	400,		// mass (heavy)
+  	0,		// damage (melee - not used)
+  	sfx_posact,		// activesound (steam venting)
+  	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+  	S_SPOS_RAISE1,		// raisestate
+  	15,		// crit_resistance (low - vulnerable to crits)
+  	60,		// aggression (moderate - defensive)
+  	0,		// shield_reduction (none - no shield)
+  	0,		// rear_weakness (none)
+  	0		// phase2_health (no phases)
+    },
+
+    {		// MT_DWARF_SCRAPDRONE - Goblin Dice Rollaz: Dwarf Scrap Drone (swarms of 3-5, low HP each)
+  	8110,		// doomednum (custom mapthing number)
+  	S_SPOS_STND,		// spawnstate (reuses Imp animations - small mechanical)
+  	25,		// spawnhealth (low HP - fragile drone)
+  	S_SPOS_RUN1,		// seestate
+  	sfx_posit2,		// seesound (mechanical buzz)
+  	8,		// reactiontime
+  	sfx_None,		// attacksound (drone whir)
+  	S_SPOS_PAIN,		// painstate
+  	100,		// painchance (high - sensitive to damage)
+  	sfx_popain,		// painsound
+  	S_SPOS_ATK1,		// meleestate (drone bite)
+  	0,		// missilestate (no ranged - melee only)
+  	S_SPOS_DIE1,		// deathstate
+  	S_SPOS_XDIE1,		// xdeathstate
+  	sfx_podth2,		// deathsound (explosion)
+  	12*FRACUNIT,		// speed (fast - swarm movement)
+  	8*FRACUNIT,		// radius (small drone)
+  	16*FRACUNIT,		// height (short)
+  	25,		// mass (light)
+  	3,		// damage (low melee damage)
+  	sfx_posact,		// activesound (humming)
+  	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL|MF_DROPOFF,		// flags (dropoff for swarming)
+  	S_SPOS_RAISE1,		// raisestate
+  	30,		// crit_resistance (high - metallic)
+  	90,		// aggression (high - aggressive swarm)
+  	0,		// shield_reduction (none)
+  	0,		// rear_weakness (none)
+  	0		// phase2_health (no phases)
     },
 
     {		// MT_STEAM_CLOUD - Goblin Dice Rollaz: Steam cloud projectile for Steam Golem
