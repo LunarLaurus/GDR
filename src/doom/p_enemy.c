@@ -150,7 +150,8 @@ boolean P_IsRangedEnemy(mobj_t* actor)
     return actor->type == MT_DWARF_MARKSMAN ||
            actor->type == MT_DWARF_MINER ||
            actor->type == MT_DWARF_ENGINEER ||
-           actor->type == MT_DWARF_BOMBARDIER;
+           actor->type == MT_DWARF_BOMBARDIER ||
+           actor->type == MT_DWARF_SKYMINER;
 }
 
 // P_RetreatFromTarget - Ranged enemies retreat when player gets too close
@@ -1242,6 +1243,23 @@ void A_SPosAttack (mobj_t* actor)
         return;
     }
 
+    if (actor->type == MT_DWARF_SKYMINER)
+    {
+        fixed_t spawnX, spawnY, spawnZ;
+        A_FaceTarget (actor);
+        S_StartSound (actor, sfx_rlaunc);
+        spawnX = actor->x;
+        spawnY = actor->y;
+        spawnZ = actor->z - 32*FRACUNIT;
+        mo = P_SpawnMobj(spawnX, spawnY, spawnZ, MT_SKYMINER_MINE);
+        if (mo)
+        {
+            mo->momz = -2*FRACUNIT;
+            mo->special1 = 0;
+        }
+        return;
+    }
+
     if (actor->type == MT_GOBLIN_ALCHEMIST)
     {
         A_FaceTarget (actor);
@@ -1693,7 +1711,8 @@ void A_CaptainBuff (mobj_t* actor)
             mo->type == MT_DWARF_ENGINEER ||
             mo->type == MT_DWARF_DEFENDER ||
             mo->type == MT_DWARF_MARKSMAN ||
-            mo->type == MT_DWARF_MINER)
+            mo->type == MT_DWARF_MINER ||
+            mo->type == MT_DWARF_SKYMINER)
         {
             if (mo->health > 0)
             {

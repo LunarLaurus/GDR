@@ -4601,10 +4601,98 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
    	40,		// crit_resistance (high - armored)
    	75,		// aggression (high - aggressive hunter)
    	25,		// shield_reduction (heavy armor)
-   	0		// phase2_health (no phases)
-     },
+    	0		// phase2_health (no phases)
+      },
 
-    {		// MT_STEAM_CLOUD - Goblin Dice Rollaz: Steam cloud projectile for Steam Golem
+      {		// MT_DWARF_SIEGEENGINE - Goblin Dice Rollaz: Dwarf Siege Engine (stationary explosive cannon)
+    	8112,		// doomednum (custom mapthing number)
+    	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations - mechanical)
+    	200,		// spawnhealth (very high HP - heavily armored)
+    	S_SPOS_RUN1,		// seestate
+    	sfx_posit2,		// seesound (engine rumble)
+    	8,		// reactiontime
+    	sfx_None,		// attacksound
+    	S_SPOS_PAIN,		// painstate
+    	10,		// painchance (very armored - resistant to pain)
+    	sfx_popain,		// painsound
+    	S_NULL,		// meleestate (no melee)
+    	S_SPOS_ATK1,		// missilestate (cannon shot)
+    	S_SPOS_DIE1,		// deathstate
+    	S_SPOS_XDIE1,		// xdeathstate
+    	sfx_barexp,		// deathsound (explosion)
+    	0,		// speed (stationary)
+    	40*FRACUNIT,		// radius (large vehicle)
+    	48*FRACUNIT,		// height (tall cannon)
+    	1000,		// mass (extremely heavy)
+    	0,		// damage (handled by projectile)
+    	sfx_posact,		// activesound (engine hum)
+    	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags (stationary - no dropoff)
+    	S_SPOS_RAISE1,		// raisestate
+    	60,		// crit_resistance (very high - heavily armored)
+    	30,		// aggression (medium - stationary turret)
+    	0,		// shield_reduction (none)
+    	0,		// rear_weakness (none)
+     	0		// phase2_health (no phases)
+       },
+
+      {		// MT_DWARF_SKYMINER - Goblin Dice Rollaz: Dwarf Sky Miner (flying, hover attacks)
+    	8113,		// doomednum (custom mapthing number)
+    	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations - mechanical)
+    	120,		// spawnhealth (moderate HP - flying unit)
+    	S_SPOS_RUN1,		// seestate
+    	sfx_posit2,		// seesound (engine whine)
+    	8,		// reactiontime
+    	sfx_None,		// attacksound
+    	S_SPOS_PAIN,		// painstate
+    	30,		// painchance (moderate - can be damaged)
+    	sfx_popain,		// painsound
+    	S_NULL,		// meleestate (no melee - ranged only)
+    	S_SPOS_ATK1,		// missilestate (hover mine drop)
+    	S_SPOS_DIE1,		// deathstate
+    	S_SPOS_XDIE1,		// xdeathstate
+    	sfx_posdie,		// deathsound (explosion)
+    	15*FRACUNIT,		// speed (hovering flight)
+    	30*FRACUNIT,		// radius (medium mechanical)
+    	40*FRACUNIT,		// height (medium)
+    	200,		// mass (moderate weight)
+    	0,		// damage (handled by projectile)
+    	sfx_posact,		// activesound (engine hum)
+     	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL|MF_FLOAT|MF_MISSILE,		// flags (flying - no gravity)
+     	S_SPOS_RAISE1,		// raisestate
+     	30,		// crit_resistance (moderate - lightly armored)
+     	80,		// aggression (high - aggressive hunter)
+     	0,		// shield_reduction (none)
+     	0,		// rear_weakness (none)
+     	0		// phase2_health (no phases)
+       },
+
+      {		// MT_SKYMINER_MINE - Goblin Dice Rollaz: Mine dropped by Sky Miner
+    	-1,		// doomednum (spawned by Sky Miner)
+    	S_BRBALL1,		// spawnstate (reuses fireball visual)
+    	1,		// spawnhealth (explodes on contact)
+    	S_NULL,		// seestate
+    	sfx_None,		// seesound
+    	8,		// reactiontime
+    	sfx_None,		// attacksound
+    	S_NULL,		// painstate
+    	0,		// painchance
+    	sfx_None,		// painsound
+    	S_NULL,		// meleestate
+    	S_NULL,		// missilestate
+    	S_BRBALLX1,		// deathstate (explosion)
+    	S_NULL,		// xdeathstate
+    	sfx_firxpl,		// deathsound (explosion)
+    	0,		// speed (stationary when placed)
+    	8*FRACUNIT,		// radius (small mine)
+    	8*FRACUNIT,		// height (small mine)
+    	10,		// mass (light)
+    	50,		// damage (powerful explosion)
+    	sfx_None,		// activesound
+    	MF_SPECIAL|MF_MISSILE|MF_NOBLOCKMAP,		// flags (pickup, missile, no blockmap)
+    	S_NULL		// raisestate
+       },
+
+     {		// MT_STEAM_CLOUD - Goblin Dice Rollaz: Steam cloud projectile for Steam Golem
  	-1,		// doomednum
  	S_BRBALL1,		// spawnstate (reuses fireball visual for cloud)
  	1000,		// spawnhealth
