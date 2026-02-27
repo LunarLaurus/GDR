@@ -192,6 +192,9 @@ typedef enum
     // Goblin Dice Rollaz: Magic projectile has particle trail
     MF_MAGICTRAIL       = 0x8000000,
 
+    // Goblin Dice Rollaz: Quake weapon applies stun on impact
+    MF_STUN             = 0x10000000,
+
     // Player sprites in multiplayer modes are modified
     //  using an internal color lookup table for re-indexing.
     // If 0x4 0x8 or 0xc,

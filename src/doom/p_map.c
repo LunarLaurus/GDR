@@ -346,12 +346,21 @@ boolean PIT_CheckThing (mobj_t* thing)
 	    return !(thing->flags & MF_SOLID);	
 	}
 	
-	// damage / explode
-	damage = ((P_Random()%8)+1)*tmthing->info->damage;
-	P_DamageMobj (thing, tmthing, tmthing->target, damage);
+ 	// damage / explode
+ 	damage = ((P_Random()%8)+1)*tmthing->info->damage;
+ 	P_DamageMobj (thing, tmthing, tmthing->target, damage);
 
-	// don't traverse any more
-	return false;				
+ 	// Goblin Dice Rollaz: Quake weapon shockwave - apply radial damage
+ 	if (tmthing->flags & MF_STUN && thing && thing->player == NULL)
+ 	{
+ 	    // Apply stun effect - delay target's next action
+ 	    thing->reactiontime = TICRATE / 2;
+ 	    // Spawn shockwave visual effect
+ 	    P_SpawnMobj(thing->x, thing->y, thing->z + thing->height/2, MT_PUFF);
+ 	}
+
+ 	// don't traverse any more
+ 	return false;
     }
     
     // check for special pickup

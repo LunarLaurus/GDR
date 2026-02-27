@@ -279,6 +279,15 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
         	S_D100PLUS1_1,
         	S_D100PLUS1FLASH
         },
+        {
+        	// d3 Quake Boulder weapon (shockwave, stun)
+        	am_heavydice,
+        	S_QUAKEDOWN,
+        	S_QUAKEUP,
+        	S_QUAKE,
+        	S_QUAKE_1,
+        	S_QUAKEFLASH
+        },
 };
 
 // Goblin Dice Rollaz: Dice weapon configuration table
@@ -536,6 +545,18 @@ dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
         0,      // ricochet_bounces: no
         0, 0,   // No misfire (no fumbles!)
         SPF_LATE_GAME, 15, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_NORMAL  // Late game, no fumble
+    },
+    {   // wp_quake - d3 Quake Boulder (shockwave, stun)
+        3,       // die_type: d3
+        33,      // crit_chance: 33% (roll of 3 = crit)
+        2,       // crit_multiplier: 2x on crit
+        1,       // min_damage
+        3,       // crit_roll: 3
+        {1, 2, 2, 0, 0, 0, 4},  // Quake: 1=1, 2-3=2, crit(2*2=4)
+        0,       // gamble_shot: no
+        0,       // ricochet_bounces: no
+        0, 0,    // No misfire
+        SPF_NONE, 40, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_EXPLOSIVE  // Mid-tier, shockwave damage
     },
 };
 

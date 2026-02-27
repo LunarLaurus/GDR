@@ -74,6 +74,7 @@ void A_FireD30();
 void A_FireD48();
 void A_FireD50();
 void A_FireD60();
+void A_FireQuake();
 void A_Light1();
 void A_FireShotgun();
 void A_Light2();
@@ -296,6 +297,14 @@ state_t	states[NUMSTATES] = {
     {SPR_D6B1,2,5,{NULL},S_D100PLUS1_4,0,0},	// S_D100PLUS1_3 - follow through
     {SPR_D6B1,1,6,{A_ReFire},S_D100PLUS1,0,0},	// S_D100PLUS1_4 - refire
     {SPR_D6BF,32768,5,{A_Light1},S_LIGHTDONE,0,0},	// S_D100PLUS1FLASH
+    {SPR_D6B1,0,1,{A_WeaponReady},S_QUAKE,0,0},	// S_QUAKE - Quake Boulder ready
+    {SPR_D6B1,0,1,{A_Lower},S_QUAKEDOWN,0,0},	// S_QUAKEDOWN
+    {SPR_D6B1,0,1,{A_Raise},S_QUAKEUP,0,0},	// S_QUAKEUP
+    {SPR_D6B1,0,4,{NULL},S_QUAKE_2,0,0},	// S_QUAKE_1 - windup
+    {SPR_D6B1,1,6,{A_FireQuake},S_QUAKE_3,0,0},	// S_QUAKE_2 - fire (shockwave)
+    {SPR_D6B1,2,5,{NULL},S_QUAKE_4,0,0},	// S_QUAKE_3 - follow through
+    {SPR_D6B1,1,6,{A_ReFire},S_QUAKE,0,0},	// S_QUAKE_4 - refire
+    {SPR_D6BF,32768,5,{A_Light1},S_LIGHTDONE,0,0},	// S_QUAKEFLASH
     {SPR_D6B1,0,1,{A_WeaponReady},S_D3,0,0},	// S_D3 - Skewered Luck ready
     {SPR_D6B1,0,1,{A_Lower},S_D3DOWN,0,0},	// S_D3DOWN
     {SPR_D6B1,0,1,{A_Raise},S_D3UP,0,0},	// S_D3UP
