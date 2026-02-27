@@ -315,7 +315,7 @@
 - [x] Add Dwarf Runesmith (reflective rune shields on ground)
 - [x] Add Dwarf Runebearer (crit resistance aura, support)
 - [x] Add Dwarf High Priest (heals wounded dwarves)
-- [ ] Add Dwarf Commander (focus fire orders on player)
+- [x] Add Dwarf Commander (focus fire orders on player)
 - [ ] Add Dwarf Steam Golem (steam cloud, fire vulnerable)
 - [ ] Add Dwarf Scrap Drone (swarms of 3-5, low HP each)
 - [ ] Add Dwarf Drill Tank (drills through thin walls)
