@@ -182,6 +182,18 @@ powerup_info_t powerups[NUMPOWERS] = {
         MT_SNAKEEYES,
         SPR_PFTR,
         40
+    },
+    {
+        pw_dwarvenweakness,
+        "Dwarven Weakness",
+        DWARVENWEAKNESSTICS,
+        POWERUP_FLAG_TIMED,
+        "DWARVEN WEAKNESS!",
+        0,
+        sfx_getpow,
+        MT_DWARVENWEAKNESS,
+        SPR_PFTR,
+        30
     }
 };
 

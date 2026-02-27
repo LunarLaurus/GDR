@@ -1537,6 +1537,41 @@ P_DamageMobj
                     damage = damage * 3;
                 }
             }
+            // Goblin Dice Rollaz: Dwarven Weakness powerup - 2x vs ALL dwarf enemies
+            if (source && source->player && source->player->powers[pw_dwarvenweakness] && target)
+            {
+                if (target->type == MT_DWARF_BERSERKER ||
+                    target->type == MT_DWARF_ENGINEER ||
+                    target->type == MT_DWARF_BOMB ||
+                    target->type == MT_DWARF_TURRET ||
+                    target->type == MT_DWARF_DEFENDER ||
+                    target->type == MT_DWARF_MARKSMAN ||
+                    target->type == MT_DWARF_MINER ||
+                    target->type == MT_DWARF_CAPTAIN ||
+                    target->type == MT_DWARF_BOMBARDIER ||
+                    target->type == MT_DWARF_ARMORED ||
+                    target->type == MT_DWARF_ALCHEMIST ||
+                    target->type == MT_DWARF_IRONCLAD ||
+                    target->type == MT_DWARF_STONECUTTER ||
+                    target->type == MT_DWARF_THUNDERMAGE ||
+                    target->type == MT_DWARF_WARLORD ||
+                    target->type == MT_DWARF_RUNESMITH ||
+                    target->type == MT_DWARF_RUNEBEARER ||
+                    target->type == MT_DWARF_HIGHPRIEST ||
+                    target->type == MT_DWARF_COMMANDER ||
+                    target->type == MT_DWARF_TINKERER ||
+                    target->type == MT_DWARF_DRILLTANK ||
+                    target->type == MT_DWARF_BARRELELITE ||
+                    target->type == MT_DWARF_SHADOWBLADE ||
+                    target->type == MT_DWARF_GEOLOGIST ||
+                    target->type == MT_DWARF_TREASUREHUNTER ||
+                    target->type == MT_DWARF_JUGGERNAUT ||
+                    target->type == MT_DWARF_SAPPER)
+                {
+                    // 2x damage vs dwarf enemies with Dwarven Weakness powerup
+                    damage = damage * 2;
+                }
+            }
             }
         }
     }

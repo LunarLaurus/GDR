@@ -186,6 +186,7 @@ typedef enum
     pw_explodingdice,
     pw_advantage,
     pw_snakeeyes,
+    pw_dwarvenweakness,
     NUMPOWERS
     
 } powertype_t;
@@ -205,7 +206,8 @@ typedef enum
     IRONTICS	= (60*TICRATE),
     CRITBOOSTTICS = (30*TICRATE),
     DOUBLEDAMAGETICS = (30*TICRATE),
-    SNAKEEYESTICS = (30*TICRATE)
+    SNAKEEYESTICS = (30*TICRATE),
+    DWARVENWEAKNESSTICS = (45*TICRATE)
     
 } powerduration_t;
 
