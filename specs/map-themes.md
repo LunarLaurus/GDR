@@ -648,6 +648,217 @@ Sector configuration:
 - Special: Quick grab and go, escape required
 ```
 
+## Barracks of Stone Guard Map Theme
+
+## Theme Identity
+
+The Barracks of Stone Guard theme represents the fortified living quarters and training halls of the elite dwarven warriors—stone-walled corridors lined with weapon racks, armor stands, and ceremonial banners. These are structured military environments with strategic chokepoints and defensive positions.
+
+## Texture Palette
+
+### Floor Textures
+
+| Texture | Name | Description |
+|---------|------|-------------|
+| BARRACK1 | Stone Floor | Grey flagstone tiles |
+| BARRACK2 | Wooden Plank | Warped combat training boards |
+| BARRACK3 | Dusty Stone | Worn grey stone with debris |
+| BARRACK4 | Iron Plate | Reinforced metal floor sections |
+| RUNWAY1 | Training Track | Long worn path in training area |
+
+### Wall Textures
+
+| Texture | Name | Description |
+|---------|------|-------------|
+| STONE1 | Cut Stone | Precision hewn wall blocks |
+| STONE2 | Weathered Stone | Aged stone with cracks |
+| BANNER1 | Clan Banner | Red dwarf clan flag |
+| BANNER2 | War Banner | Black battle standard |
+| RACK1 | Weapon Rack | Wall-mounted armory |
+| ARMOR1 | Armor Stand | Wall-mounted plate display |
+| TORCH1 | Torch Sconce | Wall-mounted torch holder |
+
+### Ceiling Textures
+
+| Texture | Name | Description |
+|---------|------|-------------|
+| BARRACK_C1 | Timber Beam | Exposed wooden support beams |
+| BARRACK_C2 | Stone Arch | Curved stone ceiling |
+| BARRACK_C3 | Flag Ceiling | Flat stone ceiling with flags |
+
+## Lighting Rules
+
+- **Base light level**: 80 (military efficiency, bright but functional)
+- **Torch light**: +48 light radius around wall sconces, warm orange
+- **Lantern posts**: +64 light radius in open areas
+- **Chandelier**: Central point light, radius 320, intensity 1.4, warm white
+- **Ambient bias**: Neutral warm (RGB: 255, 240, 220)
+- **Shadow zones**: 48 light level in alcoves and storage areas
+
+### Light Source Types
+
+1. **Wall Torch** (point light): Radius 192, intensity 1.0, flickering orange
+2. **Chandelier** (point light): Radius 320, intensity 1.4, warm white
+3. **Lantern Post** (point light): Radius 256, intensity 1.2, steady yellow
+4. **Banner Glow** (ambient): +16, red tint near clan banners
+
+## Environmental Hazards
+
+### Chandelier Drop
+- Trigger: Sector tag activation or player proximity to weakened chain
+- Damage: 25% health (crush), knockback
+- Visual: Falling chandelier sprite, glass shatter particles
+- Audio: Loud crash, screaming metal
+- Counter: Shoot chain to drop early, avoid marked zones
+
+### Trap Door
+- Trigger: Step on tagged floor sector
+- Effect: Player falls to sector below (64 unit drop)
+- Damage: 15% fall damage + trap damage
+- Visual: Floor panel opens downward
+- Counter: Look for slightly different floor texture, move carefully
+
+### Wall Spike
+- Trigger: Proximity to tagged wall section
+- Damage: 10% per hit, rapid fire
+- Visual: Spike sprites emerge from wall
+- Audio: Metal pneumatic punch sound
+- Counter: Stay center of corridors, avoid walls in spike zones
+
+### Armor Trap
+- Trigger: Picking up or touching armor on rack
+- Effect: Triggers nearby alarm, spawns reinforcements
+- Visual: Armor falls, alarm sound
+- Audio: Clanging alarm
+- Counter: Don't touch displayed armor, find alternate path
+
+## Ambient Sound Profile
+
+### Continuous
+- Distant marching: Rhythmic dwarf footsteps, 4-second interval
+- Training clashing: Weapons sparring, random 3-8 seconds
+- Echoing halls: General barracks ambience, constant
+
+### Triggered
+- Chandelier creak: Before drop hazard triggers
+- Trap activation: Click/clunk sounds
+- Alarm: When armor traps triggered
+
+### Background
+- Military drum: Slow beat, authoritative
+- Dwarf chanting: Battle songs, distant
+- No ambient music (barracks are active, noisy)
+
+## Enemy Weighting
+
+### Primary (55% spawn rate)
+
+| Enemy | Spawn Weight |
+|-------|-------------|
+| Dwarf Defender | 25% |
+| Armored Dwarf | 20% |
+| Dwarf Marksman | 10% |
+
+### Secondary (35% spawn rate)
+
+| Enemy | Spawn Weight |
+|-------|-------------|
+| Dwarf Captain | 15% |
+| Dwarf Veteran | 10% |
+| Dwarf Engineer | 5% |
+| Dwarf Commander | 5% |
+
+### Rare (10% spawn rate)
+
+| Enemy | Spawn Weight |
+|-------|-------------|
+| Dwarf Warlord | 5% |
+| Dwarf Elite Guard | 3% |
+| Dwarf Ironclad | 2% |
+
+### Encounter Density
+- Corridors: 1-2 enemies (guarding posts)
+- Barracks rooms: 3-6 enemies (living quarters)
+- Training halls: 8-15 enemies (group training)
+- Command center: 5-10 enemies (elite defense)
+
+## Example Room Archetypes
+
+### Barracks Corridor
+```
+Sector configuration:
+- Floor: 0 height
+- Ceiling: 96 height
+- Size: 128x512 (corridor)
+- Features: Weapon racks, armor stands, torch sconces
+- Enemy placement: Guards at posts
+- Light: Torch every 128 units, moderate
+- Special: Wall spike traps in narrow sections
+```
+
+### Sleeping Quarters
+```
+Sector configuration:
+- Floor: 0 height
+- Ceiling: 80 height
+- Size: 256x256 to 512x256
+- Features: Bunks, personal items, storage chests
+- Enemy placement: 3-6 sleeping or alerted guards
+- Light: Lanterns at corners, dim
+- Special: Don't wake sleeping enemies (stealth optional)
+```
+
+### Training Hall
+```
+Sector configuration:
+- Floor: 0 height
+- Ceiling: 128 height
+- Size: 512x512
+- Features: Sparring rings, dummy targets, weapon racks
+- Enemy placement: 8-15 enemies in formation
+- Light: Chandelier center, bright throughout
+- Special: Chandelier drop hazard, wave combat
+```
+
+### Command Center
+```
+Sector configuration:
+- Floor: 0 height (raised platform)
+- Ceiling: 144 height
+- Size: 256x256
+- Features: War table, maps, commander throne, clan banners
+- Enemy placement: Commander + elite guard retinue
+- Light: Chandelier, multiple lanterns, bright
+- Special: Boss encounter potential, high-value target
+```
+
+### Armory Vault
+```
+Sector configuration:
+- Floor: 0 height
+- Ceiling: 96 height
+- Size: 128x128 to 256x256
+- Features: Weapons on display, locked cases
+- Enemy placement: 2-4 guards, stationary posts
+- Light: Spotlight on weapons, dim corners
+- Special: Armor trap on weapon pickup, alarm triggers
+```
+
+## Mapper Checklist for Barracks Layouts
+
+- [ ] All floor sectors use appropriate barracks textures
+- [ ] Weapon and armor props placed on racks/stands
+- [ ] Light levels verified: base 80, torch zones 128, chandelier 192
+- [ ] Chandelier hazards marked in sector notes
+- [ ] Trap door sectors identified and textured subtly different
+- [ ] Wall spike linedefs configured in narrow corridors
+- [ ] Enemy spawn weights follow military hierarchy
+- [ ] Command center placed as map highlight/objective
+- [ ] Ambient sound linedefs placed (marching, training)
+- [ ] No untextured sectors remaining
+- [ ] Minimum 2 exits from barracks rooms
+- [ ] Armory vault marked for high-value loot
+
 ## Shared Theme Documentation Template
 
 For future theme expansion, use this template:
