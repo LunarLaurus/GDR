@@ -387,7 +387,7 @@
 - [ ] Fix inconsistent naming: standardize snake_case for goblin vars
 - [ ] Add NULL check after malloc in m_menu.c
 - [ ] Add NULL check after malloc in d_main.c
-- [ ] Add NULL check after strdup in d_main.c
+- [x] Add NULL check after strdup in d_main.c
 - [ ] Add NULL check after calloc in w_wad.c
 - [ ] Add NULL check after malloc in p_saveg.c
 - [ ] Make video_driver const char* in i_video.c

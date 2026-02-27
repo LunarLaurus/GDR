@@ -1764,6 +1764,10 @@ void D_DoomMain (void)
     if (p)
     {
         char *uc_filename = strdup(myargv[p + 1]);
+        if (uc_filename == NULL)
+        {
+            I_Error("Failed to allocate memory for demo filename");
+        }
         M_ForceUppercase(uc_filename);
 
         // With Vanilla you have to specify the file without extension,
