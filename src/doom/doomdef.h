@@ -124,6 +124,7 @@ typedef enum
     wp_d3,            // d3 Skewered Luck (guaranteed 1-3 damage, piercing)
     wp_d7,            // d7 Seven Veils (ore fragment splash, 14% crit)
     wp_d14,           // d14 Fused Doubler (dual dice, resonance explosion)
+    wp_d24,           // d24 Hourglass Cannon (slows enemies, freezes on crit)
 
     NUMWEAPONS,
     

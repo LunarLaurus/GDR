@@ -1635,6 +1635,27 @@ P_DamageMobj
         G_StatusEffectApply(target, st_frozen, FROZEN_TICS);
     }
     
+    // Goblin Dice Rollaz: Apply slow/frozen effect from d24 Hourglass Cannon
+    // On hit: slow effect; on crit: frozen effect
+    if (inflictor && inflictor->type == MT_D24PROJECTILE && target->health > 0)
+    {
+        // Check if this was a critical hit (we can tell by the damage multiplier)
+        // If damage >= 15, it was a crit (base damage 1 * 15 = 15 from damage_table[6])
+        boolean wasCrit = (damage >= 15);
+        
+        if (wasCrit)
+        {
+            // Full freeze on crit
+            target->freeze_tics = FROZEN_TICS;
+            G_StatusEffectApply(target, st_frozen, FROZEN_TICS);
+        }
+        else
+        {
+            // Regular slow on hit (50% speed for half the frozen duration)
+            G_StatusEffectApply(target, st_frozen, FROZEN_TICS / 2);
+        }
+    }
+    
     if (damage > 0 && target->health > 0)
     {
         fixed_t tr_x = target->x - viewx;

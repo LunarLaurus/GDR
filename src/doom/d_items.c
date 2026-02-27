@@ -420,6 +420,18 @@ dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
         0, 0,   // No misfire (resonance provides bonus instead)
         SPF_NONE, 25, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_EXPLOSIVE  // Late mid-tier, resonance bonus
     },
+    {   // wp_d24 - Hourglass Cannon (slows enemies, freezes on crit)
+        24,     // die_type: d24
+        8,      // crit_chance: 8%
+        2,      // crit_multiplier: 2x on crit
+        1,      // min_damage
+        24,     // crit_roll: 24
+        {1, 2, 3, 5, 7, 10, 15},  // Low damage but slow effect; crit=30
+        0,      // gamble_shot: no
+        0,      // ricochet_bounces: no
+        0, 0,   // No misfire
+        SPF_LATE_GAME, 15, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_ICE  // Late game, ice damage type
+    },
 };
 
 // Get weapon spawn flags for map balancing
