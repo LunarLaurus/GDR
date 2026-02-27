@@ -131,6 +131,10 @@ int r_projectile_farclip = 24*FRACUNIT;
 
 int r_sprite_farclip = 0;
 
+// Goblin Dice Rollaz: Minimum sprite scale for LOD culling
+// Sprites smaller than this will not be rendered (0 = disabled)
+int r_sprite_min_scale = 0;
+
 // constant arrays
 //  used for psprite clipping and initializing clipping
 short		negonearray[SCREENWIDTH];
@@ -554,8 +558,13 @@ void R_ProjectSprite (mobj_t* thing)
     // Skip sprites beyond the configured distance threshold
     if (r_sprite_farclip > 0 && tz > r_sprite_farclip)
 	return;
-    
+
     xscale = FixedDiv(projection, tz);
+
+    // Goblin Dice Rollaz: Sprite scale culling (LOD)
+    // Skip sprites that would be too small to render clearly
+    if (r_sprite_min_scale > 0 && xscale < r_sprite_min_scale)
+	return;
 	
     gxt = -FixedMul(tr_x,viewsin); 
     gyt = FixedMul(tr_y,viewcos); 

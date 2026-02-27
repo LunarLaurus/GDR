@@ -397,9 +397,10 @@
 - [x] Make snd_musiccmd const char* in i_sound.c
 - [x] Expand dice_str buffer from 4 to 8 bytes in m_menu.c
 - [ ] Expand level name buffer in m_menu.c line 1931
+  - [ ] Resolve blocker: Line numbers shifted, cannot find specific "level name buffer" to expand
 
 ### Phase 19: Additional Rendering Optimizations
-- [ ] Add sprite occlusion culling for off-screen sprites
+- [x] Add sprite occlusion culling for off-screen sprites
 - [ ] Implement temporal AA for smooth sprite edges
 - [ ] Add texture LOD switching for distant walls
 - [ ] Optimize colormap lookups with caching
