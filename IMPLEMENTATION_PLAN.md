@@ -286,7 +286,7 @@
 
 ### Phase 14: New Dice Weapons
 - [x] Add d2 Flip of Fate weapon (binary damage, 50% 1dmg/50% 2dmg)
-- [ ] Add d3 Skewered Luck weapon (guaranteed 1-3 damage, piercing)
+- [x] Add d3 Skewered Luck weapon (guaranteed 1-3 damage, piercing)
 - [ ] Add d7 Seven Veins weapon (ore fragment splash, 14% crit)
 - [ ] Add d14 Fused Doubler weapon (dual dice, resonance explosion)
 - [ ] Add d24 Hourglass Cannon weapon (slows enemies, freezes on crit)
@@ -378,7 +378,7 @@
 ### Phase 18: Code Quality Improvements
 - [x] Define DEFAULT_DICE_VOLUME constant in m_menu.c
 - [x] Define DEFAULT_SHAKE_SCALE and DEFAULT_DAMAGE_SCALE
-- [ ] Define MAX_MENU_PARTICLES constant
+- [x] Define MAX_MENU_PARTICLES constant
 - [ ] Define SHAKE_LOW, SHAKE_MEDIUM, SHAKE_HIGH constants
 - [x] Define CRIT_CHANCE_SCALE constant in p_inter.c
 - [ ] Define movement speed constants in g_game.c
