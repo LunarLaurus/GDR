@@ -1461,6 +1461,7 @@ P_DamageMobj
                     target->type == MT_DWARF_CAPTAIN ||
                     target->type == MT_DWARF_TURRET ||
                     target->type == MT_DWARF_BOMBARDIER ||
+                    target->type == MT_DWARF_ALCHEMIST ||
                     target->type == MT_DWARF_IRONCLAD ||
                     target->type == MT_DWARF_COMMANDER)
                 {
@@ -1481,8 +1482,7 @@ P_DamageMobj
                     target->type == MT_DWARF_CAPTAIN ||
                     target->type == MT_DWARF_BOMBARDIER ||
                     target->type == MT_DWARF_ARMORED ||
-                    target->type == MT_DWARF_FLAMETHROWER ||
-                    target->type == MT_DWARF_THUNDERER ||
+                    target->type == MT_DWARF_ALCHEMIST ||
                     target->type == MT_DWARF_IRONCLAD ||
                     target->type == MT_DWARF_STONECUTTER ||
                     target->type == MT_DWARF_THUNDERMAGE ||
@@ -1492,12 +1492,15 @@ P_DamageMobj
                     target->type == MT_DWARF_HIGHPRIEST ||
                     target->type == MT_DWARF_COMMANDER ||
                     target->type == MT_DWARF_TINKERER ||
+                    target->type == MT_DWARF_DRILLTANK ||
                     target->type == MT_DWARF_BARRELELITE ||
-                    target->type == MT_DWARF_SHADOWBLADE)
+                    target->type == MT_DWARF_SHADOWBLADE ||
+                    target->type == MT_DWARF_GEOLOGIST)
                 {
                     // 3x damage vs dwarf enemies
                     damage = damage * 3;
                 }
+            }
             }
         }
     }

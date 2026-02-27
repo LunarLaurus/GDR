@@ -152,7 +152,8 @@ boolean P_IsRangedEnemy(mobj_t* actor)
            actor->type == MT_DWARF_ENGINEER ||
            actor->type == MT_DWARF_BOMBARDIER ||
            actor->type == MT_DWARF_SKYMINER ||
-           actor->type == MT_DWARF_MINELAYER;
+           actor->type == MT_DWARF_MINELAYER ||
+           actor->type == MT_DWARF_ALCHEMIST;
 }
 
 // P_RetreatFromTarget - Ranged enemies retreat when player gets too close
@@ -1240,6 +1241,18 @@ void A_SPosAttack (mobj_t* actor)
         {
             mo->special1 = 0;
             mo->damage = 50;
+        }
+        return;
+    }
+
+    if (actor->type == MT_DWARF_ALCHEMIST)
+    {
+        A_FaceTarget (actor);
+        S_StartSound (actor, sfx_pistol);
+        mo = P_SpawnMissile (actor, actor->target, MT_DWARF_ALCHEMIST_POTION);
+        if (mo)
+        {
+            mo->special1 = 0;
         }
         return;
     }

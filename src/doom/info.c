@@ -5005,7 +5005,64 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 	70,		// aggression (high - stays back and summons)
 	0,		// shield_reduction (none)
 	10,		// rear_weakness (low)
+	0,		// phase2_health (no phases)
+    },
+
+    {		// MT_DWARF_ALCHEMIST - Goblin Dice Rollaz: Dwarf Alchemist (throws volatile potions)
+	8121,		// doomednum (custom mapthing number)
+	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations)
+	80,		// spawnhealth (moderate HP - alchemical protection)
+	S_SPOS_RUN1,		// seestate
+	sfx_posit2,		// seesound (alchemist cackle)
+	8,		// reactiontime
+	sfx_pistol,		// attacksound (potion throw)
+	S_SPOS_PAIN,		// painstate
+	50,		// painchance (moderate)
+	sfx_popain,		// painsound
+	0,		// meleestate (no melee)
+	S_SPOS_ATK1,		// missilestate (throws volatile potions)
+	S_SPOS_DIE1,		// deathstate
+	S_SPOS_XDIE1,		// xdeathstate
+	sfx_podth2,		// deathsound
+	4*FRACUNIT,		// speed (slow - focuses on alchemy)
+	18*FRACUNIT,		// radius (stocky build)
+	52*FRACUNIT,		// height (medium height)
+	150,		// mass (medium)
+	0,		// damage (ranged - uses potions)
+	sfx_posact,		// activesound
+	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+	S_SPOS_RAISE1,		// raisestate
+	15,		// crit_resistance (moderate - protective gear)
+	65,		// aggression (stays at range)
+	0,		// shield_reduction (none)
+	5,		// rear_weakness (minimal)
 	0		// phase2_health (no phases)
+    },
+
+    {		// MT_DWARF_ALCHEMIST_POTION - Goblin Dice Rollaz: Volatile potion projectile
+	-1,		// doomednum (not spawned via mapthing)
+	S_TBALL1,		// spawnstate (reuses imp fireball animation)
+	1000,		// spawnhealth
+	S_NULL,		// seestate
+	sfx_firsht,		// seesound (whoosh)
+	8,		// reactiontime
+	sfx_None,		// attacksound
+	S_NULL,		// painstate
+	0,		// painchance
+	sfx_None,		// painsound
+	S_NULL,		// meleestate
+	S_NULL,		// missilestate
+	S_TBALLX1,		// deathstate (explodes on impact)
+	S_NULL,		// xdeathstate
+	sfx_firxpl,		// deathsound (explosion)
+	9*FRACUNIT,		// speed (moderate arc)
+	6*FRACUNIT,		// radius
+	8*FRACUNIT,		// height
+	100,		// mass
+	25,		// damage (volatile potion - high damage + splash)
+	sfx_None,		// activesound
+	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_NOGRAVITY,		// flags
+	S_NULL		// raisestate
     },
 
     {		// MT_ROCK_GOLEM - Goblin Dice Rollaz: Rock Golem spawned by Geologist
