@@ -151,7 +151,8 @@
 - [x] Remove unused NET_ExpandTicNum complexity
 - [x] Simplify NET_Conn_ReliablePacket ACK logic
 - [ ] Remove unused net_client_recv_t memmove code
-  - [ ] Resolve blocker: memmove code in NET_SV_AdvanceWindow and NET_CL_AdvanceWindow is actively used for network sliding window - cannot be removed without breaking networking
+  - [x] Resolve blocker: memmove code in NET_SV_AdvanceWindow and NET_CL_AdvanceWindow is actively used for network sliding window - cannot be removed without breaking networking
+  - [ ] Clarification needed: Task describes removing "unused" code, but memmove is essential networking - should task be closed as invalid?
 - [x] Clean up SendOneQuery rate limiting
 - [x] Reduce MAX_MODULES if too large
 - [x] Document network protocol for future reference
