@@ -4688,9 +4688,66 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
     	10,		// mass (light)
     	50,		// damage (powerful explosion)
     	sfx_None,		// activesound
+      	MF_SPECIAL|MF_MISSILE|MF_NOBLOCKMAP,		// flags (pickup, missile, no blockmap)
+     	S_NULL		// raisestate
+       },
+
+      {		// MT_DWARF_MINELAYER - Goblin Dice Rollaz: Dwarf Mine Layer (plants proximity mines)
+    	8114,		// doomednum (custom mapthing number)
+    	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations - mechanical)
+    	80,		// spawnhealth (low HP - vulnerable while planting)
+    	S_SPOS_RUN1,		// seestate
+    	sfx_posit2,		// seesound (mechanical whine)
+    	8,		// reactiontime
+    	sfx_None,		// attacksound
+    	S_SPOS_PAIN,		// painstate
+    	20,		// painchance (low - can be interrupted)
+    	sfx_popain,		// painsound
+    	S_SPOS_ATK1,		// meleestate (mining pick strike)
+    	S_SPOS_ATK1,		// missilestate (plant mine)
+    	S_SPOS_DIE1,		// deathstate
+    	S_SPOS_XDIE1,		// xdeathstate
+    	sfx_posdie,		// deathsound (explosion)
+    	12*FRACUNIT,		// speed (slow movement)
+    	24*FRACUNIT,		// radius (medium dwarf)
+    	56*FRACUNIT,		// height (tall - upright dwarf)
+    	100,		// mass (medium weight)
+    	0,		// damage (handled by mine)
+    	sfx_posact,		// activesound (mechanical clanking)
+     	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+     	S_SPOS_RAISE1,		// raisestate
+     	20,		// crit_resistance (low - vulnerable)
+     	50,		// aggression (medium - defensive)
+     	0,		// shield_reduction (none)
+     	0,		// rear_weakness (none)
+     	0		// phase2_health (no phases)
+       },
+
+      {		// MT_MINELAYER_MINE - Goblin Dice Rollaz: Proximity mine planted by Mine Layer
+    	-1,		// doomednum (spawned by Mine Layer)
+    	S_BRBALL1,		// spawnstate (reuses fireball visual)
+    	1,		// spawnhealth (explodes on contact)
+    	S_NULL,		// seestate
+    	sfx_None,		// seesound (tick tick)
+    	8,		// reactiontime
+    	sfx_None,		// attacksound
+    	S_NULL,		// painstate
+    	0,		// painchance
+    	sfx_None,		// painsound
+    	S_NULL,		// meleestate
+    	S_NULL,		// missilestate
+    	S_BRBALLX1,		// deathstate (explosion)
+    	S_NULL,		// xdeathstate
+    	sfx_firxpl,		// deathsound (explosion)
+    	0,		// speed (stationary)
+    	10*FRACUNIT,		// radius (small mine)
+    	8*FRACUNIT,		// height (low profile)
+    	5,		// mass (light)
+    	30,		// damage (moderate explosion)
+    	sfx_posact,		// activesound (ticking)
     	MF_SPECIAL|MF_MISSILE|MF_NOBLOCKMAP,		// flags (pickup, missile, no blockmap)
     	S_NULL		// raisestate
-       },
+     },
 
      {		// MT_STEAM_CLOUD - Goblin Dice Rollaz: Steam cloud projectile for Steam Golem
  	-1,		// doomednum

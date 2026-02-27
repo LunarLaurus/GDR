@@ -1655,6 +1655,8 @@ typedef enum {
     MT_DWARF_SIEGEENGINE,      // Goblin Dice Rollaz: Dwarf Siege Engine (stationary explosive cannon)
     MT_DWARF_SKYMINER,         // Goblin Dice Rollaz: Dwarf Sky Miner (flying, hover attacks)
     MT_SKYMINER_MINE,         // Goblin Dice Rollaz: Mine dropped by Sky Miner
+    MT_DWARF_MINELAYER,       // Goblin Dice Rollaz: Dwarf Mine Layer (plants proximity mines)
+    MT_MINELAYER_MINE,       // Goblin Dice Rollaz: Proximity mine planted by Mine Layer
     MT_STEAM_CLOUD,           // Goblin Dice Rollaz: Steam cloud projectile for Steam Golem
     MT_RUNE_SHIELD,          // Goblin Dice Rollaz: Reflective rune shield (placed by Runesmith)
     MT_CRIT_AURA,            // Goblin Dice Rollaz: Crit resistance aura (placed by Runebearer)
