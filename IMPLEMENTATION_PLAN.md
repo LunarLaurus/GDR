@@ -434,7 +434,7 @@
 - [ ] Implement mod compatibility checker
 
 ### Phase 23: Testing Infrastructure
-- [ ] Add automated build test script
+- [x] Add automated build test script
 - [ ] Add basic gameplay smoke test
 - [ ] Add deterministic replay test
 - [ ] Add memory leak detection test
