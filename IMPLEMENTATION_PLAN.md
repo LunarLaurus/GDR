@@ -389,7 +389,7 @@
 - [ ] Add NULL check after malloc in d_main.c
 - [x] Add NULL check after strdup in d_main.c
 - [ ] Add NULL check after calloc in w_wad.c
-- [ ] Add NULL check after malloc in p_saveg.c
+- [x] Add NULL check after malloc in p_saveg.c
 - [ ] Make video_driver const char* in i_video.c
 - [ ] Make window_position const char* in i_video.c
 - [ ] Make snd_musiccmd const char* in i_sound.c
