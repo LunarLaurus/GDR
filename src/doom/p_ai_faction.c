@@ -51,7 +51,15 @@ faction_t P_GetFaction(mobjtype_t type)
         type == MT_DWARF_MINER ||
         type == MT_DWARF_CAPTAIN ||
         type == MT_DWARF_BOMBARDIER ||
-        type == MT_DWARF_ARMORED)
+        type == MT_DWARF_ARMORED ||
+        type == MT_DWARF_FLAMETHROWER ||
+        type == MT_DWARF_THUNDERER ||
+        type == MT_DWARF_IRONCLAD ||
+        type == MT_DWARF_STONECUTTER ||
+        type == MT_DWARF_THUNDERMAGE ||
+        type == MT_DWARF_WARLORD ||
+        type == MT_DWARF_RUNESMITH ||
+        type == MT_DWARF_RUNEBEARER)
         return FACTION_DWARF;
 
     return FACTION_NONE;
@@ -270,4 +278,41 @@ void P_InitLeader(mobj_t* actor)
 
     actor->morale = 100;
     actor->morale_flags = MORALE_FLAG_LEADER;
+}
+
+#define CRIT_AURA_RADIUS (256*FRACUNIT)
+#define CRIT_AURA_BONUS 15
+
+int P_GetCritAuraBonus(mobj_t* actor)
+{
+    thinker_t* th;
+    mobj_t* mo;
+    sector_t* sec;
+    int bonus = 0;
+
+    if (!actor)
+        return 0;
+
+    sec = actor->subsector->sector;
+
+    for (th = thinkercap.next; th != &thinkercap; th = th->next)
+    {
+        if (th->function.acp1 != (actionf_p1)P_MobjThinker)
+            continue;
+
+        mo = (mobj_t*)th;
+
+        if (mo->type != MT_CRIT_AURA)
+            continue;
+
+        if (mo->health <= 0)
+            continue;
+
+        if (P_AproxDistance(mo->x - actor->x, mo->y - actor->y) <= CRIT_AURA_RADIUS)
+        {
+            bonus += CRIT_AURA_BONUS;
+        }
+    }
+
+    return bonus;
 }

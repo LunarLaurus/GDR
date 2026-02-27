@@ -36,6 +36,7 @@
 #include "am_map.h"
 
 #include "p_local.h"
+#include "p_ai_faction.h"
 #include "r_state.h"
 #include "s_sound.h"
 #include "p_inter.h"
@@ -1291,6 +1292,7 @@ P_DamageMobj
             if (target && target->info)
             {
                 targetCritResistance = target->info->crit_resistance;
+                targetCritResistance += P_GetCritAuraBonus(target);
             }
 
             int adjustedCritChance = effectiveCritChance - targetCritResistance;
@@ -1458,7 +1460,8 @@ P_DamageMobj
                     target->type == MT_DWARF_DEFENDER ||
                     target->type == MT_DWARF_CAPTAIN ||
                     target->type == MT_DWARF_TURRET ||
-                    target->type == MT_DWARF_BOMBARDIER)
+                    target->type == MT_DWARF_BOMBARDIER ||
+                    target->type == MT_DWARF_IRONCLAD)
                 {
                     // 50% bonus damage vs armored dwarves
                     damage = (damage * 150) / 100;
@@ -1476,7 +1479,15 @@ P_DamageMobj
                     target->type == MT_DWARF_MINER ||
                     target->type == MT_DWARF_CAPTAIN ||
                     target->type == MT_DWARF_BOMBARDIER ||
-                    target->type == MT_DWARF_ARMORED)
+                    target->type == MT_DWARF_ARMORED ||
+                    target->type == MT_DWARF_FLAMETHROWER ||
+                    target->type == MT_DWARF_THUNDERER ||
+                    target->type == MT_DWARF_IRONCLAD ||
+                    target->type == MT_DWARF_STONECUTTER ||
+                    target->type == MT_DWARF_THUNDERMAGE ||
+                    target->type == MT_DWARF_WARLORD ||
+                    target->type == MT_DWARF_RUNESMITH ||
+                    target->type == MT_DWARF_RUNEBEARER)
                 {
                     // 3x damage vs dwarf enemies
                     damage = damage * 3;

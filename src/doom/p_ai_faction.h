@@ -45,6 +45,7 @@ boolean P_CanFollow(mobjtype_t type);
 int P_GetNearbyAllyCount(mobj_t *actor);
 int P_GetPackAggression(mobj_t *actor);
 fixed_t P_GetPackRetreatThreshold(mobj_t *actor);
+int P_GetCritAuraBonus(mobj_t *actor);
 
 void P_InitMorale(mobj_t *actor);
 void P_UpdateMorale(mobj_t *actor);

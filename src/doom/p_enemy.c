@@ -1497,6 +1497,19 @@ void A_TroopAttack (mobj_t* actor)
         return;
     }
 
+    if (actor->type == MT_DWARF_RUNEBEARER)
+    {
+        mobj_t* mo;
+        
+        mo = P_SpawnMobj(actor->x, actor->y, actor->z - 24*FRACUNIT, MT_CRIT_AURA);
+        if (mo)
+        {
+            mo->flags |= MF_TELESTICK;
+            S_StartSound(actor, sfx_itmbk);
+        }
+        return;
+    }
+
     
     // launch a missile
     P_SpawnMissile (actor, actor->target, MT_TROOPSHOT);

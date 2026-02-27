@@ -4419,6 +4419,63 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 	0		// phase2_health (no phases)
     },
 
+    {		// MT_DWARF_RUNEBEARER - Goblin Dice Rollaz: Dwarf with crit resistance aura (support)
+	8106,		// doomednum (custom mapthing number)
+	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations)
+	40,		// spawnhealth (support unit - moderate HP)
+	S_SPOS_RUN1,		// seestate
+	sfx_posit2,		// seesound
+	8,		// reactiontime
+	sfx_None,		// attacksound (aura activation)
+	S_SPOS_PAIN,		// painstate
+	100,		// painchance (low - support unit runs away)
+	sfx_popain,		// painsound
+	0,		// meleestate (no melee)
+	S_SPOS_ATK1,		// missilestate (deploys crit aura)
+	S_SPOS_DIE1,		// deathstate
+	S_SPOS_XDIE1,		// xdeathstate
+	sfx_podth2,		// deathsound
+	3,		// speed (slow - support caster)
+	16*FRACUNIT,		// radius
+	44*FRACUNIT,		// height
+	150,		// mass
+	0,		// damage (aura effect, no direct damage)
+	sfx_posact,		// activesound
+	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+	S_SPOS_RAISE1,		// raisestate
+	50,		// crit_resistance (high - self buffed)
+	25,		// aggression (low - support unit)
+	0,		// shield_reduction (none)
+	0,		// rear_weakness (none)
+	0		// phase2_health (no phases)
+    },
+
+    {		// MT_CRIT_AURA - Goblin Dice Rollaz: Crit resistance aura (placed by Runebearer)
+	-1,		// doomednum
+	S_BRBALL1,		// spawnstate (reuses fireball visual)
+	1000,		// spawnhealth
+	S_NULL,		// seestate
+	sfx_None,		// seesound
+	8,		// reactiontime
+	sfx_None,		// attacksound
+	S_NULL,		// painstate
+	0,		// painchance
+	sfx_None,		// painsound
+	S_NULL,		// meleestate
+	S_NULL,		// missilestate
+	S_BRBALLX1,		// deathstate (dissipate)
+	S_NULL,		// xdeathstate
+	sfx_None,		// deathsound
+	0,		// speed (stationary)
+	20*FRACUNIT,		// radius (aura radius)
+	4*FRACUNIT,		// height (low to ground)
+	100,		// mass
+	0,		// damage (aura - buffs crit resistance)
+	sfx_None,		// activesound
+	MF_NOBLOCKMAP|MF_NOGRAVITY|MF_TELESTICK,		// flags (floats, sticks to position)
+	S_NULL		// raisestate
+    },
+
     {		// MT_RUNE_SHIELD - Goblin Dice Rollaz: Reflective rune shield (placed by Runesmith)
 	-1,		// doomednum
 	S_BRBALL1,		// spawnstate (reuses fireball visual)
