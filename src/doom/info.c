@@ -4450,6 +4450,37 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 	0		// phase2_health (no phases)
     },
 
+    {		// MT_DWARF_HIGHPRIEST - Goblin Dice Rollaz: Dwarf that heals wounded dwarves
+	8107,		// doomednum (custom mapthing number)
+	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations)
+	50,		// spawnhealth (support unit - moderate HP)
+	S_SPOS_RUN1,		// seestate
+	sfx_posit2,		// seesound
+	8,		// reactiontime
+	sfx_None,		// attacksound (healing chant)
+	S_SPOS_PAIN,		// painstate
+	80,		// painchance (low - support unit runs away)
+	sfx_popain,		// painsound
+	0,		// meleestate (no melee)
+	S_SPOS_ATK1,		// missilestate (heals nearby dwarves)
+	S_SPOS_DIE1,		// deathstate
+	S_SPOS_XDIE1,		// xdeathstate
+	sfx_podth2,		// deathsound
+	3,		// speed (slow - support caster)
+	16*FRACUNIT,		// radius
+	44*FRACUNIT,		// height
+	150,		// mass
+	0,		// damage (healing, no direct damage)
+	sfx_posact,		// activesound
+	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+	S_SPOS_RAISE1,		// raisestate
+	20,		// crit_resistance (moderate)
+	30,		// aggression (low - support unit)
+	0,		// shield_reduction (none)
+	0,		// rear_weakness (none)
+	0		// phase2_health (no phases)
+    },
+
     {		// MT_CRIT_AURA - Goblin Dice Rollaz: Crit resistance aura (placed by Runebearer)
 	-1,		// doomednum
 	S_BRBALL1,		// spawnstate (reuses fireball visual)

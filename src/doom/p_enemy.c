@@ -1510,6 +1510,48 @@ void A_TroopAttack (mobj_t* actor)
         return;
     }
 
+    if (actor->type == MT_DWARF_HIGHPRIEST)
+    {
+        mobj_t* mo;
+        mobj_t* target;
+        sector_t* sec;
+        int healRadius = 20 * FRACUNIT;
+        int healed = 0;
+        
+        sec = actor->subsector->sector;
+        
+        for (target = sec->thinglist; target; target = target->snext)
+        {
+            if (target == actor)
+                continue;
+                
+            if (!target->player && P_GetFaction(target->type) == FACTION_DWARF)
+            {
+                if (P_AproxDistance(actor->x - target->x, actor->y - target->y) < healRadius)
+                {
+                    if (target->health < mobjinfo[target->type].spawnhealth && target->health > 0)
+                    {
+                        target->health += 5;
+                        if (target->health > mobjinfo[target->type].spawnhealth)
+                            target->health = mobjinfo[target->type].spawnhealth;
+                        healed++;
+                    }
+                }
+            }
+        }
+        
+        if (healed > 0)
+        {
+            mo = P_SpawnMobj(actor->x, actor->y, actor->z - 24*FRACUNIT, MT_CRIT_AURA);
+            if (mo)
+            {
+                mo->flags |= MF_TELESTICK;
+                S_StartSound(actor, sfx_itmbk);
+            }
+        }
+        return;
+    }
+
     
     // launch a missile
     P_SpawnMissile (actor, actor->target, MT_TROOPSHOT);
