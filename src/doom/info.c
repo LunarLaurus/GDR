@@ -78,6 +78,10 @@ void A_FireQuake();
 void A_FireChainReaction();
 void A_FireCrystalShatter();
 void A_FireSplittingD20();
+void A_FireGreedsD6();
+void A_FireMiningCharge();
+void A_FireSwarm();
+void A_FireRunicBinding();
 void A_Light1();
 void A_FireShotgun();
 void A_Light2();
@@ -332,6 +336,38 @@ state_t	states[NUMSTATES] = {
     {SPR_D6B1,2,5,{NULL},S_SPLITTINGD20_4,0,0},	// S_SPLITTINGD20_3 - follow through
     {SPR_D6B1,1,6,{A_ReFire},S_SPLITTINGD20,0,0},	// S_SPLITTINGD20_4 - refire
     {SPR_D6BF,32768,5,{A_Light1},S_LIGHTDONE,0,0},	// S_SPLITTINGD20FLASH
+    {SPR_D6B1,0,1,{A_WeaponReady},S_GREEDSD6,0,0},	// S_GREEDSD6 - Greed's d6 ready
+    {SPR_D6B1,0,1,{A_Lower},S_GREEDSD6DOWN,0,0},	// S_GREEDSD6DOWN
+    {SPR_D6B1,0,1,{A_Raise},S_GREEDSD6UP,0,0},	// S_GREEDSD6UP
+    {SPR_D6B1,0,3,{NULL},S_GREEDSD6_2,0,0},	// S_GREEDSD6_1 - windup
+    {SPR_D6B1,1,5,{A_FireGreedsD6},S_GREEDSD6_3,0,0},	// S_GREEDSD6_2 - fire
+    {SPR_D6B1,2,4,{NULL},S_GREEDSD6_4,0,0},	// S_GREEDSD6_3 - follow through
+    {SPR_D6B1,1,5,{A_ReFire},S_GREEDSD6,0,0},	// S_GREEDSD6_4 - refire
+    {SPR_D6BF,32768,5,{A_Light1},S_LIGHTDONE,0,0},	// S_GREEDSD6FLASH
+    {SPR_D6B1,0,1,{A_WeaponReady},S_MININGCHARGE,0,0},	// S_MININGCHARGE - Mining Charge ready
+    {SPR_D6B1,0,1,{A_Lower},S_MININGCHARGEDOWN,0,0},	// S_MININGCHARGEDOWN
+    {SPR_D6B1,0,1,{A_Raise},S_MININGCHARGEUP,0,0},	// S_MININGCHARGEUP
+    {SPR_D6B1,0,4,{NULL},S_MININGCHARGE_2,0,0},	// S_MININGCHARGE_1 - windup
+    {SPR_D6B1,1,6,{A_FireMiningCharge},S_MININGCHARGE_3,0,0},	// S_MININGCHARGE_2 - fire
+    {SPR_D6B1,2,5,{NULL},S_MININGCHARGE_4,0,0},	// S_MININGCHARGE_3 - follow through
+    {SPR_D6B1,1,6,{A_ReFire},S_MININGCHARGE,0,0},	// S_MININGCHARGE_4 - refire
+    {SPR_D6BF,32768,5,{A_Light1},S_LIGHTDONE,0,0},	// S_MININGCHARGEFLASH
+    {SPR_D6B1,0,1,{A_WeaponReady},S_SWARM,0,0},	// S_SWARM - Swarm d6 Dice Storm ready
+    {SPR_D6B1,0,1,{A_Lower},S_SWARMDOWN,0,0},	// S_SWARMDOWN
+    {SPR_D6B1,0,1,{A_Raise},S_SWARMUP,0,0},	// S_SWARMUP
+    {SPR_D6B1,0,3,{NULL},S_SWARM_2,0,0},	// S_SWARM_1 - windup
+    {SPR_D6B1,1,4,{A_FireSwarm},S_SWARM_3,0,0},	// S_SWARM_2 - fire (rapid fire)
+    {SPR_D6B1,2,3,{NULL},S_SWARM_4,0,0},	// S_SWARM_3 - follow through
+    {SPR_D6B1,1,4,{A_ReFire},S_SWARM,0,0},	// S_SWARM_4 - refire
+    {SPR_D6BF,32768,5,{A_Light1},S_LIGHTDONE,0,0},	// S_SWARMFLASH
+    {SPR_D6B1,0,1,{A_WeaponReady},S_RUNICBINDING,0,0},	// S_RUNICBINDING - Runic Binding ready
+    {SPR_D6B1,0,1,{A_Lower},S_RUNICBINDINGDOWN,0,0},	// S_RUNICBINDINGDOWN
+    {SPR_D6B1,0,1,{A_Raise},S_RUNICBINDINGUP,0,0},	// S_RUNICBINDINGUP
+    {SPR_D6B1,0,4,{NULL},S_RUNICBINDING_2,0,0},	// S_RUNICBINDING_1 - windup
+    {SPR_D6B1,1,6,{A_FireRunicBinding},S_RUNICBINDING_3,0,0},	// S_RUNICBINDING_2 - fire
+    {SPR_D6B1,2,5,{NULL},S_RUNICBINDING_4,0,0},	// S_RUNICBINDING_3 - follow through
+    {SPR_D6B1,1,6,{A_ReFire},S_RUNICBINDING,0,0},	// S_RUNICBINDING_4 - refire
+    {SPR_D6BF,32768,5,{A_Light1},S_LIGHTDONE,0,0},	// S_RUNICBINDINGFLASH
     {SPR_D6B1,0,1,{A_WeaponReady},S_D3,0,0},	// S_D3 - Skewered Luck ready
     {SPR_D6B1,0,1,{A_Lower},S_D3DOWN,0,0},	// S_D3DOWN
     {SPR_D6B1,0,1,{A_Raise},S_D3UP,0,0},	// S_D3UP

@@ -315,6 +315,42 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
         	S_SPLITTINGD20_1,
         	S_SPLITTINGD20FLASH
         },
+        {
+        	// Greed's d6 Gold Rush weapon (damage stacks on kills)
+        	am_lightdice,
+        	S_GREEDSD6DOWN,
+        	S_GREEDSD6UP,
+        	S_GREEDSD6,
+        	S_GREEDSD6_1,
+        	S_GREEDSD6FLASH
+        },
+        {
+        	// Mining Charge d10 weapon (proximity mines)
+        	am_heavydice,
+        	S_MININGCHARGEDOWN,
+        	S_MININGCHARGEUP,
+        	S_MININGCHARGE,
+        	S_MININGCHARGE_1,
+        	S_MININGCHARGEFLASH
+        },
+        {
+        	// Swarm d6 Dice Storm weapon (rapid fire spread)
+        	am_lightdice,
+        	S_SWARMDOWN,
+        	S_SWARMUP,
+        	S_SWARM,
+        	S_SWARM_1,
+        	S_SWARMFLASH
+        },
+        {
+        	// Runic Binding d12 weapon (random debuff on hit)
+        	am_heavydice,
+        	S_RUNICBINDINGDOWN,
+        	S_RUNICBINDINGUP,
+        	S_RUNICBINDING,
+        	S_RUNICBINDING_1,
+        	S_RUNICBINDINGFLASH
+        },
 };
 
 // Goblin Dice Rollaz: Dice weapon configuration table
@@ -639,6 +675,58 @@ dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
         2,       // chain_targets: splits into 2 additional dice
         0, 0,    // No misfire
         SPF_NONE, 30, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_NORMAL  // Mid-tier, splitting damage
+    },
+    {   // wp_greedsd6 - Greed's d6 Gold Rush (damage stacks on kills)
+        6,       // die_type: d6
+        16,      // crit_chance: 16% (roll of 6)
+        2,       // crit_multiplier: 2x on crit
+        1,       // min_damage
+        6,       // crit_roll: 6
+        {1, 1, 2, 2, 3, 5, 10},  // 1-2=1, 3-4=2, 5=3, 6=crit(10)
+        0,       // gamble_shot: no
+        0,       // ricochet_bounces: no
+        0,       // chain_targets: none
+        0, 0,    // No misfire
+        SPF_NONE, 35, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_NORMAL  // Mid-tier, gold-based stacking
+    },
+    {   // wp_miningcharge - Mining Charge d10 (proximity mines)
+        10,      // die_type: d10
+        10,      // crit_chance: 10% (roll of 10)
+        2,       // crit_multiplier: 2x on crit
+        2,       // min_damage
+        10,      // crit_roll: 10
+        {2, 2, 4, 4, 6, 8, 16},  // 1-2=2, 3-4=4, 5-6=6, 7-8=8, 9-10=crit(16)
+        0,       // gamble_shot: no
+        0,       // ricochet_bounces: no
+        0,       // chain_targets: none
+        0, 0,    // No misfire
+        SPF_NONE, 25, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_EXPLOSIVE  // Mid-tier, explosive mines
+    },
+    {   // wp_swarm - Swarm d6 Dice Storm (rapid fire spread)
+        6,       // die_type: d6 (multiple dice fired)
+        16,      // crit_chance: 16% (roll of 6)
+        2,       // crit_multiplier: 2x on crit
+        1,       // min_damage
+        6,       // crit_roll: 6
+        {1, 1, 2, 2, 3, 5, 10},  // 1-2=1, 3-4=2, 5=3, 6=crit(10) per die
+        0,       // gamble_shot: no
+        0,       // ricochet_bounces: no
+        4,       // chain_targets: fires 4 dice in spread
+        0, 0,    // No misfire
+        SPF_NONE, 40, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_NORMAL  // Mid-tier, rapid fire
+    },
+    {   // wp_runicbinding - Runic Binding d12 (random debuff on hit)
+        12,      // die_type: d12
+        8,       // crit_chance: 8% (roll of 12)
+        2,       // crit_multiplier: 2x on crit
+        3,       // min_damage
+        12,      // crit_roll: 12
+        {3, 3, 6, 6, 9, 12, 24},  // 1-3=3, 4-6=6, 7-9=9, 10-12=crit(24)
+        0,       // gamble_shot: no
+        0,       // ricochet_bounces: no
+        0,       // chain_targets: none
+        0, 0,    // No misfire
+        SPF_NONE, 30, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_POISON  // Mid-tier, debuff on hit
     },
 };
 

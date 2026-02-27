@@ -57,7 +57,11 @@ static const char* weapon_names[NUMWEAPONS] = {
     "d100+1 Fumble Finder",
     "d3 Quake Boulder",
     "d12 Chain Reaction",
-    "Crystal d8 Shatter"
+    "Crystal d8 Shatter",
+    "Greed's d6 Gold Rush",
+    "Mining Charge d10",
+    "Swarm d6 Dice Storm",
+    "Runic Binding d12"
 };
 
 void G_ResetDiceStats(void)

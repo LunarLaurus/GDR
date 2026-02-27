@@ -300,10 +300,10 @@
 - [x] Add Chain Reaction d12 weapon (sticks, chains to nearby)
 - [x] Add Crystal d8 Shatter weapon (shard spray, shield break)
 - [x] Add Splitting d20 weapon (splits into multiple dice)
-- [ ] Add Greed's d6 Gold Rush weapon (damage stacks on kills)
-- [ ] Add Mining Charge d10 weapon (proximity mines)
-- [ ] Add Swarm d6 Dice Storm weapon (rapid fire spread)
-- [ ] Add Runic Binding d12 weapon (random debuff on hit)
+- [x] Add Greed's d6 Gold Rush weapon (damage stacks on kills)
+- [x] Add Mining Charge d10 weapon (proximity mines)
+- [x] Add Swarm d6 Dice Storm weapon (rapid fire spread)
+- [x] Add Runic Binding d12 weapon (random debuff on hit)
 
 ### Phase 15: New Dwarf Enemies
 - [ ] Add Dwarf Flamethrower (area flame cone, low HP)

@@ -134,6 +134,10 @@ typedef enum
     wp_chainreaction,    // d12 Chain Reaction (sticks, chains to nearby)
     wp_crystalshatter,   // Crystal d8 Shatter (shard spray, shield break)
     wp_splittingd20,     // d20 Splitting Die (splits into multiple dice)
+    wp_greedsd6,         // Greed's d6 Gold Rush (damage stacks on kills)
+    wp_miningcharge,     // Mining Charge d10 (proximity mines)
+    wp_swarm,            // Swarm d6 Dice Storm (rapid fire spread)
+    wp_runicbinding,     // Runic Binding d12 (random debuff on hit)
 
     NUMWEAPONS,
     

@@ -207,6 +207,18 @@ typedef enum
     // Goblin Dice Rollaz: Splitting d20 weapon spawns additional dice
     MF_SPLITTINGDICE   = 0x200000,  // Available flag in the mid-range
 
+    // Goblin Dice Rollaz: Greed's d6 Gold Rush stacks damage
+    MF_GREEDDICE       = 0x1000000,
+
+    // Goblin Dice Rollaz: Mining Charge d10 is a proximity mine
+    MF_MININGCHARGE    = 0x2000000,
+
+    // Goblin Dice Rollaz: Swarm d6 Dice Storm fires multiple dice
+    MF_SWARMDICE       = 0x4000000,
+
+    // Goblin Dice Rollaz: Runic Binding d12 applies random debuff
+    MF_RUNICDICE       = 0x8000000,
+
     // Player sprites in multiplayer modes are modified
     //  using an internal color lookup table for re-indexing.
     // If 0x4 0x8 or 0xc,

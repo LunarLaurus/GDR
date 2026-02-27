@@ -81,6 +81,10 @@ static const fixed_t weapon_recoil_values[NUMWEAPONS] = {
     FRACUNIT*3/4,  // wp_quake - Goblin Dice Rollaz (shockwave, stun)
     FRACUNIT/3,    // wp_crystalshatter - Goblin Dice Rollaz (shard spray, shield break)
     FRACUNIT/3,    // wp_splittingd20 - Goblin Dice Rollaz (splits into multiple dice)
+    FRACUNIT/4,    // wp_greedsd6 - Goblin Dice Rollaz (damage stacks on kills)
+    FRACUNIT/2,    // wp_miningcharge - Goblin Dice Rollaz (proximity mines)
+    FRACUNIT/2,    // wp_swarm - Goblin Dice Rollaz (rapid fire spread)
+    FRACUNIT/3,    // wp_runicbinding - Goblin Dice Rollaz (random debuff on hit)
 };
 
 
@@ -942,6 +946,213 @@ A_FireChainReaction
     }
 }
 
+// A_FireGreedsD6 - Goblin Dice Rollaz Greed's d6 Gold Rush weapon
+void
+A_FireGreedsD6
+( player_t*	player,
+  pspdef_t*	psp )
+{
+    int damage;
+    int guaranteedCrit = 0;
+    int critRoll = 0;
+    int diceRoll = 0;
+    mobj_t* missile;
+    
+    S_StartSound (player->mo, sfx_dice_d6);
+
+    if (player->powers[pw_dicefortune])
+    {
+        guaranteedCrit = 1;
+        player->powers[pw_dicefortune] = 0;
+        player->message = "CRITICAL!";
+    }
+
+    damage = P_CalculateDiceDamage(wp_greedsd6, guaranteedCrit, &critRoll, NULL, &diceRoll, player);
+
+    player->weapon_recoil = weapon_recoil_values[wp_greedsd6];
+
+    missile = P_SpawnPlayerMissile (player->mo, MT_DICE_GLOW, wp_greedsd6);
+    if (missile)
+    {
+        missile->damage = damage;
+        missile->flags |= MF_GREEDDICE;  // Mark missile as gold-stacking
+        if (critRoll > 0)
+        {
+            missile->flags |= MF_CRITDICE;  // Enhanced stacking on crit
+        }
+    }
+
+    if (critRoll > 0)
+    {
+        R_TriggerScreenShake(FRACUNIT * 4, 8);
+        player->message = "GOLD RUSH!";
+    }
+    else
+    {
+        R_TriggerScreenShake(FRACUNIT * 2, 4);
+    }
+}
+
+// A_FireMiningCharge - Goblin Dice Rollaz Mining Charge d10 weapon
+void
+A_FireMiningCharge
+( player_t*	player,
+  pspdef_t*	psp )
+{
+    int damage;
+    int guaranteedCrit = 0;
+    int critRoll = 0;
+    int diceRoll = 0;
+    mobj_t* missile;
+    
+    S_StartSound (player->mo, sfx_dice_d10);
+
+    if (player->powers[pw_dicefortune])
+    {
+        guaranteedCrit = 1;
+        player->powers[pw_dicefortune] = 0;
+        player->message = "CRITICAL!";
+    }
+
+    damage = P_CalculateDiceDamage(wp_miningcharge, guaranteedCrit, &critRoll, NULL, &diceRoll, player);
+
+    player->weapon_recoil = weapon_recoil_values[wp_miningcharge];
+
+    missile = P_SpawnPlayerMissile (player->mo, MT_DICE_GLOW, wp_miningcharge);
+    if (missile)
+    {
+        missile->damage = damage;
+        missile->flags |= MF_MININGCHARGE;  // Mark missile as proximity mine
+        if (critRoll > 0)
+        {
+            missile->flags |= MF_CRITDICE;  // Enhanced mine on crit
+        }
+    }
+
+    if (critRoll > 0)
+    {
+        R_TriggerScreenShake(FRACUNIT * 5, 10);
+        player->message = "CRITICAL BLAST!";
+    }
+    else if (diceRoll >= 7)
+    {
+        R_TriggerScreenShake(FRACUNIT * 3, 6);
+        player->message = "MINE SET!";
+    }
+    else
+    {
+        R_TriggerScreenShake(FRACUNIT * 2, 4);
+    }
+}
+
+// A_FireSwarm - Goblin Dice Rollaz Swarm d6 Dice Storm weapon
+void
+A_FireSwarm
+( player_t*	player,
+  pspdef_t*	psp )
+{
+    int i;
+    int damage;
+    int guaranteedCrit = 0;
+    int critRoll = 0;
+    int diceRoll = 0;
+    mobj_t* missile;
+    angle_t baseAngle;
+    
+    S_StartSound (player->mo, sfx_dice_d6);
+
+    if (player->powers[pw_dicefortune])
+    {
+        guaranteedCrit = 1;
+        player->powers[pw_dicefortune] = 0;
+        player->message = "CRITICAL!";
+    }
+
+    damage = P_CalculateDiceDamage(wp_swarm, guaranteedCrit, &critRoll, NULL, &diceRoll, player);
+
+    player->weapon_recoil = weapon_recoil_values[wp_swarm];
+
+    baseAngle = player->mo->angle;
+    
+    for (i = 0; i < 4; i++)
+    {
+        angle_t spreadAngle = baseAngle + ((i - 1) * ANGLE_1 * 4);
+        
+        missile = P_SpawnPlayerMissileAngle (player->mo, MT_DICE_GLOW, spreadAngle, wp_swarm);
+        if (missile)
+        {
+            missile->damage = damage;
+            missile->flags |= MF_SWARMDICE;  // Mark missile as swarm die
+            if (critRoll > 0)
+            {
+                missile->flags |= MF_CRITDICE;
+            }
+        }
+    }
+
+    if (critRoll > 0)
+    {
+        R_TriggerScreenShake(FRACUNIT * 5, 10);
+        player->message = "SWARM CRITICAL!";
+    }
+    else
+    {
+        R_TriggerScreenShake(FRACUNIT * 3, 6);
+        player->message = "DICE STORM!";
+    }
+}
+
+// A_FireRunicBinding - Goblin Dice Rollaz Runic Binding d12 weapon
+void
+A_FireRunicBinding
+( player_t*	player,
+  pspdef_t*	psp )
+{
+    int damage;
+    int guaranteedCrit = 0;
+    int critRoll = 0;
+    int diceRoll = 0;
+    mobj_t* missile;
+    
+    S_StartSound (player->mo, sfx_dice_d12);
+
+    if (player->powers[pw_dicefortune])
+    {
+        guaranteedCrit = 1;
+        player->powers[pw_dicefortune] = 0;
+        player->message = "CRITICAL!";
+    }
+
+    damage = P_CalculateDiceDamage(wp_runicbinding, guaranteedCrit, &critRoll, NULL, &diceRoll, player);
+
+    player->weapon_recoil = weapon_recoil_values[wp_runicbinding];
+
+    missile = P_SpawnPlayerMissile (player->mo, MT_DICE_GLOW, wp_runicbinding);
+    if (missile)
+    {
+        missile->damage = damage;
+        missile->flags |= MF_RUNICDICE;  // Mark missile as runic binding
+        if (critRoll > 0)
+        {
+            missile->flags |= MF_CRITDICE;  // Enhanced debuff on crit
+        }
+    }
+
+    if (critRoll > 0)
+    {
+        R_TriggerScreenShake(FRACUNIT * 5, 10);
+        player->message = "RUNIC CURSE!";
+    }
+    else if (diceRoll >= 8)
+    {
+        R_TriggerScreenShake(FRACUNIT * 3, 6);
+        player->message = "BOUND!";
+    }
+    else
+    {
+        R_TriggerScreenShake(FRACUNIT * 2, 4);
+    }
+}
 
 
 
