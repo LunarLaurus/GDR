@@ -252,6 +252,15 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
         	S_D48_1,
         	S_D48FLASH
         },
+        {
+        	// d50 Dwarf's Bane weapon (3x vs dwarf enemies)
+        	am_lightdice,
+        	S_D50DOWN,
+        	S_D50UP,
+        	S_D50,
+        	S_D50_1,
+        	S_D50FLASH
+        },
 };
 
 // Goblin Dice Rollaz: Dice weapon configuration table
@@ -473,6 +482,18 @@ dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
         0,      // ricochet_bounces: no
         0, 0,   // No misfire
         SPF_LATE_GAME, 25, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_FIRE  // Late game, fire damage
+    },
+    {   // wp_d50 - Dwarf's Bane (3x vs dwarf enemies)
+        50,     // die_type: d50
+        15,     // crit_chance: 15%
+        3,      // crit_multiplier: 3x on crit
+        5,      // min_damage
+        50,     // crit_roll: 50
+        {5, 10, 18, 28, 42, 64, 100},  // 1=5, 2=10, 3=18, 4=28, 5=42, 6=64, 50=crit(100*3=300)
+        0,      // gamble_shot: no
+        0,      // ricochet_bounces: no
+        0, 0,   // No misfire
+        SPF_LATE_GAME, 30, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_NORMAL  // Late game, dwarf bane
     },
 };
 

@@ -1464,6 +1464,24 @@ P_DamageMobj
                     damage = (damage * 150) / 100;
                 }
             }
+            // Goblin Dice Rollaz: d50 Dwarf's Bane - 3x vs ALL dwarf enemies
+            if (weapon == wp_d50 && target)
+            {
+                if (target->type == MT_DWARF_BERSERKER ||
+                    target->type == MT_DWARF_ENGINEER ||
+                    target->type == MT_DWARF_BOMB ||
+                    target->type == MT_DWARF_TURRET ||
+                    target->type == MT_DWARF_DEFENDER ||
+                    target->type == MT_DWARF_MARKSMAN ||
+                    target->type == MT_DWARF_MINER ||
+                    target->type == MT_DWARF_CAPTAIN ||
+                    target->type == MT_DWARF_BOMBARDIER ||
+                    target->type == MT_DWARF_ARMORED)
+                {
+                    // 3x damage vs dwarf enemies
+                    damage = damage * 3;
+                }
+            }
         }
     }
 	

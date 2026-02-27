@@ -72,6 +72,7 @@ void A_FireD14();
 void A_FireD24();
 void A_FireD30();
 void A_FireD48();
+void A_FireD50();
 void A_Light1();
 void A_FireShotgun();
 void A_Light2();
@@ -270,6 +271,14 @@ state_t	states[NUMSTATES] = {
     {SPR_D6B1,2,5,{NULL},S_D48_4,0,0},	// S_D48_3 - follow through
     {SPR_D6B1,1,6,{A_ReFire},S_D48,0,0},	// S_D48_4 - refire
     {SPR_D6BF,32768,5,{A_Light1},S_LIGHTDONE,0,0},	// S_D48FLASH
+    {SPR_D6B1,0,1,{A_WeaponReady},S_D50,0,0},	// S_D50 - Dwarf's Bane ready
+    {SPR_D6B1,0,1,{A_Lower},S_D50DOWN,0,0},	// S_D50DOWN
+    {SPR_D6B1,0,1,{A_Raise},S_D50UP,0,0},	// S_D50UP
+    {SPR_D6B1,0,4,{NULL},S_D50_2,0,0},	// S_D50_1 - windup (heavy weapon)
+    {SPR_D6B1,1,6,{A_FireD50},S_D50_3,0,0},	// S_D50_2 - fire (dwarf bane strike)
+    {SPR_D6B1,2,5,{NULL},S_D50_4,0,0},	// S_D50_3 - follow through
+    {SPR_D6B1,1,6,{A_ReFire},S_D50,0,0},	// S_D50_4 - refire
+    {SPR_D6BF,32768,5,{A_Light1},S_LIGHTDONE,0,0},	// S_D50FLASH
     {SPR_D6B1,0,1,{A_WeaponReady},S_D3,0,0},	// S_D3 - Skewered Luck ready
     {SPR_D6B1,0,1,{A_Lower},S_D3DOWN,0,0},	// S_D3DOWN
     {SPR_D6B1,0,1,{A_Raise},S_D3UP,0,0},	// S_D3UP
