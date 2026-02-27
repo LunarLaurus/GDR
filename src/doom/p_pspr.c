@@ -74,6 +74,7 @@ static const fixed_t weapon_recoil_values[NUMWEAPONS] = {
     FRACUNIT*3/4,  // wp_d14 - Goblin Dice Rollaz (dual dice, resonance bonus)
     FRACUNIT*3/5,  // wp_d24 - Goblin Dice Rollaz (slows enemies, freezes on crit)
     FRACUNIT*3/4,  // wp_d30 - Goblin Dice Rollaz (bonus vs armored dwarves)
+    FRACUNIT,      // wp_d48 - Goblin Dice Rollaz (molten effect on crit, fire dmg)
 };
 
 
@@ -1852,6 +1853,72 @@ A_FireD30
     {
         R_TriggerScreenShake(FRACUNIT * 4, 8);
         player->message = "ARMOR CRUSH!";
+    }
+}
+
+
+//
+// A_FireD48 - Goblin Dice Rollaz d48 Forge Hammer weapon
+// Molten effect on critical hit, fire damage type
+// 
+void
+A_FireD48
+( player_t*	player,
+  pspdef_t*	psp ) 
+{
+    int damage;
+    int guaranteedCrit = 0;
+    int critRoll = 0;
+    int diceRoll = 0;
+    mobj_t* missile;
+    
+    S_StartSound (player->mo, sfx_dice_d20);
+
+    P_SetMobjState (player->mo, S_PLAY_ATK2);
+    DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
+
+    P_SetPsprite (player,
+		  ps_flash,
+		  weaponinfo[player->readyweapon].flashstate+(P_Random ()&1));
+
+    if (player->powers[pw_dicefortune])
+    {
+        guaranteedCrit = 1;
+        player->powers[pw_dicefortune] = 0;
+        player->message = "CRITICAL!";
+    }
+
+    damage = P_CalculateDiceDamage(wp_d48, guaranteedCrit, &critRoll, NULL, &diceRoll, player);
+
+    player->weapon_recoil = weapon_recoil_values[wp_d48];
+
+    missile = P_SpawnPlayerMissile (player->mo, MT_D48PROJECTILE, wp_d48);
+    if (missile)
+    {
+        missile->damage = damage;
+    }
+
+    if (critRoll > 0)
+    {
+        R_TriggerScreenShake(FRACUNIT * 5, 10);
+        player->message = "MOLTEN!";
+    }
+    else if (diceRoll >= 36)
+    {
+        R_TriggerScreenShake(FRACUNIT * 4, 8);
+        player->message = "FORGE BURN!";
+    }
+    else if (diceRoll >= 24)
+    {
+        R_TriggerScreenShake(FRACUNIT * 3, 6);
+    }
+    else if (diceRoll >= 16)
+    {
+        R_TriggerScreenShake(FRACUNIT * 2, 4);
+    }
+    else
+    {
+        R_TriggerScreenShake(FRACUNIT * 1, 2);
     }
 }
 

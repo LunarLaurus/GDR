@@ -292,7 +292,7 @@
 - [x] Add d14 Fused Doubler weapon (dual dice, resonance explosion)
 - [x] Add d24 Hourglass Cannon weapon (slows enemies, freezes on crit)
 - [x] Add d30 Gear Grinder weapon (bonus vs armored dwarves)
-- [ ] Add d48 Forge Hammer weapon (molten effect on crit, fire dmg)
+- [x] Add d48 Forge Hammer weapon (molten effect on crit, fire dmg)
 - [ ] Add d50 Dwarf's Bane weapon (3x vs dwarf enemies)
 - [ ] Add d60 Elemental Chaos weapon (fire/ice/lightning/poison)
 - [ ] Add d100+1 Fumble Finder weapon (no fumbles, 4x on crit)

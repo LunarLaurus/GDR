@@ -243,6 +243,15 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
         	S_D30_1,
         	S_D30FLASH
         },
+        {
+        	// d48 Forge Hammer weapon (molten effect on crit, fire dmg)
+        	am_lightdice,
+        	S_D48DOWN,
+        	S_D48UP,
+        	S_D48,
+        	S_D48_1,
+        	S_D48FLASH
+        },
 };
 
 // Goblin Dice Rollaz: Dice weapon configuration table
@@ -452,6 +461,18 @@ dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
         0,      // ricochet_bounces: no
         0, 0,   // No misfire
         SPF_NONE, 20, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_ARMOR  // Armor piercing - bonus vs armored
+    },
+    {   // wp_d48 - Forge Hammer (molten effect on crit, fire damage)
+        48,     // die_type: d48
+        12,     // crit_chance: 12%
+        3,      // crit_multiplier: 3x on crit
+        3,      // min_damage
+        48,     // crit_roll: 48
+        {3, 6, 10, 16, 24, 36, 60},  // 1=3, 2=6, 3=10, 4=16, 5=24, 6=36, 48=crit(60*3=180)
+        0,      // gamble_shot: no
+        0,      // ricochet_bounces: no
+        0, 0,   // No misfire
+        SPF_LATE_GAME, 25, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_FIRE  // Late game, fire damage
     },
 };
 

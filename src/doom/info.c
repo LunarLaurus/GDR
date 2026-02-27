@@ -71,6 +71,7 @@ void A_FireD7();
 void A_FireD14();
 void A_FireD24();
 void A_FireD30();
+void A_FireD48();
 void A_Light1();
 void A_FireShotgun();
 void A_Light2();
@@ -261,6 +262,14 @@ state_t	states[NUMSTATES] = {
     {SPR_D6B1,2,4,{NULL},S_D30_4,0,0},	// S_D30_3 - follow through
     {SPR_D6B1,1,5,{A_ReFire},S_D30,0,0},	// S_D30_4 - refire
     {SPR_D6BF,32768,5,{A_Light1},S_LIGHTDONE,0,0},	// S_D30FLASH
+    {SPR_D6B1,0,1,{A_WeaponReady},S_D48,0,0},	// S_D48 - Forge Hammer ready
+    {SPR_D6B1,0,1,{A_Lower},S_D48DOWN,0,0},	// S_D48DOWN
+    {SPR_D6B1,0,1,{A_Raise},S_D48UP,0,0},	// S_D48UP
+    {SPR_D6B1,0,4,{NULL},S_D48_2,0,0},	// S_D48_1 - windup (heavier weapon)
+    {SPR_D6B1,1,6,{A_FireD48},S_D48_3,0,0},	// S_D48_2 - fire (forge strike)
+    {SPR_D6B1,2,5,{NULL},S_D48_4,0,0},	// S_D48_3 - follow through
+    {SPR_D6B1,1,6,{A_ReFire},S_D48,0,0},	// S_D48_4 - refire
+    {SPR_D6BF,32768,5,{A_Light1},S_LIGHTDONE,0,0},	// S_D48FLASH
     {SPR_D6B1,0,1,{A_WeaponReady},S_D3,0,0},	// S_D3 - Skewered Luck ready
     {SPR_D6B1,0,1,{A_Lower},S_D3DOWN,0,0},	// S_D3DOWN
     {SPR_D6B1,0,1,{A_Raise},S_D3UP,0,0},	// S_D3UP
@@ -3030,29 +3039,55 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
     },
 
     {		// MT_D24PROJECTILE - Goblin Dice Rollaz d24 Hourglass Cannon projectile (slows, freezes on crit)
-	-1,		// doomednum
-	S_ICE,		// spawnstate (reuse ice ball sprite)
-	1000,		// spawnhealth
-	S_NULL,		// seestate
-	sfx_iceskl,		// seesound (ice shatter sound)
-	8,		// reactiontime
-	sfx_None,		// attacksound
-	S_NULL,		// painstate
-	0,		// painchance
-	sfx_None,		// painsound
-	S_NULL,		// meleestate
-	S_NULL,		// missilestate
-	S_ICE,		// deathstate (reuses ice)
-	S_NULL,		// xdeathstate
-	sfx_iceskl,		// deathsound
-	18*FRACUNIT,		// speed (moderate, like hourglass sand)
-	6*FRACUNIT,		// radius (medium)
-	6*FRACUNIT,		// height (medium)
-	40,		// mass
-	1,		// damage (base, modified by dice roll at fire time)
-	sfx_None,		// activesound
-	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_NOGRAVITY,		// flags (floats like ice)
-	S_NULL		// raisestate
+ 	-1,		// doomednum
+ 	S_ICE,		// spawnstate (reuse ice ball sprite)
+ 	1000,		// spawnhealth
+ 	S_NULL,		// seestate
+ 	sfx_iceskl,		// seesound (ice shatter sound)
+ 	8,		// reactiontime
+ 	sfx_None,		// attacksound
+ 	S_NULL,		// painstate
+ 	0,		// painchance
+ 	sfx_None,		// painsound
+ 	S_NULL,		// meleestate
+ 	S_NULL,		// missilestate
+ 	S_ICE,		// deathstate (reuses ice)
+ 	S_NULL,		// xdeathstate
+ 	sfx_iceskl,		// deathsound
+ 	18*FRACUNIT,		// speed (moderate, like hourglass sand)
+ 	6*FRACUNIT,		// radius (medium)
+ 	6*FRACUNIT,		// height (medium)
+ 	40,		// mass
+ 	1,		// damage (base, modified by dice roll at fire time)
+ 	sfx_None,		// activesound
+ 	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_NOGRAVITY,		// flags (floats like ice)
+ 	S_NULL		// raisestate
+    },
+
+    {		// MT_D48PROJECTILE - Goblin Dice Rollaz d48 Forge Hammer projectile (molten, fire on crit)
+ 	-1,		// doomednum
+ 	S_FIRE,		// spawnstate (reuse fire sprite)
+ 	1000,		// spawnhealth
+ 	S_NULL,		// seestate
+ 	sfx_None,		// seesound
+ 	8,		// reactiontime
+ 	sfx_None,		// attacksound
+ 	S_NULL,		// painstate
+ 	0,		// painchance
+ 	sfx_None,		// painsound
+ 	S_NULL,		// meleestate
+ 	S_NULL,		// missilestate
+ 	S_FIRE,		// deathstate (burns out)
+ 	S_NULL,		// xdeathstate
+ 	sfx_None,		// deathsound
+ 	25*FRACUNIT,		// speed (slower, heavy hammer throw)
+ 	8*FRACUNIT,		// radius (larger, heavy)
+ 	8*FRACUNIT,		// height (larger)
+ 	60,		// mass (heavier)
+ 	1,		// damage (base, modified by dice roll at fire time)
+ 	sfx_None,		// activesound
+ 	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_NOGRAVITY,		// flags (floats like fire)
+ 	S_NULL		// raisestate
     },
 
     {		// MT_PLASMA

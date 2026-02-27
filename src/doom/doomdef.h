@@ -126,6 +126,7 @@ typedef enum
     wp_d14,           // d14 Fused Doubler (dual dice, resonance explosion)
     wp_d24,           // d24 Hourglass Cannon (slows enemies, freezes on crit)
     wp_d30,           // d30 Gear Grinder (bonus vs armored dwarves)
+    wp_d48,           // d48 Forge Hammer (molten effect on crit, fire dmg)
 
     NUMWEAPONS,
     
