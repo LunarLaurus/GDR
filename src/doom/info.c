@@ -4946,6 +4946,37 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 	0		// phase2_health (no phases)
     },
 
+    {		// MT_DWARF_OBSIDIAN - Goblin Dice Rollaz: Dwarf Obsidian Guardian (volcanic glass, fire weak)
+	8118,		// doomednum (custom mapthing number)
+	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations)
+	180,		// spawnhealth (very high HP - tank)
+	S_SPOS_RUN1,		// seestate
+	sfx_posit2,		// seesound (battle cry)
+	8,		// reactiontime
+	sfx_None,		// attacksound (glass shard swing)
+	S_SPOS_PAIN,		// painstate
+	10,		// painchance (low - armored)
+	sfx_popain,		// painsound
+	S_SPOS_ATK1,		// meleestate (shard slash)
+	0,		// missilestate (none)
+	S_SPOS_DIE1,		// deathstate
+	S_SPOS_XDIE1,		// xdeathstate
+	sfx_barexp,		// deathsound (glass shatter)
+	4*FRACUNIT,		// speed (slow - heavy guardian)
+	20*FRACUNIT,		// radius
+	64*FRACUNIT,		// height (tall, imposing)
+	200,		// mass (heavy)
+	40,		// damage (high - glass slash)
+	sfx_posact,		// activesound
+	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+	S_SPOS_RAISE1,		// raisestate
+	60,		// crit_resistance (very high - hard glass)
+	30,		// aggression (low - stationary guardian)
+	40,		// shield_reduction (high - physical armor)
+	0,		// rear_weakness (none)
+	0		// phase2_health (no phases)
+    },
+
     {		// MT_MISC17
 	2048,		// doomednum
 	S_AMMO,		// spawnstate
