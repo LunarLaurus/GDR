@@ -69,7 +69,8 @@ static const fixed_t weapon_recoil_values[NUMWEAPONS] = {
     FRACUNIT/4,    // wp_arcaned20 - Goblin Dice Rollaz
     FRACUNIT,      // wp_cursed - Goblin Dice Rollaz
     FRACUNIT/5,    // wp_d2 - Goblin Dice Rollaz (low recoil)
-    FRACUNIT/5     // wp_d3 - Goblin Dice Rollaz (low recoil, piercing)
+    FRACUNIT/5,    // wp_d3 - Goblin Dice Rollaz (low recoil, piercing)
+    FRACUNIT/4     // wp_d7 - Goblin Dice Rollaz (ore fragment splash)
 };
 
 
@@ -1606,6 +1607,63 @@ A_FireD3
     if (critRoll > 0)
     {
         R_TriggerScreenShake(FRACUNIT * 2, 5);
+    }
+    else
+    {
+        R_TriggerScreenShake(FRACUNIT * 1, 3);
+    }
+}
+
+
+//
+// A_FireD7 - Goblin Dice Rollaz d7 Seven Veils weapon
+// Ore fragment splash: on impact, fires secondary fragment projectiles
+// Crit: double damage plus larger splash
+// 
+void
+A_FireD7
+( player_t*	player,
+  pspdef_t*	psp ) 
+{
+    int damage;
+    int guaranteedCrit = 0;
+    int critRoll = 0;
+    int diceRoll = 0;
+    mobj_t* missile;
+    
+    S_StartSound (player->mo, sfx_dice_d6);
+
+    P_SetMobjState (player->mo, S_PLAY_ATK2);
+    DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
+
+    P_SetPsprite (player,
+		  ps_flash,
+		  weaponinfo[player->readyweapon].flashstate+(P_Random ()&1));
+
+    if (player->powers[pw_dicefortune])
+    {
+        guaranteedCrit = 1;
+        player->powers[pw_dicefortune] = 0;
+        player->message = "CRITICAL!";
+    }
+
+    damage = P_CalculateDiceDamage(wp_d7, guaranteedCrit, &critRoll, NULL, &diceRoll, player);
+
+    player->weapon_recoil = weapon_recoil_values[wp_d7];
+
+    missile = P_SpawnPlayerMissile (player->mo, MT_D7PROJECTILE, wp_d7);
+    if (missile)
+    {
+        missile->damage = damage;
+    }
+
+    if (critRoll > 0)
+    {
+        R_TriggerScreenShake(FRACUNIT * 3, 6);
+    }
+    else if (diceRoll >= 5)
+    {
+        R_TriggerScreenShake(FRACUNIT * 2, 4);
     }
     else
     {

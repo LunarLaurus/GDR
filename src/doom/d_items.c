@@ -207,15 +207,24 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
   	S_D2_1,
   	S_D2FLASH
      },
-     {
- 	// d3 Skewered Luck weapon (guaranteed 1-3 damage, piercing)
- 	am_lightdice,
- 	S_D3DOWN,
- 	S_D3UP,
- 	S_D3,
- 	S_D3_1,
- 	S_D3FLASH
-     },
+      {
+  	// d3 Skewered Luck weapon (guaranteed 1-3 damage, piercing)
+  	am_lightdice,
+  	S_D3DOWN,
+  	S_D3UP,
+  	S_D3,
+  	S_D3_1,
+  	S_D3FLASH
+      },
+      {
+      	// d7 Seven Veils weapon (ore fragment splash, 14% crit)
+      	am_lightdice,
+      	S_D7DOWN,
+      	S_D7UP,
+      	S_D7,
+      	S_D7_1,
+      	S_D7FLASH
+      },
 };
 
 // Goblin Dice Rollaz: Dice weapon configuration table
@@ -377,6 +386,18 @@ dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
         0,      // ricochet_bounces: no
         0, 0,   // No misfire
         SPF_EARLY_GAME, 50, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_PIERCING  // Early game piercing weapon
+    },
+    {   // wp_d7 - Seven Veils (ore fragment splash, 14% crit)
+        7,      // die_type: d7
+        14,     // crit_chance: 14%
+        2,      // crit_multiplier: 2x on crit
+        1,      // min_damage
+        7,      // crit_roll: 7 (veils number)
+        {1, 1, 2, 2, 3, 3, 4},  // 1-3=1, 4-5=2, 6=3, crit(4*2=8)
+        0,      // gamble_shot: no
+        0,      // ricochet_bounces: no
+        0, 0,   // No misfire
+        SPF_NONE, 35, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_EXPLOSIVE  // Mid-tier weapon, ore splash
     },
 };
 

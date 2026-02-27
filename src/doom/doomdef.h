@@ -122,6 +122,7 @@ typedef enum
     wp_cursed,        // cursed die (high damage, self-risk mechanic)
     wp_d2,            // d2 Flip of Fate (binary damage, 50% 1dmg/50% 2dmg)
     wp_d3,            // d3 Skewered Luck (guaranteed 1-3 damage, piercing)
+    wp_d7,            // d7 Seven Veils (ore fragment splash, 14% crit)
 
     NUMWEAPONS,
     

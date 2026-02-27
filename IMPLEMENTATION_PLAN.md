@@ -288,7 +288,7 @@
 ### Phase 14: New Dice Weapons
 - [x] Add d2 Flip of Fate weapon (binary damage, 50% 1dmg/50% 2dmg)
 - [x] Add d3 Skewered Luck weapon (guaranteed 1-3 damage, piercing)
-- [ ] Add d7 Seven Veins weapon (ore fragment splash, 14% crit)
+- [x] Add d7 Seven Veils weapon (ore fragment splash, 14% crit)
 - [ ] Add d14 Fused Doubler weapon (dual dice, resonance explosion)
 - [ ] Add d24 Hourglass Cannon weapon (slows enemies, freezes on crit)
 - [ ] Add d30 Gear Grinder weapon (bonus vs armored dwarves)

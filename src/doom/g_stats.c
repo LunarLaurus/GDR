@@ -46,7 +46,8 @@ static const char* weapon_names[NUMWEAPONS] = {
     "Arcane d20",
     "Cursed Die",
     "d2 Flip of Fate",
-    "d3 Skewered Luck"
+    "d3 Skewered Luck",
+    "d7 Seven Veils"
 };
 
 void G_ResetDiceStats(void)
