@@ -1723,7 +1723,22 @@ P_DamageMobj
                 {
                     weapon = source->player->readyweapon;
                     if (weapon >= 0 && weapon < NUMWEAPONS)
+                    {
                         dtype = dice_weapon_info[weapon].damage_type;
+                        // Goblin Dice Rollaz: Elemental Chaos weapon - random element on each hit
+                        if (dtype == DAMAGETYPE_ELEMENTAL)
+                        {
+                            int roll = P_Random() % 4;
+                            if (roll == 0)
+                                dtype = DAMAGETYPE_FIRE;
+                            else if (roll == 1)
+                                dtype = DAMAGETYPE_ICE;
+                            else if (roll == 2)
+                                dtype = DAMAGETYPE_LIGHTNING;
+                            else
+                                dtype = DAMAGETYPE_POISON;
+                        }
+                    }
                 }
                 PREDICT_RecordDamage(screen_x, screen_y, damage, was_critical, crit_roll, weapon);
                 DMG_AddDamage(screen_x, screen_y, damage, was_critical, crit_roll, dtype);

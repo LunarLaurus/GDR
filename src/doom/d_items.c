@@ -261,6 +261,15 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
         	S_D50_1,
         	S_D50FLASH
         },
+        {
+        	// d60 Elemental Chaos weapon (random elemental: fire/ice/lightning/poison)
+        	am_lightdice,
+        	S_D60DOWN,
+        	S_D60UP,
+        	S_D60,
+        	S_D60_1,
+        	S_D60FLASH
+        },
 };
 
 // Goblin Dice Rollaz: Dice weapon configuration table
@@ -494,6 +503,18 @@ dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
         0,      // ricochet_bounces: no
         0, 0,   // No misfire
         SPF_LATE_GAME, 30, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_NORMAL  // Late game, dwarf bane
+    },
+    {   // wp_d60 - Elemental Chaos (random elemental: fire/ice/lightning/poison)
+        60,     // die_type: d60
+        18,     // crit_chance: 18%
+        3,      // crit_multiplier: 3x on crit
+        4,      // min_damage
+        60,     // crit_roll: 60
+        {4, 8, 15, 24, 36, 54, 120},  // 1=4, 2=8, 3=15, 4=24, 5=36, 6=54, 60=crit(120*3=360)
+        0,      // gamble_shot: no
+        0,      // ricochet_bounces: no
+        0, 0,   // No misfire
+        SPF_LATE_GAME, 20, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_ELEMENTAL  // Late game, random elemental
     },
 };
 

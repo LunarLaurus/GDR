@@ -377,31 +377,40 @@ static void DMG_DrawDamageTypeIcon(int x, int y, damage_type_t dtype)
     byte *col;
     int i;
     static const byte colors_normal[DAMAGETYPE_MAX][3] = {
-        { 255, 255, 255 },
-        { 255, 80, 0 },
-        { 100, 200, 255 },
-        { 192, 192, 192 },
-        { 255, 140, 0 },
-        { 128, 0, 128 },
-        { 180, 140, 90 }
+        { 255, 255, 255 },   // NORMAL
+        { 255, 80, 0 },     // FIRE
+        { 100, 200, 255 },  // ICE
+        { 255, 255, 50 },   // LIGHTNING
+        { 50, 200, 50 },    // POISON
+        { 192, 192, 192 }, // PIERCING
+        { 255, 140, 0 },    // EXPLOSIVE
+        { 128, 0, 128 },   // CURSE
+        { 180, 140, 90 },  // ARMOR
+        { 200, 100, 255 }  // ELEMENTAL (rainbow swirl)
     };
     static const byte colors_rg[DAMAGETYPE_MAX][3] = {
-        { 255, 255, 255 },
-        { 255, 0, 255 },
-        { 0, 255, 255 },
-        { 192, 192, 192 },
-        { 255, 200, 0 },
-        { 128, 0, 128 },
-        { 200, 180, 150 }
+        { 255, 255, 255 },   // NORMAL
+        { 255, 0, 255 },     // FIRE
+        { 0, 255, 255 },     // ICE
+        { 255, 255, 0 },     // LIGHTNING
+        { 0, 255, 0 },       // POISON
+        { 192, 192, 192 },  // PIERCING
+        { 255, 200, 0 },    // EXPLOSIVE
+        { 128, 0, 128 },    // CURSE
+        { 200, 180, 150 },  // ARMOR
+        { 200, 150, 255 }   // ELEMENTAL
     };
     static const byte colors_by[DAMAGETYPE_MAX][3] = {
-        { 255, 255, 255 },
-        { 255, 100, 0 },
-        { 255, 255, 0 },
-        { 192, 192, 192 },
-        { 255, 165, 0 },
-        { 255, 0, 255 },
-        { 220, 200, 170 }
+        { 255, 255, 255 },   // NORMAL
+        { 255, 100, 0 },     // FIRE
+        { 255, 255, 0 },     // ICE
+        { 255, 255, 50 },    // LIGHTNING
+        { 100, 255, 100 },  // POISON
+        { 192, 192, 192 },  // PIERCING
+        { 255, 165, 0 },    // EXPLOSIVE
+        { 255, 0, 255 },    // CURSE
+        { 220, 200, 170 },  // ARMOR
+        { 220, 180, 255 }   // ELEMENTAL
     };
 
     if (dtype <= DAMAGETYPE_NORMAL || dtype >= DAMAGETYPE_MAX)
