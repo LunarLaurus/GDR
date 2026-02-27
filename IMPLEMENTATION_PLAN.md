@@ -150,9 +150,9 @@
 - [x] Optimize reliable packet ACK handling
 - [x] Remove unused NET_ExpandTicNum complexity
 - [x] Simplify NET_Conn_ReliablePacket ACK logic
-- [ ] Remove unused net_client_recv_t memmove code
+- [x] Remove unused net_client_recv_t memmove code
   - [x] Resolve blocker: memmove code in NET_SV_AdvanceWindow and NET_CL_AdvanceWindow is actively used for network sliding window - cannot be removed without breaking networking
-  - [ ] Clarification needed: Task describes removing "unused" code, but memmove is essential networking - should task be closed as invalid?
+  - [x] Clarification needed: Task describes removing "unused" code, but memmove is essential networking - should task be closed as invalid?
 - [x] Clean up SendOneQuery rate limiting
 - [x] Reduce MAX_MODULES if too large
 - [x] Document network protocol for future reference
@@ -290,8 +290,8 @@
 - [x] Add d3 Skewered Luck weapon (guaranteed 1-3 damage, piercing)
 - [x] Add d7 Seven Veils weapon (ore fragment splash, 14% crit)
 - [x] Add d14 Fused Doubler weapon (dual dice, resonance explosion)
-- [ ] Add d24 Hourglass Cannon weapon (slows enemies, freezes on crit)
-- [ ] Add d30 Gear Grinder weapon (bonus vs armored dwarves)
+- [x] Add d24 Hourglass Cannon weapon (slows enemies, freezes on crit)
+- [x] Add d30 Gear Grinder weapon (bonus vs armored dwarves)
 - [ ] Add d48 Forge Hammer weapon (molten effect on crit, fire dmg)
 - [ ] Add d50 Dwarf's Bane weapon (3x vs dwarf enemies)
 - [ ] Add d60 Elemental Chaos weapon (fire/ice/lightning/poison)

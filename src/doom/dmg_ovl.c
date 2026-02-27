@@ -382,7 +382,8 @@ static void DMG_DrawDamageTypeIcon(int x, int y, damage_type_t dtype)
         { 100, 200, 255 },
         { 192, 192, 192 },
         { 255, 140, 0 },
-        { 128, 0, 128 }
+        { 128, 0, 128 },
+        { 180, 140, 90 }
     };
     static const byte colors_rg[DAMAGETYPE_MAX][3] = {
         { 255, 255, 255 },
@@ -390,7 +391,8 @@ static void DMG_DrawDamageTypeIcon(int x, int y, damage_type_t dtype)
         { 0, 255, 255 },
         { 192, 192, 192 },
         { 255, 200, 0 },
-        { 128, 0, 128 }
+        { 128, 0, 128 },
+        { 200, 180, 150 }
     };
     static const byte colors_by[DAMAGETYPE_MAX][3] = {
         { 255, 255, 255 },
@@ -398,7 +400,8 @@ static void DMG_DrawDamageTypeIcon(int x, int y, damage_type_t dtype)
         { 255, 255, 0 },
         { 192, 192, 192 },
         { 255, 165, 0 },
-        { 255, 0, 255 }
+        { 255, 0, 255 },
+        { 220, 200, 170 }
     };
 
     if (dtype <= DAMAGETYPE_NORMAL || dtype >= DAMAGETYPE_MAX)

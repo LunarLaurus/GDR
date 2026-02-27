@@ -69,6 +69,8 @@ void A_FireD2();
 void A_FireD3();
 void A_FireD7();
 void A_FireD14();
+void A_FireD24();
+void A_FireD30();
 void A_Light1();
 void A_FireShotgun();
 void A_Light2();
@@ -251,6 +253,14 @@ state_t	states[NUMSTATES] = {
     {SPR_D6B1,2,4,{NULL},S_D2_4,0,0},	// S_D2_3 - follow through
     {SPR_D6B1,1,5,{A_ReFire},S_D2,0,0},	// S_D2_4 - refire
     {SPR_D6BF,32768,5,{A_Light1},S_LIGHTDONE,0,0},	// S_D2FLASH
+    {SPR_D6B1,0,1,{A_WeaponReady},S_D30,0,0},	// S_D30 - Gear Grinder ready
+    {SPR_D6B1,0,1,{A_Lower},S_D30DOWN,0,0},	// S_D30DOWN
+    {SPR_D6B1,0,1,{A_Raise},S_D30UP,0,0},	// S_D30UP
+    {SPR_D6B1,0,3,{NULL},S_D30_2,0,0},	// S_D30_1 - windup
+    {SPR_D6B1,1,5,{A_FireD30},S_D30_3,0,0},	// S_D30_2 - fire
+    {SPR_D6B1,2,4,{NULL},S_D30_4,0,0},	// S_D30_3 - follow through
+    {SPR_D6B1,1,5,{A_ReFire},S_D30,0,0},	// S_D30_4 - refire
+    {SPR_D6BF,32768,5,{A_Light1},S_LIGHTDONE,0,0},	// S_D30FLASH
     {SPR_D6B1,0,1,{A_WeaponReady},S_D3,0,0},	// S_D3 - Skewered Luck ready
     {SPR_D6B1,0,1,{A_Lower},S_D3DOWN,0,0},	// S_D3DOWN
     {SPR_D6B1,0,1,{A_Raise},S_D3UP,0,0},	// S_D3UP

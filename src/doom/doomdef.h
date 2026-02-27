@@ -125,6 +125,7 @@ typedef enum
     wp_d7,            // d7 Seven Veils (ore fragment splash, 14% crit)
     wp_d14,           // d14 Fused Doubler (dual dice, resonance explosion)
     wp_d24,           // d24 Hourglass Cannon (slows enemies, freezes on crit)
+    wp_d30,           // d30 Gear Grinder (bonus vs armored dwarves)
 
     NUMWEAPONS,
     

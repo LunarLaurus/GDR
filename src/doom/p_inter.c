@@ -1443,6 +1443,29 @@ P_DamageMobj
             }
         }
     }
+
+    // Goblin Dice Rollaz: Armor damage type bonus vs armored dwarves
+    if (source && source->player)
+    {
+        int weapon = source->player->readyweapon;
+        if (weapon >= 0 && weapon < NUMWEAPONS)
+        {
+            damage_type_t wpnDtype = dice_weapon_info[weapon].damage_type;
+            if (wpnDtype == DAMAGETYPE_ARMOR && target)
+            {
+                // Check if target is an armored dwarf
+                if (target->type == MT_DWARF_ARMORED ||
+                    target->type == MT_DWARF_DEFENDER ||
+                    target->type == MT_DWARF_CAPTAIN ||
+                    target->type == MT_DWARF_TURRET ||
+                    target->type == MT_DWARF_BOMBARDIER)
+                {
+                    // 50% bonus damage vs armored dwarves
+                    damage = (damage * 150) / 100;
+                }
+            }
+        }
+    }
 	
     player = target->player;
     if (player && gameskill == sk_baby)

@@ -71,8 +71,9 @@ static const fixed_t weapon_recoil_values[NUMWEAPONS] = {
     FRACUNIT/5,    // wp_d2 - Goblin Dice Rollaz (low recoil)
     FRACUNIT/5,    // wp_d3 - Goblin Dice Rollaz (low recoil, piercing)
     FRACUNIT/4,    // wp_d7 - Goblin Dice Rollaz (ore fragment splash)
-    FRACUNIT*3/4  // wp_d14 - Goblin Dice Rollaz (dual dice, resonance bonus)
-    FRACUNIT*3/5  // wp_d24 - Goblin Dice Rollaz (slows enemies, freezes on crit)
+    FRACUNIT*3/4,  // wp_d14 - Goblin Dice Rollaz (dual dice, resonance bonus)
+    FRACUNIT*3/5,  // wp_d24 - Goblin Dice Rollaz (slows enemies, freezes on crit)
+    FRACUNIT*3/4,  // wp_d30 - Goblin Dice Rollaz (bonus vs armored dwarves)
 };
 
 
@@ -1802,6 +1803,55 @@ A_FireD24
     else if (diceRoll >= 12)
     {
         R_TriggerScreenShake(FRACUNIT * 1, 3);
+    }
+}
+
+
+//
+// A_FireD30 - Goblin Dice Rollaz d30 Gear Grinder weapon
+// Bonus damage vs armored dwarves
+// 
+void
+A_FireD30
+( player_t*	player,
+  pspdef_t*	psp ) 
+{
+    int damage;
+    int guaranteedCrit = 0;
+    int critRoll = 0;
+    int diceRoll = 0;
+    mobj_t* th;
+    
+    S_StartSound (player->mo, sfx_dice_d20);
+
+    P_SetMobjState (player->mo, S_PLAY_ATK2);
+    DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
+
+    P_SetPsprite (player,
+		  ps_flash,
+		  weaponinfo[player->readyweapon].flashstate+(P_Random ()&1));
+
+    if (player->powers[pw_dicefortune])
+    {
+        guaranteedCrit = 1;
+        player->powers[pw_dicefortune] = 0;
+        player->message = "CRITICAL!";
+    }
+
+    damage = P_CalculateDiceDamage(wp_d30, guaranteedCrit, &critRoll, NULL, &diceRoll, player);
+
+    player->weapon_recoil = weapon_recoil_values[wp_d30];
+
+    th = P_SpawnPlayerMissile (player->mo, MT_DICE_GLOW, wp_d30);
+    if (th)
+    {
+        th->damage = damage;
+    }
+
+    if (critRoll > 0)
+    {
+        R_TriggerScreenShake(FRACUNIT * 4, 8);
+        player->message = "ARMOR CRUSH!";
     }
 }
 

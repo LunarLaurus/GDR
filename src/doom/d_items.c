@@ -226,14 +226,23 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
        	S_D7FLASH
        },
        {
-       	// d14 Fused Doubler weapon (dual dice, resonance explosion)
-       	am_lightdice,
-       	S_D14DOWN,
-       	S_D14UP,
-       	S_D14,
-       	S_D14_1,
-       	S_D14FLASH
-       },
+        	// d14 Fused Doubler weapon (dual dice, resonance explosion)
+        	am_lightdice,
+        	S_D14DOWN,
+        	S_D14UP,
+        	S_D14,
+        	S_D14_1,
+        	S_D14FLASH
+        },
+        {
+        	// d30 Gear Grinder weapon (bonus vs armored dwarves)
+        	am_lightdice,
+        	S_D30DOWN,
+        	S_D30UP,
+        	S_D30,
+        	S_D30_1,
+        	S_D30FLASH
+        },
 };
 
 // Goblin Dice Rollaz: Dice weapon configuration table
@@ -431,6 +440,18 @@ dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
         0,      // ricochet_bounces: no
         0, 0,   // No misfire
         SPF_LATE_GAME, 15, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_ICE  // Late game, ice damage type
+    },
+    {   // wp_d30 - Gear Grinder (bonus vs armored dwarves)
+        30,     // die_type: d30
+        10,     // crit_chance: 10%
+        3,      // crit_multiplier: 3x on crit (higher multiplier for armor bonus)
+        2,      // min_damage
+        30,     // crit_roll: 30
+        {2, 4, 6, 10, 15, 22, 35},  // 1=2, 2=4, 3=6, 4=10, 5=15, 6=22, 30=crit(35*3=105)
+        0,      // gamble_shot: no
+        0,      // ricochet_bounces: no
+        0, 0,   // No misfire
+        SPF_NONE, 20, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_ARMOR  // Armor piercing - bonus vs armored
     },
 };
 
