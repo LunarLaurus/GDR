@@ -333,7 +333,7 @@
 - [x] Add Dwarf Sapper (places explosives on walls)
 
 ### Phase 16: New Map Environments
-- [ ] Add Molten Anvil forge map theme
+- [x] Add Molten Anvil forge map theme
 - [ ] Add Barracks of Stone Guard map theme
 - [ ] Add Great Hall of Maces (chandelier hazards)
 - [ ] Add Dwarven Armory Vaults (auto-arming traps)

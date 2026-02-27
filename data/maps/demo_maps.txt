@@ -195,3 +195,98 @@ ROOM: ElevatedPlatform
     - [1792, 2048]
     - [1792, 2560]
     - [1536, 2560]
+
+# ==========================================
+# MAP04: Molten Anvil Forge (Forge Theme)
+# ==========================================
+
+MAP: MAP04
+NAME: "The Molten Anvil"
+INTERPIC: "HELP2"
+MUSIC: "E1M8"
+FLAGS: "NOCLIP"
+
+SECTOR: 30
+  floor_height: 0
+  ceiling_height: 192
+  floor_texture: "FLOOR7_1"
+  ceiling_texture: "CEILING5"
+  light_level: 144
+  type: 0
+  tag: 0
+
+SECTOR: 31
+  floor_height: -16
+  ceiling_height: 64
+  floor_texture: "LAVA1"
+  ceiling_texture: "CEILING5"
+  light_level: 192
+  type: 666
+  tag: 666
+
+SECTOR: 32
+  floor_height: 32
+  ceiling_height: 128
+  floor_texture: "FLOOR5_1"
+  ceiling_texture: "CEILING3"
+  light_level: 96
+  type: 0
+  tag: 0
+
+SECTOR: 33
+  floor_height: 0
+  ceiling_height: 48
+  floor_texture: "FLOOR7_1"
+  ceiling_texture: "CEILING5"
+  light_level: 160
+  type: 666
+  tag: 667
+
+SECTOR: 34
+  floor_height: 64
+  ceiling_height: 96
+  floor_texture: "FLOOR6_1"
+  ceiling_texture: "CEILING3"
+  light_level: 128
+  type: 0
+  tag: 0
+
+ROOM: ForgeMainHall
+  sector: 30
+  vertices:
+    - [256, 2048]
+    - [2048, 2048]
+    - [2048, 3584]
+    - [256, 3584]
+
+ROOM: MoltenPool
+  sector: 31
+  vertices:
+    - [512, 2304]
+    - [1024, 2304]
+    - [1024, 2816]
+    - [512, 2816]
+
+ROOM: AnvilChamber
+  sector: 32
+  vertices:
+    - [1280, 2304]
+    - [1792, 2304]
+    - [1792, 3328]
+    - [1280, 3328]
+
+ROOM: MoltenStream
+  sector: 33
+  vertices:
+    - [768, 2048]
+    - [1024, 2048]
+    - [1024, 2304]
+    - [768, 2304]
+
+ROOM: HammerPlatform
+  sector: 34
+  vertices:
+    - [1536, 2560]
+    - [1792, 2560]
+    - [1792, 2816]
+    - [1536, 2816]
