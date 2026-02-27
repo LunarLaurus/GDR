@@ -1555,9 +1555,10 @@ P_CalculateDiceDamage (int weapon, int guaranteedCrit, int *outCritRoll, int *ou
     }
     
     // Goblin Dice Rollaz: Exploding Max Roll mechanic
-    // For gamble_shot weapons OR when goblin_exploding_dice is set globally,
+    // For gamble_shot weapons, when goblin_exploding_dice is set globally,
+    // or when player has Exploding Dice powerup active,
     // max roll triggers additional rolls (exploding dice)
-    if ((dwi->gamble_shot || goblin_exploding_dice) && diceRoll == dwi->die_type)
+    if ((dwi->gamble_shot || goblin_exploding_dice || (player && G_PowerupIsActive(player, pw_explodingdice))) && diceRoll == dwi->die_type)
     {
         int explodeRolls = 0;
         int additionalDamage = 0;

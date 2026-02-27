@@ -356,7 +356,7 @@
 
 ### Phase 17: New Powerups
 - [x] Add Lucky Seven powerup (7 guaranteed crits)
-- [ ] Add Exploding Dice powerup (reroll max faces)
+- [x] Add Exploding Dice powerup (reroll max faces)
 - [ ] Add Advantage Roll powerup (roll twice take best)
 - [ ] Add Snake Eyes powerup (mark for double damage)
 - [ ] Add Dwarven Weakness powerup (2x vs dwarves)
@@ -387,7 +387,7 @@
 - [x] Fix inconsistent naming: standardize snake_case for goblin vars
 - [x] Add NULL check after malloc in m_menu.c
   - [x] Resolve blocker: m_menu.c uses static arrays, no malloc exists
-- [ ] Add NULL check after malloc in d_main.c
+- [x] Add NULL check after malloc in d_main.c
 - [x] Add NULL check after strdup in d_main.c
 - [x] Add NULL check after calloc in w_wad.c
   - [x] Resolve blocker: w_wad.c uses Z_Malloc, no calloc exists

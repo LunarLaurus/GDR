@@ -183,6 +183,7 @@ typedef enum
     pw_doubledamage,
     pw_dicefortune,
     pw_luckyseven,
+    pw_explodingdice,
     NUMPOWERS
     
 } powertype_t;

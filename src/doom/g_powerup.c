@@ -146,6 +146,18 @@ powerup_info_t powerups[NUMPOWERS] = {
         MT_NADA,
         SPR_PCRT,
         25
+    },
+    {
+        pw_explodingdice,
+        "Exploding Dice",
+        30,
+        POWERUP_FLAG_TIMED,
+        "EXPLODING DICE!",
+        0,
+        sfx_getpow,
+        MT_NADA,
+        SPR_PFIR,
+        50
     }
 };
 
