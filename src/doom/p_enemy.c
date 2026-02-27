@@ -1552,6 +1552,44 @@ void A_TroopAttack (mobj_t* actor)
         return;
     }
 
+    // Goblin Dice Rollaz: Dwarf Commander - Focus fire command
+    if (actor->type == MT_DWARF_COMMANDER)
+    {
+        mobj_t* target;
+        sector_t* sec;
+        int commandRadius = 24 * FRACUNIT;
+        int commanded = 0;
+
+        sec = actor->subsector->sector;
+
+        for (target = sec->thinglist; target; target = target->snext)
+        {
+            if (target == actor)
+                continue;
+
+            if (!target->player && P_GetFaction(target->type) == FACTION_DWARF)
+            {
+                if (P_AproxDistance(actor->x - target->x, actor->y - target->y) < commandRadius)
+                {
+                    if (target->target == NULL || target->target->player == NULL)
+                    {
+                        if (actor->target && actor->target->player)
+                        {
+                            target->target = actor->target;
+                            commanded++;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (commanded > 0)
+        {
+            S_StartSound(actor, sfx_posit2);
+        }
+        return;
+    }
+
     
     // launch a missile
     P_SpawnMissile (actor, actor->target, MT_TROOPSHOT);

@@ -146,11 +146,12 @@ static mobjtype_t G_GetSurvivalEnemyType(int wave)
             case 11: return MT_DWARF_RUNESMITH;
             case 12: return MT_DWARF_RUNEBEARER;
             case 13: return MT_DWARF_HIGHPRIEST;
-            case 14: return MT_GOBLIN_SCOUT;
-            case 15: return MT_GOBLIN_SNEAK;
-            case 16: return MT_GOBLIN_ALCHEMIST;
-            case 17: return MT_GOBLIN_TOTEMIST;
-            case 18: return MT_GOBLIN_SHAMAN;
+            case 14: return MT_DWARF_COMMANDER;
+            case 15: return MT_GOBLIN_SCOUT;
+            case 16: return MT_GOBLIN_SNEAK;
+            case 17: return MT_GOBLIN_ALCHEMIST;
+            case 18: return MT_GOBLIN_TOTEMIST;
+            case 19: return MT_GOBLIN_SHAMAN;
             default: return MT_DWARF;
         }
     }

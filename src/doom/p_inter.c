@@ -1461,7 +1461,8 @@ P_DamageMobj
                     target->type == MT_DWARF_CAPTAIN ||
                     target->type == MT_DWARF_TURRET ||
                     target->type == MT_DWARF_BOMBARDIER ||
-                    target->type == MT_DWARF_IRONCLAD)
+                    target->type == MT_DWARF_IRONCLAD ||
+                    target->type == MT_DWARF_COMMANDER)
                 {
                     // 50% bonus damage vs armored dwarves
                     damage = (damage * 150) / 100;
@@ -1488,7 +1489,8 @@ P_DamageMobj
                     target->type == MT_DWARF_WARLORD ||
                     target->type == MT_DWARF_RUNESMITH ||
                     target->type == MT_DWARF_RUNEBEARER ||
-                    target->type == MT_DWARF_HIGHPRIEST)
+                    target->type == MT_DWARF_HIGHPRIEST ||
+                    target->type == MT_DWARF_COMMANDER)
                 {
                     // 3x damage vs dwarf enemies
                     damage = damage * 3;

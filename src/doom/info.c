@@ -4451,34 +4451,65 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
     },
 
     {		// MT_DWARF_HIGHPRIEST - Goblin Dice Rollaz: Dwarf that heals wounded dwarves
-	8107,		// doomednum (custom mapthing number)
-	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations)
-	50,		// spawnhealth (support unit - moderate HP)
-	S_SPOS_RUN1,		// seestate
-	sfx_posit2,		// seesound
-	8,		// reactiontime
-	sfx_None,		// attacksound (healing chant)
-	S_SPOS_PAIN,		// painstate
-	80,		// painchance (low - support unit runs away)
-	sfx_popain,		// painsound
-	0,		// meleestate (no melee)
-	S_SPOS_ATK1,		// missilestate (heals nearby dwarves)
-	S_SPOS_DIE1,		// deathstate
-	S_SPOS_XDIE1,		// xdeathstate
-	sfx_podth2,		// deathsound
-	3,		// speed (slow - support caster)
-	16*FRACUNIT,		// radius
-	44*FRACUNIT,		// height
-	150,		// mass
-	0,		// damage (healing, no direct damage)
-	sfx_posact,		// activesound
-	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
-	S_SPOS_RAISE1,		// raisestate
-	20,		// crit_resistance (moderate)
-	30,		// aggression (low - support unit)
-	0,		// shield_reduction (none)
-	0,		// rear_weakness (none)
-	0		// phase2_health (no phases)
+ 	8107,		// doomednum (custom mapthing number)
+ 	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations)
+ 	50,		// spawnhealth (support unit - moderate HP)
+ 	S_SPOS_RUN1,		// seestate
+ 	sfx_posit2,		// seesound
+ 	8,		// reactiontime
+ 	sfx_None,		// attacksound (healing chant)
+ 	S_SPOS_PAIN,		// painstate
+ 	80,		// painchance (low - support unit runs away)
+ 	sfx_popain,		// painsound
+ 	0,		// meleestate (no melee)
+ 	S_SPOS_ATK1,		// missilestate (heals nearby dwarves)
+ 	S_SPOS_DIE1,		// deathstate
+ 	S_SPOS_XDIE1,		// xdeathstate
+ 	sfx_podth2,		// deathsound
+ 	3,		// speed (slow - support caster)
+ 	16*FRACUNIT,		// radius
+ 	44*FRACUNIT,		// height
+ 	150,		// mass
+ 	0,		// damage (healing, no direct damage)
+ 	sfx_posact,		// activesound
+ 	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+ 	S_SPOS_RAISE1,		// raisestate
+ 	20,		// crit_resistance (moderate)
+ 	30,		// aggression (low - support unit)
+ 	0,		// shield_reduction (none)
+ 	0,		// rear_weakness (none)
+ 	0		// phase2_health (no phases)
+    },
+
+    {		// MT_DWARF_COMMANDER - Goblin Dice Rollaz: Dwarf that orders focus fire on player
+ 	8108,		// doomednum (custom mapthing number)
+ 	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations)
+ 	150,		// spawnhealth (elite leader - high HP)
+ 	S_SPOS_RUN1,		// seestate
+ 	sfx_posit2,		// seesound (battle command)
+ 	8,		// reactiontime
+ 	sfx_None,		// attacksound (staff swing)
+ 	S_SPOS_PAIN,		// painstate
+ 	40,		// painchance (leader is tough)
+ 	sfx_popain,		// painsound
+ 	S_SPOS_ATK1,		// meleestate (staff strike)
+ 	S_SPOS_ATK1,		// missilestate (focus fire command - buffs allies)
+ 	S_SPOS_DIE1,		// deathstate
+ 	S_SPOS_XDIE1,		// xdeathstate
+ 	sfx_podth2,		// deathsound
+ 	5,		// speed (moderate - positions for commands)
+ 	20*FRACUNIT,		// radius
+ 	56*FRACUNIT,		// height
+ 	200,		// mass
+ 	15,		// damage (staff strike)
+ 	sfx_posact,		// activesound
+ 	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+ 	S_SPOS_RAISE1,		// raisestate
+ 	35,		// crit_resistance (high - leader is tough)
+ 	90,		// aggression (very high - aggressive commander)
+ 	20,		// shield_reduction (light armor)
+ 	0,		// rear_weakness (none)
+ 	0		// phase2_health (no phases)
     },
 
     {		// MT_CRIT_AURA - Goblin Dice Rollaz: Crit resistance aura (placed by Runebearer)

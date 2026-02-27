@@ -60,7 +60,8 @@ faction_t P_GetFaction(mobjtype_t type)
         type == MT_DWARF_WARLORD ||
         type == MT_DWARF_RUNESMITH ||
         type == MT_DWARF_RUNEBEARER ||
-        type == MT_DWARF_HIGHPRIEST)
+        type == MT_DWARF_HIGHPRIEST ||
+        type == MT_DWARF_COMMANDER)
         return FACTION_DWARF;
 
     return FACTION_NONE;
@@ -153,6 +154,8 @@ boolean P_CanBeLeader(mobjtype_t type)
 {
     if (type == MT_DWARF_CAPTAIN ||
         type == MT_DWARF_BOMBARDIER ||
+        type == MT_DWARF_WARLORD ||
+        type == MT_DWARF_COMMANDER ||
         type == MT_GOBLIN_SHAMAN ||
         type == MT_GOBLIN_TOTEMIST)
         return true;
