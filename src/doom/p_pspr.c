@@ -1501,6 +1501,16 @@ P_CalculateDiceDamage (int weapon, int guaranteedCrit, int *outCritRoll, int *ou
     else
     {
         diceRoll = P_RollDice(dwi->die_type);
+
+        // Goblin Dice Rollaz: Advantage Roll - roll twice, take better
+        if (player && G_PowerupIsActive(player, pw_advantage) && !guaranteedCrit)
+        {
+            int secondRoll = P_RollDice(dwi->die_type);
+            if (secondRoll > diceRoll)
+            {
+                diceRoll = secondRoll;
+            }
+        }
     }
     
     // Store dice roll for effects like screen shake
