@@ -306,12 +306,12 @@
 - [x] Add Runic Binding d12 weapon (random debuff on hit)
 
 ### Phase 15: New Dwarf Enemies
-- [ ] Add Dwarf Flamethrower (area flame cone, low HP)
-- [ ] Add Dwarf Thunderer (war drum stuns, moderate HP)
-- [ ] Add Dwarf Ironclad (rotating minigun, very high HP)
-- [ ] Add Dwarf Stonecutter (hurls rock fragments, high impact)
-- [ ] Add Dwarf Thundermage (lightning arcs, medium range)
-- [ ] Add Dwarf Warlord (boss, 300 HP, immunity aura)
+- [x] Add Dwarf Flamethrower (area flame cone, low HP)
+- [x] Add Dwarf Thunderer (war drum stuns, moderate HP)
+- [x] Add Dwarf Ironclad (rotating minigun, very high HP)
+- [x] Add Dwarf Stonecutter (hurls rock fragments, high impact)
+- [x] Add Dwarf Thundermage (lightning arcs, medium range)
+- [x] Add Dwarf Warlord (boss, 300 HP, immunity aura)
 - [ ] Add Dwarf Runesmith (reflective rune shields on ground)
 - [ ] Add Dwarf Runebearer (crit resistance aura, support)
 - [ ] Add Dwarf High Priest (heals wounded dwarves)

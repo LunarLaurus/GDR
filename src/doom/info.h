@@ -1638,6 +1638,13 @@ typedef enum {
     MT_AMMO_ARCANEDICE,     // Goblin Dice Rollaz: Arcane dice ammo (magic dice)
     MT_GOBLIN_KING,          // Goblin Dice Rollaz: Goblin King boss
     MT_DWARVEN_WAR_MACHINE,  // Goblin Dice Rollaz: Dwarven War Machine boss
+    MT_DWARF_FLAMETHROWER,   // Goblin Dice Rollaz: Dwarf with area flame cone attack
+    MT_FLAME_PROJECTILE,      // Goblin Dice Rollaz: Flame projectile for Flamethrower
+    MT_DWARF_THUNDERER,      // Goblin Dice Rollaz: Dwarf with war drum stun attack
+    MT_DWARF_IRONCLAD,       // Goblin Dice Rollaz: Dwarf with rotating minigun
+    MT_DWARF_STONECUTTER,    // Goblin Dice Rollaz: Dwarf hurls rock fragments
+    MT_DWARF_THUNDERMAGE,    // Goblin Dice Rollaz: Dwarf with lightning arc attacks
+    MT_DWARF_WARLORD,        // Goblin Dice Rollaz: Dwarf boss with immunity aura
     NUMMOBJTYPES
 
 } mobjtype_t;

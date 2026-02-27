@@ -4186,6 +4186,208 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 	4000		// phase2_health (health threshold for phase transition)
     },
 
+    {		// MT_DWARF_FLAMETHROWER - Goblin Dice Rollaz: Dwarf with area flame cone attack
+	8100,		// doomednum (custom mapthing number)
+	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations)
+	30,		// spawnhealth (low HP - glass cannon)
+	S_SPOS_RUN1,		// seestate
+	sfx_posit2,		// seesound (goblin grunt)
+	8,		// reactiontime
+	sfx_None,		// attacksound (flames)
+	S_SPOS_PAIN,		// painstate
+	100,		// painchance
+	sfx_popain,		// painsound
+	0,		// meleestate (no melee)
+	S_SPOS_ATK1,		// missilestate (flame attack)
+	S_SPOS_DIE1,		// deathstate
+	S_SPOS_XDIE1,		// xdeathstate
+	sfx_podth2,		// deathsound
+	4,		// speed (slow - stationary gunner)
+	20*FRACUNIT,		// radius
+	44*FRACUNIT,		// height
+	150,		// mass
+	0,		// damage (melee - not used, uses projectile)
+	sfx_posact,		// activesound
+	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+	S_SPOS_RAISE1,		// raisestate
+	5,		// crit_resistance (low - fragile)
+	70,		// aggression (aggressive attacker)
+	0		// shield_reduction (none)
+    },
+
+    {		// MT_FLAME_PROJECTILE - Goblin Dice Rollaz: Flame projectile for Flamethrower
+	-1,		// doomednum
+	S_BRBALL1,		// spawnstate (reuses fireball)
+	1000,		// spawnhealth
+	S_NULL,		// seestate
+	sfx_firsht,		// seesound (fire swoosh)
+	8,		// reactiontime
+	sfx_None,		// attacksound
+	S_NULL,		// painstate
+	0,		// painchance
+	sfx_None,		// painsound
+	S_NULL,		// meleestate
+	S_NULL,		// missilestate
+	S_BRBALLX1,		// deathstate (explosion)
+	S_NULL,		// xdeathstate
+	sfx_firxpl,		// deathsound (fire explosion)
+	10*FRACUNIT,		// speed (moderate)
+	8*FRACUNIT,		// radius
+	8*FRACUNIT,		// height
+	100,		// mass
+	3,		// damage (per tick - area damage)
+	sfx_None,		// activesound
+	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_NOGRAVITY,		// flags
+	S_NULL		// raisestate
+    },
+
+    {		// MT_DWARF_THUNDERER - Goblin Dice Rollaz: Dwarf with war drum stun attack
+	8101,		// doomednum (custom mapthing number)
+	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations)
+	60,		// spawnhealth (moderate HP)
+	S_SPOS_RUN1,		// seestate
+	sfx_posit2,		// seesound
+	8,		// reactiontime
+	sfx_None,		// attacksound (drum beat)
+	S_SPOS_PAIN,		// painstate
+	80,		// painchance
+	sfx_popain,		// painsound
+	0,		// meleestate (no melee)
+	S_SPOS_ATK1,		// missilestate (stun wave)
+	S_SPOS_DIE1,		// deathstate
+	S_SPOS_XDIE1,		// xdeathstate
+	sfx_podth2,		// deathsound
+	3,		// speed (very slow - stationary drummer)
+	18*FRACUNIT,		// radius
+	44*FRACUNIT,		// height
+	250,		// mass
+	0,		// damage (uses stun effect)
+	sfx_posact,		// activesound
+	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+	S_SPOS_RAISE1,		// raisestate
+	20,		// crit_resistance (moderate)
+	60,		// aggression (support unit)
+	0		// shield_reduction (none)
+    },
+
+    {		// MT_DWARF_IRONCLAD - Goblin Dice Rollaz: Dwarf with rotating minigun
+	8102,		// doomednum (custom mapthing number)
+	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations)
+	200,		// spawnhealth (very high HP - tank)
+	S_SPOS_RUN1,		// seestate
+	sfx_posit2,		// seesound
+	8,		// reactiontime
+	sfx_None,		// attacksound (machine gun)
+	S_SPOS_PAIN,		// painstate
+	20,		// painchance (very tough - rarely shows pain)
+	sfx_popain,		// painsound
+	0,		// meleestate (no melee)
+	S_SPOS_ATK1,		// missilestate (rapid fire)
+	S_SPOS_DIE1,		// deathstate
+	S_SPOS_XDIE1,		// xdeathstate
+	sfx_podth2,		// deathsound
+	2,		// speed (very slow - heavy weapon)
+	24*FRACUNIT,		// radius (larger)
+	50*FRACUNIT,		// height
+	500,		// mass (very heavy)
+	0,		// damage (uses rapid fire projectile)
+	sfx_posact,		// activesound
+	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+	S_SPOS_RAISE1,		// raisestate
+	60,		// crit_resistance (very high - armored)
+	75,		// aggression (relentless)
+	40		// shield_reduction (40% frontal reduction)
+    },
+
+    {		// MT_DWARF_STONECUTTER - Goblin Dice Rollaz: Dwarf hurls rock fragments
+	8103,		// doomednum (custom mapthing number)
+	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations)
+	70,		// spawnhealth (high HP - heavy soldier)
+	S_SPOS_RUN1,		// seestate
+	sfx_posit2,		// seesound
+	8,		// reactiontime
+	sfx_None,		// attacksound (rock throw)
+	S_SPOS_PAIN,		// painstate
+	60,		// painchance
+	sfx_popain,		// painsound
+	0,		// meleestate (no melee)
+	S_SPOS_ATK1,		// missilestate (rock throw)
+	S_SPOS_DIE1,		// deathstate
+	S_SPOS_XDIE1,		// xdeathstate
+	sfx_podth2,		// deathsound
+	5,		// speed (moderate)
+	18*FRACUNIT,		// radius
+	48*FRACUNIT,		// height
+	300,		// mass
+	0,		// damage (uses projectile)
+	sfx_posact,		// activesound
+	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+	S_SPOS_RAISE1,		// raisestate
+	25,		// crit_resistance (moderate-high)
+	65,		// aggression
+	15		// shield_reduction (some armor)
+    },
+
+    {		// MT_DWARF_THUNDERMAGE - Goblin Dice Rollaz: Dwarf with lightning arc attacks
+	8104,		// doomednum (custom mapthing number)
+	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations)
+	45,		// spawnhealth (caster - moderate HP)
+	S_SPOS_RUN1,		// seestate
+	sfx_posit2,		// seesound
+	8,		// reactiontime
+	sfx_None,		// attacksound (lightning crack)
+	S_SPOS_PAIN,		// painstate
+	120,		// painchance (fragile caster)
+	sfx_popain,		// painsound
+	0,		// meleestate (no melee)
+	S_SPOS_ATK1,		// missilestate (lightning)
+	S_SPOS_DIE1,		// deathstate
+	S_SPOS_XDIE1,		// xdeathstate
+	sfx_podth2,		// deathsound
+	4,		// speed (slow - caster)
+	16*FRACUNIT,		// radius
+	44*FRACUNIT,		// height
+	150,		// mass
+	0,		// damage (uses lightning)
+	sfx_posact,		// activesound
+	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+	S_SPOS_RAISE1,		// raisestate
+	10,		// crit_resistance (low - fragile caster)
+	80,		// aggression (dangerous ranged)
+	0		// shield_reduction (none)
+    },
+
+    {		// MT_DWARF_WARLORD - Goblin Dice Rollaz: Dwarf boss with immunity aura
+	9003,		// doomednum (custom mapthing number)
+	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations)
+	300,		// spawnhealth (boss-level HP)
+	S_SPOS_RUN1,		// seestate
+	sfx_bossit,		// seesound (boss alert)
+	8,		// reactiontime
+	sfx_None,		// attacksound
+	S_SPOS_PAIN,		// painstate
+	10,		// painchance (very tough - rarely shows pain)
+	sfx_dmpain,		// painsound
+	S_SPOS_ATK1,		// meleestate (heavy attack)
+	S_SPOS_ATK1,		// missilestate (also uses ranged)
+	S_SPOS_DIE1,		// deathstate
+	S_SPOS_XDIE1,		// xdeathstate
+	sfx_bossdth,		// deathsound
+	8,		// speed (moderate for boss)
+	30*FRACUNIT,		// radius (large)
+	60*FRACUNIT,		// height (tall)
+	800,		// mass (very heavy)
+	25,		// damage (heavy attacks)
+	sfx_bmact,		// activesound
+	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL|MF_BOSS,		// flags (BOSS for phase trigger)
+	S_SPOS_RAISE1,		// raisestate
+	80,		// crit_resistance (extremely high - boss)
+	100,		// aggression (maximum)
+	50,		// shield_reduction (50% frontal reduction)
+	0,		// rear_weakness
+	150		// phase2_health (phase transition at 50%)
+    },
+
     {		// MT_MISC17
 	2048,		// doomednum
 	S_AMMO,		// spawnstate
