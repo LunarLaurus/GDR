@@ -318,7 +318,7 @@
 - [x] Add Dwarf Commander (focus fire orders on player)
 - [x] Add Dwarf Steam Golem (steam cloud, fire vulnerable)
 - [x] Add Dwarf Scrap Drone (swarms of 3-5, low HP each)
-- [ ] Add Dwarf Drill Tank (drills through thin walls)
+- [x] Add Dwarf Drill Tank (drills through thin walls)
 - [ ] Add Dwarf Siege Engine (stationary explosive cannon)
 - [ ] Add Dwarf Sky Miner (flying, hover attacks)
 - [ ] Add Dwarf Mine Layer (plants proximity mines)

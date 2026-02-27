@@ -4571,8 +4571,38 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
   	90,		// aggression (high - aggressive swarm)
   	0,		// shield_reduction (none)
   	0,		// rear_weakness (none)
-  	0		// phase2_health (no phases)
-    },
+    	0		// phase2_health (no phases)
+     },
+
+     {		// MT_DWARF_DRILLTANK - Goblin Dice Rollaz: Dwarf Drill Tank (drills through thin walls)
+   	8111,		// doomednum (custom mapthing number)
+   	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations - mechanical)
+   	120,		// spawnhealth (high HP - armored vehicle)
+   	S_SPOS_RUN1,		// seestate
+   	sfx_posit2,		// seesound (engine rumble)
+   	8,		// reactiontime
+   	sfx_None,		// attacksound (drilling noise)
+   	S_SPOS_PAIN,		// painstate
+   	30,		// painchance (armored - resistant to pain)
+   	sfx_popain,		// painsound
+   	S_SPOS_ATK1,		// meleestate (drill ram)
+   	S_SPOS_ATK1,		// missilestate (drill charge)
+   	S_SPOS_DIE1,		// deathstate
+   	S_SPOS_XDIE1,		// xdeathstate
+   	sfx_podth2,		// deathsound (explosion)
+   	10*FRACUNIT,		// speed (slow - heavy vehicle)
+   	24*FRACUNIT,		// radius (large vehicle)
+   	32*FRACUNIT,		// height (low profile)
+   	500,		// mass (very heavy)
+   	8,		// damage (drill impact damage)
+   	sfx_posact,		// activesound (engine hum)
+   	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL|MF_DROPOFF,		// flags (dropoff for mobility)
+   	S_SPOS_RAISE1,		// raisestate
+   	40,		// crit_resistance (high - armored)
+   	75,		// aggression (high - aggressive hunter)
+   	25,		// shield_reduction (heavy armor)
+   	0		// phase2_health (no phases)
+     },
 
     {		// MT_STEAM_CLOUD - Goblin Dice Rollaz: Steam cloud projectile for Steam Golem
  	-1,		// doomednum
