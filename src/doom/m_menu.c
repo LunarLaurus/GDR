@@ -1260,7 +1260,7 @@ void M_DrawMenuBackground(void)
         else
         {
             // For larger dice, draw the number as text
-            char dice_str[4];
+            char dice_str[8];
             int dice_num = menu_particles[i].die_type;
             M_snprintf(dice_str, sizeof(dice_str), "%d", dice_num);
             // Draw the d20 as a special case
