@@ -513,6 +513,57 @@ void P_MobjThinker (mobj_t* mobj)
         A_TurretThink(mobj);
     }
 
+    if (mobj->type == MT_REPAIR_DRONE)
+    {
+        mobj_t* target = mobj->target;
+        
+        if (target && target->health > 0)
+        {
+            fixed_t dist = P_AproxDistance(mobj->x - target->x, mobj->y - target->y);
+            
+            if (dist > 24*FRACUNIT)
+            {
+                angle_t angle = R_PointToAngle2(mobj->x, mobj->y, target->x, target->y);
+                mobj->momx = FixedMul(10*FRACUNIT, finecosine[angle >> ANGLETOFINESHIFT]);
+                mobj->momy = FixedMul(10*FRACUNIT, finesine[angle >> ANGLETOFINESHIFT]);
+            }
+            else
+            {
+                mobj->momx = 0;
+                mobj->momy = 0;
+                
+                if (mobj->reactiontime > 0)
+                {
+                    mobj->reactiontime--;
+                    
+                    if (target->health < mobjinfo[target->type].spawnhealth)
+                    {
+                        target->health += 1;
+                        if (target->health > mobjinfo[target->type].spawnhealth)
+                            target->health = mobjinfo[target->type].spawnhealth;
+                    }
+                }
+                else
+                {
+                    P_RemoveMobj(mobj);
+                    return;
+                }
+            }
+            
+            if (mobj->z < target->z + target->height - 8*FRACUNIT)
+                mobj->momz = 2*FRACUNIT;
+            else if (mobj->z > target->z + target->height + 8*FRACUNIT)
+                mobj->momz = -2*FRACUNIT;
+            else
+                mobj->momz = 0;
+        }
+        else
+        {
+            P_RemoveMobj(mobj);
+            return;
+        }
+    }
+
 }
 
 

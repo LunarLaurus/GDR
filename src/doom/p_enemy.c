@@ -1278,6 +1278,48 @@ void A_SPosAttack (mobj_t* actor)
         return;
     }
 
+    if (actor->type == MT_DWARF_TINKERER)
+    {
+        mobj_t* target;
+        sector_t* sec;
+        int repairRadius = 18 * FRACUNIT;
+        
+        sec = actor->subsector->sector;
+        
+        for (target = sec->thinglist; target; target = target->snext)
+        {
+            if (target == actor)
+                continue;
+                
+            if (!target->player && P_GetFaction(target->type) == FACTION_DWARF)
+            {
+                if (target->type == MT_DWARF_IRONCLAD ||
+                    target->type == MT_DWARF_STEAMGOLEM ||
+                    target->type == MT_DWARF_DRILLTANK ||
+                    target->type == MT_DWARF_SIEGEENGINE ||
+                    target->type == MT_DWARF_SCRAPDRONE ||
+                    target->type == MT_DWARF_TURRET)
+                {
+                    if (P_AproxDistance(actor->x - target->x, actor->y - target->y) < repairRadius)
+                    {
+                        if (target->health < mobjinfo[target->type].spawnhealth && target->health > 0)
+                        {
+                            mobj_t* drone = P_SpawnMobj(actor->x, actor->y, actor->z + 24*FRACUNIT, MT_REPAIR_DRONE);
+                            if (drone)
+                            {
+                                drone->target = target;
+                                drone->reactiontime = 60;
+                                S_StartSound(actor, sfx_posact);
+                            }
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+        return;
+    }
+
     if (actor->type == MT_GOBLIN_ALCHEMIST)
     {
         A_FaceTarget (actor);
@@ -1622,6 +1664,71 @@ void A_TroopAttack (mobj_t* actor)
         if (commanded > 0)
         {
             S_StartSound(actor, sfx_posit2);
+        }
+        return;
+    }
+
+    // Goblin Dice Rollaz: Dwarf Tinkerer - Repair drones for mechanical dwarves
+    if (actor->type == MT_DWARF_TINKERER)
+    {
+        mobj_t* target;
+        sector_t* sec;
+        int repairRadius = 18 * FRACUNIT;
+        int repaired = 0;
+        int droneCount = 0;
+        
+        sec = actor->subsector->sector;
+        
+        for (target = sec->thinglist; target; target = target->snext)
+        {
+            if (target == actor)
+                continue;
+                
+            // Count existing repair drones
+            if (target->type == MT_REPAIR_DRONE && target->target == actor)
+                droneCount++;
+        }
+        
+        // Only spawn new drone if we have less than 2 active
+        if (droneCount < 2)
+        {
+            for (target = sec->thinglist; target; target = target->snext)
+            {
+                if (target == actor)
+                    continue;
+                    
+                // Repair mechanical dwarves (Ironclad, Steam Golem, Drill Tank, Siege Engine, Scrap Drone)
+                if (!target->player && P_GetFaction(target->type) == FACTION_DWARF)
+                {
+                    if (target->type == MT_DWARF_IRONCLAD ||
+                        target->type == MT_DWARF_STEAMGOLEM ||
+                        target->type == MT_DWARF_DRILLTANK ||
+                        target->type == MT_DWARF_SIEGEENGINE ||
+                        target->type == MT_DWARF_SCRAPDRONE ||
+                        target->type == MT_DWARF_TURRET)
+                    {
+                        if (P_AproxDistance(actor->x - target->x, actor->y - target->y) < repairRadius)
+                        {
+                            if (target->health < mobjinfo[target->type].spawnhealth && target->health > 0)
+                            {
+                                mobj_t* drone = P_SpawnMobj(actor->x, actor->y, actor->z + 24*FRACUNIT, MT_REPAIR_DRONE);
+                                if (drone)
+                                {
+                                    drone->target = target;
+                                    drone->reactiontime = 60; // Repair duration
+                                    repaired++;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        if (repaired > 0)
+        {
+            S_StartSound(actor, sfx_posact);
         }
         return;
     }

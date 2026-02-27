@@ -4745,11 +4745,68 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
     	5,		// mass (light)
     	30,		// damage (moderate explosion)
     	sfx_posact,		// activesound (ticking)
-    	MF_SPECIAL|MF_MISSILE|MF_NOBLOCKMAP,		// flags (pickup, missile, no blockmap)
-    	S_NULL		// raisestate
-     },
+      	MF_SPECIAL|MF_MISSILE|MF_NOBLOCKMAP,		// flags (pickup, missile, no blockmap)
+     	S_NULL		// raisestate
+       },
 
-     {		// MT_STEAM_CLOUD - Goblin Dice Rollaz: Steam cloud projectile for Steam Golem
+      {		// MT_DWARF_TINKERER - Goblin Dice Rollaz: Dwarf Tinkerer (repair drones for mechanicals)
+    	8115,		// doomednum (custom mapthing number)
+    	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations - technical)
+    	70,		// spawnhealth (support unit - moderate HP)
+    	S_SPOS_RUN1,		// seestate
+    	sfx_posit2,		// seesound (mechanical whir)
+    	8,		// reactiontime
+    	sfx_None,		// attacksound (drone buzz)
+    	S_SPOS_PAIN,		// painstate
+    	60,		// painchance (medium - can be interrupted while working)
+    	sfx_popain,		// painsound
+    	0,		// meleestate (no melee)
+    	S_SPOS_ATK1,		// missilestate (deploys repair drone)
+    	S_SPOS_DIE1,		// deathstate
+    	S_SPOS_XDIE1,		// xdeathstate
+    	sfx_posdie,		// deathsound
+    	8,		// speed (slow - technical support)
+    	20*FRACUNIT,		// radius
+    	56*FRACUNIT,		// height
+    	100,		// mass
+    	0,		// damage (handled by drone)
+    	sfx_posact,		// activesound (drone whirring)
+    	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+    	S_SPOS_RAISE1,		// raisestate
+    	25,		// crit_resistance (moderate)
+    	40,		// aggression (low - support unit)
+    	0,		// shield_reduction (none)
+    	0,		// rear_weakness (none)
+    	0		// phase2_health (no phases)
+      },
+
+      {		// MT_REPAIR_DRONE - Goblin Dice Rollaz: Repair drone spawned by Tinkerer
+    	-1,		// doomednum (spawned by Tinkerer)
+    	S_SPOS_STND,		// spawnstate (reuses small flying mobj)
+    	10,		// spawnhealth (fragile drone)
+    	S_SPOS_RUN1,		// seestate
+    	sfx_None,		// seesound
+    	8,		// reactiontime
+    	sfx_None,		// attacksound
+    	S_SPOS_PAIN,		// painstate
+    	200,		// painchance (very fragile)
+    	sfx_None,		// painsound
+    	0,		// meleestate
+    	S_SPOS_ATK1,		// missilestate (repair beam)
+    	S_SPOS_DIE1,		// deathstate
+    	S_SPOS_XDIE1,		// xdeathstate
+    	sfx_posdie,		// deathsound (mechanical break)
+    	15*FRACUNIT,		// speed (fast drone)
+    	8*FRACUNIT,		// radius (small drone)
+    	8*FRACUNIT,		// height
+    	5,		// mass (very light)
+    	0,		// damage (repairs, not damages)
+    	sfx_posact,		// activesound (drone hum)
+    	MF_SPECIAL|MF_SHOOTABLE|MF_NOBLOCKMAP|MF_NOGRAVITY,		// flags (floats, shootable)
+    	S_NULL		// raisestate
+       },
+
+      {		// MT_STEAM_CLOUD - Goblin Dice Rollaz: Steam cloud projectile for Steam Golem
  	-1,		// doomednum
  	S_BRBALL1,		// spawnstate (reuses fireball visual for cloud)
  	1000,		// spawnhealth

@@ -62,6 +62,7 @@ faction_t P_GetFaction(mobjtype_t type)
         type == MT_DWARF_RUNEBEARER ||
         type == MT_DWARF_HIGHPRIEST ||
         type == MT_DWARF_COMMANDER ||
+        type == MT_DWARF_TINKERER ||
         type == MT_DWARF_DRILLTANK)
         return FACTION_DWARF;
 

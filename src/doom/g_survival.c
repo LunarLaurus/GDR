@@ -129,7 +129,7 @@ static mobjtype_t G_GetSurvivalEnemyType(int wave)
     }
     else
     {
-        idx = P_Random() % 21;
+        idx = P_Random() % 22;
         switch(idx)
         {
             case 0: return MT_DWARF;
@@ -147,7 +147,7 @@ static mobjtype_t G_GetSurvivalEnemyType(int wave)
             case 12: return MT_DWARF_RUNEBEARER;
             case 13: return MT_DWARF_HIGHPRIEST;
             case 14: return MT_DWARF_COMMANDER;
-            case 15: return MT_DWARF_DRILLTANK;
+            case 15: return MT_DWARF_TINKERER;
             case 16: return MT_GOBLIN_SCOUT;
             case 17: return MT_GOBLIN_SNEAK;
             case 18: return MT_GOBLIN_ALCHEMIST;
