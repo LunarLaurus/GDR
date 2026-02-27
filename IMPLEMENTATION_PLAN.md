@@ -298,7 +298,7 @@
 - [x] Add d100+1 Fumble Finder weapon (no fumbles, 4x on crit)
 - [x] Add d3 Quake Boulder weapon (shockwave, stun)
 - [x] Add Chain Reaction d12 weapon (sticks, chains to nearby)
-- [ ] Add Crystal d8 Shatter weapon (shard spray, shield break)
+- [x] Add Crystal d8 Shatter weapon (shard spray, shield break)
 - [ ] Add Splitting d20 weapon (splits into multiple dice)
 - [ ] Add Greed's d6 Gold Rush weapon (damage stacks on kills)
 - [ ] Add Mining Charge d10 weapon (proximity mines)

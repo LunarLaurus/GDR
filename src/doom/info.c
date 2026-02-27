@@ -76,6 +76,7 @@ void A_FireD50();
 void A_FireD60();
 void A_FireQuake();
 void A_FireChainReaction();
+void A_FireCrystalShatter();
 void A_Light1();
 void A_FireShotgun();
 void A_Light2();
@@ -314,6 +315,14 @@ state_t	states[NUMSTATES] = {
     {SPR_D6B1,2,5,{NULL},S_CHAINREACTION_4,0,0},	// S_CHAINREACTION_3 - follow through
     {SPR_D6B1,1,6,{A_ReFire},S_CHAINREACTION,0,0},	// S_CHAINREACTION_4 - refire
     {SPR_D6BF,32768,5,{A_Light1},S_LIGHTDONE,0,0},	// S_CHAINREACTIONFLASH
+    {SPR_D6B1,0,1,{A_WeaponReady},S_CRYSTALSHATTER,0,0},	// S_CRYSTALSHATTER - Crystal Shatter ready
+    {SPR_D6B1,0,1,{A_Lower},S_CRYSTALSHATTERDOWN,0,0},	// S_CRYSTALSHATTERDOWN
+    {SPR_D6B1,0,1,{A_Raise},S_CRYSTALSHATTERUP,0,0},	// S_CRYSTALSHATTERUP
+    {SPR_D6B1,0,4,{NULL},S_CRYSTALSHATTER_2,0,0},	// S_CRYSTALSHATTER_1 - windup
+    {SPR_D6B1,1,6,{A_FireCrystalShatter},S_CRYSTALSHATTER_3,0,0},	// S_CRYSTALSHATTER_2 - fire (shatter)
+    {SPR_D6B1,2,5,{NULL},S_CRYSTALSHATTER_4,0,0},	// S_CRYSTALSHATTER_3 - follow through
+    {SPR_D6B1,1,6,{A_ReFire},S_CRYSTALSHATTER,0,0},	// S_CRYSTALSHATTER_4 - refire
+    {SPR_D6BF,32768,5,{A_Light1},S_LIGHTDONE,0,0},	// S_CRYSTALSHATTERFLASH
     {SPR_D6B1,0,1,{A_WeaponReady},S_D3,0,0},	// S_D3 - Skewered Luck ready
     {SPR_D6B1,0,1,{A_Lower},S_D3DOWN,0,0},	// S_D3DOWN
     {SPR_D6B1,0,1,{A_Raise},S_D3UP,0,0},	// S_D3UP

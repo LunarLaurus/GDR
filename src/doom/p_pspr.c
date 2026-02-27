@@ -79,6 +79,7 @@ static const fixed_t weapon_recoil_values[NUMWEAPONS] = {
     FRACUNIT,      // wp_d60 - Goblin Dice Rollaz (elemental chaos, random element)
     FRACUNIT,      // wp_d100plus1 - Goblin Dice Rollaz (no fumbles, 4x on crit)
     FRACUNIT*3/4,  // wp_quake - Goblin Dice Rollaz (shockwave, stun)
+    FRACUNIT/3,    // wp_crystalshatter - Goblin Dice Rollaz (shard spray, shield break)
 };
 
 
@@ -745,11 +746,77 @@ A_FireQuake
     }
 }
 
+
 //
-// A_FireChainReaction - Goblin Dice Rollaz d12 Chain Reaction weapon
-// Projectile sticks to enemy and chains to nearby targets
-// Critical hits increase chain count
-// 
+// A_FireCrystalShatter - Goblin Dice Rollaz Crystal d8 Shatter weapon
+// Shards spray out to hit multiple enemies, shield break bonus vs armored
+//
+void
+A_FireCrystalShatter
+( player_t*	player,
+  pspdef_t*	psp ) 
+{
+    int damage;
+    int guaranteedCrit = 0;
+    int critRoll = 0;
+    int diceRoll = 0;
+    mobj_t* missile;
+    
+    S_StartSound (player->mo, sfx_dice_d8);
+
+    P_SetMobjState (player->mo, S_PLAY_ATK2);
+    DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
+
+    P_SetPsprite (player,
+		  ps_flash,
+		  weaponinfo[player->readyweapon].flashstate+(P_Random ()&1));
+
+    if (player->powers[pw_dicefortune])
+    {
+        guaranteedCrit = 1;
+        player->powers[pw_dicefortune] = 0;
+        player->message = "CRITICAL!";
+    }
+
+    damage = P_CalculateDiceDamage(wp_crystalshatter, guaranteedCrit, &critRoll, NULL, &diceRoll, player);
+
+    player->weapon_recoil = weapon_recoil_values[wp_crystalshatter];
+
+    missile = P_SpawnPlayerMissile (player->mo, MT_DICE_GLOW, wp_crystalshatter);
+    if (missile)
+    {
+        missile->damage = damage;
+        missile->flags |= MF_CRYSTALDICE;  // Mark missile as crystal for shard spawn
+        if (critRoll > 0)
+        {
+            missile->flags |= MF_CRITDICE;  // Enhanced shards on crit
+        }
+    }
+
+    if (critRoll > 0)
+    {
+        R_TriggerScreenShake(FRACUNIT * 4, 8);
+        player->message = "CRYSTAL SHATTER!";
+    }
+    else if (diceRoll >= 6)
+    {
+        R_TriggerScreenShake(FRACUNIT * 3, 6);
+        player->message = "SHIELD BREAK!";
+    }
+    else if (diceRoll >= 4)
+    {
+        R_TriggerScreenShake(FRACUNIT * 2, 4);
+        player->message = "CRYSTAL HIT!";
+    }
+    else
+    {
+        R_TriggerScreenShake(FRACUNIT * 1, 2);
+    }
+}
+
+
+
+
 void
 A_FireChainReaction
 ( player_t*	player,

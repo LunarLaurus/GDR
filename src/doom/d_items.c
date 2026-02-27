@@ -297,6 +297,15 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
         	S_CHAINREACTION_1,
         	S_CHAINREACTIONFLASH
         },
+        {
+        	// Crystal d8 Shatter weapon (shard spray, shield break)
+        	am_lightdice,
+        	S_CRYSTALSHATTERDOWN,
+        	S_CRYSTALSHATTERUP,
+        	S_CRYSTALSHATTER,
+        	S_CRYSTALSHATTER_1,
+        	S_CRYSTALSHATTERFLASH
+        },
 };
 
 // Goblin Dice Rollaz: Dice weapon configuration table
@@ -595,6 +604,19 @@ dice_weapon_info_t dice_weapon_info[NUMWEAPONS] =
         2,       // chain_targets: chains to 2 nearby enemies
         0, 0,    // No misfire
         SPF_NONE, 30, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_LIGHTNING  // Mid-tier, chains to nearby
+    },
+    {   // wp_crystalshatter - Crystal d8 Shatter (shard spray, shield break)
+        8,       // die_type: d8 (crystal)
+        12,      // crit_chance: 12% (roll of 8)
+        2,       // crit_multiplier: 2x on crit
+        2,       // min_damage
+        8,       // crit_roll: 8
+        {1, 2, 3, 4, 5, 6, 12},  // Crystal: 1-2=1, 3=2, 4=3, 5=4, 6=5, 7=6, 8=crit(12*2=24)
+        0,       // gamble_shot: no
+        0,       // ricochet_bounces: no
+        3,       // chain_targets: shatters into 3 shards
+        0, 0,    // No misfire
+        SPF_NONE, 35, CRIT_SCALING_LINEAR, 2, DAMAGETYPE_ARMOR  // Mid-tier, armor piercing (shield break)
     },
 };
 

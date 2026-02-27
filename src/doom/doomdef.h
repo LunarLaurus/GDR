@@ -132,6 +132,7 @@ typedef enum
     wp_d100plus1,    // d100+1 Fumble Finder (no fumbles, 4x on crit)
     wp_quake,        // d3 Quake Boulder (shockwave, stun)
     wp_chainreaction,    // d12 Chain Reaction (sticks, chains to nearby)
+    wp_crystalshatter,   // Crystal d8 Shatter (shard spray, shield break)
 
     NUMWEAPONS,
     

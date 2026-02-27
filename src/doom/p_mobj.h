@@ -201,6 +201,9 @@ typedef enum
     // Goblin Dice Rollaz: Chain Reaction crit enhances chain count
     MF_CRITDICE        = 0x40000000,
 
+    // Goblin Dice Rollaz: Crystal Shatter weapon spawns shards
+    MF_CRYSTALDICE     = 0x80000000,
+
     // Player sprites in multiplayer modes are modified
     //  using an internal color lookup table for re-indexing.
     // If 0x4 0x8 or 0xc,

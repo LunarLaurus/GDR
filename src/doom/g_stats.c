@@ -48,7 +48,16 @@ static const char* weapon_names[NUMWEAPONS] = {
     "d2 Flip of Fate",
     "d3 Skewered Luck",
     "d7 Seven Veils",
-    "d14 Fused Doubler"
+    "d14 Fused Doubler",
+    "d24 Hourglass",
+    "d30 Gear Grinder",
+    "d48 Forge Hammer",
+    "d50 Dwarf's Bane",
+    "d60 Elemental Chaos",
+    "d100+1 Fumble Finder",
+    "d3 Quake Boulder",
+    "d12 Chain Reaction",
+    "Crystal d8 Shatter"
 };
 
 void G_ResetDiceStats(void)

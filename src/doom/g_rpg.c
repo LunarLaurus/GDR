@@ -268,7 +268,19 @@ static const char* weapon_names[NUMWEAPONS] = {
     "Twin D6",
     "Arcane D20",
     "Cursed Die",
-    "D2 Flip"
+    "D2 Flip",
+    "D3 Skewered",
+    "D7 Veils",
+    "D14 Fused",
+    "D24 Hourglass",
+    "D30 Gear",
+    "D48 Forge",
+    "D50 Bane",
+    "D60 Chaos",
+    "D100+1 Fumble",
+    "D3 Quake",
+    "D12 Chain",
+    "Crystal D8"
 };
 
 void G_InitPlayerWeaponMastery(player_t* player)
