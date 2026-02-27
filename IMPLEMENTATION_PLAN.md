@@ -328,7 +328,7 @@
 - [x] Add Dwarf Obsidian Guardian (volcanic glass, fire weak)
 - [x] Add Dwarf Geologist (spawns rock Golems)
 - [x] Add Dwarf Alchemist (throws volatile potions)
-- [ ] Add Dwarf Treasure Hunter (drops extra loot)
+- [x] Add Dwarf Treasure Hunter (drops extra loot)
 - [ ] Add Dwarf Juggernaut (slow, devastating melee)
 - [ ] Add Dwarf Sapper (places explosives on walls)
 

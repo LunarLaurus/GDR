@@ -1190,6 +1190,15 @@ P_KillMobj
       case MT_CHAINGUY:
 	item = MT_CHAINGUN;
 	break;
+
+      case MT_DWARF_TREASUREHUNTER:
+	mo = P_SpawnMobj (target->x,target->y,ONFLOORZ, MT_AMMO_LIGHTDICE);
+	mo->flags |= MF_DROPPED;
+	mo = P_SpawnMobj (target->x+FRACUNIT,target->y,ONFLOORZ, MT_AMMO_LIGHTDICE);
+	mo->flags |= MF_DROPPED;
+	mo = P_SpawnMobj (target->x,target->y+FRACUNIT,ONFLOORZ, MT_AMMO_HEAVYDICE);
+	mo->flags |= MF_DROPPED;
+	return;
 	
       default:
 	return;
@@ -1463,7 +1472,8 @@ P_DamageMobj
                     target->type == MT_DWARF_BOMBARDIER ||
                     target->type == MT_DWARF_ALCHEMIST ||
                     target->type == MT_DWARF_IRONCLAD ||
-                    target->type == MT_DWARF_COMMANDER)
+                    target->type == MT_DWARF_COMMANDER ||
+                    target->type == MT_DWARF_TREASUREHUNTER)
                 {
                     // 50% bonus damage vs armored dwarves
                     damage = (damage * 150) / 100;
@@ -1495,7 +1505,8 @@ P_DamageMobj
                     target->type == MT_DWARF_DRILLTANK ||
                     target->type == MT_DWARF_BARRELELITE ||
                     target->type == MT_DWARF_SHADOWBLADE ||
-                    target->type == MT_DWARF_GEOLOGIST)
+                    target->type == MT_DWARF_GEOLOGIST ||
+                    target->type == MT_DWARF_TREASUREHUNTER)
                 {
                     // 3x damage vs dwarf enemies
                     damage = damage * 3;

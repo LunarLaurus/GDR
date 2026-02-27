@@ -5008,6 +5008,37 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 	0,		// phase2_health (no phases)
     },
 
+    {		// MT_DWARF_TREASUREHUNTER - Goblin Dice Rollaz: Dwarf Treasure Hunter (drops extra loot)
+	8120,		// doomednum (custom mapthing number)
+	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations)
+	60,		// spawnhealth (low HP - scout)
+	S_SPOS_RUN1,		// seestate
+	sfx_posit2,		// seesound (treasure hunter spotted)
+	8,		// reactiontime
+	sfx_None,		// attacksound
+	S_SPOS_PAIN,		// painstate
+	60,		// painchance (easily frightened)
+	sfx_popain,		// painsound
+	0,		// meleestate (no melee - runs away)
+	S_SPOS_ATK1,		// missilestate (coin barrage)
+	S_SPOS_DIE1,		// deathstate
+	S_SPOS_XDIE1,		// xdeathstate
+	sfx_posdie,		// deathsound
+	6*FRACUNIT,		// speed (fast - runs away with treasure)
+	16*FRACUNIT,		// radius (small - scout)
+	44*FRACUNIT,		// height (medium)
+	100,		// mass (light)
+	5,		// damage (coin projectiles)
+	sfx_posact,		// activesound
+	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+	S_SPOS_RAISE1,		// raisestate
+	10,		// crit_resistance (low - fragile)
+	85,		// aggression (high - flees when hurt)
+	0,		// shield_reduction (none)
+	0,		// rear_weakness (none)
+	0		// phase2_health (no phases)
+    },
+
     {		// MT_DWARF_ALCHEMIST - Goblin Dice Rollaz: Dwarf Alchemist (throws volatile potions)
 	8121,		// doomednum (custom mapthing number)
 	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations)
