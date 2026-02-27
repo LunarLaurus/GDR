@@ -4508,8 +4508,65 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
  	35,		// crit_resistance (high - leader is tough)
  	90,		// aggression (very high - aggressive commander)
  	20,		// shield_reduction (light armor)
+    	0,		// rear_weakness (none)
+    	0		// phase2_health (no phases)
+    },
+
+    {		// MT_DWARF_STEAMGOLEM - Goblin Dice Rollaz: Dwarf Steam Golem with steam cloud attack
+ 	8109,		// doomednum (custom mapthing number)
+ 	S_SPOS_STND,		// spawnstate (reuses Shotgun Guy animations - mechanical)
+ 	200,		// spawnhealth (high HP - steam golem is tough)
+ 	S_SPOS_RUN1,		// seestate
+ 	sfx_posit2,		// seesound (mechanical whir)
+ 	8,		// reactiontime
+ 	sfx_None,		// attacksound (steam hiss)
+ 	S_SPOS_PAIN,		// painstate
+ 	20,		// painchance (mechanical - resistant to pain)
+ 	sfx_popain,		// painsound
+ 	0,		// meleestate (no melee - uses steam)
+ 	S_SPOS_ATK1,		// missilestate (steam cloud attack)
+ 	S_SPOS_DIE1,		// deathstate
+ 	S_SPOS_XDIE1,		// xdeathstate
+ 	sfx_podth2,		// deathsound (mechanical explosion)
+ 	3,		// speed (slow - stationary turret)
+ 	24*FRACUNIT,		// radius (large golem)
+ 	60*FRACUNIT,		// height (tall)
+ 	400,		// mass (heavy)
+ 	0,		// damage (melee - not used)
+ 	sfx_posact,		// activesound (steam venting)
+ 	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+ 	S_SPOS_RAISE1,		// raisestate
+ 	15,		// crit_resistance (low - vulnerable to crits)
+ 	60,		// aggression (moderate - defensive)
+ 	0,		// shield_reduction (none - no shield)
  	0,		// rear_weakness (none)
  	0		// phase2_health (no phases)
+    },
+
+    {		// MT_STEAM_CLOUD - Goblin Dice Rollaz: Steam cloud projectile for Steam Golem
+ 	-1,		// doomednum
+ 	S_BRBALL1,		// spawnstate (reuses fireball visual for cloud)
+ 	1000,		// spawnhealth
+ 	S_NULL,		// seestate
+ 	sfx_firsht,		// seesound (steam hiss)
+ 	8,		// reactiontime
+ 	sfx_None,		// attacksound
+ 	S_NULL,		// painstate
+ 	0,		// painchance
+ 	sfx_None,		// painsound
+ 	S_NULL,		// meleestate
+ 	S_NULL,		// missilestate
+ 	S_BRBALLX1,		// deathstate (dissipate)
+ 	S_NULL,		// xdeathstate
+ 	sfx_firxpl,		// deathsound (steam burst)
+ 	8*FRACUNIT,		// speed (moderate expansion)
+ 	16*FRACUNIT,		// radius (grows)
+ 	40*FRACUNIT,		// height (cloud)
+ 	50,		// mass (light steam)
+ 	5,		// damage (steam burn per tick)
+ 	sfx_None,		// activesound
+ 	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_NOGRAVITY,		// flags
+ 	S_NULL		// raisestate
     },
 
     {		// MT_CRIT_AURA - Goblin Dice Rollaz: Crit resistance aura (placed by Runebearer)

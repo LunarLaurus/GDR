@@ -1649,6 +1649,8 @@ typedef enum {
     MT_DWARF_RUNEBEARER,      // Goblin Dice Rollaz: Dwarf with crit resistance aura (support)
     MT_DWARF_HIGHPRIEST,      // Goblin Dice Rollaz: Dwarf that heals wounded dwarves
     MT_DWARF_COMMANDER,       // Goblin Dice Rollaz: Dwarf that orders focus fire on player
+    MT_DWARF_STEAMGOLEM,      // Goblin Dice Rollaz: Dwarf Steam Golem with steam cloud attack
+    MT_STEAM_CLOUD,           // Goblin Dice Rollaz: Steam cloud projectile for Steam Golem
     MT_RUNE_SHIELD,          // Goblin Dice Rollaz: Reflective rune shield (placed by Runesmith)
     MT_CRIT_AURA,            // Goblin Dice Rollaz: Crit resistance aura (placed by Runebearer)
     NUMMOBJTYPES
