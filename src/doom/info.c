@@ -4884,6 +4884,37 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 	S_NULL		// raisestate
     },
 
+    {		// MT_DWARF_BARRELELITE - Goblin Dice Rollaz: Dwarf Barrel Drone (explosive chaser)
+	8116,		// doomednum (custom mapthing number)
+	S_SPOS_STND,		// spawnstate (reuses Imp animations - barrel-shaped)
+	40,		// spawnhealth (moderate HP - armored barrel)
+	S_SPOS_RUN1,		// seestate
+	sfx_posit2,		// seesound (rumble)
+	8,		// reactiontime
+	sfx_None,		// attacksound (hiss)
+	S_SPOS_PAIN,		// painstate
+	20,		// painchance (low - armored)
+	sfx_popain,		// painsound
+	S_SPOS_ATK1,		// meleestate (explosion on contact)
+	0,		// missilestate (none)
+	S_SPOS_DIE1,		// deathstate
+	S_SPOS_XDIE1,		// xdeathstate
+	sfx_barexp,		// deathsound (explosion)
+	10*FRACUNIT,		// speed (moderate chase speed)
+	16*FRACUNIT,		// radius (barrel shape)
+	24*FRACUNIT,		// height (short barrel)
+	50,		// mass (moderate)
+	50,		// damage (high explosion damage)
+	sfx_posact,		// activesound (ticking)
+	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL|MF_DROPOFF,		// flags
+	S_SPOS_RAISE1,		// raisestate
+	15,		// crit_resistance (low - explosive, vulnerable to crits)
+	90,		// aggression (high - chases aggressively)
+	0,		// shield_reduction (none)
+	0,		// rear_weakness (none)
+	0		// phase2_health (no phases)
+    },
+
     {		// MT_MISC17
 	2048,		// doomednum
 	S_AMMO,		// spawnstate

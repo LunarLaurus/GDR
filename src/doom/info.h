@@ -1661,6 +1661,7 @@ typedef enum {
     MT_STEAM_CLOUD,           // Goblin Dice Rollaz: Steam cloud projectile for Steam Golem
     MT_RUNE_SHIELD,          // Goblin Dice Rollaz: Reflective rune shield (placed by Runesmith)
     MT_CRIT_AURA,            // Goblin Dice Rollaz: Crit resistance aura (placed by Runebearer)
+    MT_DWARF_BARRELELITE,    // Goblin Dice Rollaz: Dwarf Barrel Drone (explosive chaser)
     NUMMOBJTYPES
 
 } mobjtype_t;

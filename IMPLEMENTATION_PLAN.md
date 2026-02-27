@@ -323,7 +323,7 @@
 - [x] Add Dwarf Sky Miner (flying, hover attacks)
 - [x] Add Dwarf Mine Layer (plants proximity mines)
 - [x] Add Dwarf Tinkerer (repair drones for mechanicals)
-- [ ] Add Dwarf Barrel Drone (explosive chaser)
+- [x] Add Dwarf Barrel Drone (explosive chaser)
 - [ ] Add Dwarf Shadowblade (cloaked melee, invisible)
 - [ ] Add Dwarf Obsidian Guardian (volcanic glass, fire weak)
 - [ ] Add Dwarf Geologist (spawns rock Golems)
