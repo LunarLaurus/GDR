@@ -156,6 +156,7 @@ extern int      dice_arena_damage_mult;
 extern int      critboost_spawn_rate;
 extern int      doubledamage_spawn_rate;
 extern int      dicefortune_spawn_rate;
+extern int      snakeeyes_spawn_rate;
 
 // Goblin Dice Rollaz: net sync debug
 extern int      net_sync_debug;
@@ -464,6 +465,7 @@ void D_BindVariables(void)
     M_BindIntVariable("critboost_spawn_rate",     &critboost_spawn_rate);
     M_BindIntVariable("doubledamage_spawn_rate",  &doubledamage_spawn_rate);
     M_BindIntVariable("dicefortune_spawn_rate",   &dicefortune_spawn_rate);
+    M_BindIntVariable("snakeeyes_spawn_rate",    &snakeeyes_spawn_rate);
 
     // Goblin Dice Rollaz: multiplayer sync debug
     M_BindIntVariable("debug_sync_check",         &debug_sync_check);

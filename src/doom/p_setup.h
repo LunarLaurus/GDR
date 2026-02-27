@@ -32,6 +32,7 @@ extern int powerup_spawn_rate;
 extern int critboost_spawn_rate;
 extern int doubledamage_spawn_rate;
 extern int dicefortune_spawn_rate;
+extern int snakeeyes_spawn_rate;
 
 // NOT called by W_Ticker. Fixme.
 void

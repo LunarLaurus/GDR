@@ -351,6 +351,7 @@ int powerup_spawn_rate = 100;
 int critboost_spawn_rate = 100;      // Common - crit boost is the baseline powerup
 int doubledamage_spawn_rate = 75;    // Uncommon - strong but not guaranteed
 int dicefortune_spawn_rate = 40;     // Rare - guaranteed crit is very powerful
+int snakeeyes_spawn_rate = 50;       // Uncommon - double damage on hit
 
 void P_LoadThings (int lump)
 {
@@ -398,7 +399,7 @@ void P_LoadThings (int lump)
 	    int spawnChance = powerup_spawn_rate;
 
 	    // Goblin Dice Rollaz: Apply per-powerup rarity
-	    // 8050 = MT_CRITBOOST, 8051 = MT_DOUBLEDAMAGE, 8052 = MT_DICEFORTUNE
+	    // 8050 = MT_CRITBOOST, 8051 = MT_DOUBLEDAMAGE, 8052 = MT_DICEFORTUNE, 8053 = MT_SNAKEEYES
 	    if (SHORT(mt->type) == 8050)
 	    {
 		spawnChance = critboost_spawn_rate;
@@ -410,6 +411,10 @@ void P_LoadThings (int lump)
 	    else if (SHORT(mt->type) == 8052)
 	    {
 		spawnChance = dicefortune_spawn_rate;
+	    }
+	    else if (SHORT(mt->type) == 8053)
+	    {
+		spawnChance = powerup_spawn_rate;
 	    }
 	    else
 	    {

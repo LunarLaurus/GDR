@@ -170,6 +170,18 @@ powerup_info_t powerups[NUMPOWERS] = {
         MT_NADA,
         SPR_PFTR,
         75
+    },
+    {
+        pw_snakeeyes,
+        "Snake Eyes",
+        30,
+        POWERUP_FLAG_TIMED | POWERUP_FLAG_EXCLUSIVE,
+        "SNAKE EYES!",
+        0,
+        sfx_getpow,
+        MT_SNAKEEYES,
+        SPR_PFTR,
+        40
     }
 };
 

@@ -358,7 +358,7 @@
 - [x] Add Lucky Seven powerup (7 guaranteed crits)
 - [x] Add Exploding Dice powerup (reroll max faces)
 - [x] Add Advantage Roll powerup (roll twice take best)
-- [ ] Add Snake Eyes powerup (mark for double damage)
+- [x] Add Snake Eyes powerup (mark for double damage)
 - [ ] Add Dwarven Weakness powerup (2x vs dwarves)
 - [ ] Add Pickaxe Repellent powerup (dwarves flee)
 - [ ] Add Gold Fever powerup (attack speed vs treasure)

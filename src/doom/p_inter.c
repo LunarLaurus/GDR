@@ -640,6 +640,21 @@ P_GivePower
         S_StartSound(&player->mo->sphere, sfx_getpow);
         return true;
     }
+
+    if (power == pw_snakeeyes)
+    {
+        if (player->powers[pw_snakeeyes])
+        {
+            return false;
+        }
+        if (player->powers[pw_doubledamage])
+        {
+            return false;
+        }
+        player->powers[power] = SNAKEEYESTICS;
+        S_StartSound(&player->mo->sphere, sfx_getpow);
+        return true;
+    }
 	
     if (player->powers[power])
 	return false;	// already got it
@@ -1320,6 +1335,13 @@ P_DamageMobj
         {
             damage *= 2;
             P_BroadcastCritMessage(source->player - players, "DOUBLE DAMAGE!", false, damage);
+        }
+
+        // Goblin Dice Rollaz: Apply Snake Eyes powerup - double damage on hit
+        if (source->player->powers[pw_snakeeyes] && target && !(target->flags & MF_CORPSE))
+        {
+            damage *= 2;
+            P_BroadcastCritMessage(source->player - players, "SNAKE EYES!", false, damage);
         }
 
         // Goblin Dice Rollaz: Apply Dice Curse damage variance

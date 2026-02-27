@@ -1555,6 +1555,7 @@ typedef enum {
     MT_CRITBOOST,
     MT_DOUBLEDAMAGE,
     MT_DICEFORTUNE,
+    MT_SNAKEEYES,
     MT_MISC13,
     MT_INS,
     MT_MISC14,
