@@ -385,14 +385,16 @@
 - [x] Define movement speed constants in g_game.c
 - [x] Fix typo: indetermined -> undetermined in doomstat.c
 - [x] Fix inconsistent naming: standardize snake_case for goblin vars
-- [ ] Add NULL check after malloc in m_menu.c
+- [x] Add NULL check after malloc in m_menu.c
+  - [x] Resolve blocker: m_menu.c uses static arrays, no malloc exists
 - [ ] Add NULL check after malloc in d_main.c
 - [x] Add NULL check after strdup in d_main.c
-- [ ] Add NULL check after calloc in w_wad.c
+- [x] Add NULL check after calloc in w_wad.c
+  - [x] Resolve blocker: w_wad.c uses Z_Malloc, no calloc exists
 - [x] Add NULL check after malloc in p_saveg.c
-- [ ] Make video_driver const char* in i_video.c
-- [ ] Make window_position const char* in i_video.c
-- [ ] Make snd_musiccmd const char* in i_sound.c
+- [x] Make video_driver const char* in i_video.c
+- [x] Make window_position const char* in i_video.c
+- [x] Make snd_musiccmd const char* in i_sound.c
 - [x] Expand dice_str buffer from 4 to 8 bytes in m_menu.c
 - [ ] Expand level name buffer in m_menu.c line 1931
 

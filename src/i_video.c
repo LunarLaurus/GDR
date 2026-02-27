@@ -98,11 +98,11 @@ int png_screenshots = 0;
 
 // SDL video driver name
 
-char *video_driver = "";
+const char *video_driver = "";
 
 // Window position:
 
-char *window_position = "center";
+const char *window_position = "center";
 
 // SDL display number on which to run.
 
