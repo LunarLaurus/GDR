@@ -335,7 +335,7 @@
 ### Phase 16: New Map Environments
 - [x] Add Molten Anvil forge map theme
 - [x] Add Barracks of Stone Guard map theme
-- [ ] Add Great Hall of Maces (chandelier hazards)
+- [x] Add Great Hall of Maces (chandelier hazards)
 - [ ] Add Dwarven Armory Vaults (auto-arming traps)
 - [ ] Add Royal Treasury (pressure plate alarms)
 - [ ] Add Veinfall Chasm (minecart traps)

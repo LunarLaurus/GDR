@@ -859,6 +859,269 @@ Sector configuration:
 - [ ] Minimum 2 exits from barracks rooms
 - [ ] Armory vault marked for high-value loot
 
+---
+
+# Great Hall of Maces Map Theme
+
+## Theme Identity
+
+The Great Hall of Maces represents the grand ceremonial chambers and throne rooms of dwarven strongholds—massive vaulted spaces dominated by towering stone columns, flickering torchlight, and elaborate iron chandeliers hanging from chains high above. These halls serve as throne rooms, grand ballrooms, and assembly chambers where the dwarven lords hold court and conduct grand councils.
+
+## Texture Palette
+
+### Floor Textures
+
+| Texture | Name | Description |
+|---------|------|-------------|
+| HALL1 | Polished Stone | Worn but grand grey stone floor |
+| HALL2 | Checkered Marble | Black and white tile pattern |
+| HALL3 | Red Carpet | Worn crimson carpet runner |
+| HALL4 | Bronze Plate | Bronze inlaid stone sections |
+| HALL5 | Grand Tile | Ornate carved floor tiles |
+
+### Wall Textures
+
+| Texture | Name | Description |
+|---------|------|-------------|
+| COLUMN1 | Stone Column | Massive cylindrical pillar |
+| COLUMN2 | Carved Column | Ornately decorated pillar |
+| WALL1 | Grand Stone | Hammered dwarven stonework |
+| WALL2 | Banner Wall | Wall covered in clan banners |
+| WALL3 | Torch Wall | Wall with torch sconces |
+| WALL4 | Arched Wall | Wall with decorative arches |
+| TRIM1 | Bronze Trim | Bronze decorative trim |
+| TRIM2 | Gold Trim | Gold inlaid trim (rare) |
+
+### Ceiling Textures
+
+| Texture | Name | Description |
+|---------|------|-------------|
+| CEIL_H1 | High Vault | Massive vaulted ceiling |
+| CEIL_H2 | Beam Ceiling | Exposed massive wooden beams |
+| CEIL_H3 | Domed Ceiling | Ornate dome center |
+| CHAIN1 | Chain Link | Hanging chain texture |
+| CHAIN2 | Rope Coils | Coiled rope decorations |
+
+## Lighting Rules
+
+- **Base light level**: 96 (grand but slightly dim)
+- **Chandelier light**: +64 light radius per chandelier, warm white with flicker
+- **Torch sconce**: +48 light radius, warm orange, slight flicker
+- **Column torch**: +32 light radius, positioned on pillars
+- **Ambient bias**: Warm golden (RGB: 255, 220, 180)
+- **Shadow zones**: 48 light level in corners and behind columns
+
+### Light Source Types
+
+1. **Iron Chandelier** (point light): Radius 384, intensity 1.4, warm white, 3-frame flicker animation
+2. **Wall Torch** (point light): Radius 192, intensity 1.0, flickering orange
+3. **Pillar Torch** (point light): Radius 160, intensity 1.1, warm yellow
+4. **Magical Sconce** (point light): Radius 128, intensity 0.8, blue-white (rare)
+
+## Environmental Hazards
+
+### Chandelier Drop (Primary Hazard)
+- Trigger: Player shoots chain, or walks under weakened/damaged chandelier
+- Damage: 35% health (crush), severe knockback, screen shake
+- Visual: Massive iron chandelier falls, glass crystal shatter particles, dust cloud
+- Audio: Massive crash, screaming metal, glass breaking
+- Warning: Chain creaks loudly 3 seconds before drop
+- Counter: Shoot chandeliers to drop early (controlled), avoid standing under them
+- Special: Some chandeliers can be shot to swing and hit multiple enemies
+
+### Falling Chain
+- Trigger: Chandelier drop disconnects chain from ceiling
+- Damage: 15% health (slash), knockback
+- Visual: Chain falls with momentum
+- Counter: Stay clear of chandelier drop zones
+
+### Trap Floor Tiles
+- Trigger: Step on specific floor tiles (tagged)
+- Effect: Spike pit opens below (64 unit drop)
+- Damage: 20% fall damage + 10% trap damage
+- Visual: Floor tiles collapse downward
+- Counter: Look for subtle texture differences, move carefully
+- Detection: Pressing use near suspicious tiles highlights danger zone
+
+### Hanging Banner Fall
+- Trigger: Banner chain shot or time-based decay
+- Damage: 10% health, knockback
+- Visual: Heavy banner falls from wall
+- Counter: Don't shoot banners unnecessarily
+
+### Hidden Alarm Trigger
+- Trigger: Activating certain floor tiles or picking up throne objects
+- Effect: Spawns reinforcements from secret doors
+- Audio: Loud alarm gong
+- Counter: Identify alarm objects before touching
+
+## Ambient Sound Profile
+
+### Continuous
+- Torch crackling: Constant, slight variation
+- Distant echoes: Footsteps reverberate, 0.8s decay
+- Draft howling: Subtle wind through high ceilings
+- Chain creaking: Occasional, 10-20 second intervals
+
+### Triggered
+- Chandelier warning: Chain creak 3 seconds before drop
+- Chandelier crash: On impact
+- Trap activation: Stone grinding, mechanical click
+- Alarm gong: On hidden trigger activation
+
+### Background
+- Grand hall reverb: Long echo, 1.2s decay
+- Distant dwarf voices: Mumbled conversation
+- Occasional horn: Royal summons, 30-second intervals
+- Ambient: Orchestral dwarf music, distant and faint
+
+## Enemy Weighting
+
+### Primary (45% spawn rate)
+
+| Enemy | Spawn Weight |
+|-------|-------------|
+| Dwarf Commander | 15% |
+| Dwarf Defender | 15% |
+| Dwarf Elite Guard | 15% |
+
+### Secondary (40% spawn rate)
+
+| Enemy | Spawn Weight |
+|-------|-------------|
+| Dwarf Captain | 15% |
+| Dwarf Warlord | 10% |
+| Dwarf Marksman | 10% |
+| Dwarf Runesmith | 5% |
+
+### Rare (15% spawn rate)
+
+| Enemy | Spawn Weight |
+|-------|-------------|
+| Dwarf Queen | 5% |
+| Dwarf High Priest | 5% |
+| Dwarf Warlord (Elite) | 5% |
+
+### Encounter Density
+- Entry hall: 2-4 guards (honor guard)
+- Main hall: 6-12 enemies (throne room defense)
+- Side chambers: 3-6 enemies (personal quarters)
+- Grand ballroom: 15-25 enemies (full assembly)
+
+### Boss Encounters
+- Throne Room Boss: Always spawns Dwarf Queen or enhanced Warlord
+- Chamber can support 30+ enemies for final encounters
+
+## Example Room Archetypes
+
+### Main Throne Hall
+```
+Sector configuration:
+- Floor: 0 height
+- Ceiling: 256 height
+- Size: 512x512 to 1024x1024
+- Features: Central throne, columns, chandeliers (2-4), carpet runner
+- Enemy placement: Throne guardian, honor guard, wave spawns
+- Light: Multiple chandeliers, torch sconces, bright
+- Special: Chandelier hazards, throne object alarm, boss arena potential
+```
+
+### Grand Ballroom
+```
+Sector configuration:
+- Floor: 0 height (varied 0 to 32)
+- Ceiling: 192 height
+- Size: 768x768 to 1024x1024
+- Features: Dance floor, columns, multiple chandeliers (4-6)
+- Enemy placement: 15-25 enemies, wave-based spawning
+- Light: Multiple chandeliers, bright throughout
+- Special: Multiple chandelier hazards, wave combat, no cover
+```
+
+### Side Chamber
+```
+Sector configuration:
+- Floor: 0 height
+- Ceiling: 128 height
+- Size: 256x256 to 512x256
+- Features: Personal quarters, smaller chandelier (1), banner wall
+- Enemy placement: 3-6 enemies, guards and elites
+- Light: Chandelier center, moderate
+- Special: Intimate combat, chandelier single hazard
+```
+
+### Corridor of Columns
+```
+Sector configuration:
+- Floor: 0 height
+- Ceiling: 144 height
+- Size: 256x512 to 512x1024
+- Features: Row of columns (4-8), wall torches, banner
+- Enemy placement: Guards between columns
+- Light: Torch sconces, moderate shadows
+- Special: Column cover for combat, trap floor tiles
+```
+
+### Entrance Hall
+```
+Sector configuration:
+- Floor: 0 height
+- Ceiling: 160 height
+- Size: 256x256
+- Features: Grand doors, two chandeliers, guard posts
+- Enemy placement: 2-4 honor guard
+- Light: Two chandeliers, bright entry
+- Special: Introduction to chandelier hazards
+```
+
+### Royal Treasury Alcove
+```
+Sector configuration:
+- Floor: -32 height (elevated platform)
+- Ceiling: 96 height
+- Size: 256x256
+- Features: Treasure display, smaller chandelier, throne object
+- Enemy placement: 4-8 elite guards
+- Light: Chandelier, treasure glow
+- Special: Alarm trigger, high-value loot, boss spawn potential
+```
+
+## Mapper Checklist for Great Hall Layouts
+
+- [ ] All floor sectors use appropriate grand hall textures
+- [ ] Columns placed every 128-256 units for visual anchor
+- [ ] Light levels verified: base 96, chandelier zones 160+, torch 144
+- [ ] Chandelier hazards marked in sector notes
+- [ ] Chandelier chains identified and tagged for shootability
+- [ ] Trap floor tiles subtly textured (checkered, carved)
+- [ ] Throne or alarm objects identified
+- [ ] Enemy spawn weights follow hierarchy (commanders present)
+- [ ] Side chambers connected for flanking routes
+- [ ] Ambient sound linedefs placed (echo, torch, chain)
+- [ ] Reverb zone linedef on all large rooms
+- [ ] No untextured sectors remaining
+- [ ] Minimum 2 exits from main hall
+- [ ] Boss arena check if room > 768x768 and meets encounter requirements
+- [ ] Carpet runner texture on main paths
+
+## Unique Features
+
+### Chandelier Combat Interaction
+- Chandeliers can be shot to damage enemies below (35% to enemies)
+- Enemies will avoid standing directly under chandeliers
+- Some chandeliers have health and can be partially damaged before falling
+- Lighting changes when chandelier falls (loss of light source)
+
+### Dynamic Environment
+- Chandelier chains can swing if shot at angle
+- Falling chandeliers can knock down nearby columns (destructible)
+- Chain links remain as debris after chandelier falls
+
+### Treasure Integration
+- Grand halls often connect to treasure chambers
+- Boss encounters often require clearing hall first
+- Chandelier hazards can be weaponized by player
+
 ## Shared Theme Documentation Template
 
 For future theme expansion, use this template:
