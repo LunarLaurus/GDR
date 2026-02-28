@@ -397,3 +397,110 @@ TRIGGER: AlarmDoor1
   line_tag: 100
   action: "open_door"
   sound: "DSBDOPN"
+
+# ==========================================
+# MAP06: Flooded Shafts (Electrocution Hazard)
+# ==========================================
+
+MAP: MAP06
+NAME: "The Flooded Shafts"
+INTERPIC: "HELP"
+MUSIC: "E1M5"
+FLAGS: "NOCLIP"
+
+SECTOR: 50
+  floor_height: 0
+  ceiling_height: 128
+  floor_texture: "FLOOR4_8"
+  ceiling_texture: "CEILING3"
+  light_level: 48
+  type: 0
+  tag: 0
+
+SECTOR: 51
+  floor_height: -16
+  ceiling_height: 96
+  floor_texture: "WATER1"
+  ceiling_texture: "CEILING3"
+  light_level: 32
+  type: 22  # Electrocution damage
+  tag: 668
+
+SECTOR: 52
+  floor_height: 0
+  ceiling_height: 64
+  floor_texture: "FLOOR5_1"
+  ceiling_texture: "CEILING3"
+  light_level: 64
+  type: 0
+  tag: 0
+
+SECTOR: 53
+  floor_height: 0
+  ceiling_height: 96
+  floor_texture: "FLOOR4_8"
+  ceiling_texture: "CEILING3"
+  light_level: 80
+  type: 22  # Electrocution damage
+  tag: 669
+
+SECTOR: 54
+  floor_height: 32
+  ceiling_height: 128
+  floor_texture: "FLOOR6_1"
+  ceiling_texture: "CEILING3"
+  light_level: 96
+  type: 0
+  tag: 0
+
+ROOM: MainShaft
+  sector: 50
+  vertices:
+    - [256, 2048]
+    - [1792, 2048]
+    - [1792, 3584]
+    - [256, 3584]
+
+ROOM: FloodedTunnel
+  sector: 51
+  vertices:
+    - [512, 2304]
+    - [1024, 2304]
+    - [1024, 2816]
+    - [512, 2816]
+
+ROOM: DryAlcove
+  sector: 52
+  vertices:
+    - [1536, 2304]
+    - [1792, 2304]
+    - [1792, 2560]
+    - [1536, 2560]
+
+ROOM: ShallowWater
+  sector: 53
+  vertices:
+    - [768, 2048]
+    - [1280, 2048]
+    - [1280, 2304]
+    - [768, 2304]
+
+ROOM: HighGround
+  sector: 54
+  vertices:
+    - [256, 3072]
+    - [512, 3072]
+    - [512, 3328]
+    - [256, 3328]
+
+TRIGGER: ElectricGrate1
+  type: "sector_enter"
+  sector: 51
+  action: "damage"
+  damage: 8
+
+TRIGGER: ElectricGrate2
+  type: "sector_enter"
+  sector: 53
+  action: "damage"
+  damage: 8

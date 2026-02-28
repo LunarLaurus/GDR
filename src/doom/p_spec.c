@@ -1088,6 +1088,13 @@ void P_PlayerInSpecialSector (player_t* player)
             if (!(leveltime&0x1f))
                 P_DamageMobj (player->mo, NULL, NULL, 10);
         break;
+
+      case 22:
+        // Goblin Dice Rollaz: ELECTROCUTION DAMAGE (flooded shaft hazard)
+        if (!player->powers[pw_ironfeet])
+            if (!(leveltime&0x1f))
+                P_DamageMobj (player->mo, NULL, NULL, 8);
+        break;
 			
       default:
 	I_Error ("P_PlayerInSpecialSector: "
