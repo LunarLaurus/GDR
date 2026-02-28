@@ -336,7 +336,7 @@
 - [x] Add Barracks of Stone Guard map theme
 - [x] Add Great Hall of Maces (chandelier hazards)
 - [x] Add Dwarven Armory Vaults (auto-arming traps)
-- [ ] Add Royal Treasury (pressure plate alarms)
+- [x] Add Royal Treasury (pressure plate alarms)
 - [ ] Add Veinfall Chasm (minecart traps)
 - [ ] Add Flooded Shafts (electrocution hazard)
 - [ ] Add Crystalline Grotto (exploding crystals)

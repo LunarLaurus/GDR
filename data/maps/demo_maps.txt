@@ -290,3 +290,110 @@ ROOM: HammerPlatform
     - [1792, 2560]
     - [1792, 2816]
     - [1536, 2816]
+
+# ==========================================
+# MAP05: Royal Treasury (Pressure Plate Alarms)
+# ==========================================
+
+MAP: MAP05
+NAME: "The Royal Treasury"
+INTERPIC: "HELP"
+MUSIC: "E1M4"
+FLAGS: "NOCLIP"
+
+SECTOR: 40
+  floor_height: 0
+  ceiling_height: 128
+  floor_texture: "FLOOR6_1"
+  ceiling_texture: "CEILING3"
+  light_level: 192
+  type: 0
+  tag: 0
+
+SECTOR: 41
+  floor_height: 0
+  ceiling_height: 64
+  floor_texture: "FLOOR5_1"
+  ceiling_texture: "CEILING3"
+  light_level: 160
+  type: 0
+  tag: 0
+
+SECTOR: 42
+  floor_height: -8
+  ceiling_height: 32
+  floor_texture: "FLOOR6_1"
+  ceiling_texture: "CEILING3"
+  light_level: 128
+  type: 0
+  tag: 0
+
+SECTOR: 43
+  floor_height: 0
+  ceiling_height: 96
+  floor_texture: "FLOOR4_8"
+  ceiling_texture: "CEILING3"
+  light_level: 64
+  type: 5
+  tag: 666
+
+SECTOR: 44
+  floor_height: 0
+  ceiling_height: 64
+  floor_texture: "FLOOR5_1"
+  ceiling_texture: "CEILING3"
+  light_level: 192
+  type: 0
+  tag: 0
+
+ROOM: TreasuryMain
+  sector: 40
+  vertices:
+    - [512, 2048]
+    - [2048, 2048]
+    - [2048, 3584]
+    - [512, 3584]
+
+ROOM: TreasureChamber
+  sector: 41
+  vertices:
+    - [768, 2304]
+    - [1536, 2304]
+    - [1536, 3072]
+    - [768, 3072]
+
+ROOM: HiddenVault
+  sector: 42
+  vertices:
+    - [1792, 2560]
+    - [2048, 2560]
+    - [2048, 3328]
+    - [1792, 3328]
+
+ROOM: PressurePlateFloor
+  sector: 43
+  vertices:
+    - [512, 2560]
+    - [768, 2560]
+    - [768, 2816]
+    - [512, 2816]
+
+ROOM: SideVault
+  sector: 44
+  vertices:
+    - [512, 2048]
+    - [768, 2048]
+    - [768, 2304]
+    - [512, 2304]
+
+TRIGGER: PressurePlate1
+  type: "sector_enter"
+  sector: 43
+  action: "alarm"
+  sound: "DSronics"
+
+TRIGGER: AlarmDoor1
+  type: "line_cross"
+  line_tag: 100
+  action: "open_door"
+  sound: "DSBDOPN"
