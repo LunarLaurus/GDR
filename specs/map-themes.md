@@ -1122,6 +1122,287 @@ Sector configuration:
 - Boss encounters often require clearing hall first
 - Chandelier hazards can be weaponized by player
 
+---
+
+# Dwarven Armory Vaults Map Theme
+
+## Theme Identity
+
+The Dwarven Armory Vaults represent the deepest, most heavily fortified weapon storage facilities of the dwarven kingdoms—massive underground chambers lined with racks of weapons, armor displays, and deadly automated defenses. These vaults are designed to keep treasures secure and intruders dead. The combination of valuable weapons and built-in defensive systems makes these areas extremely dangerous.
+
+## Texture Palette
+
+### Floor Textures
+
+| Texture | Name | Description |
+|---------|------|-------------|
+| ARMOR1 | Stone Floor | Grey-blue stone with iron reinforcements |
+| ARMOR2 | Metal Grate | Heavy iron floor grating |
+| ARMOR3 | Trap Floor | Floor with hidden pit triggers |
+| ARMOR4 | Armor Plate | Polished steel floor sections |
+| ARMOR5 | Oil Stain | Dark oily floor patches |
+
+### Wall Textures
+
+| Texture | Name | Description |
+|---------|------|-------------|
+| WEAPON1 | Weapon Rack | Wall-mounted sword rack |
+| WEAPON2 | Pike Rack | Long weapon display |
+| WEAPON3 | Shield Wall | Shield decoration |
+| ARMOR_W1 | Plate Rack | Armor stand display |
+| ARMOR_W2 | Helm Rack | Helmet display |
+| DEFENSE1 | Spike Wall | Defensive spike strips |
+| DEFENSE2 | Barricade | Wooden/metal barricade |
+| DOOR_ARM | Armory Door | Heavy reinforced door |
+
+### Ceiling Textures
+
+| Texture | Name | Description |
+|---------|------|-------------|
+| CEIL_A1 | Low Vault | Low stone ceiling |
+| CEIL_A2 | Beam Ceiling | Exposed support beams |
+| CEIL_A3 | Grate Ceiling | Metal ventilation grate |
+| CEIL_A4 | Chain Ceiling | Hanging chains and mechanisms |
+
+## Lighting Rules
+
+- **Base light level**: 72 (moderate, military efficiency)
+- **Torch light**: +48 light radius around wall sconces, warm orange
+- **Lantern posts**: +64 light radius in weapon display areas
+- **Weapon glow**: +32 light near magical/legendary weapons
+- **Ambient bias**: Cool blue-grey (RGB: 200, 210, 230)
+- **Shadow zones**: 32 light level in trap areas and dead ends
+- **Trap activation**: Bright flash (+64) when trap triggers
+
+### Light Source Types
+
+1. **Wall Torch** (point light): Radius 192, intensity 1.0, flickering orange
+2. **Lantern Post** (point light): Radius 256, intensity 1.2, steady yellow
+3. **Weapon Glow** (point light): Radius 96, intensity 0.8, magical color based on weapon
+4. **Alarm Light** (point light): Radius 192, intensity 1.5, red (when triggered)
+
+## Environmental Hazards
+
+### Auto-Arming Trap (Primary Hazard)
+- Trigger: Player enters room without disarming switch, or touches weapon rack
+- Effect: Crossbow bolts fire from wall panels (8 directions), 3-second burst
+- Damage: 8% per hit, rapid fire (5 bolts per second)
+- Visual: Panel doors open, crossbows extend, bolt sprites
+- Audio: Mechanical twang, alarm klaxon
+- Counter: Find and shoot disarming switch first, or destroy wall panels
+- Special: Some traps have 5-second arming delay - find switch quickly
+
+### Falling Armor Trap
+- Trigger: Touching armor display without triggering alarm first
+- Damage: 20% health (crush), knockback
+- Visual: Armor suit falls from ceiling mount
+- Audio: Crash and clanging
+- Counter: Shoot armor stand first to trigger safely, or don't touch displays
+
+### Pit Trap
+- Trigger: Step on tagged floor tiles
+- Effect: Floor collapses, player falls to sector below
+- Damage: 25% fall damage + trap damage (spikes)
+- Visual: Floor tiles give way
+- Counter: Look for subtly different floor texture (slightly raised), press use to check
+
+### Flame Jet
+- Trigger: Proximity to tagged wall section
+- Damage: 15% per second while in jet
+- Visual: Orange flame sprite, heat distortion
+- Audio: Whoosh of flame
+- Counter: Stay center of corridors, watch for wall vents
+
+### Alarm Gong
+- Trigger: Picking up weapons from racks (unless disarmed)
+- Effect: Spawns reinforcements from sealed doors, all traps activate
+- Visual: Gong sprite, red lighting
+- Audio: Loud metallic gong, alarm klaxon
+- Counter: Find alarm switch before touching weapons
+
+### Dart Corridor
+- Trigger: Walking down tagged corridor without disarming
+- Damage: 5% per dart, rapid fire from both walls
+- Visual: Small dart sprites, wall panels opening
+- Audio: Soft twang, clicking
+- Counter: Run quickly through, or find side passages
+
+## Ambient Sound Profile
+
+### Continuous
+- Creaking metal: Armor stands settling, 10-20 second intervals
+- Distant mechanical: Hidden mechanisms, constant low hum
+- Dripping oil: Occasional, random 5-15 seconds
+- Chain rattling: Occasional, 20-30 seconds
+
+### Triggered
+- Trap arming: Mechanical clunk, 3-second warning
+- Trap fire: Crossbow twang, flame whoosh
+- Alarm: Loud gong, klaxon
+- Armor fall: Crash and clang
+
+### Background
+- Military precision: Everything organized, sterile
+- Echo: Medium reverb, 0.6s decay
+- No ambient music (defensive, alert atmosphere)
+
+## Enemy Weighting
+
+### Primary (50% spawn rate)
+
+| Enemy | Spawn Weight |
+|-------|-------------|
+| Dwarf Defender | 20% |
+| Armored Dwarf | 15% |
+| Dwarf Marksman | 15% |
+
+### Secondary (35% spawn rate)
+
+| Enemy | Spawn Weight |
+|-------|-------------|
+| Dwarf Captain | 15% |
+| Dwarf Ironclad | 10% |
+| Dwarf Engineer | 10% |
+
+### Rare (15% spawn rate)
+
+| Enemy | Spawn Weight |
+|-------|-------------|
+| Dwarf Warlord | 6% |
+| Dwarf Tinkerer | 5% |
+| Dwarf Elite Guard | 4% |
+
+### Encounter Density
+- Entry vault: 2-4 enemies (guards at door)
+- Main armory: 6-12 enemies (weapon distribution)
+- Deep vault: 8-15 enemies (elite defense)
+- Vault complex: 15-25 enemies (full lockdown)
+
+## Example Room Archetypes
+
+### Entry Vault
+```
+Sector configuration:
+- Floor: 0 height
+- Ceiling: 128 height
+- Size: 256x256
+- Features: Entry door, weapon racks on walls, armor displays
+- Enemy placement: 2-4 guards at posts
+- Light: Wall torches, moderate
+- Special: Intro to trap mechanics, easy disarming switch
+```
+
+### Main Armory
+```
+Sector configuration:
+- Floor: 0 height
+- Ceiling: 144 height
+- Size: 512x512
+- Features: Central weapon island, multiple racks, armor stands
+- Enemy placement: 6-12 enemies, formation
+- Light: Multiple lanterns, bright
+- Special: Multiple trap types, weapon pickups valuable but risky
+```
+
+### Crossbow Corridor
+```
+Sector configuration:
+- Floor: 0 height
+- Ceiling: 80 height
+- Size: 128x512 (corridor)
+- Features: Wall panels, dart holes, spike strips on walls
+- Enemy placement: None initially, spawns on alarm
+- Light: Dim torches at ends, trap areas dark
+- Special: Dart trap primary hazard, must run or disarm
+```
+
+### Armor Hall
+```
+Sector configuration:
+- Floor: 0 height
+- Ceiling: 160 height
+- Size: 512x256
+- Features: Full armor suits on stands, weapon racks
+- Enemy placement: 4-8 guards
+- Light: Lanterns at intervals, weapon glow
+- Special: Falling armor trap, alarm gong hazard
+```
+
+### Deep Vault
+```
+Sector configuration:
+- Floor: -32 height (elevated platform)
+- Ceiling: 192 height
+- Size: 256x256
+- Features: Legendary weapons, heavy armor, multiple traps
+- Enemy placement: 8-15 elite guards
+- Light: Multiple light sources, magical glow on treasures
+- Special: Multiple simultaneous traps, boss potential, high-value loot
+```
+
+### Reinforcement Chamber
+```
+Sector configuration:
+- Floor: 0 height
+- Ceiling: 112 height
+- Size: 256x256
+- Features: Sealed doors (open on alarm), extra weapon racks
+- Enemy placement: Initially hidden, spawns on alarm
+- Light: Dim until alarm, then bright red
+- Special: Alarm triggers door opening and enemy spawns
+```
+
+## Mapper Checklist for Armory Layouts
+
+- [ ] All floor sectors use appropriate armory textures
+- [ ] Weapon racks placed on walls with proper spacing
+- [ ] Armor displays positioned for falling trap
+- [ ] Light levels verified: base 72, weapon glow 104, alarm 144
+- [ ] Auto-arming trap linedefs configured with timing
+- [ ] Disarming switch locations marked (should be findable but not obvious)
+- [ ] Trap floor tiles subtly different texture
+- [ ] Wall vent areas marked for flame jet
+- [ ] Alarm gong objects identified and tagged
+- [ ] Enemy spawn weights follow military hierarchy
+- [ ] Deep vault areas marked for boss potential
+- [ ] Ambient sound linedefs placed (mechanical, creaking)
+- [ ] No untextured sectors remaining
+- [ ] Minimum 2 exits from main vault areas
+- [ ] Disarm puzzles solvable without killing all enemies first
+
+## Unique Features
+
+### Trap Disarming System
+- Each trap zone has a linked switch somewhere in the room
+- Switches are visible but may require exploration to reach
+- Destroying switch permanently disables that trap
+- Some rooms have master switch that disables all traps
+
+### Weapon Pickup Risk/Reward
+- Picking up weapons from racks triggers alarm unless disarmed
+- Weapons in armory are higher quality than standard drops
+- Consider risk vs reward before grabbing weapons
+- Some weapons are "bait" - trap triggers with no actual benefit
+
+### Dynamic Defense
+- On alarm, sealed doors open and reinforcements enter
+- Traps remain active during combat (double danger)
+- Enemies know trap locations and avoid them
+- Player can use traps against enemies if clever
+
+### Automation Theme
+- All traps are mechanical (dwarven engineering)
+- No magical traps in standard armory
+- Some legendary armories may have golem defenders
+- Tinkerer dwarves can repair traps mid-combat
+
+## Treasure Integration
+
+- Armory vaults often connect to treasure chambers
+- Legendary weapons require clearing vault first
+- Disarmed traps can be re-armed by player for defense
+- Some weapons are cursed - picking them up is dangerous
+
 ## Shared Theme Documentation Template
 
 For future theme expansion, use this template:
