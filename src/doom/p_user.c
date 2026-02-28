@@ -24,6 +24,7 @@
 #include "doomdef.h"
 #include "d_event.h"
 #include "p_local.h"
+#include "p_siege_weapon.h"
 #include "doomstat.h"
 #include "s_sound.h"
 #include "sounds.h"
@@ -349,12 +350,36 @@ void P_PlayerThink (player_t* player)
     {
 	if (!player->usedown)
 	{
-	    P_UseLines (player);
+	    if (player->mounted_siege_weapon)
+	    {
+		P_DismountSiegeWeapon(player);
+	    }
+	    else if (P_CanPlayerUseSiegeWeapon(player))
+	    {
+		P_TryMountSiegeWeapon(player);
+	    }
+	    else
+	    {
+		P_UseLines (player);
+	    }
 	    player->usedown = true;
 	}
     }
     else
 	player->usedown = false;
+
+    if (player->mounted_siege_weapon && (cmd->buttons & BT_ATTACK))
+    {
+	if (!player->attackdown)
+	{
+	    P_FireSiegeWeapon(player);
+	    player->attackdown = true;
+	}
+    }
+    else if (!(cmd->buttons & BT_ATTACK))
+    {
+	player->attackdown = false;
+    }
     
     // cycle psprites
     P_MovePsprites (player);

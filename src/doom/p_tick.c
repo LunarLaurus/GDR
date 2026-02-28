@@ -21,6 +21,7 @@
 #include "z_zone.h"
 #include "p_local.h"
 #include "p_siege.h"
+#include "p_siege_weapon.h"
 
 #include "doomstat.h"
 
@@ -179,6 +180,7 @@ void P_Ticker (void)
     P_UpdateSpecials ();
     P_RespawnSpecials ();
     P_UpdateSiegeWaves();
+    P_UpdateSiegeWeapons();
 
     // for par times
     leveltime++;	

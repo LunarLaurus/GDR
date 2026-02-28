@@ -47,6 +47,8 @@
 #include "p_setup.h"
 #include "p_saveg.h"
 #include "p_tick.h"
+#include "p_siege.h"
+#include "p_siege_weapon.h"
 
 #include "d_main.h"
 
@@ -2072,6 +2074,9 @@ G_InitNew
     // Goblin Dice Rollaz: Initialize session stats
     G_StartSession();
     G_ResetDiceStats();
+
+    // Goblin Dice Rollaz: Initialize siege weapons for new level
+    P_InitSiegeWeapons();
 
     if (paused)
     {

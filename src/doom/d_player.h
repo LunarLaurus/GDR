@@ -194,6 +194,12 @@ typedef struct player_s
     // Current weapon kickback from firing (decays over time)
     fixed_t		weapon_recoil;
 
+    // Goblin Dice Rollaz: Siege weapon mounted state
+    // Pointer to mounted siege weapon (NULL when not mounted)
+    struct mobj_s	*mounted_siege_weapon;
+    // Angle offset when mounted (for rotating siege weapon)
+    angle_t		siege_weapon_angle;
+
 } player_t;
 
 
