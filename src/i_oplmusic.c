@@ -1076,6 +1076,9 @@ static void ProgramChangeEvent(opl_track_data_t *track, midi_event_t *event)
 {
     opl_channel_data_t *channel;
     int instrument;
+    unsigned int i;
+    boolean double_voice;
+    unsigned int num_opl_voices;
 
     // Set the instrument used on this channel.
 
@@ -1083,8 +1086,21 @@ static void ProgramChangeEvent(opl_track_data_t *track, midi_event_t *event)
     instrument = event->data.channel.param1;
     channel->instrument = &main_instrs[instrument];
 
-    // TODO: Look through existing voices that are turned on on this
-    // channel, and change the instrument.
+    // Update all currently playing voices on this channel to use the new instrument.
+    double_voice = (SHORT(channel->instrument->flags) & GENMIDI_FLAG_2VOICE) != 0;
+    num_opl_voices = double_voice ? OPL_NUM_VOICES * 2 : OPL_NUM_VOICES;
+
+    for (i = 0; i < num_opl_voices; ++i)
+    {
+        if (voices[i].channel == channel)
+        {
+            SetVoiceInstrument(&voices[i], channel->instrument, 0);
+            if (double_voice)
+            {
+                SetVoiceInstrument(&voices[i + OPL_NUM_VOICES], channel->instrument, 1);
+            }
+        }
+    }
 }
 
 static void SetChannelVolume(opl_channel_data_t *channel, unsigned int volume,
@@ -1444,7 +1460,11 @@ static void ScheduleTrack(opl_track_data_t *track)
 
 static void InitChannel(opl_channel_data_t *channel)
 {
-    // TODO: Work out sensible defaults?
+    // Set sensible defaults:
+    // - Instrument: Grand Piano (main_instrs[0])
+    // - Volume: current music volume, capped at 100
+    // - Pan: 0x30 (center pan, OPL standard)
+    // - Bend: 0 (no pitch bend)
 
     channel->instrument = &main_instrs[0];
     channel->volume = current_music_volume;
@@ -1495,8 +1515,8 @@ static void I_OPL_PlaySong(void *handle, boolean looping)
 
     ticks_per_beat = MIDI_GetFileTimeDivision(file);
 
-    // Default is 120 bpm.
-    // TODO: this is wrong
+    // Default is 120 bpm (500000 microseconds per quarter note).
+    // This is the MIDI standard default tempo.
 
     us_per_beat = 500 * 1000;
 

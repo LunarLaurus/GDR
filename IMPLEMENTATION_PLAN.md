@@ -211,8 +211,7 @@
 - [x] Resolve v_video.c TODO line 46
 - [ ] Resolve i_musicpack.c TODO line 58
   - [ ] Resolve blocker: Cannot resolve until SDL2_mixer minimum version is bumped to 2.6.0+
-- [ ] Resolve i_oplmusic TODO items
-  - [ ] Resolve blocker: Requires implementation work (lines 1086, 1447, 1499)
+- [x] Resolve i_oplmusic TODO items
 - [x] Resolve heretic TODO items
 - [x] Resolve hexen TODO items
 - [x] Resolve setup TODO items
