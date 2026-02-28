@@ -189,6 +189,7 @@ typedef enum
     pw_dwarvenweakness,
     pw_pickaxerepellent,
     pw_goldfever,
+    pw_greedisgood,
     NUMPOWERS
     
 } powertype_t;
@@ -211,7 +212,8 @@ typedef enum
     SNAKEEYESTICS = (30*TICRATE),
     DWARVENWEAKNESSTICS = (45*TICRATE),
     PICKAXEREPELLENTTICS = (60*TICRATE),
-    GOLD_FEVER_TICS = (30*TICRATE)
+    GOLD_FEVER_TICS = (30*TICRATE),
+    GREEDISGOOD_TICS = (45*TICRATE)
     
 } powerduration_t;
 

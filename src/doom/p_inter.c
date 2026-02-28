@@ -1132,6 +1132,50 @@ P_KillMobj
 
 	// Goblin Dice Rollaz: Add weapon mastery XP for kills
 	G_AddWeaponKill(source->player, source->player->readyweapon);
+
+	// Goblin Dice Rollaz: Greed Is Good powerup - give ammo on dwarf kills
+	if (source->player->powers[pw_greedisgood])
+	{
+	    if (target->type == MT_DWARF ||
+		target->type == MT_DWARF_BERSERKER ||
+		target->type == MT_DWARF_ENGINEER ||
+		target->type == MT_DWARF_BOMB ||
+		target->type == MT_DWARF_TURRET ||
+		target->type == MT_DWARF_DEFENDER ||
+		target->type == MT_DWARF_MARKSMAN ||
+		target->type == MT_DWARF_MINER ||
+		target->type == MT_DWARF_CAPTAIN ||
+		target->type == MT_DWARF_BOMBARDIER ||
+		target->type == MT_DWARF_ARMORED ||
+		target->type == MT_DWARF_ALCHEMIST ||
+		target->type == MT_DWARF_FLAMETHROWER ||
+		target->type == MT_DWARF_THUNDERER ||
+		target->type == MT_DWARF_IRONCLAD ||
+		target->type == MT_DWARF_STONECUTTER ||
+		target->type == MT_DWARF_THUNDERMAGE ||
+		target->type == MT_DWARF_WARLORD ||
+		target->type == MT_DWARF_RUNESMITH ||
+		target->type == MT_DWARF_RUNEBEARER ||
+		target->type == MT_DWARF_HIGHPRIEST ||
+		target->type == MT_DWARF_COMMANDER ||
+		target->type == MT_DWARF_STEAMGOLEM ||
+		target->type == MT_DWARF_SCRAPDRONE ||
+		target->type == MT_DWARF_DRILLTANK ||
+		target->type == MT_DWARF_SIEGEENGINE ||
+		target->type == MT_DWARF_SKYMINER ||
+		target->type == MT_DWARF_MINELAYER ||
+		target->type == MT_DWARF_TINKERER ||
+		target->type == MT_DWARF_BARRELELITE ||
+		target->type == MT_DWARF_SHADOWBLADE ||
+		target->type == MT_DWARF_OBSIDIAN ||
+		target->type == MT_DWARF_GEOLOGIST ||
+		target->type == MT_DWARF_TREASUREHUNTER ||
+		target->type == MT_DWARF_JUGGERNAUT ||
+		target->type == MT_DWARF_SAPPER)
+	    {
+		P_GiveAmmo(source->player, am_lightdice, 2 + (P_Random() % 3));
+	    }
+	}
     }
     else if (!netgame && (target->flags & MF_COUNTKILL) )
     {

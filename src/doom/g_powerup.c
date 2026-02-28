@@ -218,6 +218,18 @@ powerup_info_t powerups[NUMPOWERS] = {
         MT_NADA,
         SPR_PFTR,
         30
+    },
+    {
+        pw_greedisgood,
+        "Greed Is Good",
+        GREEDISGOOD_TICS,
+        POWERUP_FLAG_TIMED,
+        "GREED IS GOOD!",
+        0,
+        sfx_getpow,
+        MT_NADA,
+        SPR_PFTR,
+        20
     }
 };
 

@@ -361,7 +361,7 @@
 - [x] Add Dwarven Weakness powerup (2x vs dwarves)
 - [x] Add Pickaxe Repellent powerup (dwarves flee)
 - [x] Add Gold Fever powerup (attack speed vs treasure)
-- [ ] Add Greed Is Good powerup (ammo on dwarf kills)
+- [x] Add Greed Is Good powerup (ammo on dwarf kills)
 - [ ] Add Dash Token powerup (dash with iframes)
 - [ ] Add Ghost Step powerup (pass through enemies)
 - [ ] Add Wall Walker powerup (ceiling traversal)
