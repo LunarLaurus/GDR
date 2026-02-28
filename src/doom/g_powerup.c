@@ -194,6 +194,18 @@ powerup_info_t powerups[NUMPOWERS] = {
         MT_DWARVENWEAKNESS,
         SPR_PFTR,
         30
+    },
+    {
+        pw_pickaxerepellent,
+        "Pickaxe Repellent",
+        PICKAXEREPELLENTTICS,
+        POWERUP_FLAG_TIMED,
+        "PICKAXE REPELLENT!",
+        0,
+        sfx_getpow,
+        MT_NADA,
+        SPR_PFTR,
+        20
     }
 };
 
