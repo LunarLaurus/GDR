@@ -1572,6 +1572,14 @@ P_DamageMobj
                     damage = damage * 2;
                 }
             }
+            // Goblin Dice Rollaz: Gold Fever powerup - 2x damage vs treasure enemies
+            if (source && source->player && source->player->powers[pw_goldfever] && target)
+            {
+                if (target->type == MT_DWARF_TREASUREHUNTER)
+                {
+                    damage = damage * 2;
+                }
+            }
             }
         }
     }

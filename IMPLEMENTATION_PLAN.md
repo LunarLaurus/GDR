@@ -361,7 +361,7 @@
 - [x] Add Snake Eyes powerup (mark for double damage)
 - [x] Add Dwarven Weakness powerup (2x vs dwarves)
 - [x] Add Pickaxe Repellent powerup (dwarves flee)
-- [ ] Add Gold Fever powerup (attack speed vs treasure)
+- [x] Add Gold Fever powerup (attack speed vs treasure)
 - [ ] Add Greed Is Good powerup (ammo on dwarf kills)
 - [ ] Add Dash Token powerup (dash with iframes)
 - [ ] Add Ghost Step powerup (pass through enemies)
@@ -761,7 +761,7 @@
 
 ### Phase 46: Siege Battles
 - [x] Add large-scale battle AI (50+ enemies)
-- [ ] Add siege weapon interactions
+- [x] Add siege weapon interactions
 - [ ] Add defensive position combat
 - [ ] Add wave-based assault mode
 - [ ] Add objective-based siege (capture point)
