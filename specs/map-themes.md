@@ -1403,6 +1403,288 @@ Sector configuration:
 - Disarmed traps can be re-armed by player for defense
 - Some weapons are cursed - picking them up is dangerous
 
+---
+
+# Veinfall Chasm Map Theme
+
+## Theme Identity
+
+The Veinfall Chasm represents the abandoned deep mine shafts and ore transport tunnels of the dwarven kingdoms—vertical drops connected by rickety minecart rails, crumbling rope bridges, and precarious升降 platforms. These chasms were once the primary vein of the mountain's wealth, now fallen into disrepair and infested with creatures that thrive in the darkness.
+
+## Texture Palette
+
+### Floor Textures
+
+| Texture | Name | Description |
+|---------|------|-------------|
+| VEIN1 | Cracked Stone | Jagged cracked floor with ore veins |
+| VEIN2 | Wooden Deck | Rotting wooden platform planks |
+| VEIN3 | Metal Grate | Rusted metal walkway sections |
+| VEIN4 | Gravel | Loose stone and gravel |
+| VEIN5 | Rail Track | Metal rails for minecart movement |
+
+### Wall Textures
+
+| Texture | Name | Description |
+|---------|------|-------------|
+| CLIFF1 | Vertical Shaft | Rough vertical cave wall |
+| CLIFF2 | Layered Ore | Rock face with visible ore layers |
+| CLIFF3 | Timber Frame | Wooden support beam structure |
+| ROPE1 | Rope Bridge | Twisted rope and plank bridge |
+| ROPE2 | Rope Coil | Hanging rope coils |
+| SUPPORT1 | Broken Beam | Snapped wooden support |
+| SUPPORT2 | Chain Link | Hanging chain links |
+
+### Ceiling Textures
+
+| Texture | Name | Description |
+|---------|------|-------------|
+| CEIL_V1 | Open Shaft | Dark vertical shaft above |
+| CEIL_V2 | Beam Ceiling | Exposed wooden beams |
+| CEIL_V3 | Rock Ceiling | Rough cave rock overhead |
+
+## Lighting Rules
+
+- **Base light level**: 48 (very dark, dangerous)
+- **Minecart lamp**: +64 light radius, warm yellow, slight flicker
+- **Ore glow**: +32 light radius near ore veins, green-blue tint
+- **Chasm depth**: -8 light per 64 units depth (darker lower)
+- **Ambient bias**: Cool blue-grey (RGB: 180, 190, 210)
+- **Shadow zones**: 16 light level in deep pits
+- **Fog**: Dense fog effect at ranges > 512 units
+
+### Light Source Types
+
+1. **Minecart Lantern** (point light): Radius 192, intensity 1.0, flickering warm yellow
+2. **Ore Vein Glow** (point light): Radius 96, intensity 0.6, blue-green (radioactive ore)
+3. **Rope Bridge Lantern** (point light): Radius 128, intensity 0.8, warm orange
+4. **Emergency Lamp** (point light): Radius 64, intensity 0.5, red (warning areas)
+
+## Environmental Hazards
+
+### Minecart Trap (Primary Hazard)
+- Trigger: Player steps on track activation zone or shoots cart release
+- Effect: Unsecured minecart launches along track, crushing anything in path
+- Damage: 40% health (crush), severe knockback
+- Visual: Cart sprites moving along predefined path, sparks flying
+- Audio: Rumbling, metal wheels on rail, crashing
+- Warning: Chain release clanks 2 seconds before launch
+- Counter: Stay off tracks when cart visible, shoot release mechanism early
+- Special: Some carts carry explosives (delayed explosion on impact)
+
+### Rope Bridge Collapse
+- Trigger: Player weight on damaged bridge section (health-based threshold)
+- Effect: Bridge section falls, player falls if on it
+- Damage: 30% fall damage to level below
+- Visual: Ropes snap, planks scatter, dust cloud
+- Audio: Rope snapping, screaming wood, player yell
+- Counter: Look for frayed ropes, test bridges carefully, move quickly across
+- Special: Can shoot bridge to drop enemies instead
+
+### Falling Rock/Cave-In
+- Trigger: Timed events or player proximity to unstable sections
+- Damage: 15-25% health (impact), knockback
+- Visual: Rock sprites falling, dust particles
+- Audio: Rumbling, cracking stone
+- Warning: Cracking sounds 3-5 seconds before fall
+- Counter: Don't linger under cracked ceiling sections, watch for warning signs
+
+###升降 Platform Failure
+- Trigger: Player steps on worn升降 platform
+- Effect: Platform drops suddenly, player falls if weight exceeds threshold
+- Damage: 20% fall damage + 10% impact
+- Visual: Platform tilts and falls, chains snapping
+- Audio: Metal groaning, chain snapping, crash
+- Counter: Look for rust and damage on platforms, test before full weight
+- Special: Some platforms have working counterweights (solvable puzzle)
+
+### Pit Fall
+- Trigger: Walking into unmarked chasm edges
+- Damage: Instant death (fall damage > 100%)
+- Visual: Darkness below, no floor visible
+- Counter: Watch minimap, look for floor texture changes, use lighting
+
+### Electrocution (Flooded Shafts variant)
+- Trigger: Entering flooded electrical area
+- Damage: 5% per second while in water
+- Visual: Sparks, flickering lights, blue glow
+- Audio: Electrical hum, crackling
+- Counter: Find dry path, destroy power source
+
+## Ambient Sound Profile
+
+### Continuous
+- Dripping water: Constant, varying intervals
+- Distant rumble: Low frequency from deep in chasm
+- Wind howling: Through vertical shafts, 10-second intervals
+- Creaking wood: Rope bridges and supports, occasional
+- Cart wheels: Distant, when other carts move
+
+### Triggered
+- Cart launch: Rumbling start, then whooshing
+- Bridge collapse: Snap, crash, debris
+- Rock fall: Cracking, then impact
+- Platform failure: Groan, snap, crash
+- Player fall: Yell, then impact
+
+### Background
+- Cave echo: Medium decay, 0.5s
+- Water dripping: Reverb echo
+- Ambient: Eerie wind, distant creature sounds
+
+## Enemy Weighting
+
+### Primary (55% spawn rate)
+
+| Enemy | Spawn Weight |
+|-------|-------------|
+| Goblin Scout | 20% |
+| Goblin Grunt | 20% |
+| Goblin Sneak | 15% |
+
+### Secondary (35% spawn rate)
+
+| Enemy | Spawn Weight |
+|-------|-------------|
+| Dwarf Miner | 15% |
+| Goblin Shaman | 10% |
+| Dwarf Sapper | 10% |
+
+### Rare (10% spawn rate)
+
+| Enemy | Spawn Weight |
+|-------|-------------|
+| Goblin King (mini-boss) | 4% |
+| Dwarf Geologist | 3% |
+| Cave Troll | 3% |
+
+### Encounter Density
+- Narrow ledges: 1-2 enemies (ambush positions)
+- Platform areas: 3-5 enemies
+- Chamber junctions: 5-8 enemies
+- Main junction: 8-15 enemies
+
+## Example Room Archetypes
+
+### Vertical Shaft
+```
+Sector configuration:
+- Floor: -256 to 0 height (vertical)
+- Ceiling: 256 height
+- Size: 256x256 to 512x512
+- Features: 升降 platforms, rope bridges, minecart tracks
+- Enemy placement: Platforms and ledges
+- Light: Minecart lanterns, ore glow, very dim
+- Special: Minecart trap routes through center
+```
+
+### Minecart Junction
+```
+Sector configuration:
+- Floor: 0 height
+- Ceiling: 128 height
+- Size: 512x512
+- Features: Multiple track directions, cart storage, switches
+- Enemy placement: 5-10 enemies, control cart routes
+- Light: Multiple lanterns, moderate
+- Special: Player can control cart direction via switches
+```
+
+### Rope Bridge Crossing
+```
+Sector configuration:
+- Floor: 0 height (bridge), -128 below (pit)
+- Ceiling: 96 height
+- Size: 128x512 (bridge corridor)
+- Features: Rope bridge, support beams, frayed sections
+- Enemy placement: 2-4 enemies crossing or defending
+- Light: Bridge lanterns, dim, flickering
+- Special: Bridge collapse hazard, can cut ropes to drop enemies
+```
+
+### ore Vein Chamber
+```
+Sector configuration:
+- Floor: 0 height with ore formations
+- Ceiling: 192 height
+- Size: 256x256 to 512x256
+- Features: Glowing ore veins, crystal formations, mineral deposits
+- Enemy placement: 3-6 enemies mining or guarding
+- Light: Ore glow, blue-green, low visibility
+- Special: Radiation damage near bright ore, valuable pickups
+```
+
+### Abandoned Equipment Bay
+```
+Sector configuration:
+- Floor: 0 height
+- Ceiling: 144 height
+- Size: 512x256
+- Features: Old carts, broken machinery, tool racks
+- Enemy placement: 4-8 enemies salvaging or hiding
+- Light: Emergency lamps, dim red
+- Special: Explosive barrels, can use machinery as weapons
+```
+
+###升降 Platform Hub
+```
+Sector configuration:
+- Floor: Multiple levels (-128, -64, 0, 64)
+- Ceiling: 160 height
+- Size: 256x256 vertical
+- Features: Multiple升降 platforms, chains, pulleys
+- Enemy placement: 3-6 enemies on different levels
+- Light: Platform lamps, moderate
+- Special: Platform failure hazards, can control platform speeds
+```
+
+## Mapper Checklist for Veinfall Chasm Layouts
+
+- [ ] All floor sectors use appropriate veinfall/ore textures
+- [ ] Rope bridges properly flagged for collapse mechanics
+- [ ] Minecart track paths defined with waypoints
+- [ ] Minecart release switches placed and tagged
+- [ ]升降 platforms tagged with weight thresholds
+- [ ] Cave-in zones marked in sector notes
+- [ ] Pit hazards have visible edge indicators
+- [ ] Ore glow sectors properly tagged for light
+- [ ] Chasm depth lighting applied correctly
+- [ ] Enemy spawn weights follow primary/secondary/rare ratios
+- [ ] Vertical gameplay flow verified (up/down paths)
+- [ ] No untextured sectors remaining
+- [ ] Minimum 2 routes through any chasm section
+- [ ] Fall damage zones have recovery paths
+- [ ] Minecart routes avoid dead-end traps
+
+## Unique Features
+
+### Minecart Physics
+- Carts follow predefined track paths
+- Speed increases on downward slopes
+- Carts can be boarded by player (ride along)
+- Player can steer cart at junctions (shoot switch)
+- Carts carry momentum between track sections
+
+### Vertical Gameplay Focus
+- Multiple vertical layers in most rooms
+- 升降 platforms connect levels
+- Rope bridges span gaps
+- Falling from upper levels is major hazard
+- Combat across multiple vertical planes
+
+### Environmental Interaction
+- Rope bridges can be shot to drop enemies
+- Minecart tracks can be sabotaged
+-升降 platform chains can be cut
+- Unstable rocks can be knocked down
+- Player can ride minecarts through levels
+
+### Treasure Integration
+- Veinfall Chasm connects to Royal Treasury (descent)
+- ore Vein Chambers have high-value mineral pickups
+- Abandoned equipment may contain hidden weapons
+- Cart routes sometimes lead to secret areas
+
 ## Shared Theme Documentation Template
 
 For future theme expansion, use this template:

@@ -337,7 +337,7 @@
 - [x] Add Great Hall of Maces (chandelier hazards)
 - [x] Add Dwarven Armory Vaults (auto-arming traps)
 - [x] Add Royal Treasury (pressure plate alarms)
-- [ ] Add Veinfall Chasm (minecart traps)
+- [x] Add Veinfall Chasm (minecart traps)
 - [ ] Add Flooded Shafts (electrocution hazard)
 - [ ] Add Crystalline Grotto (exploding crystals)
 - [ ] Add Abandoned Excavation (cave-in hazards)
