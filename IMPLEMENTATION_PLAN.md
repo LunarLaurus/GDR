@@ -401,7 +401,7 @@
 
 ### Phase 19: Additional Rendering Optimizations
 - [x] Add sprite occlusion culling for off-screen sprites
-- [ ] Implement temporal AA for smooth sprite edges
+- [x] Implement temporal AA for smooth sprite edges
 - [ ] Add texture LOD switching for distant walls
 - [ ] Optimize colormap lookups with caching
 - [ ] Add hardware acceleration detection and use

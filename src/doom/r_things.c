@@ -135,6 +135,26 @@ int r_sprite_farclip = 0;
 // Sprites smaller than this will not be rendered (0 = disabled)
 int r_sprite_min_scale = 0;
 
+// Goblin Dice Rollaz: Temporal AA for smooth sprite edges
+// Stores previous frame sprite data for temporal blending
+boolean r_temporal_aa = false;
+
+#define MAX_TEMPORAL_SPRITES 256
+
+typedef struct {
+    fixed_t gx;
+    fixed_t gy;
+    fixed_t gz;
+    fixed_t scale;
+    int patch;
+    int x1;
+    int x2;
+} temporal_sprite_t;
+
+static temporal_sprite_t temporal_sprites_prev[MAX_TEMPORAL_SPRITES];
+static int temporal_sprite_count_prev = 0;
+static int temporal_frame_counter = 0;
+
 // constant arrays
 //  used for psprite clipping and initializing clipping
 short		negonearray[SCREENWIDTH];
@@ -1055,6 +1075,26 @@ void R_DrawMasked (void)
     //  but does not draw on side views
     if (!viewangleoffset)		
 	R_DrawPlayerSprites ();
+
+    // Goblin Dice Rollaz: Temporal AA - store current frame sprites for next frame
+    if (r_temporal_aa)
+    {
+        int count = 0;
+        vissprite_t* s;
+        for (s = vsprsortedhead.next; s != &vsprsortedhead && count < MAX_TEMPORAL_SPRITES; s = s->next)
+        {
+            temporal_sprites_prev[count].gx = s->gx;
+            temporal_sprites_prev[count].gy = s->gy;
+            temporal_sprites_prev[count].gz = s->gz;
+            temporal_sprites_prev[count].scale = s->scale;
+            temporal_sprites_prev[count].patch = s->patch;
+            temporal_sprites_prev[count].x1 = s->x1;
+            temporal_sprites_prev[count].x2 = s->x2;
+            count++;
+        }
+        temporal_sprite_count_prev = count;
+        temporal_frame_counter++;
+    }
 }
 
 

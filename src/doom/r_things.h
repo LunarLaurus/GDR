@@ -62,5 +62,7 @@ R_ClipVisSprite
   int			xl,
   int			xh );
 
+// Goblin Dice Rollaz: Temporal AA for smooth sprite edges
+extern boolean r_temporal_aa;
 
 #endif
