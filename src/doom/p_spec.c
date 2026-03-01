@@ -1109,6 +1109,13 @@ void P_PlayerInSpecialSector (player_t* player)
             if (!(leveltime&0x1f))
                 P_DamageMobj (player->mo, NULL, NULL, 15);
         break;
+
+      case 25:
+        // Goblin Dice Rollaz: CRUSHER PRESS DAMAGE (timed piston hazard)
+        if (!player->powers[pw_ironfeet])
+            if (!(leveltime&0x3f))
+                P_DamageMobj (player->mo, NULL, NULL, 25);
+        break;
 			
       default:
 	I_Error ("P_PlayerInSpecialSector: "

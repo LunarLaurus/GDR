@@ -1367,6 +1367,10 @@ void ST_doPaletteStuff(void)
              plyr->mo->subsector->sector->special == 24 &&
              plyr->mo->z == plyr->mo->subsector->sector->floorheight)
         palette = STATUSCRUSHINGPAL;
+    else if (plyr->mo && plyr->mo->subsector && plyr->mo->subsector->sector &&
+             plyr->mo->subsector->sector->special == 25 &&
+             plyr->mo->z == plyr->mo->subsector->sector->floorheight)
+        palette = STATUSCRUSHINGPAL;
     else if (plyr->mo && G_StatusEffectIsActive(plyr->mo, st_burning))
         palette = STATUSBURNINGPAL;
     else if (plyr->mo && G_StatusEffectIsActive(plyr->mo, st_frozen))
