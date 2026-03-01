@@ -191,6 +191,7 @@ typedef enum
     pw_goldfever,
     pw_greedisgood,
     pw_dashtoken,
+    pw_ghoststep,
     NUMPOWERS
     
 } powertype_t;
@@ -215,7 +216,8 @@ typedef enum
     PICKAXEREPELLENTTICS = (60*TICRATE),
     GOLD_FEVER_TICS = (30*TICRATE),
     GREEDISGOOD_TICS = (45*TICRATE),
-    DASHTOKEN_TICS = (20*TICRATE)
+    DASHTOKEN_TICS = (20*TICRATE),
+    GHOSTSTEPTICS = (15*TICRATE)
     
 } powerduration_t;
 

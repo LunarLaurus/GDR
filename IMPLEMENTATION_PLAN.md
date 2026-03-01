@@ -363,7 +363,7 @@
 - [x] Add Gold Fever powerup (attack speed vs treasure)
 - [x] Add Greed Is Good powerup (ammo on dwarf kills)
 - [x] Add Dash Token powerup (dash with iframes)
-- [ ] Add Ghost Step powerup (pass through enemies)
+- [x] Add Ghost Step powerup (pass through enemies)
 - [ ] Add Wall Walker powerup (ceiling traversal)
 - [ ] Add Trap Sense powerup (highlight mines)
 - [ ] Add Vitality Crystal powerup (permanent +25 HP)

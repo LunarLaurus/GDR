@@ -30,6 +30,7 @@
 #include "m_argv.h"
 #include "m_misc.h"
 #include "p_local.h"
+#include "g_powerup.h"
 
 #include "s_sound.h"
 
@@ -280,6 +281,27 @@ boolean PIT_CheckThing (mobj_t* thing)
 		
     if (!(thing->flags & (MF_SOLID|MF_SPECIAL|MF_SHOOTABLE) ))
 	return true;
+
+    // Goblin Dice Rollaz: Ghost Step powerup - pass through enemies
+    if (tmthing->player && (thing->flags & MF_SOLID))
+    {
+        player_t* player = tmthing->player;
+        if (G_PowerupIsActive(player, pw_ghoststep))
+        {
+            // Ghost Step allows passing through solid things (enemies)
+            // but still allows picking up items
+            if (thing->flags & MF_SPECIAL)
+            {
+                solid = (thing->flags & MF_SOLID) != 0;
+                if (tmflags & MF_PICKUP)
+                {
+                    P_TouchSpecialThing(thing, tmthing);
+                }
+                return !solid;
+            }
+            return true; // Pass through solid enemies
+        }
+    }
     
     blockdist = thing->radius + tmthing->radius;
 

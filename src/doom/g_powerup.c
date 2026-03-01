@@ -242,6 +242,18 @@ powerup_info_t powerups[NUMPOWERS] = {
         MT_NADA,
         SPR_PFTR,
         30
+    },
+    {
+        pw_ghoststep,
+        "Ghost Step",
+        GHOSTSTEPTICS,
+        POWERUP_FLAG_TIMED | POWERUP_FLAG_EXCLUSIVE,
+        "GHOST STEP!",
+        0,
+        sfx_getpow,
+        MT_NADA,
+        SPR_PFTR,
+        20
     }
 };
 
