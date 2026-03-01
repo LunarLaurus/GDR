@@ -462,6 +462,15 @@ void P_PlayerThink (player_t* player)
     {
         player->powers[pw_trapsense]--;
     }
+
+    if (player->powers[pw_glasscannon])
+    {
+        if (player->powers[pw_glasscannon] == 1)
+        {
+            // Powerup expiring - health will be restored in G_PowerupDeactivate
+        }
+        player->powers[pw_glasscannon]--;
+    }
 		
     if (player->damagecount)
 	player->damagecount--;
@@ -486,6 +495,10 @@ void P_PlayerThink (player_t* player)
     else if (player->powers[pw_doubledamage])
     {
 	player->fixedcolormap = DOUBLEDAMAGECOLORMAP;
+    }
+    else if (player->powers[pw_glasscannon])
+    {
+	player->fixedcolormap = CRITCOLORMAP;
     }
     else if (player->powers[pw_infrared])
     {

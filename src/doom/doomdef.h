@@ -194,6 +194,7 @@ typedef enum
     pw_ghoststep,
     pw_wallwalker,
     pw_trapsense,
+    pw_glasscannon,
     NUMPOWERS
     
 } powertype_t;
@@ -221,7 +222,8 @@ typedef enum
     DASHTOKEN_TICS = (20*TICRATE),
     GHOSTSTEPTICS = (15*TICRATE),
     WALLWALKERTICS = (30*TICRATE),
-    TRAPSENSETICS = (45*TICRATE)
+    TRAPSENSETICS = (45*TICRATE),
+    GLASSCANNONTICS = (30*TICRATE)
     
 } powerduration_t;
 

@@ -278,6 +278,18 @@ powerup_info_t powerups[NUMPOWERS] = {
         MT_NADA,
         SPR_PFTR,
         10
+    },
+    {
+        pw_glasscannon,
+        "Glass Cannon",
+        GLASSCANNONTICS,
+        POWERUP_FLAG_TIMED | POWERUP_FLAG_EXCLUSIVE,
+        "GLASS CANNON!",
+        CRITCOLORMAP,
+        sfx_doubup,
+        MT_NADA,
+        SPR_PFTR,
+        5
     }
 };
 
@@ -323,6 +335,12 @@ void G_PowerupActivate(player_t* player, int powerup_id, int duration)
 
     player->powers[powerup_id] = duration;
 
+    // Goblin Dice Rollaz: Glass Cannon - 50% HP reduction
+    if (powerup_id == pw_glasscannon && player->mo)
+    {
+        player->mo->health = (player->mo->health + 1) / 2;
+    }
+
     if (pu->sound != sfx_None && player->mo)
     {
         S_StartSound(player->mo, pu->sound);
@@ -333,6 +351,16 @@ void G_PowerupDeactivate(player_t* player, int powerup_id)
 {
     if (powerup_id < 0 || powerup_id >= NUMPOWERS)
         return;
+
+    // Goblin Dice Rollaz: Glass Cannon - restore 50% HP on expiry
+    if (powerup_id == pw_glasscannon && player->mo)
+    {
+        int current = player->mo->health;
+        int restored = current * 2;
+        int maxhealth = MAXHEALTH;
+        player->mo->health = (restored > maxhealth) ? maxhealth : restored;
+    }
+
     player->powers[powerup_id] = 0;
 }
 
