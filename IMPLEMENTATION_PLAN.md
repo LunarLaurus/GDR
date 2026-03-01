@@ -343,7 +343,7 @@
 - [x] Add Abandoned Excavation (cave-in hazards)
 - [x] Add Deep Drill map theme (crushing drill)
 - [x] Add Crusher Press (timed piston hazards)
-- [ ] Add Steam Vent Corridors (periodic bursts)
+- [x] Add Steam Vent Corridors (periodic bursts)
 - [ ] Add Minecart Gauntlet (runaway carts)
 - [ ] Add Lever Room of Doom (puzzle traps)
 - [ ] Add Turret Foundry (spawning turrets)

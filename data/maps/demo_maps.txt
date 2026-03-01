@@ -504,3 +504,89 @@ TRIGGER: ElectricGrate2
   sector: 53
   action: "damage"
   damage: 8
+
+# ==========================================
+# MAP12: Steam Vent Corridors
+# ==========================================
+
+MAP: MAP12
+NAME: "Steam Vent Corridors"
+INTERPIC: "HELP2"
+MUSIC: "E1M2"
+FLAGS: "NOCLIP"
+
+SECTOR: 60
+  floor_height: 0
+  ceiling_height: 128
+  floor_texture: "FLOOR7_1"
+  ceiling_texture: "CEILING5"
+  light_level: 112
+  type: 0
+  tag: 0
+
+SECTOR: 61
+  floor_height: 0
+  ceiling_height: 96
+  floor_texture: "FLOOR5_1"
+  ceiling_texture: "CEILING5"
+  light_level: 128
+  type: 0
+  tag: 0
+
+SECTOR: 62
+  floor_height: 0
+  ceiling_height: 64
+  floor_texture: "FLOOR7_1"
+  ceiling_texture: "CEILING3"
+  light_level: 144
+  type: 0
+  tag: 0
+
+SECTOR: 63
+  floor_height: 0
+  ceiling_height: 128
+  floor_texture: "FLOOR6_1"
+  ceiling_texture: "CEILING5"
+  light_level: 96
+  type: 0
+  tag: 0
+
+SECTOR: 64
+  floor_height: 0
+  ceiling_height: 96
+  floor_texture: "FLOOR7_1"
+  ceiling_texture: "CEILING5"
+  light_level: 128
+  type: 0
+  tag: 0
+
+LINE: 100
+  v1: 60
+  v2: 61
+  flags: "blocking"
+  special: 0
+  tag: 0
+
+LINE: 101
+  v1: 62
+  v2: 63
+  flags: "blocking"
+  special: 0
+  tag: 0
+
+TRIGGER: SteamBurst1
+  type: "periodic"
+  sector: 62
+  action: "damage"
+  damage: 10
+  interval: 6
+  duration: 2
+
+TRIGGER: SteamBurst2
+  type: "periodic"
+  sector: 64
+  action: "damage"
+  damage: 10
+  interval: 6
+  offset: 3
+  duration: 2

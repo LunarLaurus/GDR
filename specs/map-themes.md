@@ -1876,6 +1876,171 @@ For future theme expansion, use this template:
 
 ## Room Archetypes
 [At least 3 example room types]
+```
+
+---
+
+# Steam Vent Corridors Map Theme
+
+## Theme Identity
+
+The Steam Vent Corridors represent the industrial heart of dwarven mining operations—narrow passages carved through solid rock, punctuated by periodic steam vents that erupt with deafening fury. These corridors serve as transportation routes between mining chambers and smelting facilities, where the constant hiss of escaping steam creates an ever-present white noise backdrop. The combination of tight spaces and deadly steam bursts makes this one of the most dangerous areas in any dwarven stronghold.
+
+## Texture Palette
+
+### Floor Textures
+
+| Texture | Name | Description |
+|---------|------|-------------|
+| FLOOR7_1 | Worn Stone | Smooth, slippery stone worn by centuries of foot traffic |
+| FLOOR5_1 | Metal Grate | Steel grating over drainage channels |
+| FLOOR6_1 | Rust Plate | Corrugated iron plates, rusted from moisture |
+| FLOOR0_3 | Packed Dirt | Dusty floor in less-maintained sections |
+
+### Wall Textures
+
+| Texture | Name | Description |
+|---------|------|-------------|
+| WALL1 | Steam Pipe | Copper pipes running along walls |
+| WALL2 | Riveted Plate | Industrial iron panels with rivets |
+| WALL3 | Stone Brick | Standard dwarven stonework, damp |
+| WALL4 | Condensation | Water-stained stone, slick surfaces |
+| SUPPORT1 | I-Beam | Structural steel support beams |
+
+### Ceiling Textures
+
+| Texture | Name | Description |
+|---------|------|-------------|
+| CEILING5 | Industrial | Standard factory ceiling |
+| CEILING3 | Pipe Grid | Complex network of overhead pipes |
+| CEIL_METL | Metal Deck | Corrugated metal ceiling panels |
+| DUCT1 | Air Duct | Large ventilation ducts |
+
+## Lighting Rules
+
+- **Base light level**: 112 (dim industrial)
+- **Steam vent glow**: +32 light radius during burst, white-yellow
+- **Warning indicator**: Subtle red glow 1 second before burst
+- **Ambient occlusion**: Dark corners where steam obscures light
+
+## Environmental Hazards
+
+### Steam Burst
+- Trigger: Periodic linedef action, 6-second cycle (2s burst, 4s dormant)
+- Damage: 10% health per second while active
+- Visual: White steam sprite, screen blur effect, visibility reduction
+- Audio: Loud hissing sound, warning whistle 1s before burst
+- Counter: Watch for subtle floor glow warning, time movements to burst cycles
+
+### Slippery Floor
+- Trigger: Condensation texture sectors
+- Effect: Reduced movement speed, increased friction damage on falls
+- Visual: Wet sheen on floor textures
+- Counter: Move carefully, watch for steam obscuring hazards
+
+### Hot Pipe Contact
+- Trigger: Proximity to steam pipe linedefs
+- Damage: 2% per second (continuous)
+- Visual: Red glow on pipe textures
+- Counter: Maintain distance from walls with pipe textures
+
+## Enemy Weighting
+
+### Primary (55% spawn rate)
+
+| Enemy | Spawn Weight |
+|-------|-------------|
+| Dwarf Miner | 30% |
+| Dwarf Flamethrower | 15% |
+| Dwarf Tinkerer | 10% |
+
+### Secondary (30% spawn rate)
+
+| Enemy | Spawn Weight |
+|-------|-------------|
+| Dwarf Scrap Drone | 20% |
+| Dwarf Stonecutter | 10% |
+
+### Rare (15% spawn rate)
+
+| Enemy | Spawn Weight |
+|-------|-------------|
+| Dwarf Steam Golem | 10% |
+| Dwarf Mine Layer | 5% |
+
+## Room Archetypes
+
+### Vent Chamber
+```
+Sector configuration:
+- Floor: 0 height
+- Ceiling: 96 height
+- Size: 256x256
+- Features: Central steam vent (sector special), pipes along walls
+- Enemy placement: 4-8 enemies, use cover during bursts
+- Light: Dim, flashes during vent
+- Special: Core hazard room, timing-based traversal
+```
+
+### Corridor Junction
+```
+Sector configuration:
+- Floor: 0 height
+- Ceiling: 128 height
+- Size: 256x512 to 512x512
+- Features: Multiple pipe networks, steam vents at intervals
+- Enemy placement: 6-10 enemies, ambush positions
+- Light: Consistent dim, steam obscures vision
+- Special: Navigation challenge, burst timing critical
+```
+
+### Control Room
+```
+Sector configuration:
+- Floor: 0 height
+- Ceiling: 96 height
+- Size: 256x256
+- Features: Valve controls (decorative), observation windows
+- Enemy placement: 3-5 enemies, support classes
+- Light: Brighter (144), industrial lighting
+- Special: Optional objective, safe during steam bursts
+```
+
+### Maintenance Shaft
+```
+Sector configuration:
+- Floor: 0 height
+- Ceiling: 64 height
+- Size: 128x512
+- Features: Tight passage, many pipes, ladders (visual only)
+- Enemy placement: 2-4 enemies, tight combat
+- Light: Very dim (80), isolated lighting
+- Special: Shortcut route, high risk/reward
+# [Theme Name] Map Theme
+
+## Theme Identity
+[One paragraph describing the theme's atmosphere and story]
+
+## Texture Palette
+### Floor/Wall/Ceiling Tables
+[Include at least 3 variants of each]
+
+## Lighting Rules
+- Base: [number]
+- Ambient bias: [RGB values]
+- Special effects: [descriptions]
+
+## Environmental Hazards
+### [Hazard Name]
+- Trigger: [what activates it]
+- Effect: [what happens]
+- Counter: [how to avoid]
+
+## Enemy Weighting
+[Primary/Secondary/Rare tables]
+
+## Room Archetypes
+[At least 3 example room types]
 
 ## Mapper Checklist
 [5-10 verification items]
