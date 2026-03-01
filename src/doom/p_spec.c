@@ -1095,6 +1095,13 @@ void P_PlayerInSpecialSector (player_t* player)
             if (!(leveltime&0x1f))
                 P_DamageMobj (player->mo, NULL, NULL, 8);
         break;
+
+      case 23:
+        // Goblin Dice Rollaz: CRYSTAL SHARD DAMAGE (crystalline grotto hazard)
+        if (!player->powers[pw_ironfeet])
+            if (!(leveltime&0x1f))
+                P_DamageMobj (player->mo, NULL, NULL, 6);
+        break;
 			
       default:
 	I_Error ("P_PlayerInSpecialSector: "

@@ -339,7 +339,7 @@
 - [x] Add Royal Treasury (pressure plate alarms)
 - [x] Add Veinfall Chasm (minecart traps)
 - [x] Add Flooded Shafts (electrocution hazard)
-- [ ] Add Crystalline Grotto (exploding crystals)
+- [x] Add Crystalline Grotto (exploding crystals)
 - [ ] Add Abandoned Excavation (cave-in hazards)
 - [ ] Add Deep Drill map theme (crushing drill)
 - [ ] Add Crusher Press (timed piston hazards)

@@ -380,7 +380,8 @@ void ST_DrawTimeAttackHUD(void)
 #define STATUSSTUNNEDPAL	16
 #define STATUSCURSEDPAL		17
 #define LOWHEALTHPAL		18
-#define NUMSTATUSPALS		5
+#define STATUSCRYSTALPAL	19
+#define NUMSTATUSPALS		6
 
 // Goblin Dice Rollaz: Low health threshold (percentage of max health)
 #define LOW_HEALTH_THRESHOLD	25
@@ -1357,6 +1358,10 @@ void ST_doPaletteStuff(void)
              plyr->mo->subsector->sector->special == 21 &&
              plyr->mo->z == plyr->mo->subsector->sector->floorheight)
         palette = STATUSBURNINGPAL;
+    else if (plyr->mo && plyr->mo->subsector && plyr->mo->subsector->sector &&
+             plyr->mo->subsector->sector->special == 23 &&
+             plyr->mo->z == plyr->mo->subsector->sector->floorheight)
+        palette = STATUSCRYSTALPAL;
     else if (plyr->mo && G_StatusEffectIsActive(plyr->mo, st_burning))
         palette = STATUSBURNINGPAL;
     else if (plyr->mo && G_StatusEffectIsActive(plyr->mo, st_frozen))
