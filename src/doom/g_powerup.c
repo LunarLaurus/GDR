@@ -230,6 +230,18 @@ powerup_info_t powerups[NUMPOWERS] = {
         MT_NADA,
         SPR_PFTR,
         20
+    },
+    {
+        pw_dashtoken,
+        "Dash Token",
+        DASHTOKEN_TICS,
+        POWERUP_FLAG_TIMED,
+        "DASH TOKEN!",
+        0,
+        sfx_getpow,
+        MT_NADA,
+        SPR_PFTR,
+        30
     }
 };
 

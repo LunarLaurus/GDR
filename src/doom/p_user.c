@@ -29,6 +29,7 @@
 #include "s_sound.h"
 #include "sounds.h"
 #include "g_status.h"
+#include "g_powerup.h"
 
 
 
@@ -37,6 +38,11 @@
 #define INVERSECOLORMAP		32
 #define CRITCOLORMAP		20
 #define DOUBLEDAMAGECOLORMAP	21
+
+// Goblin Dice Rollaz: Dash Token powerup constants
+#define DASH_SPEED		(32*FRACUNIT)
+#define DASH_IFRAME_DURATION	(10)
+#define DASH_COOLDOWN		(15*TICRATE)
 
 
 //
@@ -170,6 +176,37 @@ void P_MovePlayer (player_t* player)
         // Legacy freeze_tics: reduce movement speed by 50%
         forward_scale = 1024;
         side_scale = 1024;
+    }
+
+    // Goblin Dice Rollaz: Handle Dash Token powerup
+    if (player->dash_cooldown > 0)
+    {
+        player->dash_cooldown--;
+    }
+
+    if (player->dash_iframes > 0)
+    {
+        player->dash_iframes--;
+        if (player->dash_iframes > 0)
+        {
+            player->mo->flags |= MF_INVULNERABLE;
+            player->fixedcolormap = INVERSECOLORMAP;
+        }
+        else
+        {
+            player->mo->flags &= ~MF_INVULNERABLE;
+            player->fixedcolormap = 0;
+        }
+    }
+
+    // Goblin Dice Rollaz: Trigger dash when moving forward with Dash Token
+    if (G_PowerupIsActive(player, pw_dashtoken) && player->dash_cooldown == 0 && cmd->forwardmove > 0 && onground)
+    {
+        P_Thrust(player, player->mo->angle, DASH_SPEED);
+        player->dash_iframes = DASH_IFRAME_DURATION;
+        player->dash_cooldown = DASH_COOLDOWN;
+        player->mo->flags |= MF_INVULNERABLE;
+        player->fixedcolormap = INVERSECOLORMAP;
     }
 	
     player->mo->angle += (cmd->angleturn<<FRACBITS);

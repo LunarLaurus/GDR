@@ -200,6 +200,12 @@ typedef struct player_s
     // Angle offset when mounted (for rotating siege weapon)
     angle_t		siege_weapon_angle;
 
+    // Goblin Dice Rollaz: Dash Token powerup state
+    // Cooldown between dashes (in tics)
+    int			dash_cooldown;
+    // Invulnerability frames during dash (in tics)
+    int			dash_iframes;
+
 } player_t;
 
 
