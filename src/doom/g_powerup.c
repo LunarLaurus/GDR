@@ -254,6 +254,18 @@ powerup_info_t powerups[NUMPOWERS] = {
         MT_NADA,
         SPR_PFTR,
         20
+    },
+    {
+        pw_wallwalker,
+        "Wall Walker",
+        WALLWALKERTICS,
+        POWERUP_FLAG_TIMED,
+        "WALL WALKER!",
+        0,
+        sfx_getpow,
+        MT_NADA,
+        SPR_PFTR,
+        15
     }
 };
 

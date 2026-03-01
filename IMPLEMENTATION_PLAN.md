@@ -364,7 +364,7 @@
 - [x] Add Greed Is Good powerup (ammo on dwarf kills)
 - [x] Add Dash Token powerup (dash with iframes)
 - [x] Add Ghost Step powerup (pass through enemies)
-- [ ] Add Wall Walker powerup (ceiling traversal)
+- [x] Add Wall Walker powerup (ceiling traversal)
 - [ ] Add Trap Sense powerup (highlight mines)
 - [ ] Add Vitality Crystal powerup (permanent +25 HP)
 - [ ] Add Luck Stone powerup (permanent +5% crit)

@@ -523,14 +523,21 @@ P_TryMove
     
     if ( !(thing->flags & MF_NOCLIP) )
     {
-	if (tmceilingz - tmfloorz < thing->height)
-	    return false;	// doesn't fit
+        // Goblin Dice Rollaz: Wall Walker powerup - ignore ceiling restrictions
+        boolean wallwalker_active = false;
+        if (thing->player && G_PowerupIsActive(thing->player, pw_wallwalker))
+        {
+            wallwalker_active = true;
+        }
 
-	floatok = true;
-	
-	if ( !(thing->flags&MF_TELEPORT) 
-	     &&tmceilingz - thing->z < thing->height)
-	    return false;	// mobj must lower itself to fit
+        if (!wallwalker_active && tmceilingz - tmfloorz < thing->height)
+            return false;	// doesn't fit
+
+        floatok = true;
+        
+        if (!wallwalker_active && !(thing->flags&MF_TELEPORT)
+             &&tmceilingz - thing->z < thing->height)
+            return false;	// mobj must lower itself to fit
 
 	if ( !(thing->flags&MF_TELEPORT)
 	     && tmfloorz - thing->z > 24*FRACUNIT )
