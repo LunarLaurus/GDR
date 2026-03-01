@@ -1122,6 +1122,57 @@ void P_PlayerInSpecialSector (player_t* player)
         if (!(leveltime&0x1f))
             P_DamageMobj (player->mo, NULL, NULL, 20);
         break;
+
+      case 27:
+        // Goblin Dice Rollaz: PUZZLE TRAP (lever room of doom)
+        // Instant death trap - triggered when player stands on it
+        if (!(leveltime&0xf))
+            P_DamageMobj (player->mo, NULL, NULL, 30);
+        break;
+
+      case 28:
+        // Goblin Dice Rollaz: TURRET FOUNDRY (spawning turrets)
+        // Medium damage from turret fire
+        if (!(leveltime&0x1f))
+            P_DamageMobj (player->mo, NULL, NULL, 7);
+        break;
+
+      case 29:
+        // Goblin Dice Rollaz: GOBLIN AMBUSH (warren warrens)
+        // Sudden attack damage from goblins popping out
+        if (!(leveltime&0x1f))
+            P_DamageMobj (player->mo, NULL, NULL, 8);
+        break;
+
+      case 30:
+        // Goblin Dice Rollaz: TOTEM CHAMBER (goblin totem buffs)
+        // Low continuous damage unless player has totem protection
+        if (!player->powers[pw_ironfeet])
+            if (!(leveltime&0x3f))
+                P_DamageMobj (player->mo, NULL, NULL, 3);
+        break;
+
+      case 31:
+        // Goblin Dice Rollaz: SLOP KITCHEN (environmental kills)
+        // Toxic slime damage
+        if (!player->powers[pw_ironfeet])
+            if (!(leveltime&0x1f))
+                P_DamageMobj (player->mo, NULL, NULL, 12);
+        break;
+
+      case 32:
+        // Goblin Dice Rollaz: SCRAP METAL FORTRESS (explosive barrels)
+        // Proximity explosion damage
+        if (!(leveltime&0xf))
+            P_DamageMobj (player->mo, NULL, NULL, 18);
+        break;
+
+      case 33:
+        // Goblin Dice Rollaz: BONE PIT (released cage monsters)
+        // Bone shard damage from rising skeletons
+        if (!(leveltime&0x1f))
+            P_DamageMobj (player->mo, NULL, NULL, 10);
+        break;
 			
       default:
 	I_Error ("P_PlayerInSpecialSector: "
