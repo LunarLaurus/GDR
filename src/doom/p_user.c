@@ -457,6 +457,11 @@ void P_PlayerThink (player_t* player)
         }
         player->powers[pw_doubledamage]--;
     }
+
+    if (player->powers[pw_trapsense])
+    {
+        player->powers[pw_trapsense]--;
+    }
 		
     if (player->damagecount)
 	player->damagecount--;

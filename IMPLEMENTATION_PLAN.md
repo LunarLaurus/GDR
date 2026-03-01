@@ -365,7 +365,7 @@
 - [x] Add Dash Token powerup (dash with iframes)
 - [x] Add Ghost Step powerup (pass through enemies)
 - [x] Add Wall Walker powerup (ceiling traversal)
-- [ ] Add Trap Sense powerup (highlight mines)
+- [x] Add Trap Sense powerup (highlight mines)
 - [ ] Add Vitality Crystal powerup (permanent +25 HP)
 - [ ] Add Luck Stone powerup (permanent +5% crit)
 - [ ] Add Ammo Pouch powerup (permanent +50% ammo)

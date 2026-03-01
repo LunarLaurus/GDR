@@ -1660,6 +1660,7 @@ typedef enum {
     MT_DWARF_SKYMINER,         // Goblin Dice Rollaz: Dwarf Sky Miner (flying, hover attacks)
     MT_SKYMINER_MINE,         // Goblin Dice Rollaz: Mine dropped by Sky Miner
     MT_DWARF_MINELAYER,       // Goblin Dice Rollaz: Dwarf Mine Layer (plants proximity mines)
+    MT_MINELAYER_MINE,        // Goblin Dice Rollaz: Proximity mine planted by Mine Layer
     MT_REPAIR_DRONE,         // Goblin Dice Rollaz: Repair drone spawned by Tinkerer
     MT_DWARF_TINKERER,       // Goblin Dice Rollaz: Dwarf Tinkerer (repair drones for mechanicals)
     MT_STEAM_CLOUD,           // Goblin Dice Rollaz: Steam cloud projectile for Steam Golem

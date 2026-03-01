@@ -266,6 +266,18 @@ powerup_info_t powerups[NUMPOWERS] = {
         MT_NADA,
         SPR_PFTR,
         15
+    },
+    {
+        pw_trapsense,
+        "Trap Sense",
+        TRAPSENSETICS,
+        POWERUP_FLAG_TIMED,
+        "TRAP SENSE!",
+        0,
+        sfx_getpow,
+        MT_NADA,
+        SPR_PFTR,
+        10
     }
 };
 

@@ -34,6 +34,7 @@
 #include "r_local.h"
 
 #include "doomstat.h"
+#include "g_powerup.h"
 
 
 
@@ -666,13 +667,20 @@ void R_ProjectSprite (mobj_t* thing)
     // get light level
     if (thing->flags & MF_SHADOW)
     {
-	// shadow draw
-	vis->colormap = NULL;
+        // shadow draw
+        vis->colormap = NULL;
     }
     else if (fixedcolormap)
     {
-	// fixed map
-	vis->colormap = fixedcolormap;
+        // fixed map
+        vis->colormap = fixedcolormap;
+    }
+    else if ((thing->type == MT_SKYMINER_MINE || thing->type == MT_MINELAYER_MINE
+             || (thing->flags & MF_MININGCHARGE))
+             && G_PowerupIsActive(&players[consoleplayer], pw_trapsense))
+    {
+        // Trap Sense powerup - highlight mines with full brightness
+        vis->colormap = colormaps;
     }
     else if (thing->frame & FF_FULLBRIGHT)
     {
