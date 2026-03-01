@@ -1102,6 +1102,13 @@ void P_PlayerInSpecialSector (player_t* player)
             if (!(leveltime&0x1f))
                 P_DamageMobj (player->mo, NULL, NULL, 6);
         break;
+
+      case 24:
+        // Goblin Dice Rollaz: CRUSHING DRILL DAMAGE (deep drill hazard)
+        if (!player->powers[pw_ironfeet])
+            if (!(leveltime&0x1f))
+                P_DamageMobj (player->mo, NULL, NULL, 15);
+        break;
 			
       default:
 	I_Error ("P_PlayerInSpecialSector: "
