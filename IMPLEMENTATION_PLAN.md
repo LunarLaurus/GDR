@@ -340,7 +340,7 @@
 - [x] Add Veinfall Chasm (minecart traps)
 - [x] Add Flooded Shafts (electrocution hazard)
 - [x] Add Crystalline Grotto (exploding crystals)
-- [ ] Add Abandoned Excavation (cave-in hazards)
+- [x] Add Abandoned Excavation (cave-in hazards)
 - [ ] Add Deep Drill map theme (crushing drill)
 - [ ] Add Crusher Press (timed piston hazards)
 - [ ] Add Steam Vent Corridors (periodic bursts)

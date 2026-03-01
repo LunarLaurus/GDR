@@ -1685,6 +1685,167 @@ Sector configuration:
 - Abandoned equipment may contain hidden weapons
 - Cart routes sometimes lead to secret areas
 
+---
+
+# Abandoned Excavation Map Theme
+
+## Theme Identity
+
+The Abandoned Excavation theme represents the oldest and most forgotten sections of the dwarven mines—collapsed tunnels, unstable ceilings, and areas where the mountain itself has begun to reclaim the stonework. These are places even the dwarves fled from, leaving behind only forgotten tools, buried treasure, and the constant threat of cave-ins.
+
+## Texture Palette
+
+### Floor Textures
+
+| Texture | Name | Description |
+|---------|------|-------------|
+| ABND1 | Rubble Floor | Scattered rocks and debris |
+| ABND2 | Collapsed Planks | Broken wooden boards |
+| ABND3 | Dusty Stone | Thick layer of dust and grime |
+| ABND4 | Cracked Floor | Deep cracks in stone |
+| ABND5 | Sinkhole | Dark pit in floor |
+
+### Wall Textures
+
+| Texture | Name | Description |
+|---------|------|-------------|
+| CRUM1 | Crumbling Wall | Unstable rock face with loose stones |
+| CRUM2 | Collapsed Brick | Toppled brickwork |
+| CRUM3 | Timber Retaining | Broken wooden supports |
+| CRUM4 | Faded壁画 | Ancient faded dwarven carvings |
+| CRUM5 | Root Infiltration | Gnarled roots breaking through stone |
+| DEBRIS | Loose Rock | Piles of fallen stone |
+
+### Ceiling Textures
+
+| Texture | Name | Description |
+|---------|------|-------------|
+| CRUM_C1 | Unstable Ceiling | Cracked ceiling ready to fall |
+| CRUM_C2 | Partial Collapse | Ceiling with hole showing rock above |
+| CRUM_C3 | Timber Support | Failing wooden beams overhead |
+| CRUM_C4 | Dust Cloud | Persistent dust in air |
+
+## Lighting Rules
+
+- **Base light level**: 32 (extremely dark, dangerous)
+- **Emergency lamp**: +32 light radius, flickering yellow
+- **Crack glow**: +24 light from fissures, orange-red (lava far below)
+- **Ambient dust**: Particles visible in light beams
+- **Ambient bias**: Dark grey (RGB: 40, 40, 45)
+- **Shadow zones**: 8 light level in deepest areas
+- **Fog**: Heavy dust fog at ranges > 384 units
+
+### Light Source Types
+
+1. **Flickering Lamp** (point light): Radius 96, intensity 0.6, unstable yellow
+2. **Magma Crack** (point light): Radius 64, intensity 0.4, deep orange-red
+3. **Player torch** (point light): Radius 192, intensity 1.0, warm
+4. **Emergency Exit Sign** (point light): Radius 48, intensity 0.3, green (rare)
+
+## Environmental Hazards
+
+### Cave-In (Primary Hazard)
+- Trigger: Player spending too long in unstable zone (8-15 seconds) or shooting supports
+- Damage: 50-80% health (severe), knockback, possible instant death
+- Visual: Massive rockfall sprites, dust cloud, ceiling collapse
+- Audio: Deep rumbling, cracking, massive crash
+- Warning: Cracking sounds 5-8 seconds before collapse, dust falls continuously
+- Counter: Move quickly through unstable areas, don't linger, don't shoot walls
+- Special: Some areas have structural supports that can be repaired (delayed hazard)
+
+### Unstable Floor
+- Trigger: Player weight on weakened floor section
+- Damage: 30% fall damage through floor to lower level
+- Visual: Floor gives way, debris falls
+- Audio: Cracking, falling
+- Warning: Floor looks darker/hollow, dust falls from below
+- Counter: Test floors before full weight, look for cracks
+- Special: Some floors hide tunnels/secret areas below
+
+### Falling Debris
+- Trigger: Random or proximity to disturbed areas
+- Damage: 10-20% health per strike
+- Visual: Rock sprites falling individually or in small groups
+- Audio: Clattering rocks, impact
+- Warning: Small debris falls before major collapse
+- Counter: Keep moving, avoid standing under damaged sections
+
+### Dust Cloud
+- Trigger: Disturbance in dusty areas
+- Effect: Visibility reduced to 50%, -20% combat effectiveness
+- Duration: 5-10 seconds after disturbance
+- Visual: Particle effect obscuring view
+- Counter: Move carefully, watch for enemies in dust
+
+## Enemy Weighting
+
+### Primary (Common)
+- Goblin Scavenger: 40%
+- Kobold Sneak: 30%
+- Giant Rat: 20%
+- Cave Bat: 10%
+
+### Secondary (Uncommon)
+- Goblin Miner: 25%
+- Dwarf Deserter: 25%
+- Skeleton Remains: 25%
+- Mold Beast: 25%
+
+### Rare (Boss/Elite)
+- Cave Troll: 50%
+- Dwarf Juggernaut: 30%
+- Corrupted Golem: 20%
+
+## Room Archetypes
+
+### Collapsed Tunnel
+- Description: Narrow passage blocked by rubble, requires squeezing through
+- Hazards: Ceiling collapse trigger zone at exit
+- Enemies: Ambush at far end (2-4)
+- Treasure: Hidden in rubble (requires interaction)
+- Strategy: Move quickly, don't stop in collapse zone
+
+### Unstable Chamber
+- Description: Large room with visible ceiling damage
+- Hazards: Multiple collapse zones, falling debris
+- Enemies: Wave spawn (3-5), then treasure appears
+- Treasure: Central pile, requires clearing to access
+- Strategy: Stay near walls, move between safe zones
+
+### Forgotten Armory
+- Description: Old storage room with abandoned equipment
+- Hazards: Some equipment triggers collapse
+- Enemies: 2-3 guarding area, one elite possible
+- Treasure: Weapons, potentially cursed
+- Strategy: Check equipment before grabbing, watch for traps
+
+### Sinkhole Pit
+- Description: Floor has collapsed to lower level
+- Hazards: Fall damage, lower level enemies, exit climb
+- Enemies: 3-5 on lower level
+- Treasure: Lower level has secret cache
+- Strategy: Jump carefully or find alternate route
+
+### Support Column Room
+- Description: Room with remaining structural supports
+- Hazards: Shooting supports triggers collapse
+- Enemies: 4-6, use supports for cover
+- Treasure: Hidden in ceiling cavity above
+- Strategy: Don't damage supports, use pillars for cover
+
+## Mapper Checklist
+
+- [ ] All collapse zones clearly marked or discoverable
+- [ ] At least one safe path through each unstable area
+- [ ] Treasure placed after enemy waves, not in collapse zones
+- [ ] Audio warnings placed before all major collapse triggers
+- [ ] Dust particle effects in appropriate areas
+- [ ] Lighting creates tension without being impossible
+- [ ] Enemy placement encourages movement, not camping
+- [ ] Multiple paths through large collapse areas
+- [ ] Secret areas accessible without triggering collapse
+- [ ] Final room has climactic hazard encounter
+
 ## Shared Theme Documentation Template
 
 For future theme expansion, use this template:
