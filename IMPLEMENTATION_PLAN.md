@@ -344,7 +344,7 @@
 - [x] Add Deep Drill map theme (crushing drill)
 - [x] Add Crusher Press (timed piston hazards)
 - [x] Add Steam Vent Corridors (periodic bursts)
-- [ ] Add Minecart Gauntlet (runaway carts)
+- [x] Add Minecart Gauntlet (runaway carts)
 - [ ] Add Lever Room of Doom (puzzle traps)
 - [ ] Add Turret Foundry (spawning turrets)
 - [ ] Add Warren Warrens (goblin ambush tunnels)

@@ -1116,6 +1116,12 @@ void P_PlayerInSpecialSector (player_t* player)
             if (!(leveltime&0x3f))
                 P_DamageMobj (player->mo, NULL, NULL, 25);
         break;
+
+      case 26:
+        // Goblin Dice Rollaz: MINECART GAUNTLET (runaway cart hazard)
+        if (!(leveltime&0x1f))
+            P_DamageMobj (player->mo, NULL, NULL, 20);
+        break;
 			
       default:
 	I_Error ("P_PlayerInSpecialSector: "
