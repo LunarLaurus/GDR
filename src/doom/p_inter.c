@@ -805,16 +805,20 @@ P_TouchSpecialThing
 	break;
 	
       case SPR_MEGA:
-	if (gamemode != commercial)
+	// Standard Mega Sphere behavior (commercial Doom only)
+	if (gamemode == commercial)
+	{
+	    player->health = deh_megasphere_health;
+	    player->mo->health = player->health;
+	    P_GiveArmor (player, 2);
+	    player->message = DEH_String(GOTMSPHERE);
+	    if (gameversion > exe_doom_1_2)
+		sound = sfx_getpow;
+	}
+
+	// Goblin Dice Rollaz: Also give Vitality Crystal (+25 permanent HP)
+	if (!P_GivePower(player, pw_vitalitycrystal))
 	    return;
-	player->health = deh_megasphere_health;
-	player->mo->health = player->health;
-        // We always give armor type 2 for the megasphere; dehacked only 
-        // affects the MegaArmor.
-	P_GiveArmor (player, 2);
-	player->message = DEH_String(GOTMSPHERE);
-	if (gameversion > exe_doom_1_2)
-	    sound = sfx_getpow;
 	break;
 	
 	// cards

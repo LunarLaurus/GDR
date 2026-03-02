@@ -300,7 +300,7 @@ powerup_info_t powerups[NUMPOWERS] = {
         0,
         sfx_getpow,
         MT_NADA,
-        SPR_PFTR,
+        SPR_MEGA,
         10
     }
 };
@@ -351,12 +351,6 @@ void G_PowerupActivate(player_t* player, int powerup_id, int duration)
     if (powerup_id == pw_glasscannon && player->mo)
     {
         player->mo->health = (player->mo->health + 1) / 2;
-    }
-
-    // Goblin Dice Rollaz: Vitality Crystal - +25 permanent HP
-    if (powerup_id == pw_vitalitycrystal && player->mo)
-    {
-        player->mo->health += 25;
     }
 
     if (pu->sound != sfx_None && player->mo)
