@@ -488,6 +488,12 @@ void P_PlayerThink (player_t* player)
             }
         }
     }
+
+    // Goblin Dice Rollaz: Cursed D4 - 3x damage, no armor protection
+    if (player->powers[pw_cursedd4])
+    {
+        player->powers[pw_cursedd4]--;
+    }
 		
     if (player->damagecount)
 	player->damagecount--;

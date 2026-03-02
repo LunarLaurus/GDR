@@ -199,6 +199,7 @@ typedef enum
     pw_luckstone,
     pw_ammopouch,
     pw_berserkerregen,
+    pw_cursedd4,
     NUMPOWERS
     
 } powertype_t;
@@ -231,7 +232,8 @@ typedef enum
     VITALITYCRYSTALTICS = 1,
     LUCKSTONETICS = 1,
     AMMOPOUCHTICS = 1,
-    BERSERKERREGTICS = (45*TICRATE)
+    BERSERKERREGTICS = (45*TICRATE),
+    CURSEDD4TICS = (30*TICRATE)
     
 } powerduration_t;
 

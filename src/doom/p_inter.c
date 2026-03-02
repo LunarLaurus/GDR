@@ -1430,6 +1430,13 @@ P_DamageMobj
             P_BroadcastCritMessage(source->player - players, "GLASS CANNON!", false, damage);
         }
 
+        // Goblin Dice Rollaz: Apply Cursed D4 powerup - 3x damage
+        if (source->player->powers[pw_cursedd4])
+        {
+            damage *= 3;
+            P_BroadcastCritMessage(source->player - players, "CURSED D4!", false, damage);
+        }
+
         // Goblin Dice Rollaz: Apply Snake Eyes powerup - double damage on hit
         if (source->player->powers[pw_snakeeyes] && target && !(target->flags & MF_CORPSE))
         {
@@ -1735,19 +1742,29 @@ P_DamageMobj
 	
 	if (player->armortype)
 	{
-	    if (player->armortype == 1)
-		saved = damage/3;
-	    else
-		saved = damage/2;
-	    
-	    if (player->armorpoints <= saved)
+	    // Goblin Dice Rollaz: Cursed D4 powerup - lose armor protection
+	    int armorLossFactor = 1;
+	    if (player->powers[pw_cursedd4])
 	    {
-		// armor is used up
-		saved = player->armorpoints;
-		player->armortype = 0;
+	        armorLossFactor = 0; // Cursed D4: no armor protection
 	    }
-	    player->armorpoints -= saved;
-	    damage -= saved;
+
+	    if (armorLossFactor > 0)
+	    {
+	        if (player->armortype == 1)
+		    saved = damage/3;
+	        else
+		    saved = damage/2;
+	    
+	        if (player->armorpoints <= saved)
+	        {
+		    // armor is used up
+		    saved = player->armorpoints;
+		    player->armortype = 0;
+	        }
+	        player->armorpoints -= saved;
+	        damage -= saved;
+	    }
 	}
 	player->health -= damage; 	// mirror mobj health here for Dave
 	if (player->health < 0)

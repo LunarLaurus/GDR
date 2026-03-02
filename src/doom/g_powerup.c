@@ -338,6 +338,18 @@ powerup_info_t powerups[NUMPOWERS] = {
         MT_NADA,
         SPR_PSTR,
         15
+    },
+    {
+        pw_cursedd4,
+        "Cursed D4",
+        CURSEDD4TICS,
+        POWERUP_FLAG_TIMED | POWERUP_FLAG_EXCLUSIVE,
+        "CURSED D4!",
+        CRITCOLORMAP,
+        sfx_getpow,
+        MT_NADA,
+        SPR_PFTR,
+        5
     }
 };
 
