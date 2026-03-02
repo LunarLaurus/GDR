@@ -46,6 +46,12 @@ int R_FlatNumForName(const char *name);
 byte* R_GetFlatMipmap(int flatnum, fixed_t planeheight);
 int R_GetFlatMipmapSize(int miplevel);
 
+// Texture mipmap functions for wall distance-based LOD
+void R_InitTextureMipmaps(void);
+byte* R_GetTextureMipmap(int texnum, fixed_t distance);
+void R_GetTextureMipmapSize(int texnum, fixed_t distance, int *width, int *height);
+byte* R_GetTextureColumnLOD(int texnum, int col, fixed_t distance);
+
 
 // Called by P_Ticker for switches and animations,
 // returns the texture number for the texture name.

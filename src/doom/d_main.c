@@ -177,6 +177,9 @@ int             debug_sync_check = 0;
 // Goblin Dice Rollaz: modern visual effects toggle
 extern int      goblin_modern_fx;
 
+// Goblin Dice Rollaz: texture LOD toggle
+extern int      goblin_texture_lod;
+
 // Goblin Dice Rollaz: arena lock system
 int             arena_lock_tag = 666;
 int             arena_locked = 0;
@@ -482,6 +485,9 @@ void D_BindVariables(void)
 
     // Goblin Dice Rollaz: modern visual effects toggle
     M_BindIntVariable("goblin_modern_fx",             &goblin_modern_fx);
+
+    // Goblin Dice Rollaz: texture LOD toggle
+    M_BindIntVariable("goblin_texture_lod",            &goblin_texture_lod);
 
     // Goblin Dice Rollaz: Crosshair customization
     M_BindIntVariable("dice_crosshair_enabled", &dice_crosshair_enabled);

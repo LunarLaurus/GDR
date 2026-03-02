@@ -161,6 +161,14 @@ int*		texturetranslation;
 static byte** flatmipmap[NUM_FLAT_MIPMAPS];
 static boolean flatmipmaps_initialized = false;
 
+// Texture mipmap levels for wall distance optimization
+// texturemipmap[m][texnum] = mipmap data for texture at miplevel m
+#define NUM_TEXTURE_MIPMAPS 3
+static byte** texturemipmap[NUM_TEXTURE_MIPMAPS];
+static int* texturemipmap_widths[NUM_TEXTURE_MIPMAPS];
+static int* texturemipmap_heights[NUM_TEXTURE_MIPMAPS];
+static boolean texturemipmaps_initialized = false;
+
 // needed for pre rendering
 fixed_t*	spritewidth;	
 fixed_t*	spriteoffset;
@@ -802,6 +810,8 @@ void R_InitData (void)
     printf (".");
     R_InitFlats ();
     printf (".");
+    R_InitTextureMipmaps();
+    printf (".");
     R_InitSpriteLumps ();
     printf (".");
     R_InitColormaps ();
@@ -867,7 +877,187 @@ int R_GetFlatMipmapSize(int miplevel)
     return 64 >> miplevel;
 }
 
+//
+// R_InitTextureMipmaps
+// Generate mipmap versions of wall textures for distance-based LOD
+//
+void R_InitTextureMipmaps(void)
+{
+    int texnum;
+    int m;
+    texture_t *texture;
+    byte *mipdata;
+    int mipwidth;
+    int mipheight;
+    int srcwidth;
+    int srcheight;
+    int x, y;
 
+    if (texturemipmaps_initialized)
+	return;
+
+    for (m = 1; m < NUM_TEXTURE_MIPMAPS; m++)
+    {
+	texturemipmap[m] = Z_Malloc(numtextures * sizeof(byte*), PU_STATIC, NULL);
+	texturemipmap_widths[m] = Z_Malloc(numtextures * sizeof(int), PU_STATIC, NULL);
+	texturemipmap_heights[m] = Z_Malloc(numtextures * sizeof(int), PU_STATIC, NULL);
+    }
+
+    for (texnum = 0; texnum < numtextures; texnum++)
+    {
+	texture = textures[texnum];
+	if (!texture)
+	    continue;
+
+	srcwidth = texture->width;
+	srcheight = texture->height;
+
+	for (m = 1; m < NUM_TEXTURE_MIPMAPS; m++)
+	{
+	    mipwidth = srcwidth >> m;
+	    mipheight = srcheight >> m;
+
+	    if (mipwidth < 1) mipwidth = 1;
+	    if (mipheight < 1) mipheight = 1;
+
+	    texturemipmap_widths[m][texnum] = mipwidth;
+	    texturemipmap_heights[m][texnum] = mipheight;
+
+	    if (!texturecomposite[texnum])
+		R_GenerateComposite(texnum);
+
+	    if (texturecomposite[texnum] && mipwidth >= 4 && mipheight >= 4)
+	    {
+		texturemipmap[m][texnum] = Z_Malloc(mipwidth * mipheight, PU_STATIC, NULL);
+		mipdata = texturemipmap[m][texnum];
+
+		for (y = 0; y < mipheight; y++)
+		{
+		    for (x = 0; x < mipwidth; x++)
+		    {
+			int sx = x * srcwidth / mipwidth;
+			int sy = y * srcheight / mipheight;
+			int sum = 0;
+			int count = 0;
+			int sx2 = (x + 1) * srcwidth / mipwidth;
+			int sy2 = (y + 1) * srcheight / mipheight;
+			int cx, cy;
+
+			for (cy = sy; cy < sy2 && cy < srcheight; cy++)
+			{
+			    for (cx = sx; cx < sx2 && cx < srcwidth; cx++)
+			    {
+				sum += texturecomposite[texnum][cy * srcwidth + cx];
+				count++;
+			    }
+			}
+			mipdata[y * mipwidth + x] = count > 0 ? sum / count : 0;
+		    }
+		}
+	    }
+	}
+    }
+
+    texturemipmaps_initialized = true;
+    printf(".");
+}
+
+//
+// R_GetTextureMipmap
+// Returns the appropriate mipmap data for a wall texture based on distance.
+// Returns NULL if too close (use full resolution).
+//
+byte* R_GetTextureMipmap(int texnum, fixed_t distance)
+{
+    int miplevel;
+    int threshold;
+
+    if (!texturemipmaps_initialized || texnum < 0 || texnum >= numtextures)
+	return NULL;
+
+    if (!texturemipmap[1][texnum])
+	return NULL;
+
+    threshold = 256 * FRACUNIT;
+    if (distance <= threshold)
+	return NULL;
+    else if (distance <= 512 * FRACUNIT)
+	miplevel = 1;
+    else if (distance <= 1024 * FRACUNIT)
+	miplevel = 2;
+    else
+	miplevel = 2;
+
+    return texturemipmap[miplevel][texnum];
+}
+
+//
+// R_GetTextureColumnLOD
+// Gets a texture column with LOD applied based on distance.
+// This function returns the appropriate column data for the given distance,
+// allowing distant walls to use lower resolution texture sampling.
+//
+byte* R_GetTextureColumnLOD(int texnum, int col, fixed_t distance)
+{
+    byte *mipmap;
+    int mipwidth;
+    int fullwidth;
+    int mipcol;
+
+    if (texnum < 0 || texnum >= numtextures)
+	return R_GetColumn(texnum, col);
+
+    fullwidth = textures[texnum]->width;
+    if (fullwidth <= 0)
+	return R_GetColumn(texnum, col);
+
+    mipmap = R_GetTextureMipmap(texnum, distance);
+    if (!mipmap)
+	return R_GetColumn(texnum, col);
+
+    R_GetTextureMipmapSize(texnum, distance, &mipwidth, NULL);
+
+    mipcol = (col * mipwidth) / fullwidth;
+    if (mipcol >= mipwidth)
+	mipcol = mipwidth - 1;
+
+    return mipmap + mipcol;
+}
+
+//
+// R_GetTextureMipmapSize
+// Returns the dimensions of the mipmap level for a texture
+//
+void R_GetTextureMipmapSize(int texnum, fixed_t distance, int *width, int *height)
+{
+    int miplevel;
+    int threshold;
+
+    *width = 0;
+    *height = 0;
+
+    if (!texturemipmaps_initialized || texnum < 0 || texnum >= numtextures)
+	return;
+
+    threshold = 256 * FRACUNIT;
+    if (distance <= threshold)
+	miplevel = 0;
+    else if (distance <= 512 * FRACUNIT)
+	miplevel = 1;
+    else
+	miplevel = 2;
+
+    if (miplevel == 0)
+    {
+	*width = textures[texnum]->width;
+	*height = textures[texnum]->height;
+    }
+    else
+    {
+	*width = texturemipmap_widths[miplevel][texnum];
+	*height = texturemipmap_heights[miplevel][texnum];
+    }
+}
 
 
 //
