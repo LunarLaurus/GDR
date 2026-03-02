@@ -1329,8 +1329,10 @@ void G_PlayerReborn (int player)
 	 
     p = &players[player]; 
     memset (p, 0, sizeof(*p)); 
- 
-    memcpy (players[player].frags, frags, sizeof(players[player].frags)); 
+
+    p->madness_damage_mod = 100;
+
+    memcpy (players[player].frags, frags, sizeof(players[player].frags));
     players[player].killcount = killcount; 
     players[player].itemcount = itemcount; 
     players[player].secretcount = secretcount; 

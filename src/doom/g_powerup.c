@@ -362,6 +362,18 @@ powerup_info_t powerups[NUMPOWERS] = {
         MT_NADA,
         SPR_PFTR,
         10
+    },
+    {
+        pw_madnessdie,
+        "Madness Die",
+        MADNESSDIETICS,
+        POWERUP_FLAG_TIMED | POWERUP_FLAG_EXCLUSIVE,
+        "MADNESS DIE!",
+        CRITCOLORMAP,
+        sfx_getpow,
+        MT_NADA,
+        SPR_PFTR,
+        15
     }
 };
 

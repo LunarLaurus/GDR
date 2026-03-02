@@ -206,6 +206,9 @@ typedef struct player_s
     // Invulnerability frames during dash (in tics)
     int			dash_iframes;
 
+    // Goblin Dice Rollaz: Madness Die powerup damage modifier (100 = normal)
+    int			madness_damage_mod;
+
 } player_t;
 
 

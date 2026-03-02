@@ -1212,6 +1212,24 @@ P_KillMobj
 		P_GiveAmmo(source->player, am_lightdice, 2 + (P_Random() % 3));
 	    }
 	}
+
+	// Goblin Dice Rollaz: Madness Die powerup - random +/- on kills
+	if (source->player->powers[pw_madnessdie] && (target->flags & MF_COUNTKILL))
+	{
+	    int madnessRoll = P_Random() % 100;
+	    if (madnessRoll < 60)
+	    {
+		source->player->madness_damage_mod = 150;
+		if (source == &players[consoleplayer].mo)
+		    players[consoleplayer].message = "MADNESS! +50% NEXT DAMAGE!";
+	    }
+	    else
+	    {
+		source->player->madness_damage_mod = 75;
+		if (source == &players[consoleplayer].mo)
+		    players[consoleplayer].message = "MADNESS! -25% NEXT DAMAGE!";
+	    }
+	}
     }
     else if (!netgame && (target->flags & MF_COUNTKILL) )
     {
@@ -1442,6 +1460,20 @@ P_DamageMobj
         {
             damage *= 2;
             P_BroadcastCritMessage(source->player - players, "SNAKE EYES!", false, damage);
+        }
+
+        // Goblin Dice Rollaz: Apply Madness Die damage modifier (consumed on use)
+        if (source->player->madness_damage_mod != 100)
+        {
+            damage = (damage * source->player->madness_damage_mod) / 100;
+            if (source == &players[consoleplayer].mo)
+            {
+                if (source->player->madness_damage_mod > 100)
+                    P_BroadcastCritMessage(source->player - players, "MADNESS FURY!", false, damage);
+                else
+                    P_BroadcastCritMessage(source->player - players, "MADNESS WEAKNESS!", false, damage);
+            }
+            source->player->madness_damage_mod = 100;
         }
 
         // Goblin Dice Rollaz: Apply Dice Curse damage variance

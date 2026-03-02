@@ -372,7 +372,7 @@
 - [x] Add Berserker Regen powerup (regen at low HP)
 - [x] Add Cursed D4 powerup (3x dmg, lose armor)
 - [x] Add Blood Pact powerup (infinite ammo, health drain)
-- [ ] Add Madness Die powerup (random +/- on kills)
+- [x] Add Madness Die powerup (random +/- on kills)
 - [x] Add Glass Cannon powerup (2x dmg, 50% HP)
 
 ### Phase 18: Code Quality Improvements

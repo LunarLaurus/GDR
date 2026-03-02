@@ -201,6 +201,7 @@ typedef enum
     pw_berserkerregen,
     pw_cursedd4,
     pw_bloodpact,
+    pw_madnessdie,
     NUMPOWERS
     
 } powertype_t;
@@ -235,7 +236,8 @@ typedef enum
     AMMOPOUCHTICS = 1,
     BERSERKERREGTICS = (45*TICRATE),
     CURSEDD4TICS = (30*TICRATE),
-    BLOODPACTTICS = (60*TICRATE)
+    BLOODPACTTICS = (60*TICRATE),
+    MADNESSDIETICS = (30*TICRATE)
     
 } powerduration_t;
 
