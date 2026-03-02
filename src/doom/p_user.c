@@ -494,6 +494,26 @@ void P_PlayerThink (player_t* player)
     {
         player->powers[pw_cursedd4]--;
     }
+
+    // Goblin Dice Rollaz: Blood Pact - infinite ammo, health drain
+    if (player->powers[pw_bloodpact])
+    {
+        player->powers[pw_bloodpact]--;
+        // Drain 1 HP every second (every 35 ticks)
+        if (player->powers[pw_bloodpact] > 0 && player->powers[pw_bloodpact] % TICRATE == 0)
+        {
+            if (player->health > 1)
+            {
+                player->health--;
+                player->mo->health = player->health;
+            }
+            else
+            {
+                // Player dies from blood pact drain
+                player->powers[pw_bloodpact] = 0;
+            }
+        }
+    }
 		
     if (player->damagecount)
 	player->damagecount--;

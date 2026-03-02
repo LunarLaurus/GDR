@@ -350,6 +350,18 @@ powerup_info_t powerups[NUMPOWERS] = {
         MT_NADA,
         SPR_PFTR,
         5
+    },
+    {
+        pw_bloodpact,
+        "Blood Pact",
+        BLOODPACTTICS,
+        POWERUP_FLAG_TIMED,
+        "BLOOD PACT!",
+        0,
+        sfx_getpow,
+        MT_NADA,
+        SPR_PFTR,
+        10
     }
 };
 

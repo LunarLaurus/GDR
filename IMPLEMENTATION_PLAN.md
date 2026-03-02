@@ -370,8 +370,8 @@
 - [x] Add Luck Stone powerup (permanent +5% crit)
 - [x] Add Ammo Pouch powerup (permanent +50% ammo)
 - [x] Add Berserker Regen powerup (regen at low HP)
-- [ ] Add Cursed D4 powerup (3x dmg, lose armor)
-- [ ] Add Blood Pact powerup (infinite ammo, health drain)
+- [x] Add Cursed D4 powerup (3x dmg, lose armor)
+- [x] Add Blood Pact powerup (infinite ammo, health drain)
 - [ ] Add Madness Die powerup (random +/- on kills)
 - [x] Add Glass Cannon powerup (2x dmg, 50% HP)
 

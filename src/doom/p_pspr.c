@@ -1347,6 +1347,12 @@ static void DecreaseAmmo(player_t *player, int ammonum, int amount)
         return;
     }
 
+    // Goblin Dice Rollaz: Blood Pact powerup gives infinite ammo
+    if (player->powers[pw_bloodpact])
+    {
+        return;
+    }
+
     if (ammonum < NUMAMMO)
     {
         player->ammo[ammonum] -= amount;
