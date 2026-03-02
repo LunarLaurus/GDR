@@ -471,6 +471,23 @@ void P_PlayerThink (player_t* player)
         }
         player->powers[pw_glasscannon]--;
     }
+
+    // Goblin Dice Rollaz: Berserker Regen - regenerate health when below 50%
+    if (player->powers[pw_berserkerregen])
+    {
+        player->powers[pw_berserkerregen]--;
+        // Regenerate 1 HP every second (every 35 ticks) when below 50% health
+        if (player->powers[pw_berserkerregen] % TICRATE == 0)
+        {
+            int maxhp = MAXHEALTH;
+            int threshold = maxhp / 2;
+            if (player->health < threshold && player->health > 0)
+            {
+                player->health++;
+                player->mo->health = player->health;
+            }
+        }
+    }
 		
     if (player->damagecount)
 	player->damagecount--;

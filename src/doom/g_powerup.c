@@ -326,6 +326,18 @@ powerup_info_t powerups[NUMPOWERS] = {
         MT_NADA,
         SPR_MEGA,
         10
+    },
+    {
+        pw_berserkerregen,
+        "Berserker Regen",
+        BERSERKERREGTICS,
+        POWERUP_FLAG_TIMED,
+        "BERSERKER REGEN!",
+        0,
+        sfx_getpow,
+        MT_NADA,
+        SPR_PSTR,
+        15
     }
 };
 
