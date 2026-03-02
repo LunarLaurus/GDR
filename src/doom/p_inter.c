@@ -1343,6 +1343,12 @@ P_DamageMobj
             effectiveCritChance += goblin_crit_boost_bonus;
         }
 
+        // Goblin Dice Rollaz: Luck Stone powerup - permanent +5% crit chance
+        if (source->player->powers[pw_luckstone])
+        {
+            effectiveCritChance += 5;
+        }
+
         if (source->player->readyweapon >= 0 && source->player->readyweapon < NUMWEAPONS)
         {
             dice_weapon_info_t *dwi = &dice_weapon_info[source->player->readyweapon];

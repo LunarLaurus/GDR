@@ -196,6 +196,7 @@ typedef enum
     pw_trapsense,
     pw_glasscannon,
     pw_vitalitycrystal,
+    pw_luckstone,
     NUMPOWERS
     
 } powertype_t;
@@ -225,7 +226,8 @@ typedef enum
     WALLWALKERTICS = (30*TICRATE),
     TRAPSENSETICS = (45*TICRATE),
     GLASSCANNONTICS = (30*TICRATE),
-    VITALITYCRYSTALTICS = 1
+    VITALITYCRYSTALTICS = 1,
+    LUCKSTONETICS = 1
     
 } powerduration_t;
 

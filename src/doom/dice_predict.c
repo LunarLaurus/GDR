@@ -217,6 +217,12 @@ int PREDICT_CalculateServerDamage(int weapon, player_t *player, mobj_t *target)
     {
         effectiveCritChance += goblin_crit_boost_bonus;
     }
+
+    // Goblin Dice Rollaz: Luck Stone powerup - permanent +5% crit chance
+    if (player->powers[pw_luckstone])
+    {
+        effectiveCritChance += 5;
+    }
     
     if (rpg_mode)
     {

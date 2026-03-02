@@ -302,6 +302,18 @@ powerup_info_t powerups[NUMPOWERS] = {
         MT_NADA,
         SPR_MEGA,
         10
+    },
+    {
+        pw_luckstone,
+        "Luck Stone",
+        1,
+        POWERUP_FLAG_PERMANENT,
+        "LUCK STONE!",
+        0,
+        sfx_getpow,
+        MT_NADA,
+        SPR_MEGA,
+        5
     }
 };
 

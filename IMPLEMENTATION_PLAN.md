@@ -367,7 +367,7 @@
 - [x] Add Wall Walker powerup (ceiling traversal)
 - [x] Add Trap Sense powerup (highlight mines)
 - [x] Add Vitality Crystal powerup (permanent +25 HP)
-- [ ] Add Luck Stone powerup (permanent +5% crit)
+- [x] Add Luck Stone powerup (permanent +5% crit)
 - [ ] Add Ammo Pouch powerup (permanent +50% ammo)
 - [ ] Add Berserker Regen powerup (regen at low HP)
 - [ ] Add Cursed D4 powerup (3x dmg, lose armor)
