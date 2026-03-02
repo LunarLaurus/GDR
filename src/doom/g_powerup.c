@@ -314,6 +314,18 @@ powerup_info_t powerups[NUMPOWERS] = {
         MT_NADA,
         SPR_MEGA,
         5
+    },
+    {
+        pw_ammopouch,
+        "Ammo Pouch",
+        1,
+        POWERUP_FLAG_PERMANENT,
+        "AMMO POUCH!",
+        0,
+        sfx_getpow,
+        MT_NADA,
+        SPR_MEGA,
+        10
     }
 };
 

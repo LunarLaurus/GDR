@@ -667,6 +667,22 @@ P_GivePower
         S_StartSound(&player->mo->sphere, sfx_getpow);
         return true;
     }
+
+    if (power == pw_ammopouch)
+    {
+        int i;
+        if (player->powers[pw_ammopouch])
+        {
+            return false;
+        }
+        for (i = 0; i < NUMAMMO; i++)
+        {
+            player->maxammo[i] = (player->maxammo[i] * 3) / 2;
+        }
+        player->powers[power] = 1;
+        S_StartSound(&player->mo->sphere, sfx_getpow);
+        return true;
+    }
 	
     if (player->powers[power])
 	return false;	// already got it
@@ -818,6 +834,10 @@ P_TouchSpecialThing
 
 	// Goblin Dice Rollaz: Also give Vitality Crystal (+25 permanent HP)
 	if (!P_GivePower(player, pw_vitalitycrystal))
+	    return;
+
+	// Goblin Dice Rollaz: Also give Ammo Pouch (+50% max ammo)
+	if (!P_GivePower(player, pw_ammopouch))
 	    return;
 	break;
 	
