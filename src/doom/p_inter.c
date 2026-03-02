@@ -655,6 +655,18 @@ P_GivePower
         S_StartSound(&player->mo->sphere, sfx_getpow);
         return true;
     }
+
+    if (power == pw_vitalitycrystal)
+    {
+        if (player->powers[pw_vitalitycrystal])
+        {
+            return false;
+        }
+        P_GiveBody(player, 25);
+        player->powers[power] = 1;
+        S_StartSound(&player->mo->sphere, sfx_getpow);
+        return true;
+    }
 	
     if (player->powers[power])
 	return false;	// already got it

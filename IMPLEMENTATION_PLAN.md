@@ -366,7 +366,7 @@
 - [x] Add Ghost Step powerup (pass through enemies)
 - [x] Add Wall Walker powerup (ceiling traversal)
 - [x] Add Trap Sense powerup (highlight mines)
-- [ ] Add Vitality Crystal powerup (permanent +25 HP)
+- [x] Add Vitality Crystal powerup (permanent +25 HP)
 - [ ] Add Luck Stone powerup (permanent +5% crit)
 - [ ] Add Ammo Pouch powerup (permanent +50% ammo)
 - [ ] Add Berserker Regen powerup (regen at low HP)
