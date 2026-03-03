@@ -60,6 +60,12 @@ extern int EV_DoArenaLock(int tag, boolean close);
 // Goblin Dice Rollaz: Auto-switch weapon on pickup
 extern int auto_switch_weapon;
 
+// Goblin Dice Rollaz: Auto-save on death
+extern boolean auto_save_enabled;
+extern int gameepisode;
+extern int gamemap;
+extern void G_SaveGame(int slot, char *description, char *comment);
+
 
 #define BONUSADD	6
 
@@ -2032,6 +2038,16 @@ P_DamageMobj
             }
         }
         
+        // Goblin Dice Rollaz: Auto-save on player death
+        if (target->player && auto_save_enabled && !netgame && !demoplayback)
+        {
+            char autoSaveDescription[32];
+            char autoSaveComment[SAVESTRINGSIZE];
+            M_snprintf(autoSaveDescription, sizeof(autoSaveDescription), "Death E%dm%d", gameepisode, gamemap);
+            M_snprintf(autoSaveComment, sizeof(autoSaveComment), "Died on level %d - Auto saved", gamemap);
+            G_SaveGame(0, autoSaveDescription, autoSaveComment);
+        }
+
 	P_KillMobj (source, target);
 	return;
     }
