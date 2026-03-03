@@ -423,7 +423,7 @@
 - [x] Add compressed save games
 - [x] Add save game checksum validation
 - [ ] Add auto-save on player death
-- [ ] Add continue from last save option
+- [x] Add continue from last save option
 - [ ] Add save game comments with timestamp
 - [ ] Implement cloud save support stub
 - [ ] Add cross-version save compatibility
