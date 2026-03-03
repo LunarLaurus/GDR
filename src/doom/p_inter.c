@@ -1432,6 +1432,7 @@ P_DamageMobj
                 was_critical = true;
                 crit_roll = (P_Random() % 20) + 1;
                 P_BroadcastCritMessage(source->player - players, "CRITICAL HIT!", true, damage);
+                S_StartSound(source, sfx_dice_crit);
             }
         }
 

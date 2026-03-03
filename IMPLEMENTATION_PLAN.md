@@ -407,13 +407,14 @@
 - [x] Implement variable draw distance for particles
 - [x] Add batch rendering for similar sprites
 - [ ] Profile and optimize texture upload bandwidth
+  - [ ] Resolve blocker: Chocolate Doom uses software renderer - textures load to RAM at startup, no ongoing GPU upload to optimize
 
 ### Phase 20: Additional Audio Features
 - [ ] Add 3D positional audio for dwarf voice cues
 - [ ] Add reverb zones for cave environments
 - [ ] Implement dynamic music intensity based on combat
 - [ ] Add dice roll sound variation per die type
-- [ ] Add critical hit layered sound effects
+- [x] Add critical hit layered sound effects
 - [ ] Implement audio LOD for distant sounds
 - [ ] Add volume slider for dice roll sounds in menu
 - [ ] Implement weapon-specific sound profiles
