@@ -97,21 +97,32 @@ byte*			dc_source;
 // just for profiling 
 int			dccount;
 
-#define COLORMAP_CACHE_SIZE 64
+#define COLORMAP_CACHE_SIZE 256
 
 static byte colormap_cache_valid[COLORMAP_CACHE_SIZE];
+static lighttable_t* colormap_cache_ptr[COLORMAP_CACHE_SIZE];
 static byte colormap_cache_source[COLORMAP_CACHE_SIZE];
 static byte colormap_cache_result[COLORMAP_CACHE_SIZE];
+static lighttable_t* cached_colormap_ptr;
+
+static inline void ColormapCache_Init(void)
+{
+    cached_colormap_ptr = NULL;
+    memset(colormap_cache_valid, 0, sizeof(colormap_cache_valid));
+}
 
 static inline byte ColormapCache_Lookup(lighttable_t* colormap, byte source)
 {
-    unsigned int index = source & (COLORMAP_CACHE_SIZE - 1);
-    if (colormap_cache_valid[index] && colormap_cache_source[index] == source)
+    unsigned int index = source;
+    if (colormap_cache_valid[index] && 
+        colormap_cache_ptr[index] == colormap &&
+        colormap_cache_source[index] == source)
     {
         return colormap_cache_result[index];
     }
     byte result = colormap[source];
     colormap_cache_valid[index] = 1;
+    colormap_cache_ptr[index] = colormap;
     colormap_cache_source[index] = source;
     colormap_cache_result[index] = result;
     return result;
@@ -119,7 +130,11 @@ static inline byte ColormapCache_Lookup(lighttable_t* colormap, byte source)
 
 static inline void ColormapCache_Invalidate(void)
 {
-    memset(colormap_cache_valid, 0, sizeof(colormap_cache_valid));
+    if (cached_colormap_ptr != dc_colormap)
+    {
+        cached_colormap_ptr = dc_colormap;
+        memset(colormap_cache_valid, 0, sizeof(colormap_cache_valid));
+    }
 }
 
 #if defined(__SSE2__) || defined(_M_X64) || (defined(_M_IX86_FP) && _M_IX86_FP >= 2)
@@ -166,10 +181,10 @@ void R_DrawColumn_SSE2(void)
             byte idx2 = (byte)(idxpacked >> 16);
             byte idx3 = (byte)(idxpacked >> 24);
 
-            dest[0] = dc_colormap[dc_source[idx0]];
-            dest[SCREENWIDTH] = dc_colormap[dc_source[idx1]];
-            dest[SCREENWIDTH * 2] = dc_colormap[dc_source[idx2]];
-            dest[SCREENWIDTH * 3] = dc_colormap[dc_source[idx3]];
+            dest[0] = ColormapCache_Lookup(dc_colormap, dc_source[idx0]);
+            dest[SCREENWIDTH] = ColormapCache_Lookup(dc_colormap, dc_source[idx1]);
+            dest[SCREENWIDTH * 2] = ColormapCache_Lookup(dc_colormap, dc_source[idx2]);
+            dest[SCREENWIDTH * 3] = ColormapCache_Lookup(dc_colormap, dc_source[idx3]);
 
             dest += SCREENWIDTH * 4;
             frac += fracstep * 4;
@@ -234,17 +249,17 @@ void R_DrawSpan_SSE2(void)
                 sp1 = ((sp1 >> ds_mipmap_level) & mipsizemask) + (((sp1 >> (ds_mipmap_level + 6)) & mipsizemask) * mipsize);
                 sp2 = ((sp2 >> ds_mipmap_level) & mipsizemask) + (((sp2 >> (ds_mipmap_level + 6)) & mipsizemask) * mipsize);
                 sp3 = ((sp3 >> ds_mipmap_level) & mipsizemask) + (((sp3 >> (ds_mipmap_level + 6)) & mipsizemask) * mipsize);
-                dest[0] = ds_colormap[ds_mipmap_source[sp0]];
-                dest[1] = ds_colormap[ds_mipmap_source[sp1]];
-                dest[2] = ds_colormap[ds_mipmap_source[sp2]];
-                dest[3] = ds_colormap[ds_mipmap_source[sp3]];
+                dest[0] = ColormapCache_Lookup(ds_colormap, ds_mipmap_source[sp0]);
+                dest[1] = ColormapCache_Lookup(ds_colormap, ds_mipmap_source[sp1]);
+                dest[2] = ColormapCache_Lookup(ds_colormap, ds_mipmap_source[sp2]);
+                dest[3] = ColormapCache_Lookup(ds_colormap, ds_mipmap_source[sp3]);
             }
             else
             {
-                dest[0] = ds_colormap[ds_source[sp0]];
-                dest[1] = ds_colormap[ds_source[sp1]];
-                dest[2] = ds_colormap[ds_source[sp2]];
-                dest[3] = ds_colormap[ds_source[sp3]];
+                dest[0] = ColormapCache_Lookup(ds_colormap, ds_source[sp0]);
+                dest[1] = ColormapCache_Lookup(ds_colormap, ds_source[sp1]);
+                dest[2] = ColormapCache_Lookup(ds_colormap, ds_source[sp2]);
+                dest[3] = ColormapCache_Lookup(ds_colormap, ds_source[sp3]);
             }
 
             pos_vec = _mm_add_epi32(pos_vec, _mm_set1_epi32(step * 4));
