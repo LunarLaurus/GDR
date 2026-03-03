@@ -37,6 +37,20 @@ FILE *save_stream;
 int savegamelength;
 boolean savegame_error;
 
+static unsigned int savegame_checksum;
+
+void P_InitSaveGameChecksum(void)
+{
+    savegame_checksum = 0;
+}
+
+void P_UpdateSaveGameChecksum(byte value)
+{
+    savegame_checksum ^= (value << 24);
+    savegame_checksum = (savegame_checksum << 1) | (savegame_checksum >> 31);
+    savegame_checksum += value;
+}
+
 // Get the filename of a temporary file to write the savegame to.  After
 // the file has been successfully saved, it will be renamed to the 
 // real file.
@@ -94,11 +108,14 @@ static byte saveg_read8(void)
         }
     }
 
+    P_UpdateSaveGameChecksum(result);
+
     return result;
 }
 
 static void saveg_write8(byte value)
 {
+    P_UpdateSaveGameChecksum(value);
     if (fwrite(&value, 1, 1, save_stream) < 1)
     {
         if (!savegame_error)
@@ -1466,6 +1483,36 @@ boolean P_ReadSaveGameEOF(void)
 void P_WriteSaveGameEOF(void)
 {
     saveg_write8(SAVEGAME_EOF);
+}
+
+//
+// Write checksum at end of save file for validation
+//
+void P_WriteSaveGameChecksum(void)
+{
+    saveg_write8((savegame_checksum >> 24) & 0xff);
+    saveg_write8((savegame_checksum >> 16) & 0xff);
+    saveg_write8((savegame_checksum >> 8) & 0xff);
+    saveg_write8(savegame_checksum & 0xff);
+}
+
+//
+// Read and verify checksum from save file
+// Returns true if checksum matches, false otherwise
+//
+boolean P_ReadSaveGameChecksum(void)
+{
+    unsigned int stored_checksum;
+    unsigned int computed_checksum;
+
+    stored_checksum = saveg_read8();
+    stored_checksum |= saveg_read8() << 8;
+    stored_checksum |= saveg_read8() << 16;
+    stored_checksum |= saveg_read8() << 24;
+
+    computed_checksum = savegame_checksum;
+
+    return stored_checksum == computed_checksum;
 }
 
 //

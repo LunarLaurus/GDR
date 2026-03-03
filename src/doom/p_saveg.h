@@ -47,6 +47,12 @@ void P_WriteSaveGameHeader(char *description, char *comment);
 boolean P_ReadSaveGameEOF(void);
 void P_WriteSaveGameEOF(void);
 
+// Savegame checksum functions
+
+void P_InitSaveGameChecksum(void);
+void P_WriteSaveGameChecksum(void);
+boolean P_ReadSaveGameChecksum(void);
+
 // Persistent storage/archiving.
 // These are the load / save game routines.
 void P_ArchivePlayers (void);

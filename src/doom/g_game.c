@@ -1891,6 +1891,8 @@ void G_DoLoadGame (void)
 
     savegame_error = false;
 
+    P_InitSaveGameChecksum();
+
     if (!P_ReadSaveGameHeader())
     {
         fclose(save_stream);
@@ -1911,7 +1913,12 @@ void G_DoLoadGame (void)
     P_UnArchiveSpecials (); 
  
     if (!P_ReadSaveGameEOF())
-	I_Error ("Bad savegame");
+ 	I_Error ("Bad savegame");
+
+    if (!P_ReadSaveGameChecksum())
+    {
+        printf("WARNING: Save game checksum mismatch - save file may be corrupted\n");
+    }
 
     fclose(save_stream);
     
@@ -1971,6 +1978,7 @@ void G_DoSaveGame (void)
 
     savegame_error = false;
 
+    P_InitSaveGameChecksum();
     P_WriteSaveGameHeader(savedescription, savecomment);
 
     P_ArchivePlayers ();
@@ -1979,6 +1987,7 @@ void G_DoSaveGame (void)
     P_ArchiveSpecials ();
 
     P_WriteSaveGameEOF();
+    P_WriteSaveGameChecksum();
 
     // Enforce the same savegame size limit as in Vanilla Doom,
     // except if the vanilla_savegame_limit setting is turned off.
