@@ -56,6 +56,8 @@ extern  int	r_sprite_count;
 extern  int	r_sprite_drawseg_checks;
 extern  int	r_sprite_pixels_drawn;
 extern  int	r_vissprite_count;
+extern  int	r_sprite_batch_hits;
+extern  int	r_sprite_batch_count;
 
 // Goblin Dice Rollaz: Thinker profiling
 extern  int      thinker_profiling_enabled;

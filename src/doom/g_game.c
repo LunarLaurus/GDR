@@ -874,6 +874,8 @@ boolean G_Responder (event_t* ev)
 		DEH_printf("Sprites drawn: %d\n", r_sprite_count);
 		DEH_printf("Drawseg checks: %d\n", r_sprite_drawseg_checks);
 		DEH_printf("Est. pixels: %d\n", r_sprite_pixels_drawn);
+		DEH_printf("Batch cache hits: %d\n", r_sprite_batch_hits);
+		DEH_printf("Batch cache misses: %d\n", r_sprite_batch_count);
 	    }
 	    return true;
 	}

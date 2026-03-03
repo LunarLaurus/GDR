@@ -368,6 +368,11 @@ vissprite_t	vissprites[MAXVISSPRITES];
 vissprite_t*	vissprite_p;
 int		newvissprite;
 
+int r_sprite_batch_hits = 0;
+int r_sprite_batch_count = 0;
+static int batch_current_patch = -1;
+static patch_t* batch_cached_patch = NULL;
+
 
 
 //
@@ -484,9 +489,19 @@ R_DrawVisSprite
     fixed_t		frac;
     patch_t*		patch;
 	
-	
-    patch = R_GetSpritePatch(vis->patch+firstspritelump);
-
+    if (vis->patch == batch_current_patch && batch_cached_patch != NULL)
+    {
+        patch = batch_cached_patch;
+        r_sprite_batch_hits++;
+    }
+    else
+    {
+        patch = R_GetSpritePatch(vis->patch+firstspritelump);
+        batch_current_patch = vis->patch;
+        batch_cached_patch = patch;
+        r_sprite_batch_count++;
+    }
+    
     dc_colormap = vis->colormap;
     
     if (!dc_colormap)
@@ -1061,6 +1076,11 @@ void R_DrawMasked (void)
     r_vissprite_count = vissprite_p - vissprites;
     r_sprite_count = 0;
     r_sprite_drawseg_checks = 0;
+
+    batch_current_patch = -1;
+    batch_cached_patch = NULL;
+    r_sprite_batch_hits = 0;
+    r_sprite_batch_count = 0;
 
     if (vissprite_p > vissprites)
     {

@@ -405,7 +405,7 @@
 - [x] Optimize colormap lookups with caching
 - [x] Add hardware acceleration detection and use
 - [x] Implement variable draw distance for particles
-- [ ] Add batch rendering for similar sprites
+- [x] Add batch rendering for similar sprites
 - [ ] Profile and optimize texture upload bandwidth
 
 ### Phase 20: Additional Audio Features
