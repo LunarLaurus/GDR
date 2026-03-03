@@ -420,8 +420,8 @@
 - [ ] Implement weapon-specific sound profiles
 
 ### Phase 21: Save System Improvements
-- [ ] Add compressed save games
-- [ ] Add save game checksum validation
+- [x] Add compressed save games
+- [x] Add save game checksum validation
 - [ ] Add auto-save on player death
 - [ ] Add continue from last save option
 - [ ] Add save game comments with timestamp
