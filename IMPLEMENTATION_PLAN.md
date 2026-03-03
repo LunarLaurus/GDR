@@ -404,7 +404,7 @@
 - [x] Add texture LOD switching for distant walls
 - [x] Optimize colormap lookups with caching
 - [x] Add hardware acceleration detection and use
-- [ ] Implement variable draw distance for particles
+- [x] Implement variable draw distance for particles
 - [ ] Add batch rendering for similar sprites
 - [ ] Profile and optimize texture upload bandwidth
 

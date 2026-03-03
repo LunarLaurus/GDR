@@ -27,6 +27,8 @@
 #include "v_video.h"
 #include "z_zone.h"
 
+extern int goblin_particle_distance;
+
 #define PARTICLE_LIFETIME 20
 #define PARTICLE_GRAVITY (FRACUNIT / 8)
 
@@ -168,6 +170,12 @@ void P_TickerParticles(void)
 void P_DrawParticles(void)
 {
     int i;
+    int max_distance;
+    
+    if (goblin_particle_distance > 0)
+        max_distance = goblin_particle_distance * FRACUNIT;
+    else
+        max_distance = 128 * FRACUNIT;
     
     for (i = 0; i < MAX_PARTICLES; i++)
     {
@@ -179,7 +187,7 @@ void P_DrawParticles(void)
             
             z_diff = particles[i].z - viewz;
             
-            if (z_diff <= 0 || z_diff > 128 * FRACUNIT)
+            if (z_diff <= 0 || z_diff > max_distance)
                 continue;
             
             screen_x = (viewanglefrac + FixedMul(particles[i].x - viewx, projection)) >> FRACBITS;

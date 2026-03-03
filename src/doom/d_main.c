@@ -180,6 +180,9 @@ extern int      goblin_modern_fx;
 // Goblin Dice Rollaz: texture LOD toggle
 extern int      goblin_texture_lod;
 
+// Goblin Dice Rollaz: particle draw distance
+extern int      goblin_particle_distance;
+
 // Goblin Dice Rollaz: arena lock system
 int             arena_lock_tag = 666;
 int             arena_locked = 0;
@@ -488,6 +491,9 @@ void D_BindVariables(void)
 
     // Goblin Dice Rollaz: texture LOD toggle
     M_BindIntVariable("goblin_texture_lod",            &goblin_texture_lod);
+
+    // Goblin Dice Rollaz: particle draw distance (in FRACUNIT)
+    M_BindIntVariable("goblin_particle_distance",      &goblin_particle_distance);
 
     // Goblin Dice Rollaz: Crosshair customization
     M_BindIntVariable("dice_crosshair_enabled", &dice_crosshair_enabled);

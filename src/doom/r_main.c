@@ -89,6 +89,9 @@ int				goblin_modern_fx;
 // Goblin Dice Rollaz: Texture LOD toggle (0 = off, 1 = on)
 int				goblin_texture_lod;
 
+// Goblin Dice Rollaz: Particle draw distance (in FRACUNIT, default 128)
+int				goblin_particle_distance;
+
 // Goblin Dice Rollaz: Crosshair customization
 int             dice_crosshair_enabled;
 int             dice_crosshair_type;
