@@ -2007,6 +2007,29 @@ void D_DoomMain (void)
         testcontrols = true;
     }
 
+    //!
+    // @category game
+    // @vanilla
+    //
+    // Load the most recent save game.
+    //
+
+    p = M_CheckParm("-continue");
+    if (p && startloadgame < 0)
+    {
+        int i;
+        for (i = 99; i >= 0; i--)
+        {
+            char *savefile = P_SaveGameFile(i);
+            if (M_FileExists(savefile))
+            {
+                startloadgame = i;
+                DEH_printf("Continuing from save game slot %d\n", i);
+                break;
+            }
+        }
+    }
+
     // Check for load game parameter
     // We do this here and save the slot number, so that the network code
     // can override it or send the load slot to other players.
