@@ -108,6 +108,13 @@ const char *window_position = "center";
 
 int video_display = 0;
 
+// Hardware acceleration detection
+
+boolean hardware_acceleration_enabled = false;
+char renderer_name[64] = "";
+int renderer_max_texture_width = 0;
+int renderer_max_texture_height = 0;
+
 // Screen width and height, from configuration file.
 
 int window_width = 800;
@@ -618,6 +625,64 @@ static void LimitTextureSize(int *w_upscale, int *h_upscale)
                max_scaling_buffer_pixels,
                rinfo.max_texture_width, rinfo.max_texture_height);
     }
+}
+
+static void I_DetectHardwareAcceleration(void)
+{
+    SDL_RendererInfo rinfo;
+
+    if (renderer == NULL)
+    {
+        hardware_acceleration_enabled = false;
+        renderer_name[0] = '\0';
+        return;
+    }
+
+    if (SDL_GetRendererInfo(renderer, &rinfo) != 0)
+    {
+        printf("I_DetectHardwareAcceleration: SDL_GetRendererInfo failed: %s\n",
+               SDL_GetError());
+        hardware_acceleration_enabled = false;
+        renderer_name[0] = '\0';
+        return;
+    }
+
+    M_StringCopy(renderer_name, rinfo.name, sizeof(renderer_name));
+    renderer_max_texture_width = rinfo.max_texture_width;
+    renderer_max_texture_height = rinfo.max_texture_height;
+
+    hardware_acceleration_enabled = !(rinfo.flags & SDL_RENDERER_SOFTWARE);
+
+    printf("Hardware acceleration: %s\n", hardware_acceleration_enabled ? "enabled" : "disabled");
+    printf("Renderer: %s\n", rinfo.name);
+    printf("Max texture size: %dx%d\n", rinfo.max_texture_width, rinfo.max_texture_height);
+
+    if (rinfo.flags & SDL_RENDERER_ACCELERATED)
+    {
+        printf("Renderer uses hardware acceleration\n");
+    }
+    if (rinfo.flags & SDL_RENDERER_SOFTWARE)
+    {
+        printf("Renderer uses software fallback\n");
+    }
+    if (rinfo.flags & SDL_RENDERER_TARGETTEXTURE)
+    {
+        printf("Renderer supports target textures\n");
+    }
+    if (rinfo.flags & SDL_RENDERER_PRESENTVSYNC)
+    {
+        printf("Renderer supports vsync\n");
+    }
+}
+
+boolean I_HardwareAccelerationEnabled(void)
+{
+    return hardware_acceleration_enabled;
+}
+
+const char *I_GetRendererName(void)
+{
+    return renderer_name;
 }
 
 static void CreateUpscaledTexture(boolean force)
@@ -1350,6 +1415,9 @@ static void SetVideoMode(void)
         I_Error("Error creating renderer for screen window: %s",
                 SDL_GetError());
     }
+
+    // Detect hardware acceleration capabilities
+    I_DetectHardwareAcceleration();
 
     // Important: Set the "logical size" of the rendering context. At the same
     // time this also defines the aspect ratio that is preserved while scaling

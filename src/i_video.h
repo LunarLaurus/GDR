@@ -105,5 +105,14 @@ extern unsigned int joywait;
 
 extern int usemouse;
 
+// Hardware acceleration detection
+extern boolean hardware_acceleration_enabled;
+extern char renderer_name[64];
+extern int renderer_max_texture_width;
+extern int renderer_max_texture_height;
+
+boolean I_HardwareAccelerationEnabled(void);
+const char *I_GetRendererName(void);
+
 
 #endif

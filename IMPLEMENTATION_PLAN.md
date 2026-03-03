@@ -403,7 +403,7 @@
 - [x] Implement temporal AA for smooth sprite edges
 - [x] Add texture LOD switching for distant walls
 - [x] Optimize colormap lookups with caching
-- [ ] Add hardware acceleration detection and use
+- [x] Add hardware acceleration detection and use
 - [ ] Implement variable draw distance for particles
 - [ ] Add batch rendering for similar sprites
 - [ ] Profile and optimize texture upload bandwidth
