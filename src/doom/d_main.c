@@ -60,6 +60,7 @@
 #include "i_system.h"
 #include "i_timer.h"
 #include "i_video.h"
+#include "i_cloud.h"
 
 #include "g_game.h"
 #include "g_status.h"
@@ -1884,6 +1885,7 @@ void D_DoomMain (void)
     I_InitCrashHandler();
     I_InitTimer();
     I_InitJoystick();
+    I_CloudInit();
     I_InitSound(doom);
 
     printf ("NET_Init: Init network subsystem.\n");

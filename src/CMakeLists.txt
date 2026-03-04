@@ -77,7 +77,8 @@ set(GAME_SOURCE_FILES
     i_glob.c            i_glob.h
     i_input.c           i_input.h
     i_joystick.c        i_joystick.h
-                        i_swap.h
+    i_swap.h
+    i_cloud.c           i_cloud.h
     i_musicpack.c
     i_oplmusic.c
     i_pcsound.c
