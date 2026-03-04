@@ -82,6 +82,7 @@ float libsamplerate_scale = 0.65;
 int snd_cave_reverb = 0;
 int snd_cave_reverb_intensity = 50;
 int snd_cave_reverb_mindarkness = 48;
+int snd_cave_reverb_minceiling = 128;
 
 char *music_pack_path = NULL;
 char *timidity_cfg_path = NULL;
@@ -322,6 +323,12 @@ void ConfigSound(TXT_UNCAST_ARG(widget), void *user_data)
                 TXT_NewLabel("Min darkness: "),
                 TXT_NewSpinControl(&snd_cave_reverb_mindarkness, 0, 255),
                 NULL)),
+        TXT_NewConditional(&snd_cave_reverb,
+            TXT_NewHorizBox(
+                TXT_NewStrut(4, 0),
+                TXT_NewLabel("Min ceiling height: "),
+                TXT_NewSpinControl(&snd_cave_reverb_minceiling, 0, 1024),
+                NULL)),
 
         NULL);
 }
@@ -379,6 +386,7 @@ void BindSoundVariables(void)
     M_BindIntVariable("snd_cave_reverb",           &snd_cave_reverb);
     M_BindIntVariable("snd_cave_reverb_intensity", &snd_cave_reverb_intensity);
     M_BindIntVariable("snd_cave_reverb_mindarkness", &snd_cave_reverb_mindarkness);
+    M_BindIntVariable("snd_cave_reverb_minceiling", &snd_cave_reverb_minceiling);
 
     if (gamemission == strife)
     {

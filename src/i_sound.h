@@ -243,6 +243,7 @@ extern float libsamplerate_scale;
 extern int snd_cave_reverb;
 extern int snd_cave_reverb_intensity;
 extern int snd_cave_reverb_mindarkness;
+extern int snd_cave_reverb_minceiling;
 
 void I_BindSoundVariables(void);
 

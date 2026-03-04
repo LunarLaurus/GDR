@@ -63,6 +63,7 @@ int snd_sfxdevice = SNDDEVICE_SB;
 int snd_cave_reverb = 0;
 int snd_cave_reverb_intensity = 50;
 int snd_cave_reverb_mindarkness = 48;
+int snd_cave_reverb_minceiling = 128;
 
 // Low-level sound and music modules we are using
 static const sound_module_t *sound_module;
@@ -521,5 +522,6 @@ void I_BindSoundVariables(void)
     M_BindIntVariable("snd_cave_reverb",             &snd_cave_reverb);
     M_BindIntVariable("snd_cave_reverb_intensity",  &snd_cave_reverb_intensity);
     M_BindIntVariable("snd_cave_reverb_mindarkness", &snd_cave_reverb_mindarkness);
+    M_BindIntVariable("snd_cave_reverb_minceiling", &snd_cave_reverb_minceiling);
 }
 

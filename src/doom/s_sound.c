@@ -469,12 +469,24 @@ static int S_AdjustSoundParams(mobj_t *listener, mobj_t *source,
     if (snd_cave_reverb && listener->subsector != NULL)
     {
         sector_t *sector = listener->subsector->sector;
-        if (sector != NULL && sector->lightlevel < snd_cave_reverb_mindarkness)
+        if (sector != NULL)
         {
-            int reverb_reduction = (snd_cave_reverb_intensity * (*vol)) / 100;
-            *vol = *vol - reverb_reduction;
-            if (*vol < 0)
-                *vol = 0;
+            int is_cave = 0;
+            if (snd_cave_reverb_mindarkness > 0 && sector->lightlevel < snd_cave_reverb_mindarkness)
+            {
+                is_cave = 1;
+            }
+            if (snd_cave_reverb_minceiling > 0 && sector->ceilingheight > (snd_cave_reverb_minceiling * FRACUNIT))
+            {
+                is_cave = 1;
+            }
+            if (is_cave)
+            {
+                int reverb_reduction = (snd_cave_reverb_intensity * (*vol)) / 100;
+                *vol = *vol - reverb_reduction;
+                if (*vol < 0)
+                    *vol = 0;
+            }
         }
     }
 
