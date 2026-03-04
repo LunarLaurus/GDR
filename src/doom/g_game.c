@@ -21,6 +21,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include <time.h>
 
 #include "doomdef.h" 
 #include "doomkeys.h"
@@ -1977,6 +1978,25 @@ void G_DoSaveGame (void)
     }
 
     savegame_error = false;
+
+    {
+        time_t now;
+        struct tm *tm_info;
+        char timestamp[16];
+        size_t comment_len;
+        time(&now);
+        tm_info = localtime(&now);
+        M_snprintf(timestamp, sizeof(timestamp), "%02d/%02d %02d:%02d",
+                   tm_info->tm_mon + 1, tm_info->tm_mday,
+                   tm_info->tm_hour, tm_info->tm_min);
+        comment_len = strlen(savecomment);
+        if (comment_len > 0 && comment_len < SAVESTRINGSIZE - 13)
+        {
+            M_snprintf(savecomment + comment_len,
+                       SAVESTRINGSIZE - comment_len,
+                       " %s", timestamp);
+        }
+    }
 
     P_InitSaveGameChecksum();
     P_WriteSaveGameHeader(savedescription, savecomment);

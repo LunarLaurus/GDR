@@ -424,7 +424,7 @@
 - [x] Add save game checksum validation
 - [x] Add auto-save on player death
 - [x] Add continue from last save option
-- [ ] Add save game comments with timestamp
+- [x] Add save game comments with timestamp
 - [ ] Implement cloud save support stub
 - [ ] Add cross-version save compatibility
 
