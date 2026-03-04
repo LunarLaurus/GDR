@@ -410,7 +410,7 @@
   - [ ] Resolve blocker: Chocolate Doom uses software renderer - textures load to RAM at startup, no ongoing GPU upload to optimize
 
 ### Phase 20: Additional Audio Features
-- [ ] Add 3D positional audio for dwarf voice cues
+- [x] Add 3D positional audio for dwarf voice cues
 - [ ] Add reverb zones for cave environments
 - [ ] Implement dynamic music intensity based on combat
 - [ ] Add dice roll sound variation per die type
@@ -425,7 +425,7 @@
 - [x] Add auto-save on player death
 - [x] Add continue from last save option
 - [x] Add save game comments with timestamp
-- [ ] Implement cloud save support stub
+- [x] Implement cloud save support stub
 - [ ] Add cross-version save compatibility
 
 ### Phase 22: Modding Support
