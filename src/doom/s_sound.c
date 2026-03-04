@@ -50,6 +50,13 @@
 
 #define S_CLOSE_DIST (200 * FRACUNIT)
 
+// Height attenuation factor for 3D audio (z-axis)
+// Sounds from above/below the listener are attenuated
+#define S_HEIGHT_ATTENUATOR (48 * FRACUNIT)
+
+// Stereo separation height influence
+#define S_HEIGHT_PAN_FACTOR 24
+
 // The range over which sound attenuates
 
 #define S_ATTENUATOR ((S_CLIPPING_DIST - S_CLOSE_DIST) >> FRACBITS)
@@ -374,12 +381,15 @@ static int S_AdjustSoundParams(mobj_t *listener, mobj_t *source,
     fixed_t        approx_dist;
     fixed_t        adx;
     fixed_t        ady;
+    fixed_t        adz;
     angle_t        angle;
+    fixed_t        height_diff;
 
     // calculate the distance to sound origin
     //  and clip it if necessary
     adx = abs(listener->x - source->x);
     ady = abs(listener->y - source->y);
+    adz = abs(listener->z - source->z);
 
     // From _GG1_ p.428. Appox. eucledian distance fast.
     approx_dist = adx + ady - ((adx < ady ? adx : ady)>>1);
@@ -409,6 +419,18 @@ static int S_AdjustSoundParams(mobj_t *listener, mobj_t *source,
     // stereo separation
     *sep = 128 - (FixedMul(S_STEREO_SWING, finesine[angle]) >> FRACBITS);
 
+    // 3D positional audio: height difference affects stereo and volume
+    height_diff = source->z - listener->z;
+
+    // Adjust stereo separation based on height (sounds from above come from left, etc.)
+    if (height_diff != 0)
+    {
+        fixed_t height_sep = FixedDiv(height_diff, S_HEIGHT_PAN_FACTOR);
+        height_sep = ClampFixed(height_sep);
+        *sep = *sep - (int)(height_sep >> FRACBITS);
+        *sep = Clamp(*sep);
+    }
+
     // volume calculation
     if (approx_dist < S_CLOSE_DIST)
     {
@@ -431,6 +453,17 @@ static int S_AdjustSoundParams(mobj_t *listener, mobj_t *source,
         *vol = (snd_SfxVolume
                 * ((S_CLIPPING_DIST - approx_dist)>>FRACBITS))
             / S_ATTENUATOR;
+    }
+
+    // 3D audio: apply height-based volume attenuation
+    // Sounds from significantly above or below are quieter
+    if (adz > S_HEIGHT_ATTENUATOR)
+    {
+        fixed_t height_atten = FixedDiv(adz - S_HEIGHT_ATTENUATOR, S_HEIGHT_ATTENUATOR);
+        height_atten = ClampFixed(height_atten);
+        *vol = *vol - (int)((height_atten * *vol) >> FRACBITS);
+        if (*vol < 0)
+            *vol = 0;
     }
 
     if (snd_cave_reverb && listener->subsector != NULL)
@@ -459,6 +492,21 @@ static int Clamp(int x)
     else if (x > 255)
     {
         return 255;
+    }
+    return x;
+}
+
+// Clamp a fixed-point value to range -FRACUNIT to +FRACUNIT
+
+static fixed_t ClampFixed(fixed_t x)
+{
+    if (x < -FRACUNIT)
+    {
+        return -FRACUNIT;
+    }
+    else if (x > FRACUNIT)
+    {
+        return FRACUNIT;
     }
     return x;
 }
@@ -551,6 +599,129 @@ void S_StartSound(void *origin_p, int sfx_id)
     }
 
     // increase the usefulness
+    if (sfx->usefulness++ < 0)
+    {
+        sfx->usefulness = 1;
+    }
+
+    if (sfx->lumpnum < 0)
+    {
+        sfx->lumpnum = I_GetSfxLumpNum(sfx);
+    }
+
+    channels[cnum].pitch = pitch;
+    channels[cnum].handle = I_StartSound(sfx, cnum, volume, sep, channels[cnum].pitch);
+}
+
+//
+// S_StartSound3D
+//
+// Enhanced 3D positional audio for enemy voice cues (dwarves, etc.)
+// Uses full x/y/z positioning with height-based attenuation
+// and stereo panning based on vertical angle.
+//
+void S_StartSound3D(void *origin_p, int sfx_id)
+{
+    sfxinfo_t *sfx;
+    mobj_t *origin;
+    int rc;
+    int sep;
+    int pitch;
+    int cnum;
+    int volume;
+    fixed_t adz;
+
+    origin = (mobj_t *) origin_p;
+    volume = snd_SfxVolume;
+
+    if (sfx_id < 1 || sfx_id > NUMSFX)
+    {
+        I_Error("Bad sfx #: %d", sfx_id);
+    }
+
+    sfx = &S_sfx[sfx_id];
+
+    pitch = NORM_PITCH;
+    if (sfx->link)
+    {
+        volume += sfx->volume;
+        pitch = sfx->pitch;
+
+        if (volume < 1)
+        {
+            return;
+        }
+
+        if (volume > snd_SfxVolume)
+        {
+            volume = snd_SfxVolume;
+        }
+    }
+
+    // Enhanced 3D positioning for voice cues
+    if (origin && origin != players[consoleplayer].mo)
+    {
+        mobj_t *listener = players[consoleplayer].mo;
+
+        // Calculate height difference for 3D effect
+        adz = abs(listener->z - origin->z);
+
+        rc = S_AdjustSoundParams(listener, origin, &volume, &sep);
+
+        // Additional height-based volume boost for voice cues
+        // Voices from same height are clearer
+        if (adz < 16 * FRACUNIT)
+        {
+            // Same level - slight volume boost for clarity
+            volume = (volume * 17) >> 4;
+            if (volume > 255)
+                volume = 255;
+        }
+        else if (adz > 64 * FRACUNIT)
+        {
+            // Large height difference - apply extra attenuation
+            fixed_t height_penalty = FixedDiv(adz - 64 * FRACUNIT, 128 * FRACUNIT);
+            height_penalty = ClampFixed(height_penalty);
+            volume = volume - (int)((height_penalty * volume) >> FRACBITS);
+            if (volume < 0)
+                volume = 0;
+        }
+
+        if (origin->x == listener->x && origin->y == listener->y)
+        {
+            sep = NORM_SEP;
+        }
+
+        if (!rc)
+        {
+            return;
+        }
+    }
+    else
+    {
+        sep = NORM_SEP;
+    }
+
+    // Slight pitch variation for voice diversity
+    if (sfx_id >= sfx_posit1 && sfx_id <= sfx_posit3)
+    {
+        pitch += 4 - (M_Random() & 7);
+    }
+    else if (sfx_id >= sfx_bgsit1 && sfx_id <= sfx_bgsit2)
+    {
+        pitch += 6 - (M_Random() & 11);
+    }
+    pitch = Clamp(pitch);
+
+    S_StopSound(origin);
+
+    cnum = S_GetChannel(origin, sfx);
+
+    if (cnum < 0)
+    {
+        return;
+    }
+
     if (sfx->usefulness++ < 0)
     {
         sfx->usefulness = 1;

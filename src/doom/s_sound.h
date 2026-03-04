@@ -53,6 +53,9 @@ void S_Start(void);
 
 void S_StartSound(void *origin, int sound_id);
 
+// Start sound with enhanced 3D positional audio for enemy voice cues
+void S_StartSound3D(void *origin, int sound_id);
+
 // Stop sound for thing at <origin>
 void S_StopSound(mobj_t *origin);
 

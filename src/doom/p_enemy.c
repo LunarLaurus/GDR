@@ -1356,7 +1356,7 @@ void A_SPosAttack (mobj_t* actor)
             angle_t angle;
             
             A_FaceTarget(actor);
-            S_StartSound(actor, sfx_bgsit1); // Summoning sound
+            S_StartSound3D(actor, sfx_bgsit1); // Summoning sound
             
             // Spawn golem at a random angle from the geologist
             angle = P_Random() << (FRACBITS - 7);
@@ -1373,7 +1373,7 @@ void A_SPosAttack (mobj_t* actor)
                 {
                     mo->target = players[0].mo;
                 }
-                S_StartSound(mo, sfx_bgsit1); // Golem awakening sound
+                S_StartSound3D(mo, sfx_bgsit1); // Golem awakening sound
             }
         }
         return;
@@ -1517,7 +1517,7 @@ void A_TroopAttack (mobj_t* actor)
 
         if (commanded > 0)
         {
-            S_StartSound(actor, sfx_posit2);
+            S_StartSound3D(actor, sfx_posit2);
         }
         return;
     }
@@ -2469,7 +2469,7 @@ void A_ShamanSpell (mobj_t* actor)
         if (buff_count > 0)
         {
             P_SetMobjState (actor, S_SHAMAN_CAST1);
-            S_StartSound (actor, sfx_posit1);
+            S_StartSound3D (actor, sfx_posit1);
         }
         P_SetShamanCooldown(actor, SHAMAN_COOLDOWN_TICS);
         return;
