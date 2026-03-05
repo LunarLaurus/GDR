@@ -412,7 +412,7 @@
 ### Phase 20: Additional Audio Features
 - [x] Add 3D positional audio for dwarf voice cues
 - [x] Add reverb zones for cave environments
-- [ ] Implement dynamic music intensity based on combat
+- [x] Implement dynamic music intensity based on combat
 - [ ] Add dice roll sound variation per die type
 - [x] Add critical hit layered sound effects
 - [ ] Implement audio LOD for distant sounds

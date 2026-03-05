@@ -86,6 +86,10 @@ void S_UpdateSounds(mobj_t *listener);
 void S_SetMusicVolume(int volume);
 void S_SetSfxVolume(int volume);
 
+void S_SetMusicIntensity(int intensity);
+int S_GetMusicIntensity(void);
+void S_UpdateMusicIntensity(void);
+
 extern int snd_channels;
 
 #endif

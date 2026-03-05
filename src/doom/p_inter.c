@@ -25,6 +25,7 @@
 #include "doomdef.h"
 #include "dstrings.h"
 #include "sounds.h"
+#include "s_sound.h"
 
 #include "deh_main.h"
 #include "deh_misc.h"
@@ -1808,9 +1809,18 @@ P_DamageMobj
 	player->health -= damage; 	// mirror mobj health here for Dave
 	if (player->health < 0)
 	    player->health = 0;
-	
+
 	player->attacker = source;
 	player->damagecount += damage;	// add damage after armor / invuln
+
+	if (target && target->player == &players[consoleplayer] && damage > 0)
+	{
+		int current = S_GetMusicIntensity();
+		int new_intensity = current + (damage * 2);
+		if (new_intensity > 100)
+			new_intensity = 100;
+		S_SetMusicIntensity(new_intensity);
+	}
 
 	if (player->damagecount > 100)
 	    player->damagecount = 100;	// teleport stomp does 10k points...

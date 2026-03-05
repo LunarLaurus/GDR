@@ -1249,13 +1249,14 @@ void G_Ticker (void)
     // do main actions
     switch (gamestate) 
     { 
-      case GS_LEVEL: 
-    P_Ticker (); 
-    ST_Ticker (); 
-    AM_Ticker (); 
-    HU_Ticker ();             
+      case GS_LEVEL:
+    P_Ticker ();
+    ST_Ticker ();
+    AM_Ticker ();
+    HU_Ticker ();
     G_SurvivalTicker();
     G_TimeAttackTicker();
+    S_UpdateMusicIntensity();
 	break; 
 	 
       case GS_INTERMISSION: 

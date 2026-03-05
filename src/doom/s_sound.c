@@ -116,6 +116,13 @@ static boolean mus_paused;
 
 static musicinfo_t *mus_playing = NULL;
 
+// Goblin Dice Rollaz: Dynamic music intensity based on combat
+// Range: 0 (calm) to 100 (intense combat)
+static int music_intensity = 0;
+
+// Base music volume before intensity adjustment
+static int music_base_volume = 8;
+
 // Number of channels to use
 
 int snd_channels = 8;
@@ -770,6 +777,17 @@ void S_ResumeSound(void)
     }
 }
 
+void S_UpdateMusicIntensity(void)
+{
+    if (music_intensity > 0)
+    {
+        music_intensity -= 1;
+        if (music_intensity < 0)
+            music_intensity = 0;
+        S_SetMusicVolume(music_base_volume);
+    }
+}
+
 //
 // Updates music & sounds
 //
@@ -849,13 +867,23 @@ void S_UpdateSounds(mobj_t *listener)
 
 void S_SetMusicVolume(int volume)
 {
+    int intensity_mod;
+    int final_volume;
+
     if (volume < 0 || volume > 127)
     {
         I_Error("Attempt to set music volume at %d",
                 volume);
     }
 
-    I_SetMusicVolume(volume);
+    music_base_volume = volume;
+
+    intensity_mod = (music_intensity * 20) / 100;
+    final_volume = volume + intensity_mod;
+    if (final_volume > 127)
+        final_volume = 127;
+
+    I_SetMusicVolume(final_volume);
 }
 
 void S_SetSfxVolume(int volume)
@@ -866,6 +894,28 @@ void S_SetSfxVolume(int volume)
     }
 
     snd_SfxVolume = volume;
+}
+
+void S_SetMusicIntensity(int intensity)
+{
+    int old_intensity = music_intensity;
+
+    if (intensity < 0)
+        intensity = 0;
+    else if (intensity > 100)
+        intensity = 100;
+
+    music_intensity = intensity;
+
+    if (old_intensity != music_intensity)
+    {
+        S_SetMusicVolume(music_base_volume);
+    }
+}
+
+int S_GetMusicIntensity(void)
+{
+    return music_intensity;
 }
 
 //
