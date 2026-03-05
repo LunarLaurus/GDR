@@ -34,6 +34,7 @@
 #include "r_state.h"
 
 FILE *save_stream;
+int savegame_version;
 int savegamelength;
 boolean savegame_error;
 
@@ -42,6 +43,7 @@ static unsigned int savegame_checksum;
 void P_InitSaveGameChecksum(void)
 {
     savegame_checksum = 0;
+    savegame_version = GOBLIN_VERSION;
 }
 
 void P_UpdateSaveGameChecksum(byte value)
@@ -666,140 +668,116 @@ static void saveg_read_player_t(player_t *str)
 {
     int i;
 
-    // mobj_t* mo;
     str->mo = saveg_readp();
 
-    // playerstate_t playerstate;
     str->playerstate = saveg_read_enum();
 
-    // ticcmd_t cmd;
     saveg_read_ticcmd_t(&str->cmd);
 
-    // fixed_t viewz;
     str->viewz = saveg_read32();
 
-    // fixed_t viewheight;
     str->viewheight = saveg_read32();
 
-    // fixed_t deltaviewheight;
     str->deltaviewheight = saveg_read32();
 
-    // fixed_t bob;
     str->bob = saveg_read32();
 
-    // int health;
     str->health = saveg_read32();
 
-    // int armorpoints;
     str->armorpoints = saveg_read32();
 
-    // int armortype;
     str->armortype = saveg_read32();
 
-    // int powers[NUMPOWERS];
     for (i=0; i<NUMPOWERS; ++i)
     {
         str->powers[i] = saveg_read32();
     }
 
-    // boolean cards[NUMCARDS];
     for (i=0; i<NUMCARDS; ++i)
     {
         str->cards[i] = saveg_read32();
     }
 
-    // boolean backpack;
     str->backpack = saveg_read32();
 
-    // int frags[MAXPLAYERS];
     for (i=0; i<MAXPLAYERS; ++i)
     {
         str->frags[i] = saveg_read32();
     }
 
-    // weapontype_t readyweapon;
     str->readyweapon = saveg_read_enum();
 
-    // weapontype_t pendingweapon;
     str->pendingweapon = saveg_read_enum();
 
-    // boolean weaponowned[NUMWEAPONS];
     for (i=0; i<NUMWEAPONS; ++i)
     {
         str->weaponowned[i] = saveg_read32();
     }
 
-    // int ammo[NUMAMMO];
     for (i=0; i<NUMAMMO; ++i)
     {
         str->ammo[i] = saveg_read32();
     }
 
-    // int maxammo[NUMAMMO];
     for (i=0; i<NUMAMMO; ++i)
     {
         str->maxammo[i] = saveg_read32();
     }
 
-    // int attackdown;
     str->attackdown = saveg_read32();
 
-    // Goblin Dice Rollaz: int altattackdown;
-    str->altattackdown = saveg_read32();
+    if (savegame_version < 2)
+    {
+        str->altattackdown = 0;
+    }
+    else
+    {
+        str->altattackdown = saveg_read32();
+    }
 
-    // int usedown;
     str->usedown = saveg_read32();
 
-    // int cheats;
     str->cheats = saveg_read32();
 
-    // int refire;
     str->refire = saveg_read32();
 
-    // int killcount;
     str->killcount = saveg_read32();
 
-    // int itemcount;
     str->itemcount = saveg_read32();
 
-    // int secretcount;
     str->secretcount = saveg_read32();
 
-    // char* message;
     str->message = saveg_readp();
 
-    // int damagecount;
     str->damagecount = saveg_read32();
 
-    // int bonuscount;
     str->bonuscount = saveg_read32();
 
-    // mobj_t* attacker;
     str->attacker = saveg_readp();
 
-    // int extralight;
     str->extralight = saveg_read32();
 
-    // int fixedcolormap;
     str->fixedcolormap = saveg_read32();
 
-    // int colormap;
     str->colormap = saveg_read32();
 
-    // pspdef_t psprites[NUMPSPRITES];
     for (i=0; i<NUMPSPRITES; ++i)
     {
         saveg_read_pspdef_t(&str->psprites[i]);
     }
 
-    // boolean didsecret;
     str->didsecret = saveg_read32();
 
-    // Goblin Dice Rollaz: crit_combo
-    str->crit_combo = saveg_read32();
-
-    // Goblin Dice Rollaz: crit_combo_timer
-    str->crit_combo_timer = saveg_read32();
+    if (savegame_version < 3)
+    {
+        str->crit_combo = 0;
+        str->crit_combo_timer = 0;
+    }
+    else
+    {
+        str->crit_combo = saveg_read32();
+        str->crit_combo_timer = saveg_read32();
+    }
 }
 
 static void saveg_write_player_t(player_t *str)
@@ -1425,40 +1403,55 @@ void P_WriteSaveGameHeader(char *description, char *comment)
 
 boolean P_ReadSaveGameHeader(void)
 {
-    int	 i; 
-    byte a, b, c; 
-    char vcheck[VERSIONSIZE]; 
+    int	 i;
+    byte a, b, c;
+    char vcheck[VERSIONSIZE];
     char read_vcheck[VERSIONSIZE];
-	 
-    // skip the description field 
 
     for (i=0; i<SAVESTRINGSIZE; ++i)
         saveg_read8();
 
-    // skip the comment field (for backward compatibility)
     for (i=0; i<SAVESTRINGSIZE; ++i)
         saveg_read8();
-    
+
     for (i=0; i<VERSIONSIZE; ++i)
         read_vcheck[i] = saveg_read8();
 
     memset(vcheck, 0, sizeof(vcheck));
     M_snprintf(vcheck, sizeof(vcheck), "version %i", GOBLIN_VERSION);
-    if (strcmp(read_vcheck, vcheck) != 0)
-	return false;				// bad version 
+
+    if (strcmp(read_vcheck, vcheck) == 0)
+    {
+        savegame_version = GOBLIN_VERSION;
+    }
+    else
+    {
+        int parsed_version = 0;
+        char *p = read_vcheck;
+        while (*p && (*p < '0' || *p > '9'))
+            p++;
+        while (*p >= '0' && *p <= '9')
+        {
+            parsed_version = parsed_version * 10 + (*p - '0');
+            p++;
+        }
+        if (parsed_version > 0)
+            savegame_version = parsed_version;
+        else
+            savegame_version = 1;
+    }
 
     gameskill = saveg_read8();
     gameepisode = saveg_read8();
     gamemap = saveg_read8();
 
-    for (i=0 ; i<MAXPLAYERS ; i++) 
+    for (i=0 ; i<MAXPLAYERS ; i++)
 	playeringame[i] = saveg_read8();
 
-    // get the times 
     a = saveg_read8();
     b = saveg_read8();
     c = saveg_read8();
-    leveltime = (a<<16) + (b<<8) + c; 
+    leveltime = (a<<16) + (b<<8) + c;
 
     return true;
 }
