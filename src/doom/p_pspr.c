@@ -47,6 +47,20 @@
 #define WEAPONBOTTOM	128*FRACUNIT
 #define WEAPONTOP		32*FRACUNIT
 
+// Goblin Dice Rollaz: Helper function to play random dice sound variations
+static void P_PlayDiceSound(mobj_t *source, sfxenum_t baseSound)
+{
+    sfxenum_t sound;
+    int variation = P_Random() % 3;
+    if (variation == 0)
+        sound = baseSound;
+    else if (variation == 1)
+        sound = baseSound + 1;  // _01 variation
+    else
+        sound = baseSound + 2;  // _02 variation
+    S_StartSound(source, sound);
+}
+
 // Goblin Dice Rollaz: Weapon recoil values per weapon
 // Defines how much the weapon kicks back when fired
 static const fixed_t weapon_recoil_values[NUMWEAPONS] = {
@@ -325,7 +339,7 @@ void P_FireAltWeapon (player_t* player)
         int guaranteedCrit = 0;
         
         // d4 Rapid Burst Throw - quick whoosh sound
-        S_StartSound (player->mo, sfx_dice_d4);
+        P_PlayDiceSound(player->mo, sfx_dice_d4);
         
         // Check for guaranteed crit from Dice Fortune powerup
         if (player->powers[pw_dicefortune])
@@ -428,11 +442,11 @@ void P_FireAltWeapon (player_t* player)
         
         // Play sound based on charge level - use d12 heavy impact sounds
         if (chargeBonus >= 35)
-            S_StartSound(player->mo, sfx_dice_d12);  // Full charged - thunderous throw
+            P_PlayDiceSound(player->mo, sfx_dice_d12);  // Full charged - thunderous throw
         else if (chargeBonus >= 20)
-            S_StartSound(player->mo, sfx_dice_d12);  // Partial charge - solid hit
+            P_PlayDiceSound(player->mo, sfx_dice_d12);  // Partial charge - solid hit
         else
-            S_StartSound(player->mo, sfx_dice_d12);  // Light charge - light toss
+            P_PlayDiceSound(player->mo, sfx_dice_d12);  // Light charge - light toss
         
         // Show appropriate flash
         if (chargeBonus >= 20)
@@ -638,7 +652,7 @@ A_FireD100Plus1
     int diceRoll = 0;
     mobj_t* missile;
     
-    S_StartSound (player->mo, sfx_dice_d20);
+    P_PlayDiceSound(player->mo, sfx_dice_d20);
 
     P_SetMobjState (player->mo, S_PLAY_ATK2);
     DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
@@ -706,7 +720,7 @@ A_FireQuake
     int diceRoll = 0;
     mobj_t* missile;
     
-    S_StartSound (player->mo, sfx_dice_d20);
+    P_PlayDiceSound(player->mo, sfx_dice_d20);
 
     P_SetMobjState (player->mo, S_PLAY_ATK2);
     DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
@@ -768,7 +782,7 @@ A_FireCrystalShatter
     int diceRoll = 0;
     mobj_t* missile;
     
-    S_StartSound (player->mo, sfx_dice_d8);
+    P_PlayDiceSound(player->mo, sfx_dice_d8);
 
     P_SetMobjState (player->mo, S_PLAY_ATK2);
     DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
@@ -834,7 +848,7 @@ A_FireSplittingD20
     int diceRoll = 0;
     mobj_t* missile;
     
-    S_StartSound (player->mo, sfx_dice_d20);
+    P_PlayDiceSound(player->mo, sfx_dice_d20);
 
     P_SetMobjState (player->mo, S_PLAY_ATK2);
     DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
@@ -900,7 +914,7 @@ A_FireChainReaction
     int diceRoll = 0;
     mobj_t* missile;
     
-    S_StartSound (player->mo, sfx_dice_d12);
+    P_PlayDiceSound(player->mo, sfx_dice_d12);
 
     P_SetMobjState (player->mo, S_PLAY_ATK2);
     DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
@@ -959,7 +973,7 @@ A_FireGreedsD6
     int diceRoll = 0;
     mobj_t* missile;
     
-    S_StartSound (player->mo, sfx_dice_d6);
+    P_PlayDiceSound(player->mo, sfx_dice_d6);
 
     if (player->powers[pw_dicefortune])
     {
@@ -1006,7 +1020,7 @@ A_FireMiningCharge
     int diceRoll = 0;
     mobj_t* missile;
     
-    S_StartSound (player->mo, sfx_dice_d10);
+    P_PlayDiceSound(player->mo, sfx_dice_d10);
 
     if (player->powers[pw_dicefortune])
     {
@@ -1060,7 +1074,7 @@ A_FireSwarm
     mobj_t* missile;
     angle_t baseAngle;
     
-    S_StartSound (player->mo, sfx_dice_d6);
+    P_PlayDiceSound(player->mo, sfx_dice_d6);
 
     if (player->powers[pw_dicefortune])
     {
@@ -1115,7 +1129,7 @@ A_FireRunicBinding
     int diceRoll = 0;
     mobj_t* missile;
     
-    S_StartSound (player->mo, sfx_dice_d12);
+    P_PlayDiceSound(player->mo, sfx_dice_d12);
 
     if (player->powers[pw_dicefortune])
     {
@@ -1879,7 +1893,7 @@ A_FireD6Blast
     int critRoll = 0;
     int diceRoll = 0;
     
-    S_StartSound (player->mo, sfx_dice_d6);
+    P_PlayDiceSound(player->mo, sfx_dice_d6);
 
     P_SetMobjState (player->mo, S_PLAY_ATK2);
     DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
@@ -1930,7 +1944,7 @@ A_FireTwinD6
     int diceRoll2 = 0;
     int highestRoll = 0;
     
-    S_StartSound (player->mo, sfx_dice_d6);
+    P_PlayDiceSound(player->mo, sfx_dice_d6);
 
     P_SetMobjState (player->mo, S_PLAY_ATK2);
     DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 2);
@@ -1985,7 +1999,7 @@ A_FireArcaneD20
     int diceRoll = 0;
     mobj_t* missile;
     
-    S_StartSound (player->mo, sfx_dice_d20);
+    P_PlayDiceSound(player->mo, sfx_dice_d20);
 
     P_SetMobjState (player->mo, S_PLAY_ATK2);
     DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
@@ -2037,7 +2051,7 @@ A_FireCursed
     int misfire = 0;
     mobj_t* missile;
     
-    S_StartSound (player->mo, sfx_dice_d6);
+    P_PlayDiceSound(player->mo, sfx_dice_d6);
 
     P_SetMobjState (player->mo, S_PLAY_ATK2);
     DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
@@ -2101,7 +2115,7 @@ A_FireD2
     int diceRoll = 0;
     mobj_t* missile;
     
-    S_StartSound (player->mo, sfx_dice_d6);
+    P_PlayDiceSound(player->mo, sfx_dice_d6);
 
     P_SetMobjState (player->mo, S_PLAY_ATK2);
     DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
@@ -2154,7 +2168,7 @@ A_FireD3
     int diceRoll = 0;
     mobj_t* missile;
     
-    S_StartSound (player->mo, sfx_dice_d6);
+    P_PlayDiceSound(player->mo, sfx_dice_d6);
 
     P_SetMobjState (player->mo, S_PLAY_ATK2);
     DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
@@ -2207,7 +2221,7 @@ A_FireD7
     int diceRoll = 0;
     mobj_t* missile;
     
-    S_StartSound (player->mo, sfx_dice_d6);
+    P_PlayDiceSound(player->mo, sfx_dice_d6);
 
     P_SetMobjState (player->mo, S_PLAY_ATK2);
     DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
@@ -2268,7 +2282,7 @@ A_FireD14
     mobj_t* missile;
     int resonanceBonus = 0;
     
-    S_StartSound (player->mo, sfx_dice_d20);
+    P_PlayDiceSound(player->mo, sfx_dice_d20);
 
     P_SetMobjState (player->mo, S_PLAY_ATK2);
     DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
@@ -2337,7 +2351,7 @@ A_FireD24
     int diceRoll = 0;
     mobj_t* missile;
     
-    S_StartSound (player->mo, sfx_dice_d20);
+    P_PlayDiceSound(player->mo, sfx_dice_d20);
 
     P_SetMobjState (player->mo, S_PLAY_ATK2);
     DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
@@ -2395,7 +2409,7 @@ A_FireD30
     int diceRoll = 0;
     mobj_t* th;
     
-    S_StartSound (player->mo, sfx_dice_d20);
+    P_PlayDiceSound(player->mo, sfx_dice_d20);
 
     P_SetMobjState (player->mo, S_PLAY_ATK2);
     DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
@@ -2444,7 +2458,7 @@ A_FireD48
     int diceRoll = 0;
     mobj_t* missile;
     
-    S_StartSound (player->mo, sfx_dice_d20);
+    P_PlayDiceSound(player->mo, sfx_dice_d20);
 
     P_SetMobjState (player->mo, S_PLAY_ATK2);
     DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
@@ -2510,7 +2524,7 @@ A_FireD50
     int diceRoll = 0;
     mobj_t* missile;
     
-    S_StartSound (player->mo, sfx_dice_d20);
+    P_PlayDiceSound(player->mo, sfx_dice_d20);
 
     P_SetMobjState (player->mo, S_PLAY_ATK2);
     DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
@@ -2577,7 +2591,7 @@ A_FireD60
     int diceRoll = 0;
     mobj_t* missile;
     
-    S_StartSound (player->mo, sfx_dice_d20);
+    P_PlayDiceSound(player->mo, sfx_dice_d20);
 
     P_SetMobjState (player->mo, S_PLAY_ATK2);
     DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);

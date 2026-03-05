@@ -413,7 +413,7 @@
 - [x] Add 3D positional audio for dwarf voice cues
 - [x] Add reverb zones for cave environments
 - [x] Implement dynamic music intensity based on combat
-- [ ] Add dice roll sound variation per die type
+- [x] Add dice roll sound variation per die type
 - [x] Add critical hit layered sound effects
 - [ ] Implement audio LOD for distant sounds
 - [ ] Add volume slider for dice roll sounds in menu
@@ -426,7 +426,7 @@
 - [x] Add continue from last save option
 - [x] Add save game comments with timestamp
 - [x] Implement cloud save support stub
-- [ ] Add cross-version save compatibility
+- [x] Add cross-version save compatibility
 
 ### Phase 22: Modding Support
 - [x] Add custom dice weapon DEHACKED template

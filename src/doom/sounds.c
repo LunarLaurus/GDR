@@ -231,12 +231,28 @@ sfxinfo_t S_sfx[] =
   SOUND("critup", 80),   // Goblin Dice Rollaz: crit boost powerup pickup (high priority for impact)
   SOUND("doubup", 80),   // Goblin Dice Rollaz: double damage powerup pickup
   SOUND("fortcrt", 80),  // Goblin Dice Rollaz: guaranteed crit triggered (dice fortune consumed)
-  // Goblin Dice Rollaz: Dice weapon sounds
+  // Goblin Dice Rollaz: Dice weapon sounds (with variations)
   SOUND("dsroll", 64),   // d4 throwing knives - quick throw whoosh
+  SOUND("dsrl01", 64),   // d4 variation 1
+  SOUND("dsrl02", 64),   // d4 variation 2
   SOUND("dsd6bl", 64),   // d6 blaster - dice roll clatter
+  SOUND("ds6bl01", 64),   // d6 variation 1
+  SOUND("ds6bl02", 64),   // d6 variation 2
+  SOUND("dsd8cry", 66),   // d8 crystal - crystalline clink
+  SOUND("ds8cr01", 66),   // d8 variation 1
+  SOUND("ds8cr02", 66),   // d8 variation 2
+  SOUND("dsd10", 65),    // d10 mining charge - chunky thud
+  SOUND("dsd1001", 65),   // d10 variation 1
+  SOUND("dsd1002", 65),   // d10 variation 2
   SOUND("dsd12", 70),    // d12 heavy impact - thunderous throw
+  SOUND("dsd1201", 70),   // d12 variation 1
+  SOUND("dsd1202", 70),   // d12 variation 2
   SOUND("dsd20", 68),    // d20 cannon - deep rolling thunder
+  SOUND("dsd2001", 68),   // d20 variation 1
+  SOUND("dsd2002", 68),   // d20 variation 2
   SOUND("dsperc", 60),   // d100 percentile gamble - tense rattle
+  SOUND("dspc01", 60),   // d100 variation 1
+  SOUND("dspc02", 60),   // d100 variation 2
   SOUND("dicpick", 78),  // Generic dice pickup/roll sound
   SOUND("cricrit", 85),  // Critical hit satisfaction sound - satisfying crack
   // Goblin Dice Rollaz: Dwarf voice cues

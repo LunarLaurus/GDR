@@ -227,12 +227,28 @@ typedef enum
     sfx_critup,       // Goblin Dice Rollaz: crit boost powerup pickup
     sfx_doubup,       // Goblin Dice Rollaz: double damage powerup pickup
     sfx_fortcrit,     // Goblin Dice Rollaz: guaranteed crit triggered (dice fortune consumed)
-    // Goblin Dice Rollaz: Dice weapon sounds
+    // Goblin Dice Rollaz: Dice weapon sounds (with variations)
     sfx_dice_d4,      // d4 throwing knives throw sound
+    sfx_dice_d4_01,   // d4 variation 1
+    sfx_dice_d4_02,   // d4 variation 2
     sfx_dice_d6,      // d6 blaster roll/fire sound
+    sfx_dice_d6_01,   // d6 variation 1
+    sfx_dice_d6_02,   // d6 variation 2
+    sfx_dice_d8,      // d8 crystal shard sound
+    sfx_dice_d8_01,   // d8 variation 1
+    sfx_dice_d8_02,   // d8 variation 2
+    sfx_dice_d10,     // d10 mining charge sound
+    sfx_dice_d10_01,  // d10 variation 1
+    sfx_dice_d10_02,  // d10 variation 2
     sfx_dice_d12,     // d12 heavy impact sound
+    sfx_dice_d12_01,  // d12 variation 1
+    sfx_dice_d12_02,  // d12 variation 2
     sfx_dice_d20,     // d20 cannon roll sound
+    sfx_dice_d20_01,  // d20 variation 1
+    sfx_dice_d20_02,  // d20 variation 2
     sfx_dice_percent, // d100 percentile gamble shot
+    sfx_dice_percent_01, // d100 variation 1
+    sfx_dice_percent_02, // d100 variation 2
     sfx_dice_roll,    // Generic dice roll for powerups/pickups
     sfx_dice_crit,    // Critical hit dice sound (satisfaction)
     // Goblin Dice Rollaz: Dwarf voice cues
