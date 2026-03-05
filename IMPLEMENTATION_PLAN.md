@@ -429,7 +429,7 @@
 - [ ] Add cross-version save compatibility
 
 ### Phase 22: Modding Support
-- [ ] Add custom dice weapon DEHACKED template
+- [x] Add custom dice weapon DEHACKED template
 - [ ] Add custom enemy definition template
 - [ ] Document WAD sprite replacement requirements
 - [ ] Add mod loader error reporting
