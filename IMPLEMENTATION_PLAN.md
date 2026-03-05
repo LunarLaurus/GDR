@@ -762,7 +762,7 @@
 ### Phase 46: Siege Battles
 - [x] Add large-scale battle AI (50+ enemies)
 - [x] Add siege weapon interactions
-- [ ] Add defensive position combat
+- [x] Add defensive position combat
 - [ ] Add wave-based assault mode
 - [ ] Add objective-based siege (capture point)
 - [ ] Add allied NPC soldiers

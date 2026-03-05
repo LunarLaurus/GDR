@@ -29,6 +29,7 @@
 #include "st_stuff.h"
 #include "hu_stuff.h"
 #include "p_siege.h"
+#include "p_siege_defense.h"
 #include "dice_projectile_lag.h"
 
 #include "s_sound.h"
@@ -1027,6 +1028,13 @@ void P_SpawnMapThing (mapthing_t* mthing)
     if (mthing->type >= 9100 && mthing->type <= 9199)
     {
 	P_SpawnSiegeWave(mthing);
+	return;
+    }
+
+    // Goblin Dice Rollaz: Check for defense position things (9200-9299)
+    if (mthing->type >= 9200 && mthing->type <= 9299)
+    {
+	P_SpawnDefensePosition(mthing);
 	return;
     }
 	

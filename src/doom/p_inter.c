@@ -38,6 +38,7 @@
 
 #include "p_local.h"
 #include "p_ai_faction.h"
+#include "p_siege_defense.h"
 #include "r_state.h"
 #include "s_sound.h"
 #include "p_inter.h"
@@ -1836,6 +1837,16 @@ P_DamageMobj
     if (IN_DICE_ARENA() && target->player && source && source->player)
     {
         damage = (damage * dice_arena_damage_mult) / 100;
+    }
+
+    // Goblin Dice Rollaz: Apply defense position bonus for enemies defending positions
+    if (source && !source->player && damage > 0)
+    {
+        int defenseBonus = P_GetDefenseBonus(source);
+        if (defenseBonus > 0)
+        {
+            damage = damage + (damage * defenseBonus / 100);
+        }
     }
 
     // do the damage
