@@ -417,7 +417,7 @@
 - [x] Add critical hit layered sound effects
 - [x] Implement audio LOD for distant sounds
 - [x] Add volume slider for dice roll sounds in menu
-- [ ] Implement weapon-specific sound profiles
+- [x] Implement weapon-specific sound profiles
 
 ### Phase 21: Save System Improvements
 - [x] Add compressed save games
@@ -430,7 +430,7 @@
 
 ### Phase 22: Modding Support
 - [x] Add custom dice weapon DEHACKED template
-- [ ] Add custom enemy definition template
+- [x] Add custom enemy definition template
 - [x] Document WAD sprite replacement requirements
 - [ ] Add mod loader error reporting
 - [ ] Add mod load order configuration
@@ -438,7 +438,7 @@
 
 ### Phase 23: Testing Infrastructure
 - [x] Add automated build test script
-- [ ] Add basic gameplay smoke test
+- [x] Add basic gameplay smoke test
 - [ ] Add deterministic replay test
 - [ ] Add memory leak detection test
 - [ ] Add save/load roundtrip test
