@@ -441,7 +441,7 @@
 - [x] Add basic gameplay smoke test
 - [ ] Add deterministic replay test
 - [ ] Add memory leak detection test
-- [ ] Add save/load roundtrip test
+- [x] Add save/load roundtrip test
 - [ ] Add config file parsing test
 - [ ] Add network basic functionality test
 
