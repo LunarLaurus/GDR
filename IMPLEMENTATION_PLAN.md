@@ -415,7 +415,7 @@
 - [x] Implement dynamic music intensity based on combat
 - [x] Add dice roll sound variation per die type
 - [x] Add critical hit layered sound effects
-- [ ] Implement audio LOD for distant sounds
+- [x] Implement audio LOD for distant sounds
 - [ ] Add volume slider for dice roll sounds in menu
 - [ ] Implement weapon-specific sound profiles
 

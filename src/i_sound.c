@@ -65,6 +65,11 @@ int snd_cave_reverb_intensity = 50;
 int snd_cave_reverb_mindarkness = 48;
 int snd_cave_reverb_minceiling = 128;
 
+// Goblin Dice Rollaz: Audio LOD for distant sounds
+// When enabled, distant sounds use simplified processing for better performance
+int snd_audio_lod = 1;
+int snd_audio_lod_dist = 800 * FRACUNIT;
+
 // Low-level sound and music modules we are using
 static const sound_module_t *sound_module;
 static const music_module_t *music_module;
@@ -523,5 +528,8 @@ void I_BindSoundVariables(void)
     M_BindIntVariable("snd_cave_reverb_intensity",  &snd_cave_reverb_intensity);
     M_BindIntVariable("snd_cave_reverb_mindarkness", &snd_cave_reverb_mindarkness);
     M_BindIntVariable("snd_cave_reverb_minceiling", &snd_cave_reverb_minceiling);
+
+    M_BindIntVariable("snd_audio_lod",              &snd_audio_lod);
+    M_BindIntVariable("snd_audio_lod_dist",        &snd_audio_lod_dist);
 }
 

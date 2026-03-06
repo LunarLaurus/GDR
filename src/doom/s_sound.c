@@ -840,10 +840,55 @@ void S_UpdateSounds(mobj_t *listener)
                 //  or modify their params
                 if (c->origin && listener != c->origin)
                 {
-                    audible = S_AdjustSoundParams(listener,
-                                                  c->origin,
-                                                  &volume,
-                                                  &sep);
+                    // Goblin Dice Rollaz: Audio LOD for distant sounds
+                    // If LOD is enabled and sound is far enough, use simplified processing
+                    if (snd_audio_lod)
+                    {
+                        fixed_t approx_dist;
+                        fixed_t adx = abs(listener->x - c->origin->x);
+                        fixed_t ady = abs(listener->y - c->origin->y);
+
+                        // Fast approximation: skip z-axis for speed
+                        approx_dist = adx + ady - ((adx < ady ? adx : ady)>>1);
+
+                        // If sound is beyond LOD threshold, use simplified processing
+                        if (approx_dist > snd_audio_lod_dist)
+                        {
+                            // Simple volume attenuation only - skip all 3D calculations
+                            if (approx_dist > S_CLIPPING_DIST)
+                            {
+                                audible = 0;
+                            }
+                            else
+                            {
+                                // Basic linear falloff - much cheaper than full S_AdjustSoundParams
+                                int dist_factor = (S_CLIPPING_DIST - approx_dist) >> FRACBITS;
+                                int atten_factor = S_ATTENUATOR;
+                                if (atten_factor > 0)
+                                {
+                                    volume = (volume * dist_factor) / atten_factor;
+                                }
+                                sep = NORM_SEP;  // Mono for distant sounds - saves stereo processing
+                                audible = (volume > 0);
+                            }
+                        }
+                        else
+                        {
+                            // Sound is close enough - use full 3D processing
+                            audible = S_AdjustSoundParams(listener,
+                                                          c->origin,
+                                                          &volume,
+                                                          &sep);
+                        }
+                    }
+                    else
+                    {
+                        // LOD disabled - use full 3D processing
+                        audible = S_AdjustSoundParams(listener,
+                                                      c->origin,
+                                                      &volume,
+                                                      &sep);
+                    }
 
                     if (!audible)
                     {

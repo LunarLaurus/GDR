@@ -245,6 +245,9 @@ extern int snd_cave_reverb_intensity;
 extern int snd_cave_reverb_mindarkness;
 extern int snd_cave_reverb_minceiling;
 
+extern int snd_audio_lod;
+extern int snd_audio_lod_dist;
+
 void I_BindSoundVariables(void);
 
 // DMX version to emulate for OPL emulation:
