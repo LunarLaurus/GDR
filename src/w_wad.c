@@ -59,6 +59,52 @@ typedef PACKED_STRUCT (
 lumpinfo_t **lumpinfo;
 unsigned int numlumps = 0;
 
+#define MAX_LOAD_ERRORS 64
+
+typedef struct
+{
+    wad_error_type_t type;
+    char filename[256];
+    char message[256];
+} wad_load_error_t;
+
+static wad_load_error_t load_errors[MAX_LOAD_ERRORS];
+static int num_load_errors = 0;
+
+void W_AddLoadError(wad_error_type_t type, const char *filename, const char *message)
+{
+    if (num_load_errors >= MAX_LOAD_ERRORS)
+        return;
+
+    load_errors[num_load_errors].type = type;
+    M_StringCopy(load_errors[num_load_errors].filename, filename, sizeof(load_errors[num_load_errors].filename));
+    M_StringCopy(load_errors[num_load_errors].message, message, sizeof(load_errors[num_load_errors].message));
+    num_load_errors++;
+}
+
+int W_GetNumLoadErrors(void)
+{
+    return num_load_errors;
+}
+
+void W_GetLoadError(int index, wad_error_type_t *type, char *filename, char *message)
+{
+    if (index < 0 || index >= num_load_errors)
+        return;
+
+    if (type)
+        *type = load_errors[index].type;
+    if (filename)
+        M_StringCopy(filename, load_errors[index].filename, 256);
+    if (message)
+        M_StringCopy(message, load_errors[index].message, 256);
+}
+
+void W_ClearLoadErrors(void)
+{
+    num_load_errors = 0;
+}
+
 // Hash table for fast lookups
 static lumpindex_t *lumphash;
 
@@ -137,6 +183,7 @@ wad_file_t *W_AddFile (const char *filename)
     if (wad_file == NULL)
     {
 	printf (" couldn't open %s\n", filename);
+	W_AddLoadError(WAD_ERROR, filename, "Could not open file");
 	return NULL;
     }
 
@@ -691,6 +738,7 @@ void W_ValidateLoadedFiles(void)
 {
     unsigned int i;
     int warnings = 0;
+    char msg[256];
 
     printf("\n=== WAD Validation Report ===\n");
 
@@ -698,15 +746,19 @@ void W_ValidateLoadedFiles(void)
     {
         if (lumpinfo[i]->size < 0)
         {
-            printf("WARNING: Lump %.8s has negative size (%d)\n",
-                   lumpinfo[i]->name, lumpinfo[i]->size);
+            snprintf(msg, sizeof(msg), "Lump %.8s has negative size (%d)",
+                     lumpinfo[i]->name, lumpinfo[i]->size);
+            printf("WARNING: %s\n", msg);
+            W_AddLoadError(WAD_WARNING, W_WadNameForLump(lumpinfo[i]), msg);
             warnings++;
         }
 
         if (lumpinfo[i]->wad_file == NULL)
         {
-            printf("WARNING: Lump %.8s has no associated WAD file\n",
-                   lumpinfo[i]->name);
+            snprintf(msg, sizeof(msg), "Lump %.8s has no associated WAD file",
+                     lumpinfo[i]->name);
+            printf("WARNING: %s\n", msg);
+            W_AddLoadError(WAD_WARNING, W_WadNameForLump(lumpinfo[i]), msg);
             warnings++;
         }
     }
@@ -714,17 +766,21 @@ void W_ValidateLoadedFiles(void)
     if (numlumps == 0)
     {
         printf("ERROR: No lumps loaded!\n");
+        W_AddLoadError(WAD_ERROR, "", "No lumps loaded");
         warnings++;
     }
     else if (numlumps > 10000)
     {
-        printf("WARNING: High lump count (%u) may affect performance\n", numlumps);
+        snprintf(msg, sizeof(msg), "High lump count (%u) may affect performance", numlumps);
+        printf("WARNING: %s\n", msg);
+        W_AddLoadError(WAD_WARNING, "", msg);
         warnings++;
     }
 
     if (W_GetNumWADFiles() == 0)
     {
         printf("ERROR: No WAD files loaded!\n");
+        W_AddLoadError(WAD_ERROR, "", "No WAD files loaded");
         warnings++;
     }
 

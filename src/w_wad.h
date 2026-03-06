@@ -78,4 +78,15 @@ void W_PrintLoadedWADs(void);
 unsigned int W_GetNumWADFiles(void);
 void W_ValidateLoadedFiles(void);
 
+typedef enum
+{
+    WAD_ERROR,
+    WAD_WARNING
+} wad_error_type_t;
+
+void W_AddLoadError(wad_error_type_t type, const char *filename, const char *message);
+int W_GetNumLoadErrors(void);
+void W_GetLoadError(int index, wad_error_type_t *type, char *filename, char *message);
+void W_ClearLoadErrors(void);
+
 #endif

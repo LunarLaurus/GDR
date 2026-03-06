@@ -432,7 +432,7 @@
 - [x] Add custom dice weapon DEHACKED template
 - [x] Add custom enemy definition template
 - [x] Document WAD sprite replacement requirements
-- [ ] Add mod loader error reporting
+- [x] Add mod loader error reporting
 - [ ] Add mod load order configuration
 - [ ] Implement mod compatibility checker
 
