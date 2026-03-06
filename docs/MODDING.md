@@ -355,6 +355,103 @@ Example: `SCOUAB5` = Goblin Scout frame B, rotation 5
 
 ---
 
+## Sprite Replacement
+
+### Critical: Use -merge Not -file
+
+**Vanilla Doom cannot load sprites from PWAD via `-file`.** You must use `-merge`:
+
+```bash
+# WRONG - sprites won't load
+./goblin-doom -file mymod.wad
+
+# CORRECT - sprites will load
+./goblin-doom -merge mymod.wad
+```
+
+This is a fundamental limitation of the Doom engine. The `-file` option only loads additional WAD data (maps, sounds, textures), not sprite replacements.
+
+### Sprite Naming Convention
+
+Doom sprites use an 8-character format: `XXXXNNCC`
+
+| Position | Meaning | Examples |
+|----------|---------|----------|
+| XXXX | 4-char sprite name | TROO, PLAY, GOBL |
+| NN | Frame (A0-A9, B0-B9) | A0, B3, C1 |
+| CC | Rotation (01-08) | 01, 05, 08 |
+
+Example: `GOBL A1` = Goblin sprite, frame A1, rotation 1
+
+### Required Sprite Frames
+
+For enemies, you typically need:
+
+| Frame | Purpose |
+|-------|---------|
+| S**T**ND | Standing Idle |
+| S**R**UN | Running |
+| S**A**TTACK | Attacking |
+| S**P**AIN | Pain reaction |
+| S**D**IE | Death |
+| S**X**DIE | Explosive death |
+
+For weapons:
+
+| Frame | Purpose |
+|-------|---------|
+| **B** | Ready/Idle |
+| **A**1-**A**N | Attack frames |
+| **U** | Raise weapon |
+| **D** | Lower weapon |
+
+### Sprite Dimensions
+
+- Maximum width: 256 pixels
+- Maximum height: 256 pixels
+- Optimal size: 128x128 for enemies
+- Use transparent backgrounds (Doom uses color index 247 as transparent)
+
+### Palette Requirements
+
+Sprites must use the Doom palette (256 colors). Use tools like SLADE3 to convert:
+
+```bash
+# Example with ImageMagick (requires palette)
+convert input.png -remap doom.pal output.png
+```
+
+### Tools for Sprite Creation
+
+1. **SLADE3** - Best for WAD editing and sprite management
+2. **Doom Builder** - Map editing with sprite preview
+3. **Photoshop/GIMP** - Create sprites, export with Doom palette
+
+### Example: Replacing Imp Sprites
+
+1. Create new sprites named:
+   - TROOA1.png through TROOA8.png (attack)
+   - TROOB1.png through TROOB8.png (death)
+   - etc.
+
+2. Add to WAD in a SPRITES lump or as loose PNGs
+
+3. Load with:
+   ```bash
+   ./goblin-doom -merge mysprites.wad
+   ```
+
+### Common Issues
+
+| Issue | Solution |
+|-------|----------|
+| Sprites not showing | Use `-merge`, not `-file` |
+| Wrong colors | Convert to Doom palette |
+| Black squares | Ensure transparent color is index 247 |
+| Wrong size | Resize to power of 2 or standard Doom sizes |
+
+---
+
 ## DEHACKED Reference
 
 ### Modifying Weapons via DEHACKED

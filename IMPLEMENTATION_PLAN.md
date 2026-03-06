@@ -431,7 +431,7 @@
 ### Phase 22: Modding Support
 - [x] Add custom dice weapon DEHACKED template
 - [ ] Add custom enemy definition template
-- [ ] Document WAD sprite replacement requirements
+- [x] Document WAD sprite replacement requirements
 - [ ] Add mod loader error reporting
 - [ ] Add mod load order configuration
 - [ ] Implement mod compatibility checker
