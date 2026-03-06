@@ -416,7 +416,7 @@
 - [x] Add dice roll sound variation per die type
 - [x] Add critical hit layered sound effects
 - [x] Implement audio LOD for distant sounds
-- [ ] Add volume slider for dice roll sounds in menu
+- [x] Add volume slider for dice roll sounds in menu
 - [ ] Implement weapon-specific sound profiles
 
 ### Phase 21: Save System Improvements

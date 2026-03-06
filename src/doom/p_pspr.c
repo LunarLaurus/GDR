@@ -45,20 +45,27 @@
 #define RAISESPEED		FRACUNIT*6
 
 #define WEAPONBOTTOM	128*FRACUNIT
-#define WEAPONTOP		32*FRACUNIT
+#define WEAPONTOP	32*FRACUNIT
+
+extern int dice_sound_volume;
 
 // Goblin Dice Rollaz: Helper function to play random dice sound variations
 static void P_PlayDiceSound(mobj_t *source, sfxenum_t baseSound)
 {
     sfxenum_t sound;
     int variation = P_Random() % 3;
+    int volume;
+
     if (variation == 0)
         sound = baseSound;
     else if (variation == 1)
         sound = baseSound + 1;  // _01 variation
     else
         sound = baseSound + 2;  // _02 variation
-    S_StartSound(source, sound);
+
+    // Scale menu volume (0-15) to sound volume (0-127)
+    volume = (dice_sound_volume * 127) / 15;
+    S_StartSoundAtVolume(source, sound, volume);
 }
 
 // Goblin Dice Rollaz: Weapon recoil values per weapon

@@ -756,6 +756,61 @@ void S_StartSound3D(void *origin_p, int sfx_id)
 }
 
 //
+// S_StartSoundAtVolume
+//
+// Start a sound at a specific volume (0-127).
+// Used for dice roll sounds with separate volume control.
+//
+void S_StartSoundAtVolume(void *origin_p, int sfx_id, int volume)
+{
+    sfxinfo_t *sfx;
+    mobj_t *origin;
+    int sep;
+    int pitch;
+    int cnum;
+
+    origin = (mobj_t *) origin_p;
+
+    // Clamp volume to valid range
+    if (volume < 0)
+        volume = 0;
+    if (volume > 127)
+        volume = 127;
+
+    if (sfx_id < 1 || sfx_id > NUMSFX)
+    {
+        I_Error("Bad sfx #: %d", sfx_id);
+    }
+
+    sfx = &S_sfx[sfx_id];
+
+    pitch = NORM_PITCH;
+    sep = NORM_SEP;
+
+    S_StopSound(origin);
+
+    cnum = S_GetChannel(origin, sfx);
+
+    if (cnum < 0)
+    {
+        return;
+    }
+
+    if (sfx->usefulness++ < 0)
+    {
+        sfx->usefulness = 1;
+    }
+
+    if (sfx->lumpnum < 0)
+    {
+        sfx->lumpnum = I_GetSfxLumpNum(sfx);
+    }
+
+    channels[cnum].pitch = pitch;
+    channels[cnum].handle = I_StartSound(sfx, cnum, volume, sep, channels[cnum].pitch);
+}
+
+//
 // Stop and resume music, during game PAUSE.
 //
 
