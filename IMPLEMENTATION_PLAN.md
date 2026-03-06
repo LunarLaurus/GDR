@@ -446,7 +446,7 @@
 - [ ] Add network basic functionality test
 
 ### Phase 24: Performance Profiling
-- [ ] Add FPS counter debug overlay
+- [x] Add FPS counter debug overlay
 - [ ] Add frame time profiling
 - [ ] Add memory usage display
 - [ ] Add draw call counter
