@@ -442,7 +442,7 @@
 - [ ] Add deterministic replay test
 - [ ] Add memory leak detection test
 - [x] Add save/load roundtrip test
-- [ ] Add config file parsing test
+- [x] Add config file parsing test
 - [ ] Add network basic functionality test
 
 ### Phase 24: Performance Profiling
