@@ -23,6 +23,8 @@
 #include "i_glob.h"
 #include "i_system.h"
 #include "m_argv.h"
+#include "m_config.h"
+#include "m_misc.h"
 #include "w_main.h"
 #include "w_merge.h"
 #include "w_wad.h"
@@ -263,6 +265,72 @@ void W_CheckCorrectIWAD(GameMission_t mission)
                         D_GameMissionString(unique_lumps[i].mission));
             }
         }
+    }
+}
+
+// Load WAD files from the mod_load_order config variable.
+// This is called after W_ParseCommandLine to load mods specified in config.
+void W_LoadModsFromConfig(void)
+{
+    char *mod_list;
+    char *mod_copy;
+    char *token;
+    boolean modifiedgame = false;
+
+    mod_list = M_GetStringVariable("goblin_mod_load_order");
+    if (mod_list == NULL || *mod_list == '\0')
+    {
+        return;
+    }
+
+    mod_copy = M_StringDuplicate(mod_list);
+    if (mod_copy == NULL)
+    {
+        return;
+    }
+
+    token = strtok(mod_copy, ",");
+    while (token != NULL)
+    {
+        while (*token == ' ' || *token == '\t')
+        {
+            token++;
+        }
+
+        char *end = token + strlen(token) - 1;
+        while (end > token && (*end == ' ' || *end == '\t' || *end == '\n' || *end == '\r'))
+        {
+            *end = '\0';
+            end--;
+        }
+
+        if (*token != '\0')
+        {
+            char *filename;
+
+            filename = D_TryFindWADByName(token);
+
+            if (filename != NULL)
+            {
+                printf(" [config] loading mod: %s\n", filename);
+                W_AddFile(filename);
+                free(filename);
+                modifiedgame = true;
+            }
+            else
+            {
+                printf(" [config] warning: could not find mod: %s\n", token);
+            }
+        }
+
+        token = strtok(NULL, ",");
+    }
+
+    free(mod_copy);
+
+    if (modifiedgame)
+    {
+        printf("\n");
     }
 }
 

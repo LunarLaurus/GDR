@@ -178,6 +178,9 @@ int             debug_sync_check = 0;
 // Goblin Dice Rollaz: modern visual effects toggle
 extern int      goblin_modern_fx;
 
+// Goblin Dice Rollaz: mod load order from config
+extern char    *goblin_mod_load_order;
+
 // Goblin Dice Rollaz: texture LOD toggle
 extern int      goblin_texture_lod;
 
@@ -489,6 +492,9 @@ void D_BindVariables(void)
 
     // Goblin Dice Rollaz: modern visual effects toggle
     M_BindIntVariable("goblin_modern_fx",             &goblin_modern_fx);
+
+    // Goblin Dice Rollaz: mod load order from config
+    M_BindStringVariable("goblin_mod_load_order",    &goblin_mod_load_order);
 
     // Goblin Dice Rollaz: texture LOD toggle
     M_BindIntVariable("goblin_texture_lod",            &goblin_texture_lod);
@@ -1748,6 +1754,9 @@ void D_DoomMain (void)
 
     // Load PWAD files.
     modifiedgame = W_ParseCommandLine();
+
+    // Goblin Dice Rollaz: Load mods from config file
+    W_LoadModsFromConfig();
 
     // Debug:
 //    W_PrintDirectory();

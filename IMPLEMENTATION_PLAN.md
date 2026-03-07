@@ -433,7 +433,7 @@
 - [x] Add custom enemy definition template
 - [x] Document WAD sprite replacement requirements
 - [x] Add mod loader error reporting
-- [ ] Add mod load order configuration
+- [x] Add mod load order configuration
 - [ ] Implement mod compatibility checker
 
 ### Phase 23: Testing Infrastructure

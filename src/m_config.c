@@ -50,6 +50,9 @@ const char *configdir;
 
 static char *autoload_path = "";
 
+// Goblin Dice Rollaz: mod load order from config file
+static char *goblin_mod_load_order = "";
+
 // Default filenames for configuration files.
 
 static const char *default_main_config;
@@ -633,6 +636,12 @@ static default_t extra_defaults_list[] =
     // If zero, these effects are disabled for a classic experience.
     //
     CONFIG_VARIABLE_INT(goblin_modern_fx),
+
+    // Goblin Dice Rollaz: Mod load order
+    // Comma-separated list of WAD files to load in order.
+    // These are loaded after command-line -file/-merge options.
+    //
+    CONFIG_VARIABLE_STRING(goblin_mod_load_order),
 
     // Goblin Dice Rollaz: Crosshair customization
     // If non-zero, crosshair is displayed at center of view.

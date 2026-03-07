@@ -26,5 +26,8 @@ void W_CheckCorrectIWAD(GameMission_t mission);
 // Autoload all .wad files from the given directory:
 void W_AutoLoadWADs(const char *path);
 
+// Load WAD files from the mod_load_order config variable:
+void W_LoadModsFromConfig(void);
+
 #endif /* #ifndef W_MAIN_H */
 
