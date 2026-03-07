@@ -439,7 +439,7 @@
 ### Phase 23: Testing Infrastructure
 - [x] Add automated build test script
 - [x] Add basic gameplay smoke test
-- [ ] Add deterministic replay test
+- [x] Add deterministic replay test
 - [ ] Add memory leak detection test
 - [x] Add save/load roundtrip test
 - [x] Add config file parsing test
