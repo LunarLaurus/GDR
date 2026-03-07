@@ -1758,6 +1758,10 @@ void D_DoomMain (void)
     // Goblin Dice Rollaz: Load mods from config file
     W_LoadModsFromConfig();
 
+    // Goblin Dice Rollaz: Run mod compatibility check
+    W_RunModCompatibilityCheck();
+    W_PrintModCompatibilityReport();
+
     // Debug:
 //    W_PrintDirectory();
 

@@ -17,6 +17,7 @@
 //
 
 #include <stdlib.h>
+#include <stdarg.h>
 
 #include "config.h"
 #include "d_iwad.h"
@@ -196,6 +197,7 @@ boolean W_ParseCommandLine(void)
 
             printf(" adding %s\n", filename);
 	    W_AddFile(filename);
+            W_IncrementWadFileCount();
             free(filename);
         }
     }
@@ -332,5 +334,195 @@ void W_LoadModsFromConfig(void)
     {
         printf("\n");
     }
+}
+
+// Compatibility check results
+typedef struct
+{
+    char message[256];
+    mod_compat_result_t level;
+} mod_compat_warning_t;
+
+#define MAX_MOD_COMPAT_WARNINGS 32
+
+static mod_compat_warning_t mod_compat_warnings[MAX_MOD_COMPAT_WARNINGS];
+static int num_mod_compat_warnings = 0;
+
+void W_AddModCompatWarning(mod_compat_result_t level, const char *fmt, ...)
+{
+    va_list args;
+
+    if (num_mod_compat_warnings >= MAX_MOD_COMPAT_WARNINGS)
+        return;
+
+    va_start(args, fmt);
+    vsnprintf(mod_compat_warnings[num_mod_compat_warnings].message,
+               sizeof(mod_compat_warnings[num_mod_compat_warnings].message),
+               fmt, args);
+    va_end(args);
+
+    mod_compat_warnings[num_mod_compat_warnings].level = level;
+    num_mod_compat_warnings++;
+}
+
+void W_ClearModCompatWarnings(void)
+{
+    num_mod_compat_warnings = 0;
+}
+
+int W_GetNumModCompatWarnings(void)
+{
+    return num_mod_compat_warnings;
+}
+
+void W_GetModCompatWarning(int index, mod_compat_result_t *level, char *message)
+{
+    if (index < 0 || index >= num_mod_compat_warnings)
+        return;
+
+    if (level)
+        *level = mod_compat_warnings[index].level;
+    if (message)
+        M_StringCopy(message, mod_compat_warnings[index].message,
+                      sizeof(mod_compat_warnings[index].message));
+}
+
+static unsigned int num_wad_files_loaded = 0;
+
+void W_IncrementWadFileCount(void)
+{
+    num_wad_files_loaded++;
+}
+
+static void W_CheckModCompat_WADS(void)
+{
+    if (num_wad_files_loaded <= 1)
+        return;
+
+    if (num_wad_files_loaded > 10)
+    {
+        W_AddModCompatWarning(MODCOMPAT_WARNING,
+            "Loading %u WAD files - may cause performance issues or conflicts",
+            num_wad_files_loaded);
+    }
+}
+
+static void W_CheckModCompat_Sprites(void)
+{
+    unsigned int i;
+    static const char *required_sprites[] = {
+        "PLAY", "TROO", "SHTG", "MGUN", "LAUN", "PLAS", "BFGG"
+    };
+    int missing_count = 0;
+
+    for (i = 0; i < arrlen(required_sprites); ++i)
+    {
+        char spritename[9];
+        M_StringCopy(spritename, required_sprites[i], sizeof(spritename));
+
+        if (W_CheckNumForName(spritename) < 0)
+        {
+            missing_count++;
+        }
+    }
+
+    if (missing_count > 0)
+    {
+        W_AddModCompatWarning(MODCOMPAT_WARNING,
+            "%d required sprite(s) missing - game may not render correctly",
+            missing_count);
+    }
+}
+
+static void W_CheckModCompat_Textures(void)
+{
+    unsigned int i;
+    static const char *required_textures[] = {
+        "FLAT01", "FLAT02", "FLOOR0_1", "CEIL1_1", "COMPBLUE", "SLADWALL"
+    };
+    int missing_count = 0;
+
+    for (i = 0; i < arrlen(required_textures); ++i)
+    {
+        char texname[9];
+        M_StringCopy(texname, required_textures[i], sizeof(texname));
+
+        if (W_CheckNumForName(texname) < 0)
+        {
+            missing_count++;
+        }
+    }
+
+    if (missing_count > 3)
+    {
+        W_AddModCompatWarning(MODCOMPAT_WARNING,
+            "%d common texture(s) missing - some areas may not render correctly",
+            missing_count);
+    }
+}
+
+static void W_CheckModCompat_Dehacked(void)
+{
+    unsigned int i;
+    int dehack_count = 0;
+
+    for (i = 0; i < numlumps; ++i)
+    {
+        if (strncmp(lumpinfo[i]->name, "DEHACKED", 8) == 0)
+        {
+            dehack_count++;
+        }
+    }
+
+    if (dehack_count > 5)
+    {
+        W_AddModCompatWarning(MODCOMPAT_WARNING,
+            "%d DEHACKED patches loaded - may cause compatibility issues",
+            dehack_count);
+    }
+}
+
+void W_RunModCompatibilityCheck(void)
+{
+    W_ClearModCompatWarnings();
+
+    W_CheckModCompat_WADS();
+    W_CheckModCompat_Sprites();
+    W_CheckModCompat_Textures();
+    W_CheckModCompat_Dehacked();
+}
+
+void W_PrintModCompatibilityReport(void)
+{
+    int i;
+    mod_compat_result_t level;
+    char message[256];
+
+    if (num_mod_compat_warnings == 0)
+        return;
+
+    printf("\n=== Mod Compatibility Report ===\n");
+
+    for (i = 0; i < num_mod_compat_warnings; ++i)
+    {
+        W_GetModCompatWarning(i, &level, message);
+
+        switch (level)
+        {
+        case MODCOMPAT_ERROR:
+            printf("ERROR: ");
+            break;
+        case MODCOMPAT_WARNING:
+            printf("WARNING: ");
+            break;
+        default:
+            printf("INFO: ");
+            break;
+        }
+
+        printf("%s\n", message);
+    }
+
+    printf("================================\n\n");
 }
 
