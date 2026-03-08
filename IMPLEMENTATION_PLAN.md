@@ -443,7 +443,7 @@
 - [x] Add memory leak detection test
 - [x] Add save/load roundtrip test
 - [x] Add config file parsing test
-- [ ] Add network basic functionality test
+- [x] Add network basic functionality test
 
 ### Phase 24: Performance Profiling
 - [x] Add FPS counter debug overlay
