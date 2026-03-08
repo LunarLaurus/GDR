@@ -17,6 +17,7 @@
 //
 
 #include <string.h>
+#include <stdio.h>
 
 #include "doomtype.h"
 #include "i_system.h"
@@ -67,6 +68,8 @@ typedef struct
 static memzone_t *mainzone;
 static boolean zero_on_free;
 static boolean scan_on_free;
+static int alloc_count = 0;
+static int alloc_bytes = 0;
 
 
 //
@@ -345,9 +348,13 @@ Z_Malloc
         *base->user = result;
     }
 
+    // Track allocation statistics
+    alloc_count++;
+    alloc_bytes += size - sizeof(memblock_t);
+
     // next allocation will start looking here
     mainzone->rover = base->next;	
-	
+    
     base->id = ZONEID;
    
     return result;
@@ -456,6 +463,86 @@ int Z_FreeMemory (void)
     }
 
     return free;
+}
+
+
+
+//
+// Z_GetAllocCount
+//
+int Z_GetAllocCount(void)
+{
+    return alloc_count;
+}
+
+
+
+//
+// Z_ResetAllocCount
+//
+void Z_ResetAllocCount(void)
+{
+    alloc_count = 0;
+    alloc_bytes = 0;
+}
+
+
+
+//
+// Z_DumpMemoryLeaks
+// Dumps all unfreed memory blocks to the specified file.
+// Useful for detecting memory leaks.
+//
+void Z_DumpMemoryLeaks(FILE *fp)
+{
+    memblock_t *block;
+    int num_leaks = 0;
+    int total_leak_bytes = 0;
+
+    fprintf(fp, "=== Memory Leak Report ===\n");
+    fprintf(fp, "Total allocations: %d\n", alloc_count);
+    fprintf(fp, "Total bytes allocated: %d\n\n", alloc_bytes);
+
+    block = mainzone->blocklist.next;
+
+    while (block->next != &mainzone->blocklist)
+    {
+        if (block->tag != PU_FREE && block->id == ZONEID)
+        {
+            int size = block->size - sizeof(memblock_t);
+            const char *tag_name = "UNKNOWN";
+
+            switch (block->tag)
+            {
+                case PU_STATIC:      tag_name = "STATIC"; break;
+                case PU_CACHE:       tag_name = "CACHE"; break;
+                case PU_LEVEL:       tag_name = "LEVEL"; break;
+                case PU_LEVSPEC:     tag_name = "LEVSPEC"; break;
+                case PU_PURGELEVEL:  tag_name = "PURGELEVEL"; break;
+                case PU_AUDIO:       tag_name = "AUDIO"; break;
+                case PU_OPENGL:      tag_name = "OPENGL"; break;
+                default:             tag_name = "USER"; break;
+            }
+
+            fprintf(fp, "LEAK: %p size=%d tag=%s (%d)\n",
+                    (byte *)block + sizeof(memblock_t),
+                    size, tag_name, block->tag);
+
+            num_leaks++;
+            total_leak_bytes += size;
+        }
+
+        block = block->next;
+    }
+
+    fprintf(fp, "\n=== Summary ===\n");
+    fprintf(fp, "Leaked blocks: %d\n", num_leaks);
+    fprintf(fp, "Leaked bytes: %d\n", total_leak_bytes);
+
+    if (num_leaks == 0)
+    {
+        fprintf(fp, "No memory leaks detected!\n");
+    }
 }
 
 

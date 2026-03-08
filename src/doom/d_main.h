@@ -48,6 +48,7 @@ extern boolean advancedemo;
 
 extern const char *pagename;
 
+void D_DumpMemoryLeaks(void);
 
 #endif
 

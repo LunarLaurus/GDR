@@ -1615,6 +1615,12 @@ void D_DoomMain (void)
     // Free dynamically allocated game description string
     I_AtExit(D_FreeGameDescription, true);
 
+    // Dump memory leaks on exit if -debugmem flag is provided
+    if (M_ParmExists("-debugmem"))
+    {
+        I_AtExit(D_DumpMemoryLeaks, true);
+    }
+
     // Find main IWAD file and load it.
     iwadfile = D_FindIWAD(IWAD_MASK_DOOM, &gamemission);
 
@@ -2159,5 +2165,47 @@ void D_DoomMain (void)
     }
 
     D_DoomLoop ();  // never returns
+}
+
+
+
+//
+// D_DumpMemoryLeaks
+//
+// Dumps memory leak report to a file when the -debugmem flag is used.
+// Called via I_AtExit on game shutdown.
+//
+void D_DumpMemoryLeaks(void)
+{
+    FILE *fp;
+    char *env_var;
+    char filename[512];
+
+    // Determine output path
+    env_var = getenv("GOBLIN_DICE_LEAK_OUTPUT");
+    if (env_var != NULL && strlen(env_var) > 0)
+    {
+        M_StringCopy(filename, env_var, sizeof(filename));
+    }
+    else
+    {
+        M_snprintf(filename, sizeof(filename), "goblin-doom-memleaks.txt");
+    }
+
+    fp = fopen(filename, "w");
+    if (fp == NULL)
+    {
+        fprintf(stderr, "Warning: Could not open %s for memory leak output\n", filename);
+        return;
+    }
+
+    fprintf(fp, "Goblin Dice Rollaz - Memory Leak Report\n");
+    fprintf(fp, "Generated at shutdown\n\n");
+
+    Z_DumpMemoryLeaks(fp);
+
+    fclose(fp);
+
+    printf("Memory leak report written to: %s\n", filename);
 }
 

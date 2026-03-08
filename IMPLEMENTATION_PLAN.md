@@ -440,7 +440,7 @@
 - [x] Add automated build test script
 - [x] Add basic gameplay smoke test
 - [x] Add deterministic replay test
-- [ ] Add memory leak detection test
+- [x] Add memory leak detection test
 - [x] Add save/load roundtrip test
 - [x] Add config file parsing test
 - [ ] Add network basic functionality test
