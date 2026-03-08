@@ -979,6 +979,24 @@ boolean G_Responder (event_t* ev)
 	    }
 	    return true;
 	}
+	// Goblin Dice Rollaz: F11 - Toggle frame time profiling
+	if (ev->type == ev_keydown && ev->data1 == KEY_F11)
+	{
+	    extern int frame_profiling_enabled;
+	    frame_profiling_enabled = !frame_profiling_enabled;
+	    if (frame_profiling_enabled)
+	    {
+		extern void D_ResetFrameStats(void);
+		D_ResetFrameStats();
+		DEH_printf("Frame profiling enabled. Press F11 to disable and view stats.\n");
+	    }
+	    else
+	    {
+		extern void D_PrintFrameProfile(void);
+		D_PrintFrameProfile();
+	    }
+	    return true;
+	}
 	// Goblin Dice Rollaz: F8 - Print dice statistics
 	if (ev->type == ev_keydown && ev->data1 == KEY_F8)
 	{

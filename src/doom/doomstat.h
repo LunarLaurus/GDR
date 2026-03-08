@@ -65,6 +65,14 @@ extern  int      thinker_total_count;
 extern  int      thinker_total_time_ms;
 extern  int      thinker_frame_count;
 
+// Goblin Dice Rollaz: Frame time profiling
+extern  int      frame_profiling_enabled;
+extern  int      frame_total_time_ms;
+extern  int      frame_tic_time_ms;
+extern  int      frame_render_time_ms;
+extern  int      frame_display_time_ms;
+extern  int      frame_count;
+
 
 // -----------------------------------------------------
 // Game Mode - identify IWAD as shareware, retail etc.
