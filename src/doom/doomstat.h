@@ -49,6 +49,7 @@ extern  boolean	fastparm;	// checkparm of -fast
 
 extern  boolean	devparm;	// DEBUG: launched with -devparm
 extern  boolean	showfps;	// FPS counter display toggle
+extern  boolean	showmem;	// Memory usage display toggle
 extern  boolean	r_showspritestats;	// Sprite rendering stats toggle
 
 // Sprite rendering statistics (for benchmarking)

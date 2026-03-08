@@ -182,6 +182,9 @@ boolean screenvisible = true;
 
 static boolean display_fps_dots;
 
+// If true, display memory usage stats.
+static boolean display_mem_stats;
+
 // If this is true, the screen is rendered but not blitted to the
 // video buffer.
 
@@ -265,6 +268,11 @@ void I_SetGrabMouseCallback(grabmouse_callback_t func)
 void I_DisplayFPSDots(boolean dots_on)
 {
     display_fps_dots = dots_on;
+}
+
+void I_DisplayMemStats(boolean mem_on)
+{
+    display_mem_stats = mem_on;
 }
 
 static void SetShowCursor(boolean show)
@@ -839,6 +847,38 @@ void I_FinishUpdate (void)
 	    I_VideoBuffer[ (SCREENHEIGHT-1)*SCREENWIDTH + i] = 0xff;
 	for ( ; i<20*4 ; i+=4)
 	    I_VideoBuffer[ (SCREENHEIGHT-1)*SCREENWIDTH + i] = 0x0;
+    }
+
+    // Goblin Dice Rollaz: Display memory usage stats
+    if (display_mem_stats)
+    {
+	int free_mem;
+	int ypos;
+
+	free_mem = Z_FreeMemory();
+
+	// Display at top-left corner (above status bar)
+	ypos = SCREENHEIGHT - 32;
+
+	// Draw dark background for readability
+	for (i = 0; i < 80 && ypos * SCREENWIDTH + i < SCREENWIDTH * SCREENHEIGHT; ++i)
+	{
+	    I_VideoBuffer[ypos * SCREENWIDTH + i] = 0;
+	    I_VideoBuffer[(ypos + 1) * SCREENWIDTH + i] = 0;
+	}
+
+	// Visual representation of memory usage (simple bar)
+	// Assume ~16MB typical free memory as baseline
+	int mem_bar_length = (free_mem * 40) / (16 * 1024 * 1024);
+	if (mem_bar_length > 40) mem_bar_length = 40;
+	if (mem_bar_length < 0) mem_bar_length = 0;
+
+	for (i = 0; i < mem_bar_length && i < 40; ++i)
+	{
+	    // Green for available, changes to yellow/red as it depletes
+	    byte color = (i < 20) ? 117 : (i < 30) ? 231 : 179;
+	    I_VideoBuffer[ypos * SCREENWIDTH + i + 20] = color;
+	}
     }
 
     // Draw disk icon before blit, if necessary.

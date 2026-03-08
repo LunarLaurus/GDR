@@ -845,6 +845,13 @@ boolean G_Responder (event_t* ev)
 
     if (gamestate == GS_LEVEL) 
     { 
+	if (ev->type == ev_keydown && ev->data1 == KEY_F4)
+	{
+	    showmem = !showmem;
+	    I_DisplayMemStats(showmem);
+	    players[consoleplayer].message = showmem ? "Memory Stats ON" : "Memory Stats OFF";
+	    return true;
+	}
 	if (ev->type == ev_keydown && ev->data1 == KEY_F5)
 	{
 	    showfps = !showfps;

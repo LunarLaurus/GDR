@@ -448,7 +448,7 @@
 ### Phase 24: Performance Profiling
 - [x] Add FPS counter debug overlay
 - [x] Add frame time profiling
-- [ ] Add memory usage display
+- [x] Add memory usage display
 - [ ] Add draw call counter
 - [ ] Add sprite batch count display
 - [ ] Add network latency display
