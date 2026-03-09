@@ -50,4 +50,6 @@ extern unsigned int net_local_is_freedoom;
 
 extern boolean drone;
 
+int NET_CL_GetLatency(void);
+
 #endif /* #ifndef NET_CLIENT_H */

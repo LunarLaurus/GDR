@@ -390,6 +390,11 @@ static void NET_CL_SendTics(int start, int end)
     need_to_acknowledge = false;
 }
 
+int NET_CL_GetLatency(void)
+{
+    return last_latency;
+}
+
 // Add a new ticcmd to the send queue
 
 void NET_CL_SendTiccmd(ticcmd_t *ticcmd, int maketic)

@@ -29,6 +29,7 @@
 
 #include "g_game.h"
 #include "m_menu.h"
+#include "net_client.h"
 
 #include "st_weapon_debug.h"
 #include "st_lib.h"
@@ -338,5 +339,20 @@ void ST_DrawWeaponStats(int x, int y)
         if (c >= ' ' && c < HU_FONTSIZE)
             V_DrawPatchDirect(scaled_x, scaled_y, st_weaponstat_font[c]);
         scaled_x += SHORT(st_weaponstat_font[c]->width) * hud_scale;
+    }
+
+    if (net_client_connected)
+    {
+        int latency = NET_CL_GetLatency();
+        scaled_y += line_height;
+        scaled_x = hud_scale != 1.0f ? (int)(x * hud_scale) : x;
+        DEH_snprintf(buf, sizeof(buf), "PING:%dms", latency);
+        for (i = 0; buf[i]; i++)
+        {
+            int c = buf[i];
+            if (c >= ' ' && c < HU_FONTSIZE)
+                V_DrawPatchDirect(scaled_x, scaled_y, st_weaponstat_font[c]);
+            scaled_x += SHORT(st_weaponstat_font[c]->width) * hud_scale;
+        }
     }
 }
