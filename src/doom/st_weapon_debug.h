@@ -22,8 +22,10 @@
 #include "doomtype.h"
 
 extern int goblin_weapon_stats;
+extern int goblin_think_profiler;
 
 void ST_DrawWeaponStats(int x, int y);
 void ST_PrintWeaponStats(void);
+void ST_DrawThinkProfiler(int x, int y);
 
 #endif

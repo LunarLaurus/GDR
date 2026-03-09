@@ -34,8 +34,10 @@
 #include "st_weapon_debug.h"
 #include "st_lib.h"
 #include "r_local.h"
+#include "doomstat.h"
 
 int goblin_weapon_stats = 0;
+int goblin_think_profiler = 0;
 static patch_t *st_weaponstat_font[HU_FONTSIZE];
 
 extern float hud_scale;
@@ -354,5 +356,90 @@ void ST_DrawWeaponStats(int x, int y)
                 V_DrawPatchDirect(scaled_x, scaled_y, st_weaponstat_font[c]);
             scaled_x += SHORT(st_weaponstat_font[c]->width) * hud_scale;
         }
+    }
+}
+
+void ST_DrawThinkProfiler(int x, int y)
+{
+    char buf[64];
+    int i;
+    char namebuf[9];
+    int scaled_x, scaled_y;
+    int line_height;
+    int think_time;
+    int render_time;
+    int total_time;
+    int think_pct;
+    
+    if (hud_scale != 1.0f)
+    {
+        scaled_x = (int)(x * hud_scale);
+        scaled_y = (int)(y * hud_scale);
+        line_height = (int)(12 * hud_scale);
+    }
+    else
+    {
+        scaled_x = x;
+        scaled_y = y;
+        line_height = 12;
+    }
+    
+    if (!players)
+        return;
+    
+    for (i = 0; i < HU_FONTSIZE; i++)
+    {
+        DEH_snprintf(namebuf, 9, "STCFN%.3d", i);
+        st_weaponstat_font[i] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
+    }
+    
+    think_time = frame_tic_time_ms;
+    render_time = frame_render_time_ms;
+    total_time = frame_total_time_ms;
+    think_pct = total_time > 0 ? (think_time * 100) / total_time : 0;
+    
+    DEH_snprintf(buf, sizeof(buf), "THINK:%dms", think_time);
+    for (i = 0; buf[i]; i++)
+    {
+        int c = buf[i];
+        if (c >= ' ' && c < HU_FONTSIZE)
+            V_DrawPatchDirect(scaled_x, scaled_y, st_weaponstat_font[c]);
+        scaled_x += SHORT(st_weaponstat_font[c]->width) * hud_scale;
+    }
+    
+    scaled_y += line_height;
+    scaled_x = hud_scale != 1.0f ? (int)(x * hud_scale) : x;
+    
+    DEH_snprintf(buf, sizeof(buf), "RENDER:%dms", render_time);
+    for (i = 0; buf[i]; i++)
+    {
+        int c = buf[i];
+        if (c >= ' ' && c < HU_FONTSIZE)
+            V_DrawPatchDirect(scaled_x, scaled_y, st_weaponstat_font[c]);
+        scaled_x += SHORT(st_weaponstat_font[c]->width) * hud_scale;
+    }
+    
+    scaled_y += line_height;
+    scaled_x = hud_scale != 1.0f ? (int)(x * hud_scale) : x;
+    
+    DEH_snprintf(buf, sizeof(buf), "TTL:%dms", total_time);
+    for (i = 0; buf[i]; i++)
+    {
+        int c = buf[i];
+        if (c >= ' ' && c < HU_FONTSIZE)
+            V_DrawPatchDirect(scaled_x, scaled_y, st_weaponstat_font[c]);
+        scaled_x += SHORT(st_weaponstat_font[c]->width) * hud_scale;
+    }
+    
+    scaled_y += line_height;
+    scaled_x = hud_scale != 1.0f ? (int)(x * hud_scale) : x;
+    
+    DEH_snprintf(buf, sizeof(buf), "THNK:%d%%", think_pct);
+    for (i = 0; buf[i]; i++)
+    {
+        int c = buf[i];
+        if (c >= ' ' && c < HU_FONTSIZE)
+            V_DrawPatchDirect(scaled_x, scaled_y, st_weaponstat_font[c]);
+        scaled_x += SHORT(st_weaponstat_font[c]->width) * hud_scale;
     }
 }

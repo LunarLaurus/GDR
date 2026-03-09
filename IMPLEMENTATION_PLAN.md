@@ -451,8 +451,8 @@
 - [x] Add memory usage display
 - [x] Add draw call counter
 - [x] Add sprite batch count display
-- [ ] Add network latency display
-- [ ] Add think time profiler
+- [x] Add network latency display
+- [x] Add think time profiler
 
 ### Phase 25: Enemy Behavior AI Expansion
 - [x] Add dwarf formation movement (shield wall)

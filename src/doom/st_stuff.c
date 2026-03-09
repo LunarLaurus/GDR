@@ -1647,6 +1647,12 @@ void ST_Drawer (boolean fullscreen, boolean refresh)
         ST_DrawWeaponStats(280, 20);
     }
 
+    // Goblin Dice Rollaz: Draw think time profiler overlay if enabled
+    if (goblin_think_profiler)
+    {
+        ST_DrawThinkProfiler(280, 100);
+    }
+
     // Goblin Dice Rollaz: Draw boss health bar overlay
     ST_DrawBossHealthBar();
 
