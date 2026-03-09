@@ -60,6 +60,7 @@ void I_SetGrabMouseCallback(grabmouse_callback_t func);
 
 void I_DisplayFPSDots(boolean dots_on);
 void I_DisplayMemStats(boolean mem_on);
+void I_DisplaySpriteStats(boolean sprite_on);
 void I_BindVideoVariables(void);
 
 void I_InitWindowTitle(void);

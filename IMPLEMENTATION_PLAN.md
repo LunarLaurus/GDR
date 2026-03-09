@@ -450,7 +450,7 @@
 - [x] Add frame time profiling
 - [x] Add memory usage display
 - [x] Add draw call counter
-- [ ] Add sprite batch count display
+- [x] Add sprite batch count display
 - [ ] Add network latency display
 - [ ] Add think time profiler
 

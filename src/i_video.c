@@ -33,6 +33,7 @@
 #include "config.h"
 #include "d_loop.h"
 #include "deh_str.h"
+#include "doomstat.h"
 #include "doomtype.h"
 #include "i_input.h"
 #include "i_joystick.h"
@@ -185,6 +186,9 @@ static boolean display_fps_dots;
 // If true, display memory usage stats.
 static boolean display_mem_stats;
 
+// If true, display sprite rendering stats.
+static boolean display_sprite_stats;
+
 // If this is true, the screen is rendered but not blitted to the
 // video buffer.
 
@@ -273,6 +277,11 @@ void I_DisplayFPSDots(boolean dots_on)
 void I_DisplayMemStats(boolean mem_on)
 {
     display_mem_stats = mem_on;
+}
+
+void I_DisplaySpriteStats(boolean sprite_on)
+{
+    display_sprite_stats = sprite_on;
 }
 
 static void SetShowCursor(boolean show)
@@ -878,6 +887,34 @@ void I_FinishUpdate (void)
 	    // Green for available, changes to yellow/red as it depletes
 	    byte color = (i < 20) ? 117 : (i < 30) ? 231 : 179;
 	    I_VideoBuffer[ypos * SCREENWIDTH + i + 20] = color;
+	}
+    }
+
+    // Goblin Dice Rollaz: Display sprite rendering stats
+    if (display_sprite_stats)
+    {
+	int ypos;
+
+	// Display at top-left corner (above status bar, to the right of mem stats)
+	ypos = SCREENHEIGHT - 32;
+
+	// Draw dark background for readability (80 pixels wide, next to mem stats)
+	for (i = 0; i < 80 && ypos * SCREENWIDTH + i + 80 < SCREENWIDTH * SCREENHEIGHT; ++i)
+	{
+	    I_VideoBuffer[ypos * SCREENWIDTH + i + 80] = 0;
+	    I_VideoBuffer[(ypos + 1) * SCREENWIDTH + i + 80] = 0;
+	}
+
+	// Visual representation of sprite batch count
+	// Use different colors: green for low, yellow for medium, red for high
+	int batch_bar_length = r_sprite_batch_count / 10;
+	if (batch_bar_length > 40) batch_bar_length = 40;
+	if (batch_bar_length < 0) batch_bar_length = 0;
+
+	for (i = 0; i < batch_bar_length && i < 40; ++i)
+	{
+	    byte color = (i < 15) ? 117 : (i < 25) ? 231 : 179;
+	    I_VideoBuffer[ypos * SCREENWIDTH + i + 100] = color;
 	}
     }
 

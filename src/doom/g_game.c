@@ -870,9 +870,11 @@ boolean G_Responder (event_t* ev)
 	if (ev->type == ev_keydown && ev->data1 == KEY_F6)
 	{
 	    r_showspritestats = !r_showspritestats;
+	    I_DisplaySpriteStats(r_showspritestats);
 	    if (r_showspritestats)
 	    {
 		DEH_printf("Sprite stats enabled. Press F6 to disable.\n");
+		players[consoleplayer].message = "Sprite Stats ON";
 	    }
 	    else
 	    {
@@ -884,6 +886,7 @@ boolean G_Responder (event_t* ev)
 		DEH_printf("Est. pixels: %d\n", r_sprite_pixels_drawn);
 		DEH_printf("Batch cache hits: %d\n", r_sprite_batch_hits);
 		DEH_printf("Batch cache misses: %d\n", r_sprite_batch_count);
+		players[consoleplayer].message = "Sprite Stats OFF";
 	    }
 	    return true;
 	}
