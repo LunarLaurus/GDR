@@ -1089,7 +1089,11 @@ void R_DrawMasked (void)
 	     spr != &vsprsortedhead ;
 	     spr=spr->next)
 	{
-	    
+	    // Goblin Dice Rollaz: Track sprite draw calls
+	    if (r_render_profile_enabled)
+	    {
+	        r_sprite_count++;
+	    }
 	    R_DrawSprite (spr);
 	}
     }

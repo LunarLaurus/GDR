@@ -792,6 +792,12 @@ R_StoreWallRange
 
     R_RenderSegLoop ();
 
+    // Goblin Dice Rollaz: Track draw call count
+    if (r_render_profile_enabled)
+    {
+        r_drawseg_count++;
+    }
+
     
     // save sprite clipping info
     if ( ((ds_p->silhouette & SIL_TOP) || maskedtexture)

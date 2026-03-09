@@ -58,6 +58,11 @@ int r_render_masked_time = 0;
 int r_render_total_time = 0;
 int r_render_frame_count = 0;
 
+// Goblin Dice Rollaz: Draw call counters
+int r_drawseg_count = 0;
+int r_sprite_count = 0;
+int r_plane_count = 0;
+
 
 lighttable_t*		fixedcolormap;
 
@@ -1029,6 +1034,10 @@ void R_PrintRenderProfile(void)
         (r_render_plane_time * 100) / r_render_total_time);
     DEH_printf("Masked: %d ms (%d%%)\n", r_render_masked_time,
         (r_render_masked_time * 100) / r_render_total_time);
+    DEH_printf("\n=== Draw Calls ===\n");
+    DEH_printf("Wall segs: %d (avg %.1f/frame)\n", r_drawseg_count, (float)r_drawseg_count / r_render_frame_count);
+    DEH_printf("Sprites: %d (avg %.1f/frame)\n", r_sprite_count, (float)r_sprite_count / r_render_frame_count);
+    DEH_printf("Planes: %d (avg %.1f/frame)\n", r_plane_count, (float)r_plane_count / r_render_frame_count);
 }
 
 void R_ResetRenderProfile(void)
@@ -1039,4 +1048,7 @@ void R_ResetRenderProfile(void)
     r_render_masked_time = 0;
     r_render_total_time = 0;
     r_render_frame_count = 0;
+    r_drawseg_count = 0;
+    r_sprite_count = 0;
+    r_plane_count = 0;
 }

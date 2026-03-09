@@ -103,6 +103,11 @@ extern int r_render_masked_time;
 extern int r_render_total_time;
 extern int r_render_frame_count;
 
+// Goblin Dice Rollaz: Draw call counters
+extern int r_drawseg_count;
+extern int r_sprite_count;
+extern int r_plane_count;
+
 
 //
 // Function pointers to switch refresh/drawing functions.

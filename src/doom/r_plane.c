@@ -464,6 +464,12 @@ void R_DrawPlanes (void)
 	if (pl->minx > pl->maxx)
 	    continue;
 
+	// Goblin Dice Rollaz: Track plane draw calls
+	if (r_render_profile_enabled)
+	{
+	    r_plane_count++;
+	}
+
 	
 	// sky flat
 	if (pl->picnum == skyflatnum)

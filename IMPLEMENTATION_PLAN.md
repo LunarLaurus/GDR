@@ -449,7 +449,7 @@
 - [x] Add FPS counter debug overlay
 - [x] Add frame time profiling
 - [x] Add memory usage display
-- [ ] Add draw call counter
+- [x] Add draw call counter
 - [ ] Add sprite batch count display
 - [ ] Add network latency display
 - [ ] Add think time profiler
