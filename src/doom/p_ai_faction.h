@@ -34,8 +34,22 @@ typedef enum
 {
     TACTIC_DEFAULT,
     TACTIC_FLANK,
-    TACTIC_HOLD
+    TACTIC_HOLD,
+    TACTIC_SHIELD_WALL,
+    TACTIC_WEDGE,
+    TACTIC_LINE
 } tactic_t;
+
+typedef enum
+{
+    FORMATION_NONE,
+    FORMATION_SHIELD_WALL,
+    FORMATION_WEDGE,
+    FORMATION_LINE,
+    FORMATION_CIRCLE
+} formation_t;
+
+#define MAX_FORMATION_MEMBERS 16
 
 faction_t P_GetFaction(mobjtype_t type);
 tactic_t P_GetTactic(mobjtype_t type);
@@ -51,5 +65,12 @@ void P_InitMorale(mobj_t *actor);
 void P_UpdateMorale(mobj_t *actor);
 boolean P_MoraleBroken(mobj_t *actor);
 void P_InitLeader(mobj_t *actor);
+
+formation_t P_GetFormation(mobj_t *actor);
+void P_SetFormation(mobj_t *actor, formation_t form);
+fixed_t P_GetFormationSlot(mobj_t *actor, int slot);
+void P_UpdateFormation(mobj_t *actor);
+boolean P_IsInShieldWall(mobj_t *actor);
+mobj_t *P_GetFormationLeader(mobj_t *actor);
 
 #endif

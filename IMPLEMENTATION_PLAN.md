@@ -455,7 +455,7 @@
 - [ ] Add think time profiler
 
 ### Phase 25: Enemy Behavior AI Expansion
-- [ ] Add dwarf formation movement (shield wall)
+- [x] Add dwarf formation movement (shield wall)
 - [ ] Add dwarf call for help behavior
 - [ ] Add dwarf pursuit stamina (give up after distance)
 - [ ] Add goblin cowardice when leader dies

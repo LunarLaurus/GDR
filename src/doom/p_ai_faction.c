@@ -85,7 +85,11 @@ tactic_t P_GetTactic(mobjtype_t type)
         return TACTIC_FLANK;
 
     if (fac == FACTION_DWARF)
+    {
+        if (P_CanBeLeader(type))
+            return TACTIC_SHIELD_WALL;
         return TACTIC_HOLD;
+    }
 
     return TACTIC_DEFAULT;
 }
@@ -329,4 +333,200 @@ int P_GetCritAuraBonus(mobj_t* actor)
     }
 
     return bonus;
+}
+
+#define FORMATION_FORM_DISTANCE (64*FRACUNIT)
+#define FORMATION_SPACING (48*FRACUNIT)
+#define SHIELD_WALL_SPACING (56*FRACUNIT)
+
+static formation_t dwarf_formations[1024];
+static mobj_t* formation_leaders[1024];
+
+formation_t P_GetFormation(mobj_t* actor)
+{
+    if (!actor || actor->type >= 1024)
+        return FORMATION_NONE;
+    return dwarf_formations[actor->type];
+}
+
+void P_SetFormation(mobj_t* actor, formation_t form)
+{
+    if (!actor || actor->type >= 1024)
+        return;
+    dwarf_formations[actor->type] = form;
+    if (form != FORMATION_NONE && P_CanBeLeader(actor->type))
+        formation_leaders[actor->type] = actor;
+}
+
+fixed_t P_GetFormationSlot(mobj_t* actor, int slot)
+{
+    angle_t base_angle;
+    fixed_t dist, x, y;
+
+    if (!actor)
+        return 0;
+
+    base_angle = actor->angle;
+
+    switch(P_GetFormation(actor))
+    {
+        case FORMATION_SHIELD_WALL:
+            dist = 0;
+            x = actor->x + SHIELD_WALL_SPACING * (slot - 2) * cos(base_angle);
+            y = actor->y + SHIELD_WALL_SPACING * (slot - 2) * sin(base_angle);
+            break;
+
+        case FORMATION_WEDGE:
+            dist = slot * FORMATION_SPACING;
+            x = actor->x + dist * cos(base_angle);
+            y = actor->y + dist * sin(base_angle);
+            if (slot > 0)
+            {
+                x += (slot % 2 == 0 ? -1 : 1) * (slot/2 + 1) * FORMATION_SPACING * cos(base_angle + ANG90);
+                y += (slot % 2 == 0 ? -1 : 1) * (slot/2 + 1) * FORMATION_SPACING * sin(base_angle + ANG90);
+            }
+            break;
+
+        case FORMATION_LINE:
+            x = actor->x + SHIELD_WALL_SPACING * (slot - 2) * cos(base_angle + ANG90);
+            y = actor->y + SHIELD_WALL_SPACING * (slot - 2) * sin(base_angle + ANG90);
+            break;
+
+        case FORMATION_CIRCLE:
+            dist = FORMATION_SPACING * 2;
+            base_angle += (ANG360 / MAX_FORMATION_MEMBERS) * slot;
+            x = actor->x + dist * cos(base_angle);
+            y = actor->y + dist * sin(base_angle);
+            break;
+
+        default:
+            return 0;
+    }
+
+    return x | (y << 16);
+}
+
+static int P_GetFormationMemberCount(mobj_t* leader)
+{
+    thinker_t* th;
+    mobj_t* mo;
+    int count = 0;
+    faction_t fac;
+
+    if (!leader || !P_CanBeLeader(leader->type))
+        return 0;
+
+    fac = P_GetFaction(leader->type);
+
+    for (th = thinkercap.next; th != &thinkercap; th = th->next)
+    {
+        if (th->function.acp1 != (actionf_p1)P_MobjThinker)
+            continue;
+
+        mo = (mobj_t*)th;
+
+        if (mo == leader)
+            continue;
+
+        if (mo->health <= 0)
+            continue;
+
+        if (P_GetFaction(mo->type) != fac)
+            continue;
+
+        if (mo->leader != leader)
+            continue;
+
+        count++;
+    }
+
+    return count;
+}
+
+void P_UpdateFormation(mobj_t* actor)
+{
+    thinker_t* th;
+    mobj_t* mo;
+    mobj_t* best_leader = NULL;
+    int best_count = 0;
+    int member_count;
+    faction_t fac;
+
+    if (!actor)
+        return;
+
+    fac = P_GetFaction(actor->type);
+    if (fac != FACTION_DWARF)
+        return;
+
+    if (actor->morale_flags & MORALE_FLAG_BROKEN)
+        return;
+
+    if (P_CanBeLeader(actor->type))
+    {
+        member_count = P_GetFormationMemberCount(actor);
+        if (member_count >= 3)
+        {
+            P_SetFormation(actor, FORMATION_SHIELD_WALL);
+        }
+        else if (member_count >= 2)
+        {
+            P_SetFormation(actor, FORMATION_WEDGE);
+        }
+        else
+        {
+            P_SetFormation(actor, FORMATION_NONE);
+        }
+        return;
+    }
+
+    for (th = thinkercap.next; th != &thinkercap; th = th->next)
+    {
+        if (th->function.acp1 != (actionf_p1)P_MobjThinker)
+            continue;
+
+        mo = (mobj_t*)th;
+
+        if (!P_CanBeLeader(mo->type))
+            continue;
+
+        if (P_GetFaction(mo->type) != fac)
+            continue;
+
+        if (mo->health <= 0)
+            continue;
+
+        member_count = P_GetFormationMemberCount(mo);
+        if (member_count > best_count)
+        {
+            best_count = member_count;
+            best_leader = mo;
+        }
+    }
+
+    if (best_leader && best_count >= 2)
+    {
+        actor->leader = best_leader;
+
+        if (best_count >= 3)
+            P_SetFormation(actor, FORMATION_SHIELD_WALL);
+        else
+            P_SetFormation(actor, FORMATION_WEDGE);
+    }
+}
+
+boolean P_IsInShieldWall(mobj_t* actor)
+{
+    return P_GetFormation(actor) == FORMATION_SHIELD_WALL;
+}
+
+mobj_t* P_GetFormationLeader(mobj_t* actor)
+{
+    if (!actor)
+        return NULL;
+
+    if (P_CanBeLeader(actor->type) && actor->morale_flags & MORALE_FLAG_LEADER)
+        return actor;
+
+    return actor->leader;
 }
