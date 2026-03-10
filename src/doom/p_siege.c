@@ -30,6 +30,11 @@
 static siege_wave_spawner_t* siege_spawners[MAX_SIEGE_WAVES];
 static int num_siege_spawners = 0;
 static boolean siege_active = false;
+static siege_state_t siege_state = SIEGE_INACTIVE;
+static int current_wave_index = 0;
+static int total_waves_configured = 0;
+static int wave_cooldown_timer = 0;
+static boolean wave_advance_pending = false;
 
 static const siege_wave_t siege_waves[] = {
     { 9100, 8020, 10, 60, 15, false },
@@ -86,6 +91,10 @@ void P_SpawnSiegeWave(mapthing_t* mthing)
     P_AddThinker(&spawner->thinker);
     siege_spawners[num_siege_spawners++] = spawner;
     siege_active = true;
+    siege_state = SIEGE_ASSAULT_ACTIVE;
+    
+    if (total_waves_configured == 0)
+        total_waves_configured = num_siege_waves;
 }
 
 static mobj_t* P_SpawnSiegeEnemy(fixed_t x, fixed_t y, int enemy_type, boolean ambush)
@@ -146,9 +155,37 @@ void T_SiegeWaveSpawner(thinker_t* thinker)
     fixed_t spawn_x, spawn_y;
     int angle;
     int formation_offset;
+    int enemies_alive;
 
     if (!spawner->active)
         return;
+
+    if (wave_cooldown_timer > 0)
+    {
+        wave_cooldown_timer--;
+        return;
+    }
+
+    if (wave_advance_pending)
+    {
+        wave_advance_pending = false;
+        spawner->wave_index++;
+        spawner->enemies_spawned = 0;
+        spawner->enemies_killed = 0;
+        spawner->wave_complete = false;
+        spawner->active = true;
+        
+        if (spawner->wave_index >= num_siege_waves)
+        {
+            siege_state = SIEGE_VICTORY;
+            spawner->active = false;
+            return;
+        }
+        
+        wave = &siege_waves[spawner->wave_index];
+        spawner->next_spawn_time = leveltime + wave->delay;
+        current_wave_index = spawner->wave_index;
+    }
 
     if (spawner->wave_index >= num_siege_waves)
     {
@@ -159,15 +196,32 @@ void T_SiegeWaveSpawner(thinker_t* thinker)
 
     wave = &siege_waves[spawner->wave_index];
 
+    enemies_alive = P_GetSiegeEnemiesRemaining();
+    
+    if (spawner->enemies_spawned >= wave->count && enemies_alive == 0)
+    {
+        spawner->wave_complete = true;
+        P_NotifySiegeWaveComplete(spawner->wave_index);
+        
+        if (spawner->wave_index < num_siege_waves - 1)
+        {
+            siege_state = SIEGE_WAVE_COMPLETE;
+            wave_cooldown_timer = SIEGE_WAVE_COOLDOWN;
+            wave_advance_pending = true;
+        }
+        else
+        {
+            siege_state = SIEGE_VICTORY;
+            spawner->active = false;
+        }
+        return;
+    }
+
     if (leveltime < spawner->next_spawn_time)
         return;
 
     if (spawner->enemies_spawned >= wave->count)
-    {
-        spawner->wave_complete = true;
-        P_NotifySiegeWaveComplete(spawner->wave_index);
         return;
-    }
 
     angle = (spawner->spawnpoint.angle / 45) * ANG45;
     formation_offset = spawner->enemies_spawned * 64;
@@ -212,6 +266,11 @@ void P_ShutdownSiegeWaves(void)
 
     num_siege_spawners = 0;
     siege_active = false;
+    siege_state = SIEGE_INACTIVE;
+    current_wave_index = 0;
+    total_waves_configured = 0;
+    wave_cooldown_timer = 0;
+    wave_advance_pending = false;
 }
 
 boolean P_SiegeActive(void)
@@ -236,4 +295,55 @@ int P_GetSiegeEnemiesRemaining(void)
 
 void P_NotifySiegeWaveComplete(int wave)
 {
+}
+
+siege_state_t P_GetSiegeState(void)
+{
+    return siege_state;
+}
+
+void P_SetSiegeState(siege_state_t state)
+{
+    siege_state = state;
+}
+
+int P_GetCurrentWave(void)
+{
+    return current_wave_index + 1;
+}
+
+int P_GetTotalWaves(void)
+{
+    return total_waves_configured > 0 ? total_waves_configured : num_siege_waves;
+}
+
+void P_AdvanceSiegeWave(void)
+{
+    wave_advance_pending = true;
+}
+
+void P_CheckSiegeVictoryConditions(void)
+{
+    if (siege_state == SIEGE_ASSAULT_ACTIVE || siege_state == SIEGE_WAVE_COMPLETE)
+    {
+        if (P_GetSiegeEnemiesRemaining() == 0 && !wave_advance_pending && wave_cooldown_timer == 0)
+        {
+            int i;
+            boolean all_waves_complete = true;
+            
+            for (i = 0; i < num_siege_spawners; i++)
+            {
+                if (siege_spawners[i] && siege_spawners[i]->wave_index < num_siege_waves - 1)
+                {
+                    all_waves_complete = false;
+                    break;
+                }
+            }
+            
+            if (all_waves_complete)
+            {
+                siege_state = SIEGE_VICTORY;
+            }
+        }
+    }
 }

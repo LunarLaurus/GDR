@@ -26,6 +26,15 @@
 #define MAX_SIEGE_WAVES 16
 #define MAX_WAVE_ENEMIES 64
 #define SIEGE_WAVE_SPAWNER_BASE 9100
+#define SIEGE_WAVE_COOLDOWN 120
+
+typedef enum {
+    SIEGE_INACTIVE,
+    SIEGE_ASSAULT_ACTIVE,
+    SIEGE_WAVE_COMPLETE,
+    SIEGE_VICTORY,
+    SIEGE_DEFEAT
+} siege_state_t;
 
 typedef struct {
     short thing_type;
@@ -56,5 +65,11 @@ void P_ShutdownSiegeWaves(void);
 boolean P_SiegeActive(void);
 int P_GetSiegeEnemiesRemaining(void);
 void P_NotifySiegeWaveComplete(int wave);
+siege_state_t P_GetSiegeState(void);
+void P_SetSiegeState(siege_state_t state);
+int P_GetCurrentWave(void);
+int P_GetTotalWaves(void);
+void P_AdvanceSiegeWave(void);
+void P_CheckSiegeVictoryConditions(void);
 
 #endif

@@ -767,7 +767,7 @@
 - [x] Add large-scale battle AI (50+ enemies)
 - [x] Add siege weapon interactions
 - [x] Add defensive position combat
-- [ ] Add wave-based assault mode
+- [x] Add wave-based assault mode
 - [ ] Add objective-based siege (capture point)
 - [ ] Add allied NPC soldiers
 - [ ] Add destructible environment
