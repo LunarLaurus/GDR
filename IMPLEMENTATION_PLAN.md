@@ -458,7 +458,7 @@
 - [x] Add dwarf formation movement (shield wall)
 - [x] Add dwarf call for help behavior
 - [x] Add dwarf pursuit stamina (give up after distance)
-- [ ] Add goblin cowardice when leader dies
+- [x] Add goblin cowardice when leader dies
 - [ ] Add goblin flanking coordination
 - [ ] Add dwarf weapon switching on low ammo
 - [ ] Add enemy dodge rolling behavior
