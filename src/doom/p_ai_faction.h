@@ -72,5 +72,6 @@ fixed_t P_GetFormationSlot(mobj_t *actor, int slot);
 void P_UpdateFormation(mobj_t *actor);
 boolean P_IsInShieldWall(mobj_t *actor);
 mobj_t *P_GetFormationLeader(mobj_t *actor);
+void P_AlertNearbyAllies(mobj_t *actor, mobj_t *source);
 
 #endif

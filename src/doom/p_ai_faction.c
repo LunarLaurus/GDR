@@ -21,6 +21,7 @@
 #include "info.h"
 #include "g_game.h"
 #include "doomstat.h"
+#include "s_sound.h"
 
 #define PACK_DETECT_RADIUS (512*FRACUNIT)
 #define PACK_AGGRESSION_BONUS_PER_ALLY 10
@@ -529,4 +530,68 @@ mobj_t* P_GetFormationLeader(mobj_t* actor)
         return actor;
 
     return actor->leader;
+}
+
+#define CALL_FOR_HELP_RADIUS (768*FRACUNIT)
+#define ALERT_SOUND_CHANCE 50
+
+void P_AlertNearbyAllies(mobj_t* actor, mobj_t* source)
+{
+    thinker_t* th;
+    mobj_t* mo;
+    faction_t fac;
+    fixed_t dist;
+
+    if (!actor)
+        return;
+
+    fac = P_GetFaction(actor->type);
+    if (fac == FACTION_NONE)
+        return;
+
+    if (!source)
+        return;
+
+    for (th = thinkercap.next; th != &thinkercap; th = th->next)
+    {
+        if (th->function.acp1 != (actionf_p1)P_MobjThinker)
+            continue;
+
+        mo = (mobj_t*)th;
+
+        if (mo == actor)
+            continue;
+
+        if (mo->health <= 0)
+            continue;
+
+        if (P_GetFaction(mo->type) != fac)
+            continue;
+
+        if (mo->flags & MF_NOTDMATCH)
+            continue;
+
+        dist = P_AproxDistance(mo->x - actor->x, mo->y - actor->y);
+        if (dist > CALL_FOR_HELP_RADIUS)
+            continue;
+
+        if (mo->target && mo->target != source && mo->target != actor)
+            continue;
+
+        if (!mo->target)
+        {
+            mo->target = source;
+            mo->threshold = BASETHRESHOLD;
+            if (mo->state == &states[mo->info->spawnstate]
+                && mo->info->seestate != S_NULL)
+            {
+                P_SetMobjState(mo, mo->info->seestate);
+            }
+
+            if (fac == FACTION_DWARF && (P_Random() % 100) < ALERT_SOUND_CHANCE)
+            {
+                S_StartSound(mo, sfx_dwarfsee);
+            }
+        }
+    }
 }

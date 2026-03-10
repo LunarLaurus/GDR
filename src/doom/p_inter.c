@@ -2094,6 +2094,9 @@ P_DamageMobj
 	if (target->state == &states[target->info->spawnstate]
 	    && target->info->seestate != S_NULL)
 	    P_SetMobjState (target, target->info->seestate);
+
+	// Goblin Dice Rollaz: Call for help - alert nearby allies
+	P_AlertNearbyAllies(target, source);
     }
 
     // Goblin Dice Rollaz: Track boss target for health bar overlay
