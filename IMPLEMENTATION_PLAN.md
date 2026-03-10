@@ -459,7 +459,7 @@
 - [x] Add dwarf call for help behavior
 - [x] Add dwarf pursuit stamina (give up after distance)
 - [x] Add goblin cowardice when leader dies
-- [ ] Add goblin flanking coordination
+- [x] Add goblin flanking coordination
 - [ ] Add dwarf weapon switching on low ammo
 - [ ] Add enemy dodge rolling behavior
 - [ ] Add surprise attack detection zones
