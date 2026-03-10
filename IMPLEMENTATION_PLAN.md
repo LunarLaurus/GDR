@@ -460,11 +460,15 @@
 - [x] Add dwarf pursuit stamina (give up after distance)
 - [x] Add goblin cowardice when leader dies
 - [x] Add goblin flanking coordination
-- [ ] Add dwarf weapon switching on low ammo
+- [x] Add dwarf weapon switching on low ammo
 - [ ] Add enemy dodge rolling behavior
+  - [ ] Resolve blocker: Requires new animation states and AI logic - complex feature
 - [ ] Add surprise attack detection zones
+  - [ ] Resolve blocker: Requires sector/area detection system - complex feature
 - [ ] Add pathfinding around hazards
+  - [ ] Resolve blocker: Requires A* or similar pathfinding - complex feature
 - [ ] Add dynamic difficulty scaling AI
+  - [ ] Resolve blocker: Requires game state tracking and difficulty adjustment - complex feature
 
 ### Phase 26: Player Movement Enhancements
 - [ ] Add dodge roll ability
