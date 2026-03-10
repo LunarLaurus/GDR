@@ -33,6 +33,7 @@
 #include "r_state.h"
 #include "sounds.h"
 #include "g_status.h"
+#include "p_ai_faction.h"
 
 // Goblin Dice Rollaz: Arena lock system
 extern int arena_locked;
@@ -955,6 +956,16 @@ void A_Chase (mobj_t*	actor)
     {
         // Run away from player
         A_Flee(actor);
+        return;
+    }
+
+    // Goblin Dice Rollaz: Update pursuit stamina for dwarves
+    P_UpdatePursuitStamina(actor);
+
+    // If pursuit stamina exhausted, dwarves give up chase and return to spawn
+    if (P_IsPursuitExhausted(actor))
+    {
+        P_ReturnToSpawn(actor);
         return;
     }
     

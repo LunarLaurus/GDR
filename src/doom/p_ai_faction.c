@@ -595,3 +595,91 @@ void P_AlertNearbyAllies(mobj_t* actor, mobj_t* source)
         }
     }
 }
+
+#define PURSUIT_STAMINA_BASE (1536*FRACUNIT)
+#define PURSUIT_STAMINA_BOSS_MULTIPLIER 2
+
+void P_InitPursuitStamina(mobj_t* actor)
+{
+    if (!actor)
+        return;
+
+    actor->spawn_x = actor->x;
+    actor->spawn_y = actor->y;
+    actor->pursuit_exhausted = false;
+
+    if (actor->type == MT_DWARF_WARLORD ||
+        actor->type == MT_DWARF_COMMANDER ||
+        actor->type == MT_DWARF_JUGGERNAUT)
+    {
+        actor->pursuit_distance = PURSUIT_STAMINA_BASE * PURSUIT_STAMINA_BOSS_MULTIPLIER;
+    }
+    else
+    {
+        actor->pursuit_distance = PURSUIT_STAMINA_BASE;
+    }
+}
+
+void P_UpdatePursuitStamina(mobj_t* actor)
+{
+    fixed_t dist_from_spawn;
+
+    if (!actor || !actor->target)
+        return;
+
+    if (actor->pursuit_exhausted)
+        return;
+
+    if (P_GetFaction(actor->type) != FACTION_DWARF)
+        return;
+
+    dist_from_spawn = P_AproxDistance(actor->x - actor->spawn_x,
+                                       actor->y - actor->spawn_y);
+
+    if (dist_from_spawn > actor->pursuit_distance)
+    {
+        actor->pursuit_exhausted = true;
+    }
+}
+
+boolean P_IsPursuitExhausted(mobj_t* actor)
+{
+    if (!actor)
+        return false;
+
+    return actor->pursuit_exhausted;
+}
+
+void P_ReturnToSpawn(mobj_t* actor)
+{
+    fixed_t dist_to_spawn;
+    angle_t ang;
+
+    if (!actor)
+        return;
+
+    dist_to_spawn = P_AproxDistance(actor->x - actor->spawn_x,
+                                     actor->y - actor->spawn_y);
+
+    if (dist_to_spawn > FRACUNIT)
+    {
+        ang = R_PointToAngle2(actor->x, actor->y,
+                              actor->spawn_x, actor->spawn_y);
+
+        actor->angle = ang;
+        actor->movedir = 0;
+
+        if (!P_Move(actor))
+        {
+            actor->threshold = 0;
+        }
+    }
+    else
+    {
+        actor->target = NULL;
+        if (actor->info->seestate != S_NULL)
+        {
+            P_SetMobjState(actor, actor->info->seestate);
+        }
+    }
+}

@@ -74,4 +74,9 @@ boolean P_IsInShieldWall(mobj_t *actor);
 mobj_t *P_GetFormationLeader(mobj_t *actor);
 void P_AlertNearbyAllies(mobj_t *actor, mobj_t *source);
 
+void P_InitPursuitStamina(mobj_t *actor);
+void P_UpdatePursuitStamina(mobj_t *actor);
+boolean P_IsPursuitExhausted(mobj_t *actor);
+void P_ReturnToSpawn(mobj_t *actor);
+
 #endif

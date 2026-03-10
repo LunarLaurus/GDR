@@ -321,6 +321,12 @@ typedef struct mobj_s
     // Status effect system: duration counters for each status effect type
     int			status_effects[NUMSTATUSEFFECTS];
 
+    // Pursuit stamina: track spawn position and chase distance
+    fixed_t		spawn_x;
+    fixed_t		spawn_y;
+    fixed_t		pursuit_distance;  // max distance before giving up chase
+    boolean		pursuit_exhausted;
+
 } mobj_t;
 
 

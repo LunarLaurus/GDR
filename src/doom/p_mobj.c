@@ -40,6 +40,8 @@
 
 #include "p_particles.h"
 
+#include "p_ai_faction.h"
+
 
 void G_PlayerReborn (int player);
 void P_SpawnMapThing (mapthing_t*	mthing);
@@ -648,6 +650,9 @@ P_SpawnMobj
     {
         P_InitLeader(mobj);
     }
+
+    // Goblin Dice Rollaz: Initialize pursuit stamina for dwarf enemies
+    P_InitPursuitStamina(mobj);
 
     return mobj;
 }
