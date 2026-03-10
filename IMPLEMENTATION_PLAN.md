@@ -778,6 +778,20 @@
 - [ ] Add siege defeat conditions
 - [ ] Add siege arena builder
 
+### Phase 47: New Gameplay Features
+- [ ] Add screen shake on weapon fire
+- [ ] Add hit marker visual on successful hits
+- [ ] Add floating damage numbers
+- [ ] Add enemy flash effect on damage
+- [ ] Add weapon bob while walking
+- [ ] Add footstep sound effects
+- [ ] Add weapon sway while aiming
+- [ ] Add muzzle flash sprites
+- [ ] Add knockback feedback on hit
+- [ ] Add kill confirmation effect
+
+### Phase 48: Quality of Life Improvements
+
 ## Current Status
 
 **V1 complete**. V2 Technical Improvements in progress - 46 phases, ~750 tasks.
