@@ -457,7 +457,7 @@
 ### Phase 25: Enemy Behavior AI Expansion
 - [x] Add dwarf formation movement (shield wall)
 - [x] Add dwarf call for help behavior
-- [ ] Add dwarf pursuit stamina (give up after distance)
+- [x] Add dwarf pursuit stamina (give up after distance)
 - [ ] Add goblin cowardice when leader dies
 - [ ] Add goblin flanking coordination
 - [ ] Add dwarf weapon switching on low ammo
