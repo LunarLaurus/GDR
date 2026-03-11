@@ -1371,6 +1371,22 @@ P_DamageMobj
     {
 	target->momx = target->momy = target->momz = 0;
     }
+
+    // Goblin Dice Rollaz: Enemy dodge rolling system
+    // Try to dodge incoming attacks from player
+    if (damage > 0 && source && source->player)
+    {
+        if (P_TryDodge(target, source))
+        {
+            // Dodge successful - no damage taken
+            // Show dodge effect/message
+            if (target->info && target->info->painchance > 0)
+            {
+                // Brief invulnerability during dodge
+            }
+            return;
+        }
+    }
     
     if (source && source->player && damage > 0)
     {

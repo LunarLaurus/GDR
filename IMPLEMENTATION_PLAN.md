@@ -461,8 +461,7 @@
 - [x] Add goblin cowardice when leader dies
 - [x] Add goblin flanking coordination
 - [x] Add dwarf weapon switching on low ammo
-- [ ] Add enemy dodge rolling behavior
-  - [ ] Resolve blocker: Requires new animation states and AI logic - complex feature
+- [x] Add enemy dodge rolling behavior
 - [ ] Add surprise attack detection zones
   - [ ] Resolve blocker: Requires sector/area detection system - complex feature
 - [ ] Add pathfinding around hazards

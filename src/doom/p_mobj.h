@@ -327,6 +327,10 @@ typedef struct mobj_s
     fixed_t		pursuit_distance;  // max distance before giving up chase
     boolean		pursuit_exhausted;
 
+    // Goblin Dice Rollaz: Enemy dodge rolling system
+    int			dodge_tics;      // remaining dodge duration
+    boolean		can_dodge;       // whether this enemy type can dodge
+
 } mobj_t;
 
 

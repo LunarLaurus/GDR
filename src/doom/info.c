@@ -2389,11 +2389,14 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
    	150,		// mass
    	0,		// damage (melee - not used)
    	sfx_posact,		// activesound
-   	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
-    S_SPOS_RAISE1,		// raisestate
-    5,		// crit_resistance (low - fragile caster)
-    70,		// aggression (attacks from range)
-    0		// shield_reduction (none)
+    MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags
+     S_SPOS_RAISE1,		// raisestate
+     5,		// crit_resistance (low - fragile caster)
+     70,		// aggression (attacks from range)
+     0,		// shield_reduction (none)
+     0,		// rear_weakness (none)
+     0,		// phase2_health (none)
+    30		// dodge_chance (high - magical agility)
      },
 
     {		// MT_GOBLIN_SNEAK - Goblin Scout with ambush behavior
@@ -2422,7 +2425,10 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
      S_SPOS_RAISE1,		// raisestate
      2,		// crit_resistance (very low - fragile)
      30,		// aggression (low initially, increases after detecting player)
-     0		// shield_reduction (none)
+     0,		// shield_reduction (none)
+     0,		// rear_weakness (none)
+     0,		// phase2_health (none)
+    20		// dodge_chance (moderate - ambush scout)
       },
 
     {		// MT_GOBLIN_SCOUT - Fast scout with high mobility
@@ -2451,7 +2457,10 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
      S_POSS_RAISE1,		// raisestate
      3,		// crit_resistance (low - fragile)
     20,		// aggression (moderate - quick to engage)
-     0		// shield_reduction (none)
+     0,		// shield_reduction (none)
+     0,		// rear_weakness (none)
+     0,		// phase2_health (none)
+    25		// dodge_chance (high - agile scout)
       },
 
     {		// MT_GOBLIN_ALCHEMIST - Throws volatile potion projectiles

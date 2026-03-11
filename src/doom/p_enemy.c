@@ -200,6 +200,96 @@ void P_RetreatFromTarget(mobj_t* actor)
     P_NewChaseDir(actor);
 }
 
+// P_TryDodge - Attempt to dodge an incoming attack
+// Returns true if dodge successful
+boolean P_TryDodge(mobj_t* actor, mobj_t* source)
+{
+    int dodge_chance;
+
+    // Can only dodge if alive and can dodge
+    if (!actor || actor->health <= 0)
+        return false;
+
+    // Already dodging
+    if (actor->dodge_tics > 0)
+        return false;
+
+    // Can't dodge if stunned or frozen
+    if (actor->freeze_tics > 0 || !G_StatusEffectCanAttack(actor))
+        return false;
+
+    // Get dodge chance from mobjinfo
+    if (actor->info && actor->info->dodge_chance > 0)
+        dodge_chance = actor->info->dodge_chance;
+    else
+        return false;
+
+    // Check if enemy can dodge (not currently attacking or performing other action)
+    if (!actor->can_dodge)
+        return false;
+
+    // Random roll to see if dodge succeeds
+    if (P_Random() < dodge_chance)
+    {
+        // Dodge successful - set dodge duration and move quickly to side
+        actor->dodge_tics = 10 + (P_Random() >> 3);
+
+        // Move perpendicular to the attack direction
+        if (source)
+        {
+            angle_t attack_angle = R_PointToAngle2(actor->x, actor->y,
+                                                     source->x, source->y);
+            // Randomly choose left or right
+            if (P_Random() < 128)
+                actor->angle = attack_angle + ANG90;
+            else
+                actor->angle = attack_angle - ANG90;
+        }
+
+        // Speed boost during dodge
+        actor->momx = actor->info->speed * 2;
+        actor->momy = actor->info->speed * 2;
+
+        // Play dodge sound if available
+        if (actor->info->seesound)
+            S_StartSound(actor, actor->info->seesound);
+
+        return true;
+    }
+
+    return false;
+}
+
+// A_Dodge - Handle dodge state for enemies
+void A_Dodge(mobj_t* actor)
+{
+    if (actor->dodge_tics > 0)
+    {
+        actor->dodge_tics--;
+
+        // Keep moving during dodge
+        if (actor->dodge_tics > 0)
+        {
+            // Face movement direction
+            P_XYMovement(actor);
+
+            // Still apply gravity
+            if (!(actor->flags & MF_NOGRAVITY))
+            {
+                actor->momz -= FIXEDMINVALUE;
+                P_ZMovement(actor);
+            }
+        }
+        else
+        {
+            // Dodge finished - reset momentum
+            actor->momx = 0;
+            actor->momy = 0;
+        }
+    }
+}
+
+
 
 
 

@@ -1708,6 +1708,7 @@ typedef struct
     int	shield_reduction;  // Goblin Dice Rollaz: Frontal damage reduction % (0-100)
     int	rear_weakness;    // Goblin Dice Rollaz: Rear damage bonus % (0-100)
     int	phase2_health;    // Goblin Dice Rollaz: Health threshold for phase transition (0 = no phases)
+    int	dodge_chance;     // Goblin Dice Rollaz: Chance to dodge attacks (0-100)
 
 } mobjinfo_t;
 

@@ -311,6 +311,11 @@ P_DamageMobj
   mobj_t*	source,
   int		damage );
 
+boolean
+P_TryDodge
+( mobj_t*	actor,
+  mobj_t*	source );
+
 
 //
 // P_SPEC

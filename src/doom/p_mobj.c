@@ -597,6 +597,10 @@ P_SpawnMobj
     mobj->flags = info->flags;
     mobj->health = info->spawnhealth;
 
+    // Goblin Dice Rollaz: Initialize enemy dodge capability
+    // Enemies with dodge_chance > 0 can attempt to dodge attacks
+    mobj->can_dodge = (info->dodge_chance > 0);
+
     if (gameskill != sk_nightmare)
     {
 	mobj->reactiontime = info->reactiontime;
