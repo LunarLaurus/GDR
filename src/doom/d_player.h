@@ -233,6 +233,14 @@ typedef struct player_s
     // Height offset from crouching (smooth transition)
     fixed_t		crouch_height_offset;
 
+    // Goblin Dice Rollaz: Wall jump state
+    // Cooldown between wall jumps (in tics)
+    int			walljump_cooldown;
+    // Direction of wall (-1 = left wall, 1 = right wall, 0 = not touching wall)
+    int			wall_contact;
+    // Tics remaining in wall slide (slower fall when hugging wall)
+    int			wallslide_tics;
+
 } player_t;
 
 

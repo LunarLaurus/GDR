@@ -473,7 +473,7 @@
 - [x] Add dodge roll ability
 - [x] Add mantling/climbing small obstacles
 - [x] Add crouch/slide mechanics
-- [ ] Add wall jump in narrow passages
+- [x] Add wall jump in narrow passages
 - [ ] Add ledge grab/climb ability
 - [ ] Add swimming physics for flooded areas
 - [ ] Add ladder climbing mechanics

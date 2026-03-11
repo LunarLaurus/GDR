@@ -62,6 +62,12 @@
 #define SLIDE_SPEED_MULT	(80)  // 80% of normal speed while sliding
 #define SLIDE_DURATION		(15)  // tics to slide after releasing crouch while moving
 
+// Goblin Dice Rollaz: Wall jump constants
+#define WALLJUMP_SPEED		(24*FRACUNIT)
+#define WALLJUMP_COOLDOWN	(10*TICRATE)
+#define WALLJUMP_CHECK_DIST	(32*FRACUNIT)
+#define WALLSLIDE_SPEED		(4*FRACUNIT)  // Slower fall when sliding down wall
+
 
 //
 // Movement.
@@ -427,6 +433,86 @@ void P_MovePlayer (player_t* player)
                 player->mo->momx = FixedMul(4*FRACUNIT, finecosine[player->mo->angle >> ANGLETOFINESHIFT]);
                 player->mo->momy = FixedMul(4*FRACUNIT, finesine[player->mo->angle >> ANGLETOFINESHIFT]);
             }
+        }
+    }
+
+    // Goblin Dice Rollaz: Handle wall jump cooldown
+    if (player->walljump_cooldown > 0)
+    {
+        player->walljump_cooldown--;
+    }
+
+    // Goblin Dice Rollaz: Handle wall slide
+    if (player->wallslide_tics > 0)
+    {
+        player->wallslide_tics--;
+        // Slow down descent when hugging wall
+        if (player->mo->momz < -WALLSLIDE_SPEED)
+        {
+            player->mo->momz = -WALLSLIDE_SPEED;
+        }
+    }
+
+    // Goblin Dice Rollaz: Wall jump detection and execution
+    // Only when in air, not already wall sliding or jumping, and not in other special states
+    if (!onground && player->roll_iframes == 0 && player->dash_iframes == 0 && 
+        player->mantle_tics == 0 && player->walljump_cooldown == 0)
+    {
+        // Check for wall on right side
+        fixed_t checkx_right = player->mo->x + FixedMul(WALLJUMP_CHECK_DIST, finecosine[(player->mo->angle + ANG90) >> ANGLETOFINESHIFT]);
+        fixed_t checky_right = player->mo->y + FixedMul(WALLJUMP_CHECK_DIST, finesine[(player->mo->angle + ANG90) >> ANGLETOFINESHIFT]);
+        
+        // Check for wall on left side
+        fixed_t checkx_left = player->mo->x + FixedMul(WALLJUMP_CHECK_DIST, finecosine[(player->mo->angle - ANG90) >> ANGLETOFINESHIFT]);
+        fixed_t checky_left = player->mo->y + FixedMul(WALLJUMP_CHECK_DIST, finesine[(player->mo->angle - ANG90) >> ANGLETOFINESHIFT]);
+
+        // Check right wall
+        if (!P_CheckPosition(player->mo, checkx_right, checky_right))
+        {
+            // Wall on right - initiate wall slide if falling
+            if (player->mo->momz < 0)
+            {
+                player->wall_contact = 1;
+                player->wallslide_tics = 5;  // Keep slide active briefly
+            }
+            
+            // Apply wall jump if jump key is pressed
+            if (gamekeydown[key_jump])
+            {
+                // Jump away from wall (to the left)
+                angle_t jump_angle = player->mo->angle - ANG90;
+                P_Thrust(player, jump_angle, WALLJUMP_SPEED);
+                player->mo->momz = (14*FRACUNIT);  // Upward boost
+                player->walljump_cooldown = WALLJUMP_COOLDOWN;
+                player->wall_contact = 0;
+                player->wallslide_tics = 0;
+            }
+        }
+        // Check left wall
+        else if (!P_CheckPosition(player->mo, checkx_left, checky_left))
+        {
+            // Wall on left - initiate wall slide if falling
+            if (player->mo->momz < 0)
+            {
+                player->wall_contact = -1;
+                player->wallslide_tics = 5;
+            }
+            
+            // Apply wall jump if jump key is pressed
+            if (gamekeydown[key_jump])
+            {
+                // Jump away from wall (to the right)
+                angle_t jump_angle = player->mo->angle + ANG90;
+                P_Thrust(player, jump_angle, WALLJUMP_SPEED);
+                player->mo->momz = (14*FRACUNIT);  // Upward boost
+                player->walljump_cooldown = WALLJUMP_COOLDOWN;
+                player->wall_contact = 0;
+                player->wallslide_tics = 0;
+            }
+        }
+        else
+        {
+            player->wall_contact = 0;
         }
     }
 }	
