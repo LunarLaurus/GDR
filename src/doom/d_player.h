@@ -223,6 +223,16 @@ typedef struct player_s
     // Height being mantled to
     fixed_t		mantle_height;
 
+    // Goblin Dice Rollaz: Crouch/slide state
+    // True if player is currently crouching
+    boolean		crouching;
+    // True if player was crouching last frame (for transition detection)
+    boolean		was_crouching;
+    // Tics remaining in slide animation (when releasing crouch key while moving)
+    int			slide_tics;
+    // Height offset from crouching (smooth transition)
+    fixed_t		crouch_height_offset;
+
 } player_t;
 
 

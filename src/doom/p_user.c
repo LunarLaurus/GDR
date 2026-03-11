@@ -30,6 +30,7 @@
 #include "sounds.h"
 #include "g_status.h"
 #include "g_powerup.h"
+#include "m_controls.h"
 
 
 
@@ -53,6 +54,13 @@
 #define MANTLE_HEIGHT		(56*FRACUNIT)
 #define MANTLE_SPEED		(4*FRACUNIT)
 #define MANTLE_CHECK_DIST	(32*FRACUNIT)
+
+// Goblin Dice Rollaz: Crouch/slide constants
+#define CROUCH_HEIGHT		(24*FRACUNIT)
+#define CROUCH_SPEED_MULT	(60)  // 60% of normal speed
+#define CROUCH_VIEW_OFFSET	(17*FRACUNIT)  // VIEWHEIGHT - CROUCH_HEIGHT
+#define SLIDE_SPEED_MULT	(80)  // 80% of normal speed while sliding
+#define SLIDE_DURATION		(15)  // tics to slide after releasing crouch while moving
 
 
 //
@@ -92,6 +100,7 @@ void P_CalcHeight (player_t* player)
 {
     int		angle;
     fixed_t	bob;
+    fixed_t	target_viewheight;
     
     // Regular movement bobbing
     // (needs to be calculated for gun swing
@@ -108,9 +117,19 @@ void P_CalcHeight (player_t* player)
     if (player->bob>MAXBOB)
 	player->bob = MAXBOB;
 
+    // Goblin Dice Rollaz: Determine target view height based on crouching state
+    if (player->crouching || player->slide_tics > 0)
+    {
+        target_viewheight = CROUCH_HEIGHT;
+    }
+    else
+    {
+        target_viewheight = VIEWHEIGHT;
+    }
+
     if ((player->cheats & CF_NOMOMENTUM) || !onground)
     {
-	player->viewz = player->mo->z + VIEWHEIGHT;
+	player->viewz = player->mo->z + target_viewheight;
 
 	if (player->viewz > player->mo->ceilingz-4*FRACUNIT)
 	    player->viewz = player->mo->ceilingz-4*FRACUNIT;
@@ -128,15 +147,39 @@ void P_CalcHeight (player_t* player)
     {
 	player->viewheight += player->deltaviewheight;
 
+	// Goblin Dice Rollaz: Handle smooth transition to/from crouch
+	if (player->crouching || player->slide_tics > 0)
+	{
+	    // Target is crouching height
+	    if (player->viewheight > CROUCH_HEIGHT)
+	    {
+		player->deltaviewheight = -FRACUNIT/2;
+	    }
+	    else if (player->viewheight < CROUCH_HEIGHT)
+	    {
+		player->viewheight = CROUCH_HEIGHT;
+		player->deltaviewheight = 0;
+	    }
+	}
+	else
+	{
+	    // Target is standing height
+	    if (player->viewheight > VIEWHEIGHT)
+	    {
+		player->viewheight = VIEWHEIGHT;
+		player->deltaviewheight = 0;
+	    }
+	}
+
 	if (player->viewheight > VIEWHEIGHT)
 	{
 	    player->viewheight = VIEWHEIGHT;
 	    player->deltaviewheight = 0;
 	}
 
-	if (player->viewheight < VIEWHEIGHT/2)
+	if (player->viewheight < CROUCH_HEIGHT)
 	{
-	    player->viewheight = VIEWHEIGHT/2;
+	    player->viewheight = CROUCH_HEIGHT;
 	    if (player->deltaviewheight <= 0)
 		player->deltaviewheight = 1;
 	}
@@ -282,6 +325,49 @@ void P_MovePlayer (player_t* player)
         player->roll_direction = roll_dir;
         player->mo->flags |= MF_INVULNERABLE;
         player->fixedcolormap = INVERSECOLORMAP;
+    }
+
+    // Goblin Dice Rollaz: Handle crouch/slide mechanics
+    // Track previous crouching state
+    player->was_crouching = player->crouching;
+
+    // Check for crouch key press
+    if (gamekeydown[key_crouch] && onground && player->roll_iframes == 0 && player->dash_iframes == 0)
+    {
+        // Start crouching
+        if (!player->crouching)
+        {
+            player->crouching = true;
+        }
+    }
+    else if (!gamekeydown[key_crouch] && player->crouching)
+    {
+        // Player released crouch key - check for slide
+        player->crouching = false;
+
+        // If moving when releasing crouch, apply slide
+        if ((cmd->forwardmove != 0 || cmd->sidemove != 0) && onground)
+        {
+            player->slide_tics = SLIDE_DURATION;
+        }
+    }
+
+    // Apply slide if active
+    if (player->slide_tics > 0)
+    {
+        player->slide_tics--;
+        // Apply slide momentum
+        if (cmd->forwardmove != 0)
+        {
+            P_Thrust(player, player->mo->angle, (cmd->forwardmove * SLIDE_SPEED_MULT) / 100);
+        }
+    }
+
+    // Apply movement speed reduction when crouching
+    if (player->crouching || player->slide_tics > 0)
+    {
+        forward_scale = (forward_scale * CROUCH_SPEED_MULT) / 100;
+        side_scale = (side_scale * CROUCH_SPEED_MULT) / 100;
     }
 	
     player->mo->angle += (cmd->angleturn<<FRACBITS);

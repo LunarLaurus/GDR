@@ -472,7 +472,7 @@
 ### Phase 26: Player Movement Enhancements
 - [x] Add dodge roll ability
 - [x] Add mantling/climbing small obstacles
-- [ ] Add crouch/slide mechanics
+- [x] Add crouch/slide mechanics
 - [ ] Add wall jump in narrow passages
 - [ ] Add ledge grab/climb ability
 - [ ] Add swimming physics for flooded areas
