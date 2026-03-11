@@ -217,6 +217,12 @@ typedef struct player_s
     // Goblin Dice Rollaz: Madness Die powerup damage modifier (100 = normal)
     int			madness_damage_mod;
 
+    // Goblin Dice Rollaz: Mantle/climbing state
+    // Tics remaining in mantle animation
+    int			mantle_tics;
+    // Height being mantled to
+    fixed_t		mantle_height;
+
 } player_t;
 
 

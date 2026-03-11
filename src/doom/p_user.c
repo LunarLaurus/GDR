@@ -49,6 +49,11 @@
 #define ROLL_IFRAME_DURATION	(8)
 #define ROLL_COOLDOWN		(30*TICRATE)
 
+// Goblin Dice Rollaz: Mantle/climbing constants
+#define MANTLE_HEIGHT		(56*FRACUNIT)
+#define MANTLE_SPEED		(4*FRACUNIT)
+#define MANTLE_CHECK_DIST	(32*FRACUNIT)
+
 
 //
 // Movement.
@@ -295,6 +300,48 @@ void P_MovePlayer (player_t* player)
 	 && player->mo->state == &states[S_PLAY] )
     {
 	P_SetMobjState (player->mo, S_PLAY_RUN1);
+    }
+
+    // Goblin Dice Rollaz: Handle mantling/climbing small obstacles
+    if (player->mantle_tics > 0)
+    {
+        player->mantle_tics--;
+        if (player->mantle_tics > 0 && player->mantle_height > player->mo->z)
+        {
+            player->mo->z += MANTLE_SPEED;
+            if (player->mo->z > player->mantle_height)
+            {
+                player->mo->z = player->mantle_height;
+            }
+            player->mo->floorz = player->mantle_height;
+        }
+        else
+        {
+            player->mantle_tics = 0;
+            player->mantle_height = 0;
+        }
+    }
+    else if (onground && cmd->forwardmove > 0)
+    {
+        // Check if there's a mantle-able surface ahead
+        fixed_t checkx = player->mo->x + FixedMul(MANTLE_CHECK_DIST, finecosine[player->mo->angle >> ANGLETOFINESHIFT]);
+        fixed_t checky = player->mo->y + FixedMul(MANTLE_CHECK_DIST, finesine[player->mo->angle >> ANGLETOFINESHIFT]);
+
+        P_CheckPosition(player->mo, checkx, checky);
+
+        fixed_t step_height = tmfloorz - player->mo->floorz;
+        if (step_height > 24*FRACUNIT && step_height <= MANTLE_HEIGHT)
+        {
+            // Check if there's enough ceiling clearance to mantle
+            if (tmceilingz - tmfloorz >= player->mo->height + 16*FRACUNIT)
+            {
+                player->mantle_tics = (step_height / MANTLE_SPEED) + 1;
+                player->mantle_height = tmfloorz;
+                // Keep some forward momentum during mantle
+                player->mo->momx = FixedMul(4*FRACUNIT, finecosine[player->mo->angle >> ANGLETOFINESHIFT]);
+                player->mo->momy = FixedMul(4*FRACUNIT, finesine[player->mo->angle >> ANGLETOFINESHIFT]);
+            }
+        }
     }
 }	
 }	
