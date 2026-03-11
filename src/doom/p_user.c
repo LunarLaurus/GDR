@@ -75,6 +75,12 @@
 #define WALLJUMP_CHECK_DIST	(32*FRACUNIT)
 #define WALLSLIDE_SPEED		(4*FRACUNIT)  // Slower fall when sliding down wall
 
+// Goblin Dice Rollaz: Swimming physics constants
+#define SWIMMING_SPEED		(12*FRACUNIT)  // Forward speed while swimming
+#define SWIMMING_RISE_SPEED	(8*FRACUNIT)   // Upward speed when swimming up
+#define SWIMMING_SINK_SPEED	(4*FRACUNIT)   // Downward speed when swimming down
+#define SWIMMING_GRAVITY	(FRACUNIT/4)   // Reduced gravity while swimming
+
 
 //
 // Movement.
@@ -600,6 +606,62 @@ void P_MovePlayer (player_t* player)
         // Drop down from ledge
         player->ledge_hanging = false;
         player->ledge_climb_tics = 0;
+    }
+
+    // Goblin Dice Rollaz: Handle swimming physics in flooded areas
+    if (player->swimming)
+    {
+        // Player is in water - apply swimming physics
+        // Allow movement in all directions including up/down
+        fixed_t swim_forward_scale = 2048;
+        fixed_t swim_side_scale = 2048;
+
+        // Apply crouch reduction while swimming
+        if (player->crouching || player->slide_tics > 0)
+        {
+            swim_forward_scale = (swim_forward_scale * CROUCH_SPEED_MULT) / 100;
+            swim_side_scale = (swim_side_scale * CROUCH_SPEED_MULT) / 100;
+        }
+
+        // Forward/backward movement while swimming
+        if (cmd->forwardmove)
+        {
+            P_Thrust(player, player->mo->angle, cmd->forwardmove * swim_forward_scale / 8);
+        }
+
+        // Strafe movement while swimming
+        if (cmd->sidemove)
+        {
+            P_Thrust(player, player->mo->angle - ANG90, cmd->sidemove * swim_side_scale / 8);
+        }
+
+        // Swim upward when jump key is pressed while in water
+        if (gamekeydown[key_jump] && player->mo->z < player->water_z - player->mo->height)
+        {
+            player->mo->momz = SWIMMING_RISE_SPEED;
+        }
+
+        // Swim downward when crouch key is pressed while in water
+        if (gamekeydown[key_crouch] && player->mo->z > player->mo->floorz + 8*FRACUNIT)
+        {
+            player->mo->momz = -SWIMMING_SINK_SPEED;
+        }
+
+        // Apply water friction (slow down faster than air)
+        player->mo->momx = (player->mo->momx * 15) >> 4;
+        player->mo->momy = (player->mo->momy * 15) >> 4;
+
+        // Keep player within water bounds
+        if (player->mo->z < player->mo->floorz)
+        {
+            player->mo->z = player->mo->floorz;
+            player->mo->momz = 0;
+        }
+        if (player->mo->z + player->mo->height > player->water_z)
+        {
+            player->mo->z = player->water_z - player->mo->height;
+            player->mo->momz = 0;
+        }
     }
 }
 

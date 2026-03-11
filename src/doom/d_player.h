@@ -253,6 +253,14 @@ typedef struct player_s
     // Tics remaining in climb animation
     int			ledge_climb_tics;
 
+    // Goblin Dice Rollaz: Swimming/flooded area state
+    // True if player is currently swimming (in flooded sector)
+    boolean		swimming;
+    // Height of water in flooded sector
+    fixed_t		water_level;
+    // Z position of water surface (ceiling of flooded sector)
+    fixed_t		water_z;
+
 } player_t;
 
 

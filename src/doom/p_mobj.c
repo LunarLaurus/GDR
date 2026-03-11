@@ -28,6 +28,11 @@
 
 #include "st_stuff.h"
 #include "hu_stuff.h"
+
+// Goblin Dice Rollaz: Swimming physics constants (duplicated from p_user.c for P_ZMovement access)
+#ifndef SWIMMING_GRAVITY
+#define SWIMMING_GRAVITY	(FRACUNIT/4)   // Reduced gravity while swimming
+#endif
 #include "p_siege.h"
 #include "p_siege_defense.h"
 #include "dice_projectile_lag.h"
@@ -349,10 +354,22 @@ void P_ZMovement (mobj_t* mo)
     }
     else if (! (mo->flags & MF_NOGRAVITY) )
     {
-	if (mo->momz == 0)
-	    mo->momz = -GRAVITY*2;
-	else
-	    mo->momz -= GRAVITY;
+        // Goblin Dice Rollaz: Check for swimming physics
+        if (mo->player && mo->player->swimming)
+        {
+            // Reduced gravity while swimming
+            if (mo->momz == 0)
+                mo->momz = -SWIMMING_GRAVITY;
+            else
+                mo->momz -= SWIMMING_GRAVITY;
+        }
+        else
+        {
+            if (mo->momz == 0)
+                mo->momz = -GRAVITY*2;
+            else
+                mo->momz -= GRAVITY;
+        }
     }
 	
     if (mo->z + mo->height > mo->ceilingz)

@@ -1032,9 +1032,14 @@ void P_PlayerInSpecialSector (player_t* player)
 	
     sector = player->mo->subsector->sector;
 
+    // Goblin Dice Rollaz: Reset swimming flag by default (will be set true for water sectors)
+    player->swimming = false;
+    player->water_level = 0;
+    player->water_z = 0;
+
     // Falling, not all the way down yet?
     if (player->mo->z != sector->floorheight)
-	return;	
+	return;
 
     // Has hitten ground.
     switch (sector->special)
@@ -1173,7 +1178,15 @@ void P_PlayerInSpecialSector (player_t* player)
         if (!(leveltime&0x1f))
             P_DamageMobj (player->mo, NULL, NULL, 10);
         break;
-			
+
+      case 40:
+        // Goblin Dice Rollaz: FLOODED WATER SECTOR
+        // Player can swim in these sectors
+        player->swimming = true;
+        player->water_level = sector->ceilingheight - sector->floorheight;
+        player->water_z = sector->ceilingheight;
+        return;  // No damage in water
+
       default:
 	I_Error ("P_PlayerInSpecialSector: "
 		 "unknown special %i",
