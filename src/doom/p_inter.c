@@ -1521,8 +1521,9 @@ P_DamageMobj
             }
         }
 
-        // Goblin Dice Rollaz: Crit combo system - track and apply combo multiplier
-        if (source && source->player)
+        // Goblin Dice Rollaz: Combo system - consecutive hits increase damage
+        // Track ANY successful hit to build combo multiplier
+        if (source && source->player && damage > 0)
         {
             // Update combo timer (decays over time)
             if (source->player->crit_combo_timer > 0)
@@ -1530,42 +1531,33 @@ P_DamageMobj
                 source->player->crit_combo_timer--;
             }
 
-            if (was_critical)
+            // Increment combo on ANY hit (not just crits)
+            source->player->crit_combo++;
+            // Reset combo timeout
+            source->player->crit_combo_timer = crit_combo_timeout;
+
+            // Apply combo bonus damage to ALL hits
+            int comboLevel = source->player->crit_combo;
+            if (comboLevel > 1)
             {
-                // Increment combo on critical hit
-                source->player->crit_combo++;
-                // Reset combo timeout
-                source->player->crit_combo_timer = crit_combo_timeout;
-
-                // Apply combo bonus damage
-                int comboLevel = source->player->crit_combo;
-                if (comboLevel > 0)
+                // Cap at max multiplier
+                int bonusMultiplier = 1 + (comboLevel * crit_combo_bonus / 100);
+                if (bonusMultiplier > crit_combo_max)
                 {
-                    // Cap at max multiplier
-                    int bonusMultiplier = 1 + (comboLevel * crit_combo_bonus / 100);
-                    if (bonusMultiplier > crit_combo_max)
-                    {
-                        bonusMultiplier = crit_combo_max;
-                    }
+                    bonusMultiplier = crit_combo_max;
+                }
 
-                    if (bonusMultiplier > 1)
+                if (bonusMultiplier > 1)
+                {
+                    damage *= bonusMultiplier;
+                    // Show combo message
+                    if (source == &players[consoleplayer].mo)
                     {
-                        damage *= bonusMultiplier;
-                        // Show combo message
-                        if (source == &players[consoleplayer].mo)
-                        {
-                            static char combomsg[64];
-                            snprintf(combomsg, sizeof(combomsg), "COMBO x%d!", bonusMultiplier);
-                            players[consoleplayer].message = combomsg;
-                        }
+                        static char combomsg[64];
+                        snprintf(combomsg, sizeof(combomsg), "COMBO x%d!", bonusMultiplier);
+                        players[consoleplayer].message = combomsg;
                     }
                 }
-            }
-            else
-            {
-                // Reset combo on non-crit hit
-                source->player->crit_combo = 0;
-                source->player->crit_combo_timer = 0;
             }
         }
     }

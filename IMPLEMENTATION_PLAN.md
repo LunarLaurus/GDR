@@ -482,7 +482,7 @@
 - [ ] Add air control improvements
 
 ### Phase 27: Combat System Expansion
-- [ ] Add combo system (consecutive hits increase damage)
+- [x] Add combo system (consecutive hits increase damage)
 - [ ] Add parry/timing window for defense
 - [ ] Add weak point targeting (headshots)
 - [ ] Add armor penetration mechanics
