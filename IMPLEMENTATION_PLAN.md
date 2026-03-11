@@ -474,7 +474,7 @@
 - [x] Add mantling/climbing small obstacles
 - [x] Add crouch/slide mechanics
 - [x] Add wall jump in narrow passages
-- [ ] Add ledge grab/climb ability
+- [x] Add ledge grab/climb ability
 - [ ] Add swimming physics for flooded areas
 - [ ] Add ladder climbing mechanics
 - [ ] Add momentum-based movement

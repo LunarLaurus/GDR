@@ -241,6 +241,18 @@ typedef struct player_s
     // Tics remaining in wall slide (slower fall when hugging wall)
     int			wallslide_tics;
 
+    // Goblin Dice Rollaz: Ledge grab state
+    // True if player is currently hanging from a ledge
+    boolean		ledge_hanging;
+    // Height of the ledge being grabbed
+    fixed_t		ledge_height;
+    // X position of ledge grab point
+    fixed_t		ledge_x;
+    // Y position of ledge grab point
+    fixed_t		ledge_y;
+    // Tics remaining in climb animation
+    int			ledge_climb_tics;
+
 } player_t;
 
 

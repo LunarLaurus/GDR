@@ -55,6 +55,13 @@
 #define MANTLE_SPEED		(4*FRACUNIT)
 #define MANTLE_CHECK_DIST	(32*FRACUNIT)
 
+// Goblin Dice Rollaz: Ledge grab/climb constants
+#define LEDGE_GRAB_HEIGHT	(80*FRACUNIT)   // Max height to grab ledge
+#define LEDGE_REACH_DIST	(40*FRACUNIT)   // How far forward to check for ledge
+#define LEDGE_HANG_OFFSET	(8*FRACUNIT)    // Offset from ledge when hanging
+#define LEDGE_CLIMB_SPEED	(4*FRACUNIT)    // Speed of climb animation
+#define LEDGE_CLIMB_HEIGHT	(8*FRACUNIT)    // Height per climb tic
+
 // Goblin Dice Rollaz: Crouch/slide constants
 #define CROUCH_HEIGHT		(24*FRACUNIT)
 #define CROUCH_SPEED_MULT	(60)  // 60% of normal speed
@@ -515,8 +522,86 @@ void P_MovePlayer (player_t* player)
             player->wall_contact = 0;
         }
     }
-}	
-}	
+
+    // Goblin Dice Rollaz: Ledge grab/climb ability
+    // Handle climbing animation when hanging from ledge
+    if (player->ledge_hanging && player->ledge_climb_tics > 0)
+    {
+        player->ledge_climb_tics--;
+        // Move player up during climb
+        player->mo->z += LEDGE_CLIMB_HEIGHT;
+        player->mo->floorz = player->mo->z;
+        
+        // Keep player at ledge position
+        player->mo->x = player->ledge_x;
+        player->mo->y = player->ledge_y;
+        
+        // Check if climb is complete
+        if (player->mo->z >= player->ledge_height)
+        {
+            player->ledge_hanging = false;
+            player->ledge_climb_tics = 0;
+            player->mo->z = player->ledge_height;
+            player->mo->floorz = player->ledge_height;
+        }
+    }
+    // Detect ledge grab opportunity when in air and moving forward
+    else if (!onground && cmd->forwardmove > 0 && player->roll_iframes == 0 && 
+             player->dash_iframes == 0 && player->mantle_tics == 0 &&
+             player->mo->momz < 0 && !player->ledge_hanging)
+    {
+        // Check for ledge in front of player at a higher elevation
+        fixed_t checkx = player->mo->x + FixedMul(LEDGE_REACH_DIST, finecosine[player->mo->angle >> ANGLETOFINESHIFT]);
+        fixed_t checky = player->mo->y + FixedMul(LEDGE_REACH_DIST, finesine[player->mo->angle >> ANGLETOFINESHIFT]);
+
+        // First check the ground at the target position
+        if (P_CheckPosition(player->mo, checkx, checky))
+        {
+            // Get the floor height at target position
+            fixed_t target_floor = tmfloorz;
+            fixed_t height_diff = target_floor - player->mo->z;
+
+            // Check if this is a grabbable ledge (higher than mantle height but within reach)
+            if (height_diff > MANTLE_HEIGHT && height_diff <= LEDGE_GRAB_HEIGHT)
+            {
+                // Verify ceiling clearance at the ledge
+                if (tmceilingz - target_floor >= player->mo->height + 16*FRACUNIT)
+                {
+                    // Grab the ledge!
+                    player->ledge_hanging = true;
+                    player->ledge_height = target_floor;
+                    player->ledge_x = checkx;
+                    player->ledge_y = checky;
+                    
+                    // Stop vertical momentum and position player at ledge
+                    player->mo->momz = 0;
+                    player->mo->z = target_floor - player->mo->height + LEDGE_HANG_OFFSET;
+                    player->mo->floorz = target_floor;
+                    
+                    // Reset other movement states
+                    player->wall_contact = 0;
+                    player->wallslide_tics = 0;
+                }
+            }
+        }
+    }
+    // Handle jump to climb up from ledge
+    else if (player->ledge_hanging && gamekeydown[key_jump])
+    {
+        // Start climbing animation
+        fixed_t climb_distance = player->ledge_height - player->mo->z;
+        player->ledge_climb_tics = climb_distance / LEDGE_CLIMB_HEIGHT;
+        if (player->ledge_climb_tics < 1)
+            player->ledge_climb_tics = 1;
+    }
+    // Handle dropping from ledge (release forward key)
+    else if (player->ledge_hanging && cmd->forwardmove <= 0)
+    {
+        // Drop down from ledge
+        player->ledge_hanging = false;
+        player->ledge_climb_tics = 0;
+    }
+}
 
 
 
