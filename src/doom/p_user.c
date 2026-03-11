@@ -44,6 +44,11 @@
 #define DASH_IFRAME_DURATION	(10)
 #define DASH_COOLDOWN		(15*TICRATE)
 
+// Goblin Dice Rollaz: Dodge roll ability constants
+#define ROLL_SPEED		(28*FRACUNIT)
+#define ROLL_IFRAME_DURATION	(8)
+#define ROLL_COOLDOWN		(30*TICRATE)
+
 
 //
 // Movement.
@@ -205,6 +210,71 @@ void P_MovePlayer (player_t* player)
         P_Thrust(player, player->mo->angle, DASH_SPEED);
         player->dash_iframes = DASH_IFRAME_DURATION;
         player->dash_cooldown = DASH_COOLDOWN;
+        player->mo->flags |= MF_INVULNERABLE;
+        player->fixedcolormap = INVERSECOLORMAP;
+    }
+
+    // Goblin Dice Rollaz: Handle dodge roll cooldown
+    if (player->roll_cooldown > 0)
+    {
+        player->roll_cooldown--;
+    }
+
+    // Goblin Dice Rollaz: Handle dodge roll invulnerability frames
+    if (player->roll_iframes > 0)
+    {
+        player->roll_iframes--;
+        if (player->roll_iframes > 0)
+        {
+            player->mo->flags |= MF_INVULNERABLE;
+            player->fixedcolormap = INVERSECOLORMAP;
+        }
+        else
+        {
+            player->mo->flags &= ~MF_INVULNERABLE;
+            player->fixedcolormap = 0;
+            player->roll_direction = 0;
+        }
+    }
+
+    // Goblin Dice Rollaz: Trigger dodge roll when dodge key is pressed
+    if (gamekeydown[key_dodge] && player->roll_cooldown == 0 && onground && player->roll_iframes == 0)
+    {
+        // Determine roll direction based on strafing or default to forward
+        int roll_dir = 0;
+        if (cmd->sidemove < 0)
+        {
+            // Strafe left - roll left
+            roll_dir = -1;
+        }
+        else if (cmd->sidemove > 0)
+        {
+            // Strafe right - roll right
+            roll_dir = 1;
+        }
+        else
+        {
+            // No strafe - roll forward
+            roll_dir = 0;
+        }
+
+        // Apply roll thrust
+        if (roll_dir == 0)
+        {
+            P_Thrust(player, player->mo->angle, ROLL_SPEED);
+        }
+        else if (roll_dir < 0)
+        {
+            P_Thrust(player, player->mo->angle - ANG90, ROLL_SPEED);
+        }
+        else
+        {
+            P_Thrust(player, player->mo->angle + ANG90, ROLL_SPEED);
+        }
+
+        player->roll_iframes = ROLL_IFRAME_DURATION;
+        player->roll_cooldown = ROLL_COOLDOWN;
+        player->roll_direction = roll_dir;
         player->mo->flags |= MF_INVULNERABLE;
         player->fixedcolormap = INVERSECOLORMAP;
     }

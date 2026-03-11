@@ -206,6 +206,14 @@ typedef struct player_s
     // Invulnerability frames during dash (in tics)
     int			dash_iframes;
 
+    // Goblin Dice Rollaz: Dodge roll ability state
+    // Cooldown between rolls (in tics)
+    int			roll_cooldown;
+    // Invulnerability frames during roll (in tics)
+    int			roll_iframes;
+    // Direction of roll (negative = left, positive = right, 0 = not rolling)
+    int			roll_direction;
+
     // Goblin Dice Rollaz: Madness Die powerup damage modifier (100 = normal)
     int			madness_damage_mod;
 

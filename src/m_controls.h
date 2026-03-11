@@ -29,6 +29,9 @@ extern int key_use;
 extern int key_strafe;
 extern int key_speed;
 
+// Goblin Dice Rollaz: Dodge roll key
+extern int key_dodge;
+
 extern int key_jump;
  
 extern int key_flyup;

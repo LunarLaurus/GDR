@@ -471,7 +471,7 @@
   - [ ] Resolve blocker: Requires game state tracking and difficulty adjustment - complex feature
 
 ### Phase 26: Player Movement Enhancements
-- [ ] Add dodge roll ability
+- [x] Add dodge roll ability
 - [ ] Add mantling/climbing small obstacles
 - [ ] Add crouch/slide mechanics
 - [ ] Add wall jump in narrow passages

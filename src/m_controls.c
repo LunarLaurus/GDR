@@ -38,7 +38,10 @@ int key_use = ' ';
 int key_strafe = KEY_RALT;
 int key_speed = KEY_RSHIFT; 
 
-// 
+// Goblin Dice Rollaz: Dodge roll key (default: 'q')
+int key_dodge = 'q';
+
+//
 // Heretic keyboard controls
 //
  
@@ -249,6 +252,9 @@ void M_BindBaseControls(void)
     M_BindIntVariable("key_use",            &key_use);
     M_BindIntVariable("key_strafe",         &key_strafe);
     M_BindIntVariable("key_speed",          &key_speed);
+
+    // Goblin Dice Rollaz: Dodge roll key
+    M_BindIntVariable("key_dodge",         &key_dodge);
 
     M_BindIntVariable("mouseb_fire",        &mousebfire);
     M_BindIntVariable("mouseb_altfire",     &mousebaltfire);
