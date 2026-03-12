@@ -1763,6 +1763,7 @@ A_FireMissile
 {
     DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
     P_SpawnPlayerMissile (player->mo, MT_ROCKET, player->readyweapon);
+    R_TriggerScreenShake(FRACUNIT, 3);
 }
 
 
@@ -1777,6 +1778,7 @@ A_FireBFG
     DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 
                  deh_bfg_cells_per_shot);
     P_SpawnPlayerMissile (player->mo, MT_BFG, player->readyweapon);
+    R_TriggerScreenShake(FRACUNIT * 2, 5);
 }
 
 
@@ -1796,6 +1798,7 @@ A_FirePlasma
 		  weaponinfo[player->readyweapon].flashstate+(P_Random ()&1) );
 
     P_SpawnPlayerMissile (player->mo, MT_PLASMA, player->readyweapon);
+    R_TriggerScreenShake(FRACUNIT * 3 / 4, 3);
 }
 
 
@@ -1889,6 +1892,8 @@ A_FirePistol
 
     P_BulletSlope (player->mo);
     P_GunShot (player->mo, !player->refire);
+
+    R_TriggerScreenShake(FRACUNIT / 2, 2);
 }
 
 

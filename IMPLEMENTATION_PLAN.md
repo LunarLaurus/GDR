@@ -778,7 +778,7 @@
 - [ ] Add siege arena builder
 
 ### Phase 47: New Gameplay Features
-- [ ] Add screen shake on weapon fire
+- [x] Add screen shake on weapon fire
 - [ ] Add hit marker visual on successful hits
 - [ ] Add floating damage numbers
 - [ ] Add enemy flash effect on damage
