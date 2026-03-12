@@ -477,7 +477,7 @@
 - [x] Add ledge grab/climb ability
 - [x] Add swimming physics for flooded areas
 - [x] Add ladder climbing mechanics
-- [ ] Add momentum-based movement
+- [x] Add momentum-based movement
 - [ ] Add air control improvements
 
 ### Phase 27: Combat System Expansion

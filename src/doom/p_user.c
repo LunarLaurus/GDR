@@ -87,6 +87,14 @@
 #define LADDER_DESCEND_SPEED	(6*FRACUNIT)   // Downward speed on ladder
 #define LADDER_SECTOR_SPECIAL	41            // Sector special for ladder
 
+// Goblin Dice Rollaz: Momentum-based movement constants
+// Acceleration: fraction of target speed added per tic (higher = snappier)
+#define MOMENTUM_ACCEL		(FRACUNIT/3)   // 33% of difference per tic
+// Friction: fraction of speed retained per tic when not pressing keys (higher = more slippery)
+#define MOMENTUM_FRICTION	(FRACUNIT*9/10)  // 90% retained per tic (gradual slowdown)
+// Ground friction when stopping: higher = quicker stop
+#define MOMENTUM_STOP_FRICTION	(FRACUNIT*7/10)  // 70% retained per tic when actively stopping
+
 
 //
 // Movement.
@@ -400,14 +408,69 @@ void P_MovePlayer (player_t* player)
     // Do not let the player control movement
     //  if not onground.
     onground = (player->mo->z <= player->mo->floorz);
-	
-    if (cmd->forwardmove && onground)
-	P_Thrust (player, player->mo->angle, cmd->forwardmove*forward_scale);
-    
-    if (cmd->sidemove && onground)
-	P_Thrust (player, player->mo->angle-ANG90, cmd->sidemove*side_scale);
 
-    if ( (cmd->forwardmove || cmd->sidemove) 
+    // Goblin Dice Rollaz: Momentum-based movement system
+    if (onground)
+    {
+        fixed_t target_forward = 0;
+        fixed_t target_side = 0;
+        fixed_t current_forward = player->momentum_forward;
+        fixed_t current_side = player->momentum_side;
+
+        // Calculate target velocities based on input
+        if (cmd->forwardmove)
+        {
+            target_forward = cmd->forwardmove * forward_scale;
+        }
+        if (cmd->sidemove)
+        {
+            target_side = cmd->sidemove * side_scale;
+        }
+
+        // Apply acceleration toward target (or friction if no input)
+        if (cmd->forwardmove)
+        {
+            // Accelerate toward target
+            player->momentum_forward = current_forward + FixedMul(target_forward - current_forward, MOMENTUM_ACCEL);
+        }
+        else if (current_forward != 0)
+        {
+            // Apply friction when not pressing forward/back
+            player->momentum_forward = FixedMul(current_forward, MOMENTUM_FRICTION);
+            // Snap to zero if very small
+            if (D_abs(player->momentum_forward) < FRACUNIT/4)
+                player->momentum_forward = 0;
+        }
+
+        if (cmd->sidemove)
+        {
+            // Accelerate toward target
+            player->momentum_side = current_side + FixedMul(target_side - current_side, MOMENTUM_ACCEL);
+        }
+        else if (current_side != 0)
+        {
+            // Apply friction when not pressing left/right
+            player->momentum_side = FixedMul(current_side, MOMENTUM_FRICTION);
+            // Snap to zero if very small
+            if (D_abs(player->momentum_side) < FRACUNIT/4)
+                player->momentum_side = 0;
+        }
+
+        // Apply the momentum as thrust
+        if (player->momentum_forward != 0)
+            P_Thrust(player, player->mo->angle, player->momentum_forward);
+
+        if (player->momentum_side != 0)
+            P_Thrust(player, player->mo->angle - ANG90, player->momentum_side);
+    }
+    else
+    {
+        // In air - reduce momentum more slowly (air resistance)
+        player->momentum_forward = FixedMul(player->momentum_forward, MOMENTUM_FRICTION);
+        player->momentum_side = FixedMul(player->momentum_side, MOMENTUM_FRICTION);
+    }
+    
+    if ( (cmd->forwardmove || cmd->sidemove || player->momentum_forward || player->momentum_side)
 	 && player->mo->state == &states[S_PLAY] )
     {
 	P_SetMobjState (player->mo, S_PLAY_RUN1);

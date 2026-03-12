@@ -272,6 +272,16 @@ typedef struct player_s
     fixed_t		ladder_x;
     fixed_t		ladder_y;
 
+    // Goblin Dice Rollaz: Momentum-based movement system
+    // Forward/backward velocity component
+    fixed_t		momentum_forward;
+    // Left/right velocity component
+    fixed_t		momentum_side;
+    // Acceleration rate (higher = faster buildup)
+    fixed_t		momentum_accel;
+    // Friction rate (higher = faster slowdown)
+    fixed_t		momentum_friction;
+
 } player_t;
 
 
