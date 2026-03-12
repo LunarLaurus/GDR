@@ -1460,6 +1460,34 @@ P_DamageMobj
             }
         }
 
+        // Goblin Dice Rollaz: Weak point targeting (headshots)
+        if (source && source->player && damage > 0 && target && !target->player && !(target->flags & MF_CORPSE))
+        {
+            int headshotChance = 15;
+            if (target->info && target->info->painchance > 0)
+            {
+                headshotChance += 10;
+            }
+            if (target->info && target->info->spawnid > 0)
+            {
+                headshotChance += 5;
+            }
+
+            if ((P_Random() % 100) < headshotChance)
+            {
+                damage *= 2;
+                was_critical = true;
+                crit_roll = (P_Random() % 20) + 1;
+                P_BroadcastCritMessage(source->player - players, "HEADSHOT!", true, damage);
+                S_StartSound(source, sfx_dice_crit);
+
+                if ((P_Random() % 100) < 30)
+                {
+                    G_StatusEffectApply(target, st_stunned, STUNNED_TICS);
+                }
+            }
+        }
+
         if (source->player->powers[pw_doubledamage])
         {
             damage *= 2;

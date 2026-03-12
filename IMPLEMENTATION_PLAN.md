@@ -483,7 +483,7 @@
 ### Phase 27: Combat System Expansion
 - [x] Add combo system (consecutive hits increase damage)
 - [x] Add parry/timing window for defense
-- [ ] Add weak point targeting (headshots)
+- [x] Add weak point targeting (headshots)
 - [ ] Add armor penetration mechanics
 - [ ] Add elemental combo reactions (fire + ice = steam)
 - [ ] Add stealth backstab damage bonus
