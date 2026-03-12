@@ -476,7 +476,7 @@
 - [x] Add wall jump in narrow passages
 - [x] Add ledge grab/climb ability
 - [x] Add swimming physics for flooded areas
-- [ ] Add ladder climbing mechanics
+- [x] Add ladder climbing mechanics
 - [ ] Add momentum-based movement
 - [ ] Add air control improvements
 

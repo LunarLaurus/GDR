@@ -1029,13 +1029,20 @@ P_ShootSpecialLine
 void P_PlayerInSpecialSector (player_t* player)
 {
     sector_t*	sector;
-	
+    
     sector = player->mo->subsector->sector;
 
     // Goblin Dice Rollaz: Reset swimming flag by default (will be set true for water sectors)
     player->swimming = false;
     player->water_level = 0;
     player->water_z = 0;
+
+    // Goblin Dice Rollaz: Reset ladder flag by default (will be set true for ladder sectors)
+    player->on_ladder = false;
+    player->ladder_top = 0;
+    player->ladder_bottom = 0;
+    player->ladder_x = 0;
+    player->ladder_y = 0;
 
     // Falling, not all the way down yet?
     if (player->mo->z != sector->floorheight)
@@ -1186,6 +1193,16 @@ void P_PlayerInSpecialSector (player_t* player)
         player->water_level = sector->ceilingheight - sector->floorheight;
         player->water_z = sector->ceilingheight;
         return;  // No damage in water
+
+      case 41:
+        // Goblin Dice Rollaz: LADDER SECTOR
+        // Player can climb up/down these sectors
+        player->on_ladder = true;
+        player->ladder_top = sector->ceilingheight;
+        player->ladder_bottom = sector->floorheight;
+        player->ladder_x = player->mo->x;
+        player->ladder_y = player->mo->y;
+        return;  // No damage on ladder
 
       default:
 	I_Error ("P_PlayerInSpecialSector: "

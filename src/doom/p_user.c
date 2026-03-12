@@ -81,6 +81,12 @@
 #define SWIMMING_SINK_SPEED	(4*FRACUNIT)   // Downward speed when swimming down
 #define SWIMMING_GRAVITY	(FRACUNIT/4)   // Reduced gravity while swimming
 
+// Goblin Dice Rollaz: Ladder climbing constants
+#define LADDER_SPEED		(8*FRACUNIT)   // Forward speed on ladder
+#define LADDER_RISE_SPEED	(6*FRACUNIT)   // Upward speed on ladder
+#define LADDER_DESCEND_SPEED	(6*FRACUNIT)   // Downward speed on ladder
+#define LADDER_SECTOR_SPECIAL	41            // Sector special for ladder
+
 
 //
 // Movement.
@@ -661,6 +667,75 @@ void P_MovePlayer (player_t* player)
         {
             player->mo->z = player->water_z - player->mo->height;
             player->mo->momz = 0;
+        }
+    }
+
+    // Goblin Dice Rollaz: Handle ladder climbing physics
+    if (player->on_ladder)
+    {
+        // Player is on a ladder - apply ladder climbing physics
+        // Disable gravity while on ladder
+        player->mo->momz = 0;
+
+        // Forward/backward movement along ladder
+        if (cmd->forwardmove)
+        {
+            P_Thrust(player, player->mo->angle, cmd->forwardmove * 2048 / 8);
+        }
+
+        // Strafe movement (sideways on ladder)
+        if (cmd->sidemove)
+        {
+            P_Thrust(player, player->mo->angle - ANG90, cmd->sidemove * 2048 / 8);
+        }
+
+        // Climb up when jump key is pressed
+        if (gamekeydown[key_jump] && player->mo->z < player->ladder_top - player->mo->height)
+        {
+            player->mo->momz = LADDER_RISE_SPEED;
+        }
+        // Climb down when crouch key is pressed
+        else if (gamekeydown[key_crouch] && player->mo->z > player->ladder_bottom)
+        {
+            player->mo->momz = -LADDER_DESCEND_SPEED;
+        }
+        // Auto-descend if at top and moving forward (step off top)
+        else if (cmd->forwardmove > 0 && player->mo->z >= player->ladder_top - player->mo->height - 8*FRACUNIT)
+        {
+            player->on_ladder = false;
+        }
+        // Auto-ascend if at bottom and moving forward (step onto it)
+        else if (cmd->forwardmove < 0 && player->mo->z <= player->ladder_bottom + 8*FRACUNIT)
+        {
+            player->on_ladder = false;
+        }
+        else
+        {
+            // Apply friction to keep player on ladder when not moving
+            player->mo->momx = (player->mo->momx * 3) >> 2;
+            player->mo->momy = (player->mo->momy * 3) >> 2;
+        }
+
+        // Keep player within ladder bounds
+        if (player->mo->z < player->ladder_bottom)
+        {
+            player->mo->z = player->ladder_bottom;
+            player->mo->momz = 0;
+        }
+        if (player->mo->z > player->ladder_top - player->mo->height)
+        {
+            player->mo->z = player->ladder_top - player->mo->height;
+            player->mo->momz = 0;
+        }
+
+        // Clamp horizontal movement to stay near ladder
+        fixed_t dx = player->mo->x - player->ladder_x;
+        fixed_t dy = player->mo->y - player->ladder_y;
+        fixed_t dist = FixedHypot(dx, dy);
+        if (dist > 64*FRACUNIT)
+        {
+            // Too far from ladder center - fall off
+            player->on_ladder = false;
         }
     }
 }

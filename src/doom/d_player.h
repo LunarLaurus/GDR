@@ -261,6 +261,17 @@ typedef struct player_s
     // Z position of water surface (ceiling of flooded sector)
     fixed_t		water_z;
 
+    // Goblin Dice Rollaz: Ladder climbing state
+    // True if player is currently climbing a ladder
+    boolean		on_ladder;
+    // Z position of ladder top
+    fixed_t		ladder_top;
+    // Z position of ladder bottom
+    fixed_t		ladder_bottom;
+    // Current ladder being climbed (for position tracking)
+    fixed_t		ladder_x;
+    fixed_t		ladder_y;
+
 } player_t;
 
 
