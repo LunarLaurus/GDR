@@ -94,6 +94,8 @@
 #define MOMENTUM_FRICTION	(FRACUNIT*9/10)  // 90% retained per tic (gradual slowdown)
 // Ground friction when stopping: higher = quicker stop
 #define MOMENTUM_STOP_FRICTION	(FRACUNIT*7/10)  // 70% retained per tic when actively stopping
+// Air control: fraction of ground acceleration allowed in air (0-100%)
+#define MOMENTUM_AIR_CONTROL	(FRACUNIT/5)   // 20% of ground control in air
 
 
 //
@@ -465,9 +467,53 @@ void P_MovePlayer (player_t* player)
     }
     else
     {
-        // In air - reduce momentum more slowly (air resistance)
-        player->momentum_forward = FixedMul(player->momentum_forward, MOMENTUM_FRICTION);
-        player->momentum_side = FixedMul(player->momentum_side, MOMENTUM_FRICTION);
+        // Goblin Dice Rollaz: Improved air control - allow player to influence trajectory
+        fixed_t target_forward = 0;
+        fixed_t target_side = 0;
+        fixed_t current_forward = player->momentum_forward;
+        fixed_t current_side = player->momentum_side;
+
+        // Calculate target velocities based on input (scaled by air control)
+        if (cmd->forwardmove)
+        {
+            target_forward = (cmd->forwardmove * forward_scale * MOMENTUM_AIR_CONTROL) / FRACUNIT;
+        }
+        if (cmd->sidemove)
+        {
+            target_side = (cmd->sidemove * side_scale * MOMENTUM_AIR_CONTROL) / FRACUNIT;
+        }
+
+        // Apply acceleration toward target in air (reduced control)
+        if (cmd->forwardmove)
+        {
+            player->momentum_forward = current_forward + FixedMul(target_forward - current_forward, MOMENTUM_ACCEL);
+        }
+        else if (current_forward != 0)
+        {
+            // Apply air friction when not pressing forward/back
+            player->momentum_forward = FixedMul(current_forward, MOMENTUM_FRICTION);
+            if (D_abs(player->momentum_forward) < FRACUNIT/4)
+                player->momentum_forward = 0;
+        }
+
+        if (cmd->sidemove)
+        {
+            player->momentum_side = current_side + FixedMul(target_side - current_side, MOMENTUM_ACCEL);
+        }
+        else if (current_side != 0)
+        {
+            // Apply air friction when not pressing left/right
+            player->momentum_side = FixedMul(current_side, MOMENTUM_FRICTION);
+            if (D_abs(player->momentum_side) < FRACUNIT/4)
+                player->momentum_side = 0;
+        }
+
+        // Apply the momentum as thrust
+        if (player->momentum_forward != 0)
+            P_Thrust(player, player->mo->angle, player->momentum_forward);
+
+        if (player->momentum_side != 0)
+            P_Thrust(player, player->mo->angle - ANG90, player->momentum_side);
     }
     
     if ( (cmd->forwardmove || cmd->sidemove || player->momentum_forward || player->momentum_side)

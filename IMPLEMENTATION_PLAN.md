@@ -478,7 +478,7 @@
 - [x] Add swimming physics for flooded areas
 - [x] Add ladder climbing mechanics
 - [x] Add momentum-based movement
-- [ ] Add air control improvements
+- [x] Add air control improvements
 
 ### Phase 27: Combat System Expansion
 - [x] Add combo system (consecutive hits increase damage)
