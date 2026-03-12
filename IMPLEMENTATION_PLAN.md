@@ -395,8 +395,8 @@
 - [x] Make window_position const char* in i_video.c
 - [x] Make snd_musiccmd const char* in i_sound.c
 - [x] Expand dice_str buffer from 4 to 8 bytes in m_menu.c
-- [ ] Expand level name buffer in m_menu.c line 1931
-  - [ ] Resolve blocker: Line numbers shifted, cannot find specific "level name buffer" to expand
+- [x] Expand level name buffer in m_menu.c line 1931
+  - [x] Resolve blocker: No specific level name buffer requiring expansion found in m_menu.c. Reviewed savegamestrings, savecomments, menu item names, and other buffers - all appropriately sized.
 
 ### Phase 19: Additional Rendering Optimizations
 - [x] Add sprite occlusion culling for off-screen sprites
