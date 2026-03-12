@@ -316,6 +316,12 @@ void P_FireWeapon (player_t* player)
 
     // Goblin Dice Rollaz: Apply weapon recoil based on weapon type
     player->weapon_recoil = weapon_recoil_values[player->readyweapon];
+
+    // Goblin Dice Rollaz: Activate parry window after attacking
+    // Player has a timing window to parry incoming damage
+    player->parry_window = PARRY_WINDOW_DURATION;
+    // Reset parry success flag
+    player->last_parry_success = false;
 }
 
 

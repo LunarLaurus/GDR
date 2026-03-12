@@ -1779,7 +1779,7 @@ P_DamageMobj
 	    damage = target->health - 1;
 	}
 	
-
+	
 	// Below certain threshold,
 	// ignore damage in GOD mode, or with INVUL power.
 	if ( damage < 1000
@@ -1787,6 +1787,70 @@ P_DamageMobj
 		  || player->powers[pw_invulnerability] ) )
 	{
 	    return;
+	}
+	
+	// Goblin Dice Rollaz: Parry/Timing Window Defense System
+	// Check if player can parry incoming damage
+	if (player->parry_window > 0 && player->parry_cooldown <= 0 && damage > 0)
+	{
+	    // Player has an active parry window
+	    int parryReduction = 0;
+	    boolean successfulParry = false;
+
+	    // Check if this is optimal timing (within optimal window)
+	    if (player->parry_window > (PARRY_WINDOW_DURATION - PARRY_OPTIMAL_WINDOW))
+	    {
+	        // Optimal timing - best parry
+	        parryReduction = PARRY_OPTIMAL_REDUCTION + 
+	                         (player->parry_count * PARRY_COMBO_BONUS);
+	        if (parryReduction > 95) parryReduction = 95;
+	        successfulParry = true;
+	    }
+	    else
+	    {
+	        // Regular parry window - good but not optimal
+	        parryReduction = PARRY_DAMAGE_REDUCTION +
+	                         (player->parry_count * PARRY_COMBO_BONUS);
+	        if (parryReduction > 90) parryReduction = 90;
+
+	        // Auto-parry chance for timing window
+	        if ((P_Random() % 100) < PARRY_AUTO_CHANCE)
+	        {
+	            successfulParry = true;
+	        }
+	    }
+
+	    if (successfulParry)
+	    {
+	        // Apply parry damage reduction
+	        damage = (damage * (100 - parryReduction)) / 100;
+	        if (damage < 1) damage = 1;
+
+	        // Update parry combo
+	        player->parry_count++;
+	        if (player->parry_count > PARRY_COMBO_MAX)
+	            player->parry_count = PARRY_COMBO_MAX;
+
+	        // Set cooldown
+	        player->parry_cooldown = PARRY_COOLDOWN;
+
+	        // Mark last parry success
+	        player->last_parry_success = true;
+
+	        // Show parry feedback message
+	        if (player == &players[consoleplayer])
+	        {
+	            static char parrymsg[64];
+	            if (parryReduction >= PARRY_OPTIMAL_REDUCTION)
+	                snprintf(parrymsg, sizeof(parrymsg), "PERFECT PARRY! %d%%", parryReduction);
+	            else if (player->parry_count > 1)
+	                snprintf(parrymsg, sizeof(parrymsg), "PARRY x%d! %d%%", 
+	                         player->parry_count, parryReduction);
+	            else
+	                snprintf(parrymsg, sizeof(parrymsg), "PARRY! %d%%", parryReduction);
+	            player->message = parrymsg;
+	        }
+	    }
 	}
 	
 	if (player->armortype)

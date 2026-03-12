@@ -30,6 +30,7 @@
 #include "sounds.h"
 #include "g_status.h"
 #include "g_powerup.h"
+#include "g_balance.h"
 #include "m_controls.h"
 
 
@@ -1137,6 +1138,23 @@ void P_PlayerThink (player_t* player)
 		
     if (player->damagecount)
 	player->damagecount--;
+
+    // Goblin Dice Rollaz: Update parry window timing
+    // Decay parry window each tick
+    if (player->parry_window > 0)
+    {
+        player->parry_window--;
+    }
+    // Decay parry cooldown
+    if (player->parry_cooldown > 0)
+    {
+        player->parry_cooldown--;
+        // Reset parry combo when cooldown expires
+        if (player->parry_cooldown <= 0)
+        {
+            player->parry_count = 0;
+        }
+    }
 		
     if (player->bonuscount)
 	player->bonuscount--;

@@ -282,6 +282,16 @@ typedef struct player_s
     // Friction rate (higher = faster slowdown)
     fixed_t		momentum_friction;
 
+    // Goblin Dice Rollaz: Parry/Timing Window Defense System
+    // Tics remaining in parry window after attacking (0 = no active parry)
+    int			parry_window;
+    // Number of successful parries in current combo
+    int			parry_count;
+    // Tics remaining until next parry can be attempted
+    int			parry_cooldown;
+    // True if player successfully parried last attack
+    boolean		last_parry_success;
+
 } player_t;
 
 

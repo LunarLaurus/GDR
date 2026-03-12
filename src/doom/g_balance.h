@@ -39,6 +39,35 @@
 #define DEFAULT_CRIT_COMBO_MAX          4       // Maximum combo multiplier
 
 // ============================================================================
+// PARRY DEFENSE SYSTEM
+// ============================================================================
+
+// Parry window duration after attacking (in tics)
+// Player has this many tics after an attack to parry incoming damage
+#define PARRY_WINDOW_DURATION      (TICRATE / 5)   // ~0.2 seconds (7 tics at 35fps)
+
+// Optimal parry window (the "sweet spot" in the parry window)
+// If hit during this window, parry is most effective
+#define PARRY_OPTIMAL_WINDOW       (TICRATE / 10)  // ~0.1 seconds (3-4 tics)
+
+// Parry cooldown between successful parries (prevents spam)
+#define PARRY_COOLDOWN             (TICRATE / 2)   // 0.5 seconds
+
+// Damage reduction when parrying (percent of original damage)
+#define PARRY_DAMAGE_REDUCTION     75      // Take only 25% damage when parrying
+
+// Bonus damage reduction at optimal timing (percent)
+#define PARRY_OPTIMAL_REDUCTION    90      // Take only 10% damage at perfect timing
+
+// Parry combo bonus - each consecutive parry increases reduction slightly
+#define PARRY_COMBO_BONUS          10      // Extra % reduction per consecutive parry
+#define PARRY_COMBO_MAX            5       // Max combo bonus
+
+// Chance to auto-parry without button press (for passive timing window)
+// This gives players a chance even if they don't press anything
+#define PARRY_AUTO_CHANCE          15      // 15% chance to auto-parry in optimal window
+
+// ============================================================================
 // POWERUP BALANCE
 // ============================================================================
 
