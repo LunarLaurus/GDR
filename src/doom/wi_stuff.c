@@ -18,6 +18,7 @@
 
 
 #include <stdio.h>
+#include <string.h>
 
 #include "z_zone.h"
 
@@ -42,6 +43,7 @@
 
 // Needs access to LFB.
 #include "v_video.h"
+#include "gdr_font.h"
 
 #include "wi_stuff.h"
 
@@ -89,7 +91,7 @@
 
 // NET GAME STUFF
 #define NG_STATSY		50
-#define NG_STATSX		(32 + SHORT(star->width)/2 + 32*!dofrags)
+#define NG_STATSX		(32 + (star ? SHORT(star->width)/2 : 8) + 32*!dofrags)
 
 #define NG_SPACINGX    		64
 
@@ -403,10 +405,15 @@ static patch_t *background;
 // CODE
 //
 
-// slam background
+// slam background — procedural dark stone panel, no WAD patch needed
 void WI_slamBackground(void)
 {
-    V_DrawPatch(0, 0, background);
+    V_DrawFilledBox(0, 0, SCREENWIDTH, SCREENHEIGHT, 0);
+    // Gold border
+    V_DrawFilledBox(4, 4, SCREENWIDTH - 8, 2, 160);
+    V_DrawFilledBox(4, SCREENHEIGHT - 6, SCREENWIDTH - 8, 2, 160);
+    V_DrawFilledBox(4, 4, 2, SCREENHEIGHT - 8, 160);
+    V_DrawFilledBox(SCREENWIDTH - 6, 4, 2, SCREENHEIGHT - 8, 160);
 }
 
 // The ticker is used to detect keys
@@ -420,36 +427,12 @@ boolean WI_Responder(event_t* ev)
 // Draws "<Levelname> Finished!"
 void WI_drawLF(void)
 {
+    char mapname[16];
     int y = WI_TITLEY;
 
-    if (gamemode != commercial || wbs->last < NUMCMAPS)
-    {
-        // draw <LevelName> 
-        V_DrawPatch((SCREENWIDTH - SHORT(lnames[wbs->last]->width))/2,
-                    y, lnames[wbs->last]);
-
-        // draw "Finished!"
-        y += (5*SHORT(lnames[wbs->last]->height))/4;
-
-        V_DrawPatch((SCREENWIDTH - SHORT(finished->width)) / 2, y, finished);
-    }
-    else if (wbs->last == NUMCMAPS)
-    {
-        // MAP33 - draw "Finished!" only
-        V_DrawPatch((SCREENWIDTH - SHORT(finished->width)) / 2, y, finished);
-    }
-    else if (wbs->last > NUMCMAPS)
-    {
-        // > MAP33.  Doom bombs out here with a Bad V_DrawPatch error.
-        // I'm pretty sure that doom2.exe is just reading into random
-        // bits of memory at this point, but let's try to be accurate
-        // anyway.  This deliberately triggers a V_DrawPatch error.
-
-        patch_t tmp = { SCREENWIDTH, SCREENHEIGHT, 1, 1, 
-                        { 0, 0, 0, 0, 0, 0, 0, 0 } };
-
-        V_DrawPatch(0, y, &tmp);
-    }
+    DEH_snprintf(mapname, sizeof(mapname), "MAP%02d", wbs->last + 1);
+    V_DrawGDRStringScaled(10, y, mapname, 224, 2);
+    V_DrawGDRStringScaled(10, y + 20, "FINISHED", 160, 1);
 }
 
 
@@ -457,20 +440,12 @@ void WI_drawLF(void)
 // Draws "Entering <LevelName>"
 void WI_drawEL(void)
 {
+    char mapname[16];
     int y = WI_TITLEY;
 
-    // draw "Entering"
-    V_DrawPatch((SCREENWIDTH - SHORT(entering->width))/2,
-		y,
-                entering);
-
-    // draw level
-    y += (5*SHORT(lnames[wbs->next]->height))/4;
-
-    V_DrawPatch((SCREENWIDTH - SHORT(lnames[wbs->next]->width))/2,
-		y, 
-                lnames[wbs->next]);
-
+    V_DrawGDRStringScaled(10, y, "ENTERING", 160, 1);
+    DEH_snprintf(mapname, sizeof(mapname), "MAP%02d", wbs->next + 1);
+    V_DrawGDRStringScaled(10, y + 14, mapname, 224, 2);
 }
 
 void
@@ -637,54 +612,22 @@ WI_drawNum
   int		n,
   int		digits )
 {
+    char buf[16];
+    int len;
 
-    int		fontwidth = SHORT(num[0]->width);
-    int		neg;
-    int		temp;
-
-    if (digits < 0)
-    {
-	if (!n)
-	{
-	    // make variable-length zeros 1 digit long
-	    digits = 1;
-	}
-	else
-	{
-	    // figure out # of digits in #
-	    digits = 0;
-	    temp = n;
-
-	    while (temp)
-	    {
-		temp /= 10;
-		digits++;
-	    }
-	}
-    }
-
-    neg = n < 0;
-    if (neg)
-	n = -n;
-
-    // if non-number, do not draw it
     if (n == 1994)
-	return 0;
+        return x;
 
-    // draw the new number
-    while (digits--)
-    {
-	x -= fontwidth;
-	V_DrawPatch(x, y, num[ n % 10 ]);
-	n /= 10;
-    }
+    if (digits > 0)
+        M_snprintf(buf, sizeof(buf), "%*d", digits, n);
+    else
+        M_snprintf(buf, sizeof(buf), "%d", n);
 
-    // draw a minus sign if necessary
-    if (neg && wiminus)
-	V_DrawPatch(x-=8, y, wiminus);
-
+    len = (int)strlen(buf);
+    // Right-align: x is the right edge
+    x -= len * (GDR_FONT_W + 1);
+    V_DrawGDRString(x, y, buf, 224);
     return x;
-
 }
 
 void
@@ -693,11 +636,11 @@ WI_drawPercent
   int		y,
   int		p )
 {
+    char buf[8];
     if (p < 0)
 	return;
-
-    V_DrawPatch(x, y, percent);
-    WI_drawNum(x, y, p, -1);
+    M_snprintf(buf, sizeof(buf), "%d%%", p);
+    V_DrawGDRString(x - (int)(strlen(buf) * (GDR_FONT_W + 1)), y, buf, 224);
 }
 
 
@@ -712,34 +655,24 @@ WI_drawTime
   int		y,
   int		t )
 {
+    char buf[16];
+    int mm, ss;
 
-    int		div;
-    int		n;
-
-    if (t<0)
-	return;
+    if (t < 0)
+        return;
 
     if (t <= 61*59)
     {
-	div = 1;
-
-	do
-	{
-	    n = (t / div) % 60;
-	    x = WI_drawNum(x, y, n, 2) - SHORT(colon->width);
-	    div *= 60;
-
-	    // draw
-	    if (div==60 || t / div)
-		V_DrawPatch(x, y, colon);
-	    
-	} while (t / div);
+        mm = t / 60;
+        ss = t % 60;
+        M_snprintf(buf, sizeof(buf), "%d:%02d", mm, ss);
     }
     else
     {
-	// "sucks"
-	V_DrawPatch(x - SHORT(sucks->width), y, sucks); 
+        M_StringCopy(buf, "SUCKS", sizeof(buf));
     }
+    // right-align at x
+    V_DrawGDRString(x - (int)(strlen(buf) * (GDR_FONT_W + 1)), y, buf, 224);
 }
 
 
@@ -1045,13 +978,10 @@ void WI_drawDeathmatchStats(void)
 
 	    if (i == me)
 	    {
-		V_DrawPatch(x-SHORT(p[i]->width)/2,
-			    DM_MATRIXY - WI_SPACINGY,
-			    bstar);
-
-		V_DrawPatch(DM_MATRIXX-SHORT(p[i]->width)/2,
-			    y,
-			    star);
+		if (bstar) V_DrawPatch(x-SHORT(p[i]->width)/2,
+			    DM_MATRIXY - WI_SPACINGY, bstar);
+		if (star)  V_DrawPatch(DM_MATRIXX-SHORT(p[i]->width)/2,
+			    y, star);
 	    }
 	}
 	else
@@ -1067,7 +997,7 @@ void WI_drawDeathmatchStats(void)
 
     // draw stats
     y = DM_MATRIXY+10;
-    w = SHORT(num[0]->width);
+    w = num[0] ? SHORT(num[0]->width) : (GDR_FONT_W + 1);
 
     for (i=0 ; i<MAXPLAYERS ; i++)
     {
@@ -1316,7 +1246,7 @@ void WI_drawNetgameStats(void)
 	x = NG_STATSX;
 	V_DrawPatch(x-SHORT(p[i]->width), y, p[i]);
 
-	if (i == me)
+	if (i == me && star)
 	    V_DrawPatch(x-SHORT(p[i]->width), y, star);
 
 	x += NG_SPACINGX;
@@ -1500,49 +1430,37 @@ static void WI_drawDiceStats(int y)
 
 void WI_drawStats(void)
 {
-    // line height
-    int lh;	
+    int lh = 14;  // line height for GDR font (8px + spacing)
     int dice_stats_y;
 
-    lh = (3*SHORT(num[0]->height))/2;
-
     WI_slamBackground();
-
-    // draw animated background
     WI_drawAnimatedBack();
-    
     WI_drawLF();
 
-    V_DrawPatch(SP_STATSX, SP_STATSY, kills);
+    V_DrawGDRString(SP_STATSX, SP_STATSY,      "KILLS",   160);
     WI_drawPercent(SCREENWIDTH - SP_STATSX, SP_STATSY, cnt_kills[0]);
 
     if (cnt_kills_value[0] >= 0)
-    {
-        int killx = SP_STATSX + SHORT(kills->width) + 20;
-        WI_drawNum(killx, SP_STATSY, cnt_kills_value[0], -1);
-    }
+        WI_drawNum(SP_STATSX + 50, SP_STATSY, cnt_kills_value[0], -1);
 
-    V_DrawPatch(SP_STATSX, SP_STATSY+lh, items);
+    V_DrawGDRString(SP_STATSX, SP_STATSY+lh,   "ITEMS",   160);
     WI_drawPercent(SCREENWIDTH - SP_STATSX, SP_STATSY+lh, cnt_items[0]);
 
-    V_DrawPatch(SP_STATSX, SP_STATSY+2*lh, sp_secret);
+    V_DrawGDRString(SP_STATSX, SP_STATSY+2*lh, "SECRETS", 160);
     WI_drawPercent(SCREENWIDTH - SP_STATSX, SP_STATSY+2*lh, cnt_secret[0]);
 
-    V_DrawPatch(SP_TIMEX, SP_TIMEY, timepatch);
+    V_DrawGDRString(SP_TIMEX, SP_TIMEY, "TIME", 160);
     WI_drawTime(SCREENWIDTH/2 - SP_TIMEX, SP_TIMEY, cnt_time);
 
     if (wbs->epsd < 3)
     {
-        V_DrawPatch(SCREENWIDTH/2 + SP_TIMEX, SP_TIMEY, par);
+        V_DrawGDRString(SCREENWIDTH/2 + SP_TIMEX, SP_TIMEY, "PAR", 160);
         WI_drawTime(SCREENWIDTH - SP_TIMEX, SP_TIMEY, cnt_par);
     }
-    
+
     dice_stats_y = SP_STATSY + 4 * lh + 10;
     if (dice_stats_y < SP_TIMEY - 60)
-    {
         WI_drawDiceStats(dice_stats_y);
-    }
-
 }
 
 void WI_checkForAccelerate(void)
@@ -1778,28 +1696,19 @@ static void WI_loadCallback(const char *name, patch_t **variable)
 
 void WI_loadData(void)
 {
+    int nmaps = (gamemode == commercial) ? 32 : NUMMAPS;
     if (gamemode == commercial)
-    {
-	NUMCMAPS = 32;
-	lnames = (patch_t **) Z_Malloc(sizeof(patch_t*) * NUMCMAPS,
-				       PU_STATIC, NULL);
-    }
-    else
-    {
-	lnames = (patch_t **) Z_Malloc(sizeof(patch_t*) * NUMMAPS,
-				       PU_STATIC, NULL);
-    }
+        NUMCMAPS = 32;
+
+    // Allocate lnames but leave entries NULL — WI_drawLF/EL use GDR strings now
+    lnames = (patch_t **) Z_Malloc(sizeof(patch_t*) * nmaps, PU_STATIC, NULL);
+    memset(lnames, 0, sizeof(patch_t*) * nmaps);
 
     WI_loadUnloadData(WI_loadCallback);
 
-    // These two graphics are special cased because we're sharing
-    // them with the status bar code
-
-    // your face
-    star = W_CacheLumpName(DEH_String("STFST01"), PU_STATIC);
-
-    // dead face
-    bstar = W_CacheLumpName(DEH_String("STFDEAD0"), PU_STATIC);
+    // star/bstar: face patches no longer needed (replaced by gdr_face widget)
+    star  = NULL;
+    bstar = NULL;
 }
 
 static void WI_unloadCallback(const char *name, patch_t **variable)
