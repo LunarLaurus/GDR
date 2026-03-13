@@ -237,7 +237,7 @@ typedef enum
 // Goblin Dice Rollaz: Extended flags (flags2 field in mobj_t).
 // These avoid the 32-bit exhaustion of the flags field.
 #define MF2_BOSS        0x00000001  // This mobj is a boss (5x XP, phase triggers)
-#define MF2_FRIENDLY    0x00000002  /* GDR STUB: coop ally flag, not yet implemented */
+#define MF2_FRIENDLY    0x00000002  // GDR STUB: coop ally flag, not yet implemented
 
 
 // Map Object definition.
@@ -289,18 +289,18 @@ typedef struct mobj_s
     int			tics;	// state tic counter
     state_t*		state;
     int			flags;
-    int         flags2;     // Goblin Dice Rollaz: Extended flags (MF2_* values)
+    int			flags2;		// Goblin Dice Rollaz: Extended flags (MF2_* values)
 
     // Goblin Dice Rollaz: Per-actor scratch fields for phase tracking and counters.
     // Equivalent to Heretic/Hexen special1/special2.
-    int         special1;
-    int         special2;
+    int			special1;
+    int			special2;
 
     // Goblin Dice Rollaz: Runtime overrides for speed and damage.
     // info->speed / info->damage are the base values from mobjinfo.
     // These allow stun/slow/buff effects to modify an actor's values temporarily.
-    int         speed;      // runtime speed override (0 = use info->speed)
-    int         damage;     // runtime damage override (0 = use info->damage)
+    int			speed;		// runtime speed override (0 = use info->speed)
+    int			damage;		// runtime damage override (0 = use info->damage)
     int			health;
 
     // Movement direction, movement generation (zig-zagging).
