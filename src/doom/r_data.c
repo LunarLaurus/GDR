@@ -37,6 +37,7 @@
 
 
 #include "r_data.h"
+#include "colormap_data.h"
 
 //
 // Graphics.
@@ -788,12 +789,8 @@ void R_InitSpriteLumps (void)
 //
 void R_InitColormaps (void)
 {
-    int	lump;
-
-    // Load in the light tables, 
-    //  256 byte align tables.
-    lump = W_GetNumForName(DEH_String("COLORMAP"));
-    colormaps = W_CacheLumpNum(lump, PU_STATIC);
+    // Load in the light tables from baked C array (was COLORMAP WAD lump).
+    colormaps = (lighttable_t *) gdr_colormap;
 }
 
 

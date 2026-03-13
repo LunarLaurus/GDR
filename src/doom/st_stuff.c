@@ -23,6 +23,8 @@
 #include <stdio.h>
 #include <ctype.h>
 
+#include "playpal_data.h"
+#include "colormap_data.h"
 #include "i_system.h"
 #include "i_video.h"
 #include "z_zone.h"
@@ -447,13 +449,13 @@ void ST_DrawTimeAttackHUD(void)
 
 // CRIT CHANCE number pos (dice-themed)
 #define ST_CRITWIDTH		3
-#define ST_CRITX			155
-#define ST_CRITY			171
+#define ST_CRITX			2
+#define ST_CRITY			171   // far-left of status bar, same row as ammo
 
 // CRIT BOOST timer pos (when powerup active)
 #define ST_CRITTIMERWIDTH	2
-#define ST_CRITTIMERX		155
-#define ST_CRITTIMERY		179
+#define ST_CRITTIMERX		2
+#define ST_CRITTIMERY		179   // below crit% within status bar
 
 // Global powerup HUD slot system
 #define ST_POWERUP_SLOTS		4
@@ -518,8 +520,7 @@ static player_t*	plyr;
 // ST_Start() has just been called
 static boolean		st_firsttime;
 
-// lump number for PLAYPAL
-static int		lu_palette;
+// lump number for PLAYPAL - removed, now using baked gdr_playpal array
 
 // used for making messages go away
 static int		st_msgcounter=0;
@@ -1378,7 +1379,7 @@ void ST_doPaletteStuff(void)
     if (palette != st_palette)
     {
 	st_palette = palette;
-	pal = (byte *) W_CacheLumpNum (lu_palette, PU_CACHE)+palette*768;
+	pal = (byte *) gdr_playpal + palette * 768;
 	I_SetPalette (pal);
     }
 
@@ -1501,6 +1502,9 @@ void ST_drawStatusEffectWidgets(boolean refresh)
     int x, y;
     player_t *plyr;
 
+    if (gamestate != GS_LEVEL)
+        return;
+
     if (!players)
         return;
 
@@ -1524,13 +1528,15 @@ void ST_drawStatusEffectWidgets(boolean refresh)
             if (se->name)
             {
                 // Draw a colored indicator based on effect type
+                if (y < 0 || y + 24 > SCREENHEIGHT)
+                    continue; // [STUB] off-screen status effect slot — skipped
                 if (se->color != 0)
                 {
                     V_DrawFilledBox(x, y, 24, 24, se->color);
                 }
                 else
                 {
-                    V_DrawFilledBox(x, y, 24, 24, 0x888888);
+                    V_DrawFilledBox(x, y, 24, 24, 8); // palette 8 = dark gray
                 }
             }
         }
@@ -1604,50 +1610,154 @@ void ST_diffDraw(void)
 
 void ST_Drawer (boolean fullscreen, boolean refresh)
 {
+    player_t        *plyr;
+    dice_weapon_info_t *dwi;
+    int             i;
+    char            buf[32];
+    int             health, armor, ammo;
+    int             bar_fill, bar_color;
+    int             cur_x;
+
+    if (gamestate != GS_LEVEL)
+        return;
+
     // Goblin Dice Rollaz: Check if HUD is hidden
     if (hud_hidden)
-    {
         return;
-    }
-  
+
+    if (!playeringame[consoleplayer])
+        return;
+
+    // Keep STlib state alive (face index computed in ST_Ticker, palette flash here)
     st_statusbaron = (!fullscreen) || automapactive;
     st_firsttime = st_firsttime || refresh;
-
-    // Do red-/gold-shifts from damage/items
     ST_doPaletteStuff();
 
-    // If just after ST_Start(), refresh all
-    if (st_firsttime) ST_doRefresh();
-    // Otherwise, update as little as possible
-    else ST_diffDraw();
+    plyr = &players[consoleplayer];
 
-    // Goblin Dice Rollaz: Draw weapon stat debug overlay if enabled
+    // ---------------------------------------------------------------
+    // Background: solid black bar + gold top border line
+    // ---------------------------------------------------------------
+    V_DrawFilledBox(0, ST_Y, SCREENWIDTH, ST_HEIGHT, 0);
+    // 1px gold top border
+    V_DrawFilledBox(0, ST_Y, SCREENWIDTH, 1, 160);
+
+    // Section dividers (1px dark lines) at x=96, 176, 208, 256
+    V_DrawFilledBox(96,  ST_Y + 1, 1, ST_HEIGHT - 1, 2);
+    V_DrawFilledBox(176, ST_Y + 1, 1, ST_HEIGHT - 1, 2);
+    V_DrawFilledBox(208, ST_Y + 1, 1, ST_HEIGHT - 1, 2);
+    V_DrawFilledBox(256, ST_Y + 1, 1, ST_HEIGHT - 1, 2);
+
+    // ---------------------------------------------------------------
+    // LEFT SECTION (x=0..95): Weapon / Dice info
+    // ---------------------------------------------------------------
+    dwi = &dice_weapon_info[plyr->readyweapon];
+    cur_x = 2;
+
+    if (weaponinfo[plyr->readyweapon].ammo == am_noammo)
+    {
+        // Melee weapon — no ammo, no die
+        M_WriteText(cur_x, ST_Y + 4, "MELEE");
+    }
+    else
+    {
+        // Die label: "D" + die_type
+        if (dwi->die_type > 0)
+        {
+            DEH_snprintf(buf, sizeof(buf), "D%d", dwi->die_type);
+            M_WriteText(cur_x, ST_Y + 3, buf);
+        }
+
+        // Ammo count
+        ammo = plyr->ammo[weaponinfo[plyr->readyweapon].ammo];
+        DEH_snprintf(buf, sizeof(buf), "AMM:%d", ammo);
+        M_WriteText(cur_x, ST_Y + 18, buf);
+
+        // Crit chance
+        DEH_snprintf(buf, sizeof(buf), "CRT:%d%%", dwi->crit_chance);
+        M_WriteText(cur_x, ST_Y + 33, buf);
+    }
+
+    // ---------------------------------------------------------------
+    // CENTER-LEFT (x=96..175): Health
+    // ---------------------------------------------------------------
+    cur_x = 98;
+    health = plyr->health;
+    if (health < 0) health = 0;
+
+    M_WriteText(cur_x, ST_Y + 3, "HP");
+
+    // Health bar (76px wide, 6px tall)
+    V_DrawFilledBox(cur_x, ST_Y + 14, 76, 6, 1);
+    bar_fill = (health * 76) / 200;
+    if (bar_fill > 76) bar_fill = 76;
+    if (bar_fill < 0) bar_fill = 0;
+
+    if (health > 120)       bar_color = 112; // green
+    else if (health > 60)   bar_color = 160; // orange
+    else                    bar_color = 35;  // red
+
+    if (bar_fill > 0)
+        V_DrawFilledBox(cur_x, ST_Y + 14, bar_fill, 6, bar_color);
+
+    DEH_snprintf(buf, sizeof(buf), "%d", health);
+    M_WriteText(cur_x, ST_Y + 25, buf);
+
+    // ---------------------------------------------------------------
+    // CENTER (x=176..207): Player face (32x32)
+    // ---------------------------------------------------------------
+    if (faces[st_faceindex])
+        V_DrawPatchDirect(178, ST_Y + 8, faces[st_faceindex]);
+
+    // ---------------------------------------------------------------
+    // CENTER-RIGHT (x=208..255): Armor
+    // ---------------------------------------------------------------
+    cur_x = 210;
+    armor = plyr->armorpoints;
+    if (armor < 0) armor = 0;
+
+    M_WriteText(cur_x, ST_Y + 3, "AR");
+
+    // Armor bar (44px wide, 6px tall)
+    V_DrawFilledBox(cur_x, ST_Y + 14, 44, 6, 1);
+    bar_fill = (armor * 44) / 200;
+    if (bar_fill > 44) bar_fill = 44;
+    if (bar_fill < 0) bar_fill = 0;
+
+    if (bar_fill > 0)
+        V_DrawFilledBox(cur_x, ST_Y + 14, bar_fill, 6, 80); // blue-gray
+
+    DEH_snprintf(buf, sizeof(buf), "%d", armor);
+    M_WriteText(cur_x, ST_Y + 25, buf);
+
+    // ---------------------------------------------------------------
+    // RIGHT (x=256..319): Keys
+    // ---------------------------------------------------------------
+    cur_x = 258;
+    for (i = 0; i < 3; i++)
+    {
+        if (keyboxes[i] >= 0 && keyboxes[i] < NUMCARDS && keys[keyboxes[i]])
+        {
+            V_DrawPatchDirect(cur_x, ST_Y + 4 + i * 14, keys[keyboxes[i]]);
+        }
+    }
+
+    // ---------------------------------------------------------------
+    // Debug overlays (unchanged)
+    // ---------------------------------------------------------------
     if (goblin_weapon_stats)
-    {
         ST_DrawWeaponStats(280, 20);
-    }
 
-    // Goblin Dice Rollaz: Draw think time profiler overlay if enabled
     if (goblin_think_profiler)
-    {
         ST_DrawThinkProfiler(280, 100);
-    }
 
-    // Goblin Dice Rollaz: Draw boss health bar overlay
     ST_DrawBossHealthBar();
 
-    // Goblin Dice Rollaz: Draw survival mode HUD
-    if (G_IsSurvivalMode() && gamestate == GS_LEVEL)
-    {
+    if (G_IsSurvivalMode())
         ST_DrawSurvivalHUD();
-    }
 
-    // Goblin Dice Rollaz: Draw time attack mode HUD
-    if (G_IsTimeAttackMode() && gamestate == GS_LEVEL)
-    {
+    if (G_IsTimeAttackMode())
         ST_DrawTimeAttackHUD();
-    }
-
 }
 
 void ST_ToggleHUD(void)
@@ -1778,7 +1888,7 @@ void ST_loadGraphics(void)
 
 void ST_loadData(void)
 {
-    lu_palette = W_GetNumForName (DEH_String("PLAYPAL"));
+    // lu_palette removed - using baked gdr_playpal array
     ST_loadGraphics();
 }
 
@@ -2043,7 +2153,7 @@ void ST_Stop (void)
     if (st_stopped)
 	return;
 
-    I_SetPalette (W_CacheLumpNum (lu_palette, PU_CACHE));
+    I_SetPalette ((byte *) gdr_playpal);
 
     st_stopped = true;
 }
