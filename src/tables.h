@@ -67,7 +67,13 @@ extern const byte gammatable[5][256];
 #define ANG_MAX         0xffffffff
 
 #define ANG1            (ANG45 / 45)
+#define ANGLE_1         ANG1        /* GDR: alias for use in spread angle calculations */
+#define ANG30           (ANG180 / 6)
 #define ANG60           (ANG180 / 3)
+#define ANG120          (ANG180 * 2 / 3)
+#define ANG240          (ANG180 + ANG60)
+#define ANG300          (ANG360 - ANG60)
+#define ANG360          (ANG_MAX)   /* GDR: full circle, ~0xFFFFFFFF */
 
 // Heretic code uses this definition as though it represents one 
 // degree, but it is not!  This is actually ~1.40 degrees.

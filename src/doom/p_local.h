@@ -102,6 +102,12 @@ void	P_PlayerThink (player_t* player);
 #define ONFLOORZ		INT_MIN
 #define ONCEILINGZ		INT_MAX
 
+// Goblin Dice Rollaz: Duration (in tics) of the stun status effect
+#define STUNNED_TICS    35
+
+// Goblin Dice Rollaz: Fixed-point minimum value (for floor checks etc.)
+#define FIXEDMINVALUE   INT_MIN
+
 // Time interval for item respawning.
 #define ITEMQUESIZE		128
 
@@ -134,7 +140,9 @@ void 	P_MobjThinker (mobj_t* mobj);
 void	P_SpawnPuff (fixed_t x, fixed_t y, fixed_t z);
 void 	P_SpawnBlood (fixed_t x, fixed_t y, fixed_t z, int damage);
 mobj_t* P_SpawnMissile (mobj_t* source, mobj_t* dest, mobjtype_t type);
-void	P_SpawnPlayerMissile (mobj_t* source, mobjtype_t type, int weapon);
+mobj_t*	P_SpawnPlayerMissile (mobj_t* source, mobjtype_t type, int weapon);
+mobj_t*	P_SpawnPlayerMissileAngle (mobj_t* source, mobjtype_t type, angle_t angle, int weapon); /* GDR: angle-based player missile */
+mobj_t*	P_SpawnMissileAngle (mobj_t* source, mobjtype_t type, angle_t angle, fixed_t slope); /* GDR: angle-based enemy missile */
 
 
 //

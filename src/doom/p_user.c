@@ -23,6 +23,7 @@
 
 #include "doomdef.h"
 #include "d_event.h"
+#include "g_game.h"
 #include "p_local.h"
 #include "p_siege_weapon.h"
 #include "doomstat.h"
@@ -278,12 +279,12 @@ void P_MovePlayer (player_t* player)
         player->dash_iframes--;
         if (player->dash_iframes > 0)
         {
-            player->mo->flags |= MF_INVULNERABLE;
+            player->mo->flags2 |= MF2_INVULNERABLE;
             player->fixedcolormap = INVERSECOLORMAP;
         }
         else
         {
-            player->mo->flags &= ~MF_INVULNERABLE;
+            player->mo->flags2 &= ~MF2_INVULNERABLE;
             player->fixedcolormap = 0;
         }
     }
@@ -294,7 +295,7 @@ void P_MovePlayer (player_t* player)
         P_Thrust(player, player->mo->angle, DASH_SPEED);
         player->dash_iframes = DASH_IFRAME_DURATION;
         player->dash_cooldown = DASH_COOLDOWN;
-        player->mo->flags |= MF_INVULNERABLE;
+        player->mo->flags2 |= MF2_INVULNERABLE;
         player->fixedcolormap = INVERSECOLORMAP;
     }
 
@@ -310,12 +311,12 @@ void P_MovePlayer (player_t* player)
         player->roll_iframes--;
         if (player->roll_iframes > 0)
         {
-            player->mo->flags |= MF_INVULNERABLE;
+            player->mo->flags2 |= MF2_INVULNERABLE;
             player->fixedcolormap = INVERSECOLORMAP;
         }
         else
         {
-            player->mo->flags &= ~MF_INVULNERABLE;
+            player->mo->flags2 &= ~MF2_INVULNERABLE;
             player->fixedcolormap = 0;
             player->roll_direction = 0;
         }
@@ -359,7 +360,7 @@ void P_MovePlayer (player_t* player)
         player->roll_iframes = ROLL_IFRAME_DURATION;
         player->roll_cooldown = ROLL_COOLDOWN;
         player->roll_direction = roll_dir;
-        player->mo->flags |= MF_INVULNERABLE;
+        player->mo->flags2 |= MF2_INVULNERABLE;
         player->fixedcolormap = INVERSECOLORMAP;
     }
 
@@ -1065,7 +1066,7 @@ void P_PlayerThink (player_t* player)
     {
         if (player->powers[pw_critboost] == 1)
         {
-            S_StartSound(&player->mo->sphere, sfx_wpnup);
+            S_StartSound(player->mo, sfx_wpnup);
         }
         player->powers[pw_critboost]--;
     }
@@ -1074,7 +1075,7 @@ void P_PlayerThink (player_t* player)
     {
         if (player->powers[pw_doubledamage] == 1)
         {
-            S_StartSound(&player->mo->sphere, sfx_wpnup);
+            S_StartSound(player->mo, sfx_wpnup);
         }
         player->powers[pw_doubledamage]--;
     }

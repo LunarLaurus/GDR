@@ -40,6 +40,12 @@
 #include "sounds.h"
 
 #include "p_pspr.h"
+#include "m_menu.h"
+
+/* GDR: Forward declarations for functions defined later in this file */
+static void DecreaseAmmo(player_t *player, int ammonum, int amount);
+void P_BulletSlope (mobj_t* mo);
+void P_GunShotWithDamage (mobj_t* mo, boolean accurate, int damage);
 
 #define LOWERSPEED		FRACUNIT*6
 #define RAISESPEED		FRACUNIT*6
@@ -72,7 +78,7 @@ static void P_PlayDiceSound(mobj_t *source, sfxenum_t baseSound)
 // Defines how much the weapon kicks back when fired
 static const fixed_t weapon_recoil_values[NUMWEAPONS] = {
     0,              // wp_fist
-    FRACUNIT/4,    // wp_pistol
+    FRACUNIT/4,    // wp_d6blaster
     FRACUNIT/2,    // wp_shotgun
     FRACUNIT/3,    // wp_chaingun
     FRACUNIT/2,    // wp_missile
@@ -265,7 +271,7 @@ boolean P_CheckAmmo (player_t* player)
 	}
 	else if (player->ammo[am_clip])
 	{
-	    player->pendingweapon = wp_pistol;
+	    player->pendingweapon = wp_d6blaster;
 	}
 	else if (player->weaponowned[wp_chainsaw])
 	{

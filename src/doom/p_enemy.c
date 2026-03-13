@@ -58,6 +58,9 @@ typedef enum
     
 } dirtype_t;
 
+/* GDR: Forward declarations to avoid implicit-int-return redefinition errors */
+void P_NewChaseDir (mobj_t* actor);
+void A_FaceTarget (mobj_t* actor);
 
 //
 // P_NewChaseDir related LUT.
@@ -2520,7 +2523,7 @@ void A_ShamanSpell (mobj_t* actor)
                     best_ally = target;
                 }
             }
-            target = target->next;
+            target = target->snext;
         }
 
         if (best_ally && best_dist < 512*FRACUNIT)
@@ -2564,7 +2567,7 @@ void A_ShamanSpell (mobj_t* actor)
                     }
                 }
             }
-            target = target->next;
+            target = target->snext;
         }
 
         if (buff_count > 0)
@@ -2617,7 +2620,7 @@ void A_ShamanHeal (mobj_t* actor)
                 best_ally = target;
             }
         }
-        target = target->next;
+        target = target->snext;
     }
 
     if (best_ally && best_dist < 512*FRACUNIT)
@@ -2720,7 +2723,7 @@ void A_ShamanChaos (mobj_t* actor)
                         best_ally = target;
                     }
                 }
-                target = target->next;
+                target = target->snext;
             }
 
             if (best_ally && best_dist < 512*FRACUNIT)

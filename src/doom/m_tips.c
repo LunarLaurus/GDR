@@ -1,5 +1,6 @@
 #include "doomdef.h"
 #include "doomstat.h"
+#include "i_video.h"
 #include "hu_stuff.h"
 #include "m_random.h"
 #include "v_video.h"

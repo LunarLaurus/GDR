@@ -82,7 +82,8 @@
 
 // SKY handling - still the wrong place.
 #include "r_data.h"
-#include "r_sky.h
+#include "r_sky.h"
+
 
 
 #define SAVEGAMESIZE	0x2c000
@@ -99,8 +100,13 @@ void	G_DoPlayDemo (void);
 void	G_DoCompleted (void); 
 void	G_DoVictory (void); 
 void	G_DoWorldDone (void); 
-void	G_DoSaveGame (void); 
+void	G_DoSaveGame (void);
+void    G_DoImportSaveGames (void);
  
+// Goblin Dice Rollaz: save import system
+static char *import_save_path = NULL;
+static int import_saves_trigger = 0;
+
 // Gamestate the last time G_Ticker was called.
 
 gamestate_t     oldgamestate; 
@@ -205,7 +211,7 @@ static const struct
 } weapon_order_table[] = {
     { wp_fist,            wp_fist },
     { wp_chainsaw,        wp_fist },
-    { wp_pistol,          wp_pistol },
+    { wp_d6blaster,          wp_d6blaster },
     { wp_shotgun,         wp_shotgun },
     { wp_supershotgun,    wp_shotgun },
     { wp_chaingun,        wp_chaingun },
@@ -219,7 +225,7 @@ static const struct
 #define NUMKEYS		256 
 #define MAX_JOY_BUTTONS 20
 
-static boolean  gamekeydown[NUMKEYS]; 
+boolean  gamekeydown[NUMKEYS]; /* GDR: exported for p_user.c dodge input */
 static int      turnheld;		// for accelerative turning 
  
 static boolean  mousearray[MAX_MOUSE_BUTTONS + 1];
@@ -1372,9 +1378,9 @@ void G_PlayerReborn (int player)
     p->usedown = p->attackdown = p->altattackdown = true;	// don't do anything immediately 
     p->playerstate = PST_LIVE;       
     p->health = deh_initial_health;     // Use dehacked value
-    p->readyweapon = p->pendingweapon = wp_pistol; 
+    p->readyweapon = p->pendingweapon = wp_d6blaster; 
     p->weaponowned[wp_fist] = true; 
-    p->weaponowned[wp_pistol] = true; 
+    p->weaponowned[wp_d6blaster] = true; 
     p->ammo[am_clip] = deh_initial_bullets; 
 	 
     for (i=0 ; i<NUMAMMO ; i++) 
@@ -2633,9 +2639,6 @@ void G_ReloadWeapon(void)
         P_GiveAmmo(player, ammo, clipAmount);
     }
 }
-
-static char *import_save_path = NULL;
-static int import_saves_trigger = 0;
 
 void G_SetImportSavePath(const char *path)
 {

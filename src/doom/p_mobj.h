@@ -238,6 +238,7 @@ typedef enum
 // These avoid the 32-bit exhaustion of the flags field.
 #define MF2_BOSS        0x00000001  // This mobj is a boss (5x XP, phase triggers)
 #define MF2_FRIENDLY    0x00000002  // GDR STUB: coop ally flag, not yet implemented
+#define MF2_INVULNERABLE 0x00000004 // Goblin Dice Rollaz: Temporary invulnerability (dash/dodge iframes)
 
 
 // Map Object definition.

@@ -41,4 +41,9 @@ void P_SpawnProjectileTrail(fixed_t x, fixed_t y, fixed_t z, int color);
 void P_TickerParticles(void);
 void P_DrawParticles(void);
 
+/* GDR STUB: viewanglefrac and yscale are non-standard renderer vars not present
+ * in Chocolate Doom's doom port. Map to safe approximations for particle projection. */
+#define viewanglefrac 0
+#define yscale        0
+
 #endif

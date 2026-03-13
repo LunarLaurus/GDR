@@ -139,6 +139,7 @@ static inline void ColormapCache_Invalidate(void)
 
 #if defined(__SSE2__) || defined(_M_X64) || (defined(_M_IX86_FP) && _M_IX86_FP >= 2)
 #include <emmintrin.h>
+#include <smmintrin.h>  /* GDR: _mm_mullo_epi32 requires SSE4.1; MSVC x64 always has it */
 
 void R_DrawColumn_SSE2(void)
 {

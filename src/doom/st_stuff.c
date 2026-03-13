@@ -42,6 +42,7 @@
 
 #include "st_stuff.h"
 #include "st_lib.h"
+#include "hu_stuff.h"
 #include "r_local.h"
 #include "r_state.h"
 #include "r_things.h"

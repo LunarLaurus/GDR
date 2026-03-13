@@ -1297,10 +1297,78 @@ P_SpawnMissile
 
 
 //
+// P_SpawnPlayerMissileAngle
+// GDR: Like P_SpawnPlayerMissile but fires at a specific angle
+// (used for spread weapons like Swarm d6)
+//
+mobj_t*
+P_SpawnPlayerMissileAngle
+( mobj_t*	source,
+  mobjtype_t	type,
+  angle_t	angle,
+  int		weapon )
+{
+    mobj_t*	th;
+    fixed_t	x, y, z;
+
+    x = source->x;
+    y = source->y;
+    z = source->z + 4*8*FRACUNIT;
+
+    th = P_SpawnMobj (x, y, z, type);
+
+    if (th->info->seesound)
+	S_StartSound (th, th->info->seesound);
+
+    th->target = source;
+    th->angle = angle;
+    th->momx = FixedMul(th->info->speed, finecosine[angle>>ANGLETOFINESHIFT]);
+    th->momy = FixedMul(th->info->speed, finesine[angle>>ANGLETOFINESHIFT]);
+    th->momz = 0;
+
+    P_CheckMissileSpawn (th);
+    return th;
+}
+
+
+//
+// P_SpawnMissileAngle
+// GDR: Spawn a missile from source at a specific angle/slope
+//
+mobj_t*
+P_SpawnMissileAngle
+( mobj_t*	source,
+  mobjtype_t	type,
+  angle_t	angle,
+  fixed_t	slope )
+{
+    mobj_t*	th;
+    fixed_t	x, y, z;
+
+    x = source->x;
+    y = source->y;
+    z = source->z + 4*8*FRACUNIT;
+
+    th = P_SpawnMobj (x, y, z, type);
+
+    if (th->info->seesound)
+	S_StartSound (th, th->info->seesound);
+
+    th->target = source;
+    th->angle = angle;
+    th->momx = FixedMul(th->info->speed, finecosine[angle>>ANGLETOFINESHIFT]);
+    th->momy = FixedMul(th->info->speed, finesine[angle>>ANGLETOFINESHIFT]);
+    th->momz = FixedMul(th->info->speed, slope);
+
+    P_CheckMissileSpawn (th);
+    return th;
+}
+
+//
 // P_SpawnPlayerMissile
 // Tries to aim at a nearby monster
 //
-void
+mobj_t*
 P_SpawnPlayerMissile
 ( mobj_t*	source,
   mobjtype_t	type,
@@ -1359,5 +1427,7 @@ P_SpawnPlayerMissile
     {
         PLAG_RecordProjectile(th, linetarget, weapon);
     }
+
+    return th;
 }
 

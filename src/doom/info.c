@@ -1428,7 +1428,13 @@ state_t	states[NUMSTATES] = {
     {SPR_PUFF,0,1,{NULL},S_NULL,0,0},
 
     // S_IFOG00 - Item fog variant (same animation as vanilla S_IFOG)
-    {SPR_IFOG,0,6,{NULL},S_IFOG01,0,0}
+    {SPR_IFOG,0,6,{NULL},S_IFOG01,0,0},
+
+    // S_SHAMAN_CAST1 - GDR STUB: Shaman healing cast animation
+    {SPR_PUFF,0,-1,{NULL},S_NULL,0,0},
+
+    // S_SHAMAN_TELEPORT1 - GDR STUB: Shaman teleport animation
+    {SPR_PUFF,0,-1,{NULL},S_NULL,0,0}
 };
 
 
@@ -7161,6 +7167,136 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 	0,		// damage
 	sfx_None,		// activesound
 	MF_NOBLOCKMAP,		// flags
+	S_NULL		// raisestate
+    },
+
+    {		// MT_D6PROJECTILE - GDR STUB: D6 blaster projectile
+	-1,		// doomednum
+	S_NULL,		// spawnstate
+	1000,		// spawnhealth
+	S_NULL,		// seestate
+	sfx_None,	// seesound
+	8,		// reactiontime
+	sfx_None,	// attacksound
+	S_NULL,		// painstate
+	0,		// painchance
+	sfx_None,	// painsound
+	S_NULL,		// meleestate
+	S_NULL,		// missilestate
+	S_NULL,		// deathstate
+	S_NULL,		// xdeathstate
+	sfx_None,	// deathsound
+	10*FRACUNIT,	// speed
+	6*FRACUNIT,	// radius
+	8*FRACUNIT,	// height
+	100,		// mass
+	3,		// damage
+	sfx_None,	// activesound
+	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_NOGRAVITY,	// flags
+	S_NULL		// raisestate
+    },
+
+    {		// MT_D12PROJECTILE - GDR STUB: D12 projectile
+	-1,		// doomednum
+	S_NULL,		// spawnstate
+	1000,		// spawnhealth
+	S_NULL,		// seestate
+	sfx_None,	// seesound
+	8,		// reactiontime
+	sfx_None,	// attacksound
+	S_NULL,		// painstate
+	0,		// painchance
+	sfx_None,	// painsound
+	S_NULL,		// meleestate
+	S_NULL,		// missilestate
+	S_NULL,		// deathstate
+	S_NULL,		// xdeathstate
+	sfx_None,	// deathsound
+	10*FRACUNIT,	// speed
+	6*FRACUNIT,	// radius
+	8*FRACUNIT,	// height
+	100,		// mass
+	6,		// damage
+	sfx_None,	// activesound
+	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_NOGRAVITY,	// flags
+	S_NULL		// raisestate
+    },
+
+    {		// MT_PERCENTILEPROJECTILE - GDR STUB: Percentile die projectile
+	-1,		// doomednum
+	S_NULL,		// spawnstate
+	1000,		// spawnhealth
+	S_NULL,		// seestate
+	sfx_None,	// seesound
+	8,		// reactiontime
+	sfx_None,	// attacksound
+	S_NULL,		// painstate
+	0,		// painchance
+	sfx_None,	// painsound
+	S_NULL,		// meleestate
+	S_NULL,		// missilestate
+	S_NULL,		// deathstate
+	S_NULL,		// xdeathstate
+	sfx_None,	// deathsound
+	10*FRACUNIT,	// speed
+	6*FRACUNIT,	// radius
+	8*FRACUNIT,	// height
+	100,		// mass
+	5,		// damage
+	sfx_None,	// activesound
+	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_NOGRAVITY,	// flags
+	S_NULL		// raisestate
+    },
+
+    {		// MT_D20PROJECTILE - GDR STUB: D20 cannon projectile
+	-1,		// doomednum
+	S_NULL,		// spawnstate
+	1000,		// spawnhealth
+	S_NULL,		// seestate
+	sfx_None,	// seesound
+	8,		// reactiontime
+	sfx_None,	// attacksound
+	S_NULL,		// painstate
+	0,		// painchance
+	sfx_None,	// painsound
+	S_NULL,		// meleestate
+	S_NULL,		// missilestate
+	S_NULL,		// deathstate
+	S_NULL,		// xdeathstate
+	sfx_None,	// deathsound
+	10*FRACUNIT,	// speed
+	6*FRACUNIT,	// radius
+	8*FRACUNIT,	// height
+	100,		// mass
+	10,		// damage
+	sfx_None,	// activesound
+	MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_NOGRAVITY,	// flags
+	S_NULL		// raisestate
+    },
+
+    {		// MT_DICE_GLOW - GDR STUB: Dice glow particle effect
+	-1,		// doomednum
+	S_NULL,		// spawnstate
+	1000,		// spawnhealth
+	S_NULL,		// seestate
+	sfx_None,	// seesound
+	8,		// reactiontime
+	sfx_None,	// attacksound
+	S_NULL,		// painstate
+	0,		// painchance
+	sfx_None,	// painsound
+	S_NULL,		// meleestate
+	S_NULL,		// missilestate
+	S_NULL,		// deathstate
+	S_NULL,		// xdeathstate
+	sfx_None,	// deathsound
+	0,		// speed
+	4*FRACUNIT,	// radius
+	4*FRACUNIT,	// height
+	100,		// mass
+	0,		// damage
+	sfx_None,	// activesound
+	MF_NOBLOCKMAP|MF_NOGRAVITY,	// flags
 	S_NULL		// raisestate
     }
 };

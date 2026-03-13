@@ -543,8 +543,5 @@ void R_DrawPlanes (void)
 			pl->top[x],
 			pl->bottom[x]);
 	}
-
-#if defined(HAVE_OPENMP) && defined(OPENMP_PARALLEL_PLANES)
-    }
-#endif
+    } /* end of per-plane loop (both OpenMP and non-OpenMP) */
 }

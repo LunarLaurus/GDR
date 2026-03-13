@@ -22,6 +22,12 @@
 #define __P_SIEGE_WEAPON__
 
 #include "doomdef.h"
+#include "m_fixed.h"
+#include "tables.h"
+
+/* GDR: Forward declare types used in this header */
+typedef struct mobj_s mobj_t;
+typedef struct player_s player_t;
 
 #define MAX_SIEGE_WEAPONS 32
 

@@ -1443,12 +1443,15 @@ typedef enum
     S_TECH2LAMP3,
     S_TECH2LAMP4,
     // Goblin Dice Rollaz: Environmental effect states (stubs - need WAD assets)
-    S_ICE,          // GDR STUB: Ice effect spawn state
-    S_FIRE,         // GDR STUB: Fire effect spawn state
+    S_ICE,              // GDR STUB: Ice effect spawn state
+    S_FIRE,             // GDR STUB: Fire effect spawn state
     // Goblin Dice Rollaz: Boss death states (stubs)
-    S_BOSS_XDIE1,   // GDR STUB: Boss gib death state
+    S_BOSS_XDIE1,       // GDR STUB: Boss gib death state
     // Goblin Dice Rollaz: Item fog variant name
-    S_IFOG00,       // Variant name for item fog initial frame
+    S_IFOG00,           // Variant name for item fog initial frame
+    // Goblin Dice Rollaz: Shaman action states (stubs)
+    S_SHAMAN_CAST1,     // GDR STUB: Shaman healing cast animation start
+    S_SHAMAN_TELEPORT1, // GDR STUB: Shaman teleport animation start
     NUMSTATES
 } statenum_t;
 
@@ -1682,7 +1685,12 @@ typedef enum {
     MT_DWARF_TREASUREHUNTER, // Goblin Dice Rollaz: Dwarf Treasure Hunter (drops extra loot)
     MT_ROCK_GOLEM,           // Goblin Dice Rollaz: Rock Golem spawned by Geologist
     MT_DWARF_JUGGERNAUT,     // Goblin Dice Rollaz: Dwarf Juggernaut (slow, devastating melee)
-    MT_DWARF_SAPPER,          // Goblin Dice Rollaz: Dwarf Sapper (places explosives on walls)
+    MT_DWARF_SAPPER,           // Goblin Dice Rollaz: Dwarf Sapper (places explosives on walls)
+    MT_D6PROJECTILE,           // GDR STUB: D6 blaster projectile mobj
+    MT_D12PROJECTILE,          // GDR STUB: D12 projectile mobj
+    MT_PERCENTILEPROJECTILE,   // GDR STUB: Percentile die projectile mobj
+    MT_D20PROJECTILE,          // GDR STUB: D20 cannon projectile mobj
+    MT_DICE_GLOW,              // GDR STUB: Dice glow particle effect mobj
     NUMMOBJTYPES
 
 } mobjtype_t;
@@ -1718,6 +1726,8 @@ typedef struct
     int	rear_weakness;    // Goblin Dice Rollaz: Rear damage bonus % (0-100)
     int	phase2_health;    // Goblin Dice Rollaz: Health threshold for phase transition (0 = no phases)
     int	dodge_chance;     // Goblin Dice Rollaz: Chance to dodge attacks (0-100)
+    int	spawnid;          // GDR STUB: Unique spawn type ID for headshot bonus lookups
+    const char *name;     // GDR STUB: Display name for damage log/debug overlay
 
 } mobjinfo_t;
 

@@ -129,6 +129,14 @@ void M_DrawMenuBackground(void);
 // Goblin Dice Rollaz: detailLevel removed - always high detail
 int			screenblocks = 9;
 
+// GDR: Legacy menu variables preserved for M_DrawOptions / M_Episode compatibility
+static int		epi = 0;          // last selected episode (0-based)
+static int		detail = 0;       // detail level row index (always high detail)
+static int		detailLevel = 0;  // 0 = high, 1 = low; always 0 in GDR
+static int		messages = 1;     // messages row index in options menu
+static int		mousesens = 3;    // mouse sensitivity row index in options menu
+static int		scrnsize = 4;     // screen size row index in options menu
+
 // temp for screenblocks (0-9)
 int			screenSize;
 
@@ -223,13 +231,12 @@ static void M_ChangeDetail(int choice);
 static void M_SizeDisplay(int choice);
 static void M_Sound(int choice);
 
-// Goblin Dice Rollaz: Accessibility menu
-static void M_Accessibility(int choice);
+// Goblin Dice Rollaz: Accessibility menu (defined in m_menu_accessibility.c)
+// GDR STUB: forward declarations provided via m_menu_accessibility.h
 static void M_ColorblindMode(int choice);
 static void M_HUDScale(int choice);
 static void M_ReduceMotion(int choice);
 static void M_ScreenReaderMode(int choice);
-static void M_DrawAccessibility(void);
 
 // Goblin Dice Rollaz: Content Warning menu
 static void M_ContentWarning(int choice);
@@ -1550,6 +1557,13 @@ void M_LevelUp(int choice)
 {
     M_SetupNextMenu(&LevelUpDef);
 }
+
+/* GDR STUB: Stat allocation menu callbacks - delegate to M_AllocateStat */
+static void M_LevelUpStrength(int choice) { M_AllocateStat(0); }
+static void M_LevelUpDexterity(int choice) { M_AllocateStat(1); }
+static void M_LevelUpVitality(int choice) { M_AllocateStat(2); }
+static void M_LevelUpLuck(int choice) { M_AllocateStat(3); }
+static void M_CloseLevelUp(int choice) { M_ClearMenus(); } /* GDR STUB: close level up menu */
 
 //
 // M_AllocateStat - Allocate a stat point

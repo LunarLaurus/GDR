@@ -18,9 +18,11 @@
 //
 
 #include "doomdef.h"
+#include "z_zone.h"
 #include "p_siege.h"
 #include "p_mobj.h"
 #include "p_tick.h"
+#include "p_local.h"
 #include "g_game.h"
 #include "s_sound.h"
 #include "m_random.h"
@@ -77,7 +79,7 @@ void P_SpawnSiegeWave(mapthing_t* mthing)
     spawner = Z_Malloc(sizeof(siege_wave_spawner_t), PU_LEVEL, NULL);
     memset(spawner, 0, sizeof(siege_wave_spawner_t));
 
-    spawner->thinker.function = T_SiegeWaveSpawner;
+    spawner->thinker.function.acp1 = (actionf_p1)T_SiegeWaveSpawner;
     spawner->spawnpoint = *mthing;
     spawner->wave_index = i;
     spawner->enemies_spawned = 0;
@@ -280,14 +282,20 @@ boolean P_SiegeActive(void)
 
 int P_GetSiegeEnemiesRemaining(void)
 {
-    int i;
+    extern thinker_t thinkercap;
     int total = 0;
+    thinker_t* th;
     mobj_t* mo;
 
-    for (mo = mobjhead.next; mo != &mobjhead; mo = mo->next)
+    /* GDR STUB: Iterate all thinkers to count living killable enemies */
+    for (th = thinkercap.next; th != &thinkercap; th = th->next)
     {
-        if (mo->flags & MF_COUNTKILL && !(mo->flags & MF_CORPSE))
-            total++;
+        if (th->function.acp1 == (actionf_p1)P_MobjThinker)
+        {
+            mo = (mobj_t*)th;
+            if ((mo->flags & MF_COUNTKILL) && !(mo->flags & MF_CORPSE) && mo->health > 0)
+                total++;
+        }
     }
 
     return total;

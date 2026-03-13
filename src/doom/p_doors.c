@@ -815,5 +815,5 @@ EV_SlidingDoor
 	else
 	    return;
     }
-    
+}
 

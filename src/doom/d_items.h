@@ -36,6 +36,7 @@ typedef struct
     int		readystate;
     int		atkstate;
     int		flashstate;
+    const char *name;    // GDR STUB: Display name for HUD/log
 
 } weaponinfo_t;
 

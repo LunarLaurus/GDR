@@ -19,6 +19,9 @@
 
 #include "p_siege_weapon.h"
 #include "p_mobj.h"
+#include "z_zone.h"
+#include "p_local.h"
+#include "sounds.h"
 #include "p_user.h"
 #include "p_inter.h"
 #include "g_game.h"
@@ -88,7 +91,7 @@ void P_SpawnSiegeWeapon(fixed_t x, fixed_t y, angle_t angle, int siege_type)
     }
 
     mo->flags &= ~MF_SHOOTABLE;
-    mo->flags &= ~MF_TELESTOMP;
+    /* GDR STUB: MF_TELESTOMP not defined in this build - skip */
     mo->flags |= MF_SOLID;
     mo->flags |= MF_NOTDMATCH;
     mo->radius = 24 * FRACUNIT;
@@ -175,7 +178,7 @@ boolean P_TryMountSiegeWeapon(player_t* player)
 
             if (player == &players[consoleplayer])
             {
-                S_StartSound(NULL, sfx_none);
+                S_StartSound(NULL, sfx_None);
             }
 
             return true;

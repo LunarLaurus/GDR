@@ -53,6 +53,14 @@
 #include "g_powerup.h"
 #include "g_achievement.h"
 #include "g_balance.h"
+#include "g_stats.h"
+#include "m_menu.h"
+#include "p_saveg.h"
+
+/* GDR STUB: Freeze duration in tics */
+#define FROZEN_TICS (5 * TICRATE)
+
+extern int kill_confirm_enabled;
 
 // Goblin Dice Rollaz: Arena lock system
 extern int arena_locked;
@@ -376,13 +384,13 @@ P_GiveAmmo
 	    if (player->weaponowned[wp_chaingun])
 		player->pendingweapon = wp_chaingun;
 	    else
-		player->pendingweapon = wp_pistol;
+		player->pendingweapon = wp_d6blaster;
 	}
 	break;
 	
       case am_shell:
 	if (player->readyweapon == wp_fist
-	    || player->readyweapon == wp_pistol)
+	    || player->readyweapon == wp_d6blaster)
 	{
 	    if (player->weaponowned[wp_shotgun])
 		player->pendingweapon = wp_shotgun;
@@ -391,7 +399,7 @@ P_GiveAmmo
 	
       case am_cell:
 	if (player->readyweapon == wp_fist
-	    || player->readyweapon == wp_pistol)
+	    || player->readyweapon == wp_d6blaster)
 	{
 	    if (player->weaponowned[wp_plasma])
 		player->pendingweapon = wp_plasma;
@@ -409,7 +417,7 @@ P_GiveAmmo
       // Goblin Dice Rollaz: Auto-switch to dice weapons when picking up ammo
       case am_lightdice:
 	if (player->readyweapon == wp_fist
-	    || player->readyweapon == wp_pistol)
+	    || player->readyweapon == wp_d6blaster)
 	{
 	    if (player->weaponowned[wp_d6blaster])
 		player->pendingweapon = wp_d6blaster;
@@ -420,7 +428,7 @@ P_GiveAmmo
 
       case am_heavydice:
 	if (player->readyweapon == wp_fist
-	    || player->readyweapon == wp_pistol)
+	    || player->readyweapon == wp_d6blaster)
 	{
 	    if (player->weaponowned[wp_d20cannon])
 		player->pendingweapon = wp_d20cannon;
@@ -621,7 +629,7 @@ P_GivePower
             return false;
         }
         player->powers[power] = CRITBOOSTTICS;
-        S_StartSound(&player->mo->sphere, sfx_getpow);
+        S_StartSound(player->mo, sfx_getpow);
         G_PowerupShareWithNearbyPlayers(player, pw_critboost);
         return true;
     }
@@ -633,7 +641,7 @@ P_GivePower
             return false;
         }
         player->powers[power] = DOUBLEDAMAGETICS;
-        S_StartSound(&player->mo->sphere, sfx_getpow);
+        S_StartSound(player->mo, sfx_getpow);
         G_PowerupShareWithNearbyPlayers(player, pw_doubledamage);
         return true;
     }
@@ -645,7 +653,7 @@ P_GivePower
             return false;
         }
         player->powers[power] = 1;
-        S_StartSound(&player->mo->sphere, sfx_getpow);
+        S_StartSound(player->mo, sfx_getpow);
         return true;
     }
 
@@ -660,7 +668,7 @@ P_GivePower
             return false;
         }
         player->powers[power] = SNAKEEYESTICS;
-        S_StartSound(&player->mo->sphere, sfx_getpow);
+        S_StartSound(player->mo, sfx_getpow);
         return true;
     }
 
@@ -672,7 +680,7 @@ P_GivePower
         }
         P_GiveBody(player, 25);
         player->powers[power] = 1;
-        S_StartSound(&player->mo->sphere, sfx_getpow);
+        S_StartSound(player->mo, sfx_getpow);
         return true;
     }
 
@@ -688,7 +696,7 @@ P_GivePower
             player->maxammo[i] = (player->maxammo[i] * 3) / 2;
         }
         player->powers[power] = 1;
-        S_StartSound(&player->mo->sphere, sfx_getpow);
+        S_StartSound(player->mo, sfx_getpow);
         return true;
     }
 	
@@ -1356,6 +1364,7 @@ P_DamageMobj
     fixed_t	thrust;
     int		temp;
     boolean was_critical = false;
+    boolean guaranteed_crit = false;
     int crit_roll = 0;
     int screen_x, screen_y;
 
@@ -1392,7 +1401,8 @@ P_DamageMobj
     {
         int effectiveCritChance = crit_chance_default;
         int effectiveCritMultiplier = crit_multiplier_default;
-        boolean guaranteed_crit = false;
+        /* guaranteed_crit is declared at function scope (GDR fix) */
+        guaranteed_crit = false;
 
         if (source->player->powers[pw_dicefortune])
         {
@@ -1756,7 +1766,6 @@ P_DamageMobj
                 {
                     damage = damage * 2;
                 }
-            }
             }
         }
     }

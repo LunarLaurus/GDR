@@ -26,6 +26,10 @@
 #include "m_fixed.h"
 
 
+// Goblin Dice Rollaz: keyboard state exported for dodge roll input in p_user.c
+#define NUMKEYS 256
+extern boolean gamekeydown[NUMKEYS];
+
 //
 // GAME
 //
