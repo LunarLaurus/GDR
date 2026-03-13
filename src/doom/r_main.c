@@ -973,7 +973,7 @@ void R_RenderPlayerView (player_t* player)
     {
         r_render_setup_time += I_GetTimeMS() - stage_start;
     }
-    
+
     // check for new console commands.
     NetUpdate ();
 
@@ -984,20 +984,20 @@ void R_RenderPlayerView (player_t* player)
     {
         r_render_bsp_time += I_GetTimeMS() - stage_start;
     }
-    
+
     // Check for new console commands.
     NetUpdate ();
-    
+
     stage_start = I_GetTimeMS();
     R_DrawPlanes ();
     if (r_render_profile_enabled)
     {
         r_render_plane_time += I_GetTimeMS() - stage_start;
     }
-    
+
     // Check for new console commands.
     NetUpdate ();
-    
+
     stage_start = I_GetTimeMS();
     R_DrawMasked ();
     if (r_render_profile_enabled)

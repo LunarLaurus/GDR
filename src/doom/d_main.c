@@ -1430,11 +1430,19 @@ static void G_CheckDemoStatusAtExit (void)
 //
 // D_DoomMain
 //
+static void GDR_LogStartup(const char *stage)
+{
+    FILE *f = fopen("D:\\code\\GDR\\tmp\\startup.log", "a");
+    if (f) { fprintf(f, "[STARTUP] %s\n", stage); fflush(f); fclose(f); }
+    fprintf(stderr, "[STARTUP] %s\n", stage); fflush(stderr);
+}
+
 void D_DoomMain (void)
 {
     int p;
     char file[256];
 
+    GDR_LogStartup("D_DoomMain entered");
     I_AtExit(D_Endoom, false);
 
     // print banner
@@ -1643,7 +1651,9 @@ void D_DoomMain (void)
     DEH_printf("M_LoadDefaults: Load system defaults.\n");
     M_SetConfigFilenames("goblin-doom.cfg", PROGRAM_PREFIX "doom.cfg");
     D_BindVariables();
+    GDR_LogStartup("D_BindVariables done");
     M_LoadDefaults();
+    GDR_LogStartup("M_LoadDefaults done");
     G_UpdateStatusEffectInfo();
     G_InitAchievements();
     G_InitLeaderboard();
@@ -1676,7 +1686,7 @@ void D_DoomMain (void)
     DEH_printf("W_Init: Init WADfiles.\n");
     D_AddFile(iwadfile);
 
-    W_CheckCorrectIWAD(doom);
+    W_CheckCorrectIWAD(doom); GDR_LogStartup("W_Init done");
 
     // Now that we've loaded the IWAD, we can figure out what gamemission
     // we're playing and which version of Vanilla Doom we need to emulate.
@@ -1944,10 +1954,10 @@ void D_DoomMain (void)
     I_InitTimer();
     I_InitJoystick();
     I_CloudInit();
-    I_InitSound(doom);
+    I_InitSound(doom); GDR_LogStartup("I_InitSound done");
 
     printf ("NET_Init: Init network subsystem.\n");
-    NET_Init ();
+    NET_Init(); GDR_LogStartup("NET_Init done");
 
     // Initial netgame startup. Connect to server etc.
     D_ConnectNetGame();
@@ -2126,10 +2136,10 @@ void D_DoomMain (void)
     M_Init ();
 
     DEH_printf("R_Init: Init DOOM refresh daemon - ");
-    R_Init ();
+    R_Init(); GDR_LogStartup("R_Init done");
 
     DEH_printf("\nP_Init: Init Playloop state.\n");
-    P_Init ();
+    P_Init(); GDR_LogStartup("P_Init done");
 
     DEH_printf("S_Init: Setting up sound.\n");
     S_Init (sfxVolume * 8, musicVolume * 8);
@@ -2140,10 +2150,10 @@ void D_DoomMain (void)
     PrintGameVersion();
 
     DEH_printf("HU_Init: Setting up heads up display.\n");
-    HU_Init ();
+    HU_Init(); GDR_LogStartup("HU_Init done");
 
     DEH_printf("ST_Init: Init status bar.\n");
-    ST_Init ();
+    ST_Init(); GDR_LogStartup("ST_Init done");
 
     // If Doom II without a MAP01 lump, this is a store demo.
     // Moved this here so that MAP01 isn't constantly looked up

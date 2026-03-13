@@ -212,7 +212,7 @@ STlib_updateMultIcon
 	&& (mi->oldinum != *mi->inum || refresh)
 	&& (*mi->inum!=-1))
     {
-	if (mi->oldinum != -1)
+	if (mi->oldinum != -1 && mi->p[mi->oldinum] != NULL)
 	{
 	    x = mi->x - SHORT(mi->p[mi->oldinum]->leftoffset);
 	    y = mi->y - SHORT(mi->p[mi->oldinum]->topoffset);
@@ -224,7 +224,9 @@ STlib_updateMultIcon
 
 	    V_CopyRect(x, y-ST_Y, st_backing_screen, w, h, x, y);
 	}
-	V_DrawPatch(mi->x, mi->y, mi->p[*mi->inum]);
+	// GDR: guard against NULL patch (weapon slots with no graphic in WAD)
+	if (mi->p[*mi->inum] != NULL)
+	    V_DrawPatch(mi->x, mi->y, mi->p[*mi->inum]);
 	mi->oldinum = *mi->inum;
     }
 }

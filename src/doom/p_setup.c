@@ -864,7 +864,7 @@ P_SetupLevel
 	
     // set up world state
     P_SpawnSpecials ();
-	
+
     // build subsector connect matrix
     //	UNUSED P_ConnectSubsectors ();
 

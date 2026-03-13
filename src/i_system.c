@@ -348,7 +348,6 @@ void I_Error (const char *error, ...)
 
     // Message first.
     va_start(argptr, error);
-    //fprintf(stderr, "\nError: ");
     vfprintf(stderr, error, argptr);
     fprintf(stderr, "\n\n");
     va_end(argptr);
@@ -359,6 +358,16 @@ void I_Error (const char *error, ...)
     memset(msgbuf, 0, sizeof(msgbuf));
     M_vsnprintf(msgbuf, sizeof(msgbuf), error, argptr);
     va_end(argptr);
+
+    // GDR: Always write crash log to D:\code\GDR\tmp\crash.log
+    {
+        FILE *f = fopen("D:\\code\\GDR\\tmp\\crash.log", "a");
+        if (f)
+        {
+            fprintf(f, "[CRASH] %s\n", msgbuf);
+            fclose(f);
+        }
+    }
 
     // Shutdown. Here might be other errors.
 

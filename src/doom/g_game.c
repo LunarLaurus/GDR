@@ -686,9 +686,9 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
 //
 // G_DoLoadLevel 
 //
-void G_DoLoadLevel (void) 
-{ 
-    int             i; 
+void G_DoLoadLevel (void)
+{
+    int             i;
 
     // Set the sky map.
     // First thing, we have a dummy sky texture name,
@@ -739,9 +739,9 @@ void G_DoLoadLevel (void)
 	memset (players[i].frags,0,sizeof(players[i].frags)); 
     } 
 		 
-    P_SetupLevel (gameepisode, gamemap, 0, gameskill);    
-    displayplayer = consoleplayer;		// view the guy you are playing    
-    gameaction = ga_nothing; 
+    P_SetupLevel (gameepisode, gamemap, 0, gameskill);
+    displayplayer = consoleplayer;		// view the guy you are playing
+    gameaction = ga_nothing;
     Z_CheckHeap ();
     
     // clear cmd building stuff

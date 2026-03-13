@@ -612,12 +612,10 @@ void R_ProjectSprite (mobj_t* thing)
     
     // decide which patch to use for sprite relative to player
     if ((unsigned int) thing->sprite >= (unsigned int) numsprites)
-	I_Error ("R_ProjectSprite: invalid sprite number %i ",
-		 thing->sprite);
+	return; // GDR: custom sprite not in WAD, skip rendering
     sprdef = &sprites[thing->sprite];
-    if ( (thing->frame&FF_FRAMEMASK) >= sprdef->numframes )
-	I_Error ("R_ProjectSprite: invalid sprite frame %i : %i ",
-		 thing->sprite, thing->frame);
+    if (sprdef->numframes == 0 || (thing->frame&FF_FRAMEMASK) >= sprdef->numframes)
+	return; // GDR: custom sprite frame not in WAD, skip rendering
     sprframe = &sprdef->spriteframes[ thing->frame & FF_FRAMEMASK];
 
     if (sprframe->rotate)
@@ -769,12 +767,10 @@ void R_DrawPSprite (pspdef_t* psp)
     
     // decide which patch to use
     if ( (unsigned)psp->state->sprite >= (unsigned int) numsprites)
-	I_Error ("R_ProjectSprite: invalid sprite number %i ",
-		 psp->state->sprite);
+	return; // GDR: custom weapon sprite not in WAD, skip rendering
     sprdef = &sprites[psp->state->sprite];
-    if ( (psp->state->frame & FF_FRAMEMASK)  >= sprdef->numframes)
-	I_Error ("R_ProjectSprite: invalid sprite frame %i : %i ",
-		 psp->state->sprite, psp->state->frame);
+    if (sprdef->numframes == 0 || (psp->state->frame & FF_FRAMEMASK) >= sprdef->numframes)
+	return; // GDR: custom weapon sprite frame not in WAD, skip rendering
     sprframe = &sprdef->spriteframes[ psp->state->frame & FF_FRAMEMASK ];
 
     lump = sprframe->lump[0];
@@ -895,48 +891,52 @@ vissprite_t	vsprsortedhead;
 
 void R_SortVisSprites (void)
 {
+    int			i;
     int			count;
     vissprite_t*	ds;
-    vissprite_t*	next;
-    vissprite_t*	insert;
-    fixed_t		scale;
+    vissprite_t*	best = NULL;
+    vissprite_t		unsorted;
+    fixed_t		bestscale;
 
     count = vissprite_p - vissprites;
 
     if (!count)
 	return;
 
-    vsprsortedhead.next = vsprsortedhead.prev = &vsprsortedhead;
+    unsorted.next = unsorted.prev = &unsorted;
 
-    ds = vissprites;
-    next = ds + 1;
-
-    vsprsortedhead.next = ds;
-    ds->prev = &vsprsortedhead;
-    ds->next = next;
-    ds = next;
-
-    for (; ds < vissprite_p; ds = ds->next)
+    // Build unsorted linked list
+    for (ds = vissprites; ds < vissprite_p; ds++)
     {
-	scale = ds->scale;
-	insert = ds->prev;
-
-	while (insert != &vsprsortedhead && insert->scale > scale)
-	{
-	    insert = insert->prev;
-	}
-
-	next = ds->next;
-	next->prev = ds->prev;
-	insert->next->prev = ds;
-
-	ds->next = insert->next;
-	ds->prev = insert;
-	insert->next = ds;
+	ds->next = &unsorted;
+	ds->prev = unsorted.prev;
+	unsorted.prev->next = ds;
+	unsorted.prev = ds;
     }
 
-    (vissprite_p-1)->next = &vsprsortedhead;
-    vsprsortedhead.prev = vissprite_p-1;
+    vsprsortedhead.next = vsprsortedhead.prev = &vsprsortedhead;
+
+    // Selection sort into sorted list (back to front = largest scale first)
+    for (i = 0; i < count; i++)
+    {
+	bestscale = INT_MIN;
+	for (ds = unsorted.next; ds != &unsorted; ds = ds->next)
+	{
+	    if (ds->scale > bestscale)
+	    {
+		bestscale = ds->scale;
+		best = ds;
+	    }
+	}
+	// Remove best from unsorted
+	best->next->prev = best->prev;
+	best->prev->next = best->next;
+	// Insert at end of sorted (back to front)
+	best->next = &vsprsortedhead;
+	best->prev = vsprsortedhead.prev;
+	vsprsortedhead.prev->next = best;
+	vsprsortedhead.prev = best;
+    }
 }
 
 
@@ -1097,16 +1097,17 @@ void R_DrawMasked (void)
 	    R_DrawSprite (spr);
 	}
     }
-    
+
     // render any remaining masked mid textures
     for (ds=ds_p-1 ; ds >= drawsegs ; ds--)
 	if (ds->maskedtexturecol)
 	    R_RenderMaskedSegRange (ds, ds->x1, ds->x2);
-    
+
     // draw the psprites on top of everything
     //  but does not draw on side views
-    if (!viewangleoffset)		
+    if (!viewangleoffset)
 	R_DrawPlayerSprites ();
+
 
     // Goblin Dice Rollaz: Temporal AA - store current frame sprites for next frame
     if (r_temporal_aa)

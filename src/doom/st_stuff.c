@@ -1545,7 +1545,7 @@ void ST_drawWidgets(boolean refresh)
     st_armson = st_statusbaron && !deathmatch;
 
     // used by w_frags widget
-    st_fragson = deathmatch && st_statusbaron; 
+    st_fragson = deathmatch && st_statusbaron;
 
     STlib_updateNum(&w_ready, refresh);
 
