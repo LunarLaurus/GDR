@@ -18,6 +18,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 
 #include "doomdef.h"
 #include "doomstat.h"
@@ -26,6 +27,8 @@
 #include "g_game.h"
 #include "v_video.h"
 #include "w_wad.h"
+#include "z_zone.h"
+#include "hu_stuff.h"
 
 #define DBG_OVL_MAX_HISTORY 8
 
@@ -94,19 +97,10 @@ void DBG_SetLastHitTarget(const char* targetName)
 
 static void DBG_DrawChar(int x, int y, int c)
 {
-    static patch_t **hu_font;
-    static boolean fonts_loaded = false;
-    char namebuf[9];
-    
-    if (!fonts_loaded)
+    int idx = toupper(c) - HU_FONTSTART;
+    if (idx >= 0 && idx < HU_FONTSIZE && hu_font[idx])
     {
-        hu_font = (patch_t**)W_CacheLumpName("STCFN000", PU_STATIC);
-        fonts_loaded = true;
-    }
-    
-    if (c >= 0 && c < HU_FONTSIZE)
-    {
-        V_DrawPatchDirect(x, y, hu_font[c]);
+        V_DrawPatchDirect(x, y, hu_font[idx]);
     }
 }
 
