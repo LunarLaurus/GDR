@@ -17,6 +17,7 @@
 //
 
 #include <stdio.h>
+#include <ctype.h>
 
 #include "i_system.h"
 #include "i_video.h"
@@ -39,7 +40,8 @@
 
 int goblin_weapon_stats = 0;
 int goblin_think_profiler = 0;
-static patch_t *st_weaponstat_font[HU_FONTSIZE];
+// Font access: map ASCII char to hu_font index (hu_font is loaded by HU_Init)
+#define WSTAT_FONT(c) (hu_font[toupper(c) - HU_FONTSTART])
 
 extern float hud_scale;
 extern dice_weapon_info_t dice_weapon_info[NUMWEAPONS];
@@ -242,7 +244,7 @@ void ST_DrawWeaponStats(int x, int y)
     int min_dmg, max_dmg, avg_dmg, crit_pct;
     char buf[64];
     int i;
-    char namebuf[9];
+
     int scaled_x, scaled_y;
     int line_height;
     
@@ -276,12 +278,6 @@ void ST_DrawWeaponStats(int x, int y)
     if (dwi->die_type == 0)
         return;
     
-    for (i = 0; i < HU_FONTSIZE; i++)
-    {
-        DEH_snprintf(namebuf, 9, "STCFN%.3d", i);
-        st_weaponstat_font[i] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
-    }
-    
     min_dmg = dwi->damage_table[0];
     max_dmg = dwi->damage_table[6];
     avg_dmg = ST_CalculateAvgDamage(weapon);
@@ -292,8 +288,8 @@ void ST_DrawWeaponStats(int x, int y)
     {
         int c = buf[i];
         if (c >= ' ' && c < HU_FONTSIZE)
-            V_DrawPatchDirect(scaled_x, scaled_y, st_weaponstat_font[c]);
-        scaled_x += SHORT(st_weaponstat_font[c]->width) * hud_scale;
+            V_DrawPatchDirect(scaled_x, scaled_y, WSTAT_FONT(c));
+        scaled_x += SHORT(WSTAT_FONT(c)->width) * hud_scale;
     }
     
     scaled_y += line_height;
@@ -304,8 +300,8 @@ void ST_DrawWeaponStats(int x, int y)
     {
         int c = buf[i];
         if (c >= ' ' && c < HU_FONTSIZE)
-            V_DrawPatchDirect(scaled_x, scaled_y, st_weaponstat_font[c]);
-        scaled_x += SHORT(st_weaponstat_font[c]->width) * hud_scale;
+            V_DrawPatchDirect(scaled_x, scaled_y, WSTAT_FONT(c));
+        scaled_x += SHORT(WSTAT_FONT(c)->width) * hud_scale;
     }
     
     scaled_y += line_height;
@@ -316,8 +312,8 @@ void ST_DrawWeaponStats(int x, int y)
     {
         int c = buf[i];
         if (c >= ' ' && c < HU_FONTSIZE)
-            V_DrawPatchDirect(scaled_x, scaled_y, st_weaponstat_font[c]);
-        scaled_x += SHORT(st_weaponstat_font[c]->width) * hud_scale;
+            V_DrawPatchDirect(scaled_x, scaled_y, WSTAT_FONT(c));
+        scaled_x += SHORT(WSTAT_FONT(c)->width) * hud_scale;
     }
     
     scaled_y += line_height;
@@ -328,8 +324,8 @@ void ST_DrawWeaponStats(int x, int y)
     {
         int c = buf[i];
         if (c >= ' ' && c < HU_FONTSIZE)
-            V_DrawPatchDirect(scaled_x, scaled_y, st_weaponstat_font[c]);
-        scaled_x += SHORT(st_weaponstat_font[c]->width) * hud_scale;
+            V_DrawPatchDirect(scaled_x, scaled_y, WSTAT_FONT(c));
+        scaled_x += SHORT(WSTAT_FONT(c)->width) * hud_scale;
     }
     
     scaled_y += line_height;
@@ -340,8 +336,8 @@ void ST_DrawWeaponStats(int x, int y)
     {
         int c = buf[i];
         if (c >= ' ' && c < HU_FONTSIZE)
-            V_DrawPatchDirect(scaled_x, scaled_y, st_weaponstat_font[c]);
-        scaled_x += SHORT(st_weaponstat_font[c]->width) * hud_scale;
+            V_DrawPatchDirect(scaled_x, scaled_y, WSTAT_FONT(c));
+        scaled_x += SHORT(WSTAT_FONT(c)->width) * hud_scale;
     }
 
     if (net_client_connected)
@@ -354,8 +350,8 @@ void ST_DrawWeaponStats(int x, int y)
         {
             int c = buf[i];
             if (c >= ' ' && c < HU_FONTSIZE)
-                V_DrawPatchDirect(scaled_x, scaled_y, st_weaponstat_font[c]);
-            scaled_x += SHORT(st_weaponstat_font[c]->width) * hud_scale;
+                V_DrawPatchDirect(scaled_x, scaled_y, WSTAT_FONT(c));
+            scaled_x += SHORT(WSTAT_FONT(c)->width) * hud_scale;
         }
     }
 }
@@ -364,7 +360,7 @@ void ST_DrawThinkProfiler(int x, int y)
 {
     char buf[64];
     int i;
-    char namebuf[9];
+
     int scaled_x, scaled_y;
     int line_height;
     int think_time;
@@ -388,12 +384,6 @@ void ST_DrawThinkProfiler(int x, int y)
     if (!players)
         return;
     
-    for (i = 0; i < HU_FONTSIZE; i++)
-    {
-        DEH_snprintf(namebuf, 9, "STCFN%.3d", i);
-        st_weaponstat_font[i] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
-    }
-    
     think_time = frame_tic_time_ms;
     render_time = frame_render_time_ms;
     total_time = frame_total_time_ms;
@@ -404,8 +394,8 @@ void ST_DrawThinkProfiler(int x, int y)
     {
         int c = buf[i];
         if (c >= ' ' && c < HU_FONTSIZE)
-            V_DrawPatchDirect(scaled_x, scaled_y, st_weaponstat_font[c]);
-        scaled_x += SHORT(st_weaponstat_font[c]->width) * hud_scale;
+            V_DrawPatchDirect(scaled_x, scaled_y, WSTAT_FONT(c));
+        scaled_x += SHORT(WSTAT_FONT(c)->width) * hud_scale;
     }
     
     scaled_y += line_height;
@@ -416,8 +406,8 @@ void ST_DrawThinkProfiler(int x, int y)
     {
         int c = buf[i];
         if (c >= ' ' && c < HU_FONTSIZE)
-            V_DrawPatchDirect(scaled_x, scaled_y, st_weaponstat_font[c]);
-        scaled_x += SHORT(st_weaponstat_font[c]->width) * hud_scale;
+            V_DrawPatchDirect(scaled_x, scaled_y, WSTAT_FONT(c));
+        scaled_x += SHORT(WSTAT_FONT(c)->width) * hud_scale;
     }
     
     scaled_y += line_height;
@@ -428,8 +418,8 @@ void ST_DrawThinkProfiler(int x, int y)
     {
         int c = buf[i];
         if (c >= ' ' && c < HU_FONTSIZE)
-            V_DrawPatchDirect(scaled_x, scaled_y, st_weaponstat_font[c]);
-        scaled_x += SHORT(st_weaponstat_font[c]->width) * hud_scale;
+            V_DrawPatchDirect(scaled_x, scaled_y, WSTAT_FONT(c));
+        scaled_x += SHORT(WSTAT_FONT(c)->width) * hud_scale;
     }
     
     scaled_y += line_height;
@@ -440,7 +430,7 @@ void ST_DrawThinkProfiler(int x, int y)
     {
         int c = buf[i];
         if (c >= ' ' && c < HU_FONTSIZE)
-            V_DrawPatchDirect(scaled_x, scaled_y, st_weaponstat_font[c]);
-        scaled_x += SHORT(st_weaponstat_font[c]->width) * hud_scale;
+            V_DrawPatchDirect(scaled_x, scaled_y, WSTAT_FONT(c));
+        scaled_x += SHORT(WSTAT_FONT(c)->width) * hud_scale;
     }
 }
