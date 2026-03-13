@@ -43,7 +43,7 @@ const char *sprnames[] = {
     "POL3","POL1","POL6","GOR2","GOR3","GOR4","GOR5","SMIT","COL1","COL2",
     "COL3","COL4","CAND","CBRA","COL6","TRE1","TRE2","ELEC","CEYE","FSKU",
     "COL5","TBLU","TGRN","TRED","SMBT","SMGT","SMRT","HDB1","HDB2","HDB3",
-    "HDB4","HDB5","HDB6","POB1","POB2","BRS1","TLMP","TLP2", NULL
+    "HDB4","HDB5","HDB6","POB1","POB2","BRS1","TLMP","TLP2","ICE ", NULL
 };
 
 
@@ -82,6 +82,7 @@ void A_FireGreedsD6();
 void A_FireMiningCharge();
 void A_FireSwarm();
 void A_FireRunicBinding();
+void A_FireD100Plus1();     // Goblin Dice Rollaz: D100+1 Fumble Finder (defined in p_pspr.c)
 void A_Light1();
 void A_FireShotgun();
 void A_Light2();
@@ -1412,7 +1413,22 @@ state_t	states[NUMSTATES] = {
     {SPR_TLP2,32768,4,{NULL},S_TECH2LAMP2,0,0},	// S_TECH2LAMP
     {SPR_TLP2,32769,4,{NULL},S_TECH2LAMP3,0,0},	// S_TECH2LAMP2
     {SPR_TLP2,32770,4,{NULL},S_TECH2LAMP4,0,0},	// S_TECH2LAMP3
-    {SPR_TLP2,32771,4,{NULL},S_TECH2LAMP,0,0}	// S_TECH2LAMP4
+    {SPR_TLP2,32771,4,{NULL},S_TECH2LAMP,0,0},	// S_TECH2LAMP4
+
+    // S_ICE - Ice effect state stub
+    // GDR STUB: needs proper sprite frames when ice WAD assets are ready
+    {SPR_PUFF,0,1,{NULL},S_NULL,0,0},
+
+    // S_FIRE - Fire effect state stub
+    // GDR STUB: needs proper sprite frames when fire effect WAD assets are ready
+    {SPR_PUFF,0,1,{NULL},S_NULL,0,0},
+
+    // S_BOSS_XDIE1 - Boss gib death stub
+    // GDR STUB: needs boss gib sprite sequence
+    {SPR_PUFF,0,1,{NULL},S_NULL,0,0},
+
+    // S_IFOG00 - Item fog variant (same animation as vanilla S_IFOG)
+    {SPR_IFOG,0,6,{NULL},S_IFOG01,0,0}
 };
 
 
