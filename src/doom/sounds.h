@@ -224,6 +224,12 @@ typedef enum
     sfx_skesit,
     sfx_skeatk,
     sfx_radio,
+    // Goblin Dice Rollaz: Restored vanilla DOOM sfx accidentally dropped during GDR refactor:
+    sfx_posdie,     // Possessed soldier death (also reused for mechanical deaths)
+    sfx_bossdth,    // Boss death sound
+    sfx_bmact,      // Baron of Hell active sound
+    sfx_iceskl,     // Ice skeleton see/death sound
+    sfx_pop,        // Generic pop/break sound
     sfx_critup,       // Goblin Dice Rollaz: crit boost powerup pickup
     sfx_doubup,       // Goblin Dice Rollaz: double damage powerup pickup
     sfx_fortcrit,     // Goblin Dice Rollaz: guaranteed crit triggered (dice fortune consumed)

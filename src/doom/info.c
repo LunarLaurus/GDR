@@ -2040,7 +2040,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
  	S_SSWV_ATK1,		// missilestate
  	S_SSWV_DIE1,		// deathstate
  	S_SSWV_XDIE1,		// xdeathstate
- 	ssfx_ssdth,		// deathsound
+ 	sfx_ssdth,		// deathsound
  	8,		// speed
  	20*FRACUNIT,		// radius
  	40*FRACUNIT,		// height (shorter than human - dwarves are shorter)
