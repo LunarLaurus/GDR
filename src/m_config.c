@@ -434,6 +434,12 @@ static default_t	doom_defaults_list[] =
 
 
     //!
+    // Multiplayer chat macro: message to send when alt+0 is pressed.
+    //
+
+    CONFIG_VARIABLE_STRING(chatmacro0),
+
+    //!
     // Multiplayer chat macro: message to send when alt+1 is pressed.
     //
 
