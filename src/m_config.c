@@ -1894,6 +1894,12 @@ static default_t extra_defaults_list[] =
     //
 
     CONFIG_VARIABLE_KEY(key_multi_msgplayer8),
+
+    // Goblin Dice Rollaz: GDR-added key bindings
+    CONFIG_VARIABLE_KEY(key_dodge),
+    CONFIG_VARIABLE_KEY(key_crouch),
+    CONFIG_VARIABLE_KEY(key_menu_hud),
+    CONFIG_VARIABLE_INT(auto_switch_weapon),
 };
 
 static default_collection_t extra_defaults =
