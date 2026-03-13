@@ -14,11 +14,10 @@
 // DESCRIPTION:  Damage number overlay implementation
 //
 
-#include "dmg_ovl.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 #include "doomdef.h"
 #include "doomstat.h"
@@ -27,6 +26,9 @@
 #include "v_video.h"
 #include "w_wad.h"
 #include "z_zone.h"
+#include "hu_stuff.h"
+
+#include "dmg_ovl.h"
 
 #define DAMAGE_LIFETIME 35
 #define CRIT_POPUP_LIFETIME 45
@@ -39,7 +41,9 @@ static patch_t* dmg_font[10];
 static damage_number_t damage_numbers[MAX_DAMAGE_NUMBERS];
 static crit_popup_t crit_popups[MAX_CRIT_POPUPS];
 static kill_confirm_t kill_confirms[MAX_KILL_CONFIRMS];
-static patch_t* hu_font[HU_FONTSIZE];
+// Use the global hu_font from hu_stuff.h (loaded in HU_Init)
+#define DMG_FONT(c) (hu_font[toupper(c) - HU_FONTSTART])
+#define DMG_FONT_IDX(i) (hu_font[i])
 
 void DMG_Init(void)
 {
@@ -68,11 +72,7 @@ void DMG_Init(void)
         dmg_font[i] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
     }
 
-    for (i = 0; i < HU_FONTSIZE; i++)
-    {
-        DEH_snprintf(namebuf, 9, "STCFN%.3d", i);
-        hu_font[i] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
-    }
+    // hu_font is loaded by HU_Init from hu_stuff.c; no local loading needed
 }
 
 void DMG_AddDamage(int x, int y, int damage, boolean critical, int crit_roll, damage_type_t damage_type)
@@ -320,21 +320,21 @@ static void DMG_DrawCritPopup(int x, int y, int roll)
         numdigits++;
     }
 
-    w = SHORT(hu_font[0]->width);
-    h = SHORT(hu_font[0]->height);
+    w = SHORT(DMG_FONT('0')->width);
+    h = SHORT(DMG_FONT('0')->height);
 
     x = x - (numdigits * w) / 2;
 
     if (!roll)
     {
-        V_DrawPatch(x, y, hu_font[0]);
+        V_DrawPatch(x, y, DMG_FONT('0'));
         return;
     }
 
     while (roll && numdigits--)
     {
         digit = roll % 10;
-        V_DrawPatch(x, y, hu_font[digit]);
+        V_DrawPatch(x, y, DMG_FONT('0' + digit));
         x += w;
         roll /= 10;
     }
@@ -353,23 +353,19 @@ static void DMG_DrawKillConfirm(int x, int y, int lifetime, int max_lifetime)
 
     col = I_GetColor(0, 0, 255, 50, 50);
 
-    w = SHORT(hu_font[0]->width);
-    h = SHORT(hu_font[0]->height);
+    w = SHORT(DMG_FONT('K')->width);
+    h = SHORT(DMG_FONT('K')->height);
 
     x = x - (4 * w) / 2;
     y = y - h / 2;
 
-    if (hu_font[20])
-        V_DrawPatchDirect(x, y, hu_font[20]);
+    V_DrawPatchDirect(x, y, DMG_FONT('K'));
     x += w;
-    if (hu_font[22])
-        V_DrawPatchDirect(x, y, hu_font[22]);
+    V_DrawPatchDirect(x, y, DMG_FONT('I'));
     x += w;
-    if (hu_font[23])
-        V_DrawPatchDirect(x, y, hu_font[23]);
+    V_DrawPatchDirect(x, y, DMG_FONT('L'));
     x += w;
-    if (hu_font[23])
-        V_DrawPatchDirect(x, y, hu_font[23]);
+    V_DrawPatchDirect(x, y, DMG_FONT('L'));
 }
 
 static void DMG_DrawDamageTypeIcon(int x, int y, damage_type_t dtype)

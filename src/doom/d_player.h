@@ -27,6 +27,7 @@
 // used to represent them, unfortunately).
 #include "d_items.h"
 #include "p_pspr.h"
+#include "p_mobj.h"
 
 // In addition, the player is just a special
 // case of the generic moving object/actor.

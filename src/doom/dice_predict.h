@@ -18,13 +18,16 @@
 #define __DICE_PREDICT_H__
 
 #include "doomdef.h"
+#include "p_mobj.h"
+#include "d_player.h"
 
 #define MAX_PREDICTED_DAMAGE 64
 #define MAX_DICE_EVENTS_PER_TIC 8
 
 // Goblin Dice Rollaz: Optimized network packet for dice roll events
 // Uses minimal byte packing to reduce network bandwidth
-typedef struct __attribute__((packed)) dice_event_net_s {
+#pragma pack(push, 1)
+typedef struct dice_event_net_s {
     uint8_t predict_id;        // 1 byte (0-255, wraps around)
     uint8_t weapon;            // 1 byte (weapon index)
     int16_t damage;            // 2 bytes (can be negative for healing)
@@ -34,6 +37,7 @@ typedef struct __attribute__((packed)) dice_event_net_s {
     int16_t target_x_delta;   // 2 bytes (delta from player position)
     int16_t target_y_delta;   // 2 bytes (delta from player position)
 } dice_event_net_t;            // Total: 10 bytes per event
+#pragma pack(pop)
 
 // Flags for dice_event_net_t.flags
 #define DICE_EVENT_FLAG_CRITICAL  0x01

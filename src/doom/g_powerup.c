@@ -25,6 +25,37 @@
 #include "p_local.h"
 #include "info.h"
 #include "doomstat.h"
+#include "g_powerup.h"
+
+// Colormap not yet defined globally
+#define CRTRIPCOLORMAP  CRITCOLORMAP
+
+// Placeholder mobj types for powerups not yet in the mobjtype_t enum
+#define MT_INVULNERABILITY  0
+#define MT_STRENGTH         0
+#define MT_INVISIBILITY     0
+#define MT_IRONFEET         0
+#define MT_ALLMAP           0
+#define MT_INFRARED         0
+#define MT_CRITBOOST        0
+#define MT_DOUBLEDAMAGE     0
+#define MT_DICEFORTUNE      0
+#define MT_SNAKEEYES        0
+#define MT_DWARVENWEAKNESS  0
+#define MT_NADA             0
+
+// Placeholder sprite numbers for custom powerup sprites not yet defined
+#define SPR_PINV            0
+#define SPR_PSTR            0
+#define SPR_PINS            0
+#define SPR_SUIT            0
+#define SPR_PMAP            0
+#define SPR_PVIS            0
+#define SPR_PCRT            0
+#define SPR_PDMD            0
+#define SPR_PFTR            0
+#define SPR_PFIR            0
+#define SPR_MEGA            0
 
 powerup_info_t powerups[NUMPOWERS] = {
     {
@@ -32,7 +63,7 @@ powerup_info_t powerups[NUMPOWERS] = {
         "Invulnerability",
         INVULNTICS,
         POWERUP_FLAG_TIMED,
-        DEH_String(GOTINVUL),
+        GOTINVUL,
         CRTRIPCOLORMAP,
         sfx_getpow,
         MT_INVULNERABILITY,
@@ -44,7 +75,7 @@ powerup_info_t powerups[NUMPOWERS] = {
         "Strength",
         1,
         POWERUP_FLAG_PERMANENT,
-        DEH_String(GOTBERSERK),
+        GOTBERSERK,
         0,
         sfx_getpow,
         MT_STRENGTH,
@@ -56,7 +87,7 @@ powerup_info_t powerups[NUMPOWERS] = {
         "Invisibility",
         INVISTICS,
         POWERUP_FLAG_TIMED,
-        DEH_String(GOTINVIS),
+        GOTINVIS,
         0,
         sfx_getpow,
         MT_INVISIBILITY,
@@ -68,7 +99,7 @@ powerup_info_t powerups[NUMPOWERS] = {
         "Iron Feet",
         IRONTICS,
         POWERUP_FLAG_TIMED,
-        DEH_String(GOTSUIT),
+        GOTSUIT,
         0,
         sfx_getpow,
         MT_IRONFEET,
@@ -80,7 +111,7 @@ powerup_info_t powerups[NUMPOWERS] = {
         "Allmap",
         1,
         POWERUP_FLAG_PERMANENT,
-        DEH_String(GOTMAP),
+        GOTMAP,
         0,
         sfx_getpow,
         MT_ALLMAP,
@@ -92,7 +123,7 @@ powerup_info_t powerups[NUMPOWERS] = {
         "Infrared",
         INFRATICS,
         POWERUP_FLAG_TIMED,
-        DEH_String(GOTVISOR),
+        GOTVISOR,
         0,
         sfx_getpow,
         MT_INFRARED,
@@ -104,7 +135,7 @@ powerup_info_t powerups[NUMPOWERS] = {
         "Critical Hit Boost",
         CRITBOOSTTICS,
         POWERUP_FLAG_TIMED | POWERUP_FLAG_EXCLUSIVE,
-        DEH_String(GOTCRITS),
+        GOTCRITS,
         CRITCOLORMAP,
         sfx_critup,
         MT_CRITBOOST,
@@ -116,7 +147,7 @@ powerup_info_t powerups[NUMPOWERS] = {
         "Double Damage",
         DOUBLEDAMAGETICS,
         POWERUP_FLAG_TIMED | POWERUP_FLAG_EXCLUSIVE,
-        DEH_String(GOTDOUBLEDAMAGE),
+        GOTDOUBLEDAMAGE,
         DOUBLEDAMAGECOLORMAP,
         sfx_doubup,
         MT_DOUBLEDAMAGE,

@@ -178,12 +178,9 @@ void ST_DrawBossHealthBar(void)
         for (i = 0; buf[i]; i++)
         {
             int c = buf[i];
-            if (c >= ' ' && c < HU_FONTSIZE)
+            if (toupper(c) >= HU_FONTSTART && toupper(c) <= HU_FONTEND)
             {
-                char namebuf[9];
-                patch_t *p;
-                DEH_snprintf(namebuf, 9, "STCFN%.3d", c);
-                p = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
+                patch_t *p = hu_font[toupper(c) - HU_FONTSTART];
                 V_DrawPatchDirect(text_x, text_y, p);
                 text_x += SHORT(p->width);
             }
@@ -195,12 +192,9 @@ void ST_DrawBossHealthBar(void)
         for (i = 0; buf[i]; i++)
         {
             int c = buf[i];
-            if (c >= ' ' && c < HU_FONTSIZE)
+            if (toupper(c) >= HU_FONTSTART && toupper(c) <= HU_FONTEND)
             {
-                char namebuf[9];
-                patch_t *p;
-                DEH_snprintf(namebuf, 9, "STCFN%.3d", c);
-                p = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
+                patch_t *p = hu_font[toupper(c) - HU_FONTSTART];
                 V_DrawPatchDirect(text_x, text_y, p);
                 text_x += SHORT(p->width);
             }
@@ -248,12 +242,9 @@ void ST_DrawSurvivalHUD(void)
     for (i = 0; buf[i]; i++)
     {
         int c = buf[i];
-        if (c >= ' ' && c < HU_FONTSIZE)
+        if (toupper(c) >= HU_FONTSTART && toupper(c) <= HU_FONTEND)
         {
-            char namebuf[9];
-            patch_t *p;
-            DEH_snprintf(namebuf, 9, "STCFN%.3d", c);
-            p = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
+            patch_t *p = hu_font[toupper(c) - HU_FONTSTART];
             V_DrawPatchDirect(x, y, p);
             x += SHORT(p->width) * hud_scale;
         }
@@ -266,12 +257,9 @@ void ST_DrawSurvivalHUD(void)
     for (i = 0; buf[i]; i++)
     {
         int c = buf[i];
-        if (c >= ' ' && c < HU_FONTSIZE)
+        if (toupper(c) >= HU_FONTSTART && toupper(c) <= HU_FONTEND)
         {
-            char namebuf[9];
-            patch_t *p;
-            DEH_snprintf(namebuf, 9, "STCFN%.3d", c);
-            p = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
+            patch_t *p = hu_font[toupper(c) - HU_FONTSTART];
             V_DrawPatchDirect(x, y, p);
             x += SHORT(p->width) * hud_scale;
         }
@@ -284,12 +272,9 @@ void ST_DrawSurvivalHUD(void)
     for (i = 0; buf[i]; i++)
     {
         int c = buf[i];
-        if (c >= ' ' && c < HU_FONTSIZE)
+        if (toupper(c) >= HU_FONTSTART && toupper(c) <= HU_FONTEND)
         {
-            char namebuf[9];
-            patch_t *p;
-            DEH_snprintf(namebuf, 9, "STCFN%.3d", c);
-            p = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
+            patch_t *p = hu_font[toupper(c) - HU_FONTSTART];
             V_DrawPatchDirect(x, y, p);
             x += SHORT(p->width) * hud_scale;
         }
@@ -332,12 +317,9 @@ void ST_DrawTimeAttackHUD(void)
     for (i = 0; buf[i]; i++)
     {
         int c = buf[i];
-        if (c >= ' ' && c < HU_FONTSIZE)
+        if (toupper(c) >= HU_FONTSTART && toupper(c) <= HU_FONTEND)
         {
-            char namebuf[9];
-            patch_t *p;
-            DEH_snprintf(namebuf, 9, "STCFN%.3d", c);
-            p = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
+            patch_t *p = hu_font[toupper(c) - HU_FONTSTART];
             V_DrawPatchDirect(x, y, p);
             x += SHORT(p->width) * hud_scale;
         }
@@ -350,12 +332,9 @@ void ST_DrawTimeAttackHUD(void)
     for (i = 0; buf[i]; i++)
     {
         int c = buf[i];
-        if (c >= ' ' && c < HU_FONTSIZE)
+        if (toupper(c) >= HU_FONTSTART && toupper(c) <= HU_FONTEND)
         {
-            char namebuf[9];
-            patch_t *p;
-            DEH_snprintf(namebuf, 9, "STCFN%.3d", c);
-            p = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
+            patch_t *p = hu_font[toupper(c) - HU_FONTSTART];
             V_DrawPatchDirect(x, y, p);
             x += SHORT(p->width) * hud_scale;
         }
@@ -1728,11 +1707,11 @@ static void ST_loadUnloadGraphics(load_callback_t callback)
     {
 	DEH_snprintf(namebuf, 9, "STGNUM%d", i+2);
 
-	// gray #
+	// gray # (only load if lump exists)
         callback(namebuf, &arms[i][0]);
 
-	// yellow #
-	arms[i][1] = shortnum[i+2]; 
+	// yellow # (shortnum only goes 0-9, clamp index)
+	arms[i][1] = (i+2 < 10) ? shortnum[i+2] : shortnum[9];
     }
 
     // face backgrounds for different color players
@@ -1786,7 +1765,10 @@ static void ST_loadUnloadGraphics(load_callback_t callback)
 
 static void ST_loadCallback(const char *lumpname, patch_t **variable)
 {
-    *variable = W_CacheLumpName(lumpname, PU_STATIC);
+    if (W_CheckNumForName(lumpname) >= 0)
+        *variable = W_CacheLumpName(lumpname, PU_STATIC);
+    else
+        *variable = NULL;
 }
 
 void ST_loadGraphics(void)

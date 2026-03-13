@@ -19,6 +19,8 @@
 #define __G_RPG__
 
 #include "doomdef.h"
+#include "p_mobj.h"
+#include "d_player.h"
 
 void G_InitPlayerRPG(player_t* player);
 void G_PlayerLevelUp(player_t* player);

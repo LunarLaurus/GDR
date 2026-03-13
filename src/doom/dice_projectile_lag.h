@@ -18,6 +18,7 @@
 #define DICE_PROJECTILE_LAG_H
 
 #include "doomdef.h"
+#include "p_mobj.h"
 
 #define MAX_PROJECTILE_RECORDS 256
 #define LAG_COMPENSATION_TICS 8

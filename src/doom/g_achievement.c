@@ -16,6 +16,7 @@
 //
 
 #include "doomdef.h"
+#include "i_video.h"
 #include "g_achievement.h"
 #include "g_stats.h"
 #include "d_items.h"

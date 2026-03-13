@@ -28,6 +28,14 @@ static int next_predict_id = 0;
 static int desync_count = 0;
 
 extern int net_sync_debug;
+extern int crit_chance_default;
+extern int crit_multiplier_default;
+extern int goblin_crit_boost_bonus;
+extern int min_damage_cap;
+extern int sv_authoritative_damage;
+extern int sv_damage_validate_count;
+extern int sv_validate_frequency;
+extern int rpg_mode;
 extern int netgame;
 
 void PREDICT_Init(void)
