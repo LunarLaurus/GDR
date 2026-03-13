@@ -33,7 +33,7 @@
 #include "config.h"
 #include "d_loop.h"
 #include "deh_str.h"
-#include "doomstat.h"
+#include "doom/doomstat.h"
 #include "doomtype.h"
 #include "i_input.h"
 #include "i_joystick.h"
@@ -55,6 +55,11 @@
 
 static SDL_Window *screen;
 static SDL_Renderer *renderer;
+
+/* Forward declarations for functions used before their definition */
+static void UpdateFocus(void);
+static void UpdateGrab(void);
+static void CreateUpscaledTexture(int force_create);
 
 // Window title
 
@@ -772,7 +777,9 @@ static void CreateUpscaledTexture(boolean force)
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 
     // Enable texture compression hint for GPU memory optimization
+#ifdef SDL_HINT_RENDER_TEXTURE_COMPRESSION_HINT
     SDL_SetHint(SDL_HINT_RENDER_TEXTURE_COMPRESSION_HINT, "1");
+#endif /* GDR STUB: SDL_HINT_RENDER_TEXTURE_COMPRESSION_HINT not available in all SDL2 versions */
 
     new_texture = SDL_CreateTexture(renderer,
                                 SDL_PIXELFORMAT_ARGB8888,
@@ -1564,7 +1571,9 @@ static void SetVideoMode(void)
 
     // Enable texture compression hint for GPU memory optimization
     // when using hardware-accelerated renderers (OpenGL, Vulkan, etc.)
+#ifdef SDL_HINT_RENDER_TEXTURE_COMPRESSION_HINT
     SDL_SetHint(SDL_HINT_RENDER_TEXTURE_COMPRESSION_HINT, "1");
+#endif /* GDR STUB: not available in all SDL2 versions */
 
     // Create the intermediate texture that the RGBA surface gets loaded into.
     // The SDL_TEXTUREACCESS_STREAMING flag means that this texture's content

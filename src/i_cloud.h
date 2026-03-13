@@ -18,7 +18,6 @@
 #ifndef __I_CLOUD__
 #define __I_CLOUD__
 
-#include <stdbool.h>
 #include <stddef.h>
 
 #define MAX_CLOUD_SAVES 8
@@ -34,7 +33,9 @@ typedef struct
 
 void I_CloudInit(void);
 
-bool I_CloudAvailable(void);
+/* Returns non-zero if cloud storage is available. Uses int to avoid
+   boolean/BOOLEAN conflicts with the Windows SDK. */
+int I_CloudAvailable(void);
 
 int I_CloudSave(const char *local_path, const char *save_name);
 

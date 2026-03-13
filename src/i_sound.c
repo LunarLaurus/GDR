@@ -20,6 +20,7 @@
 
 #include "config.h"
 #include "doomtype.h"
+#include "m_fixed.h"
 
 #include "gusconf.h"
 #include "i_sound.h"

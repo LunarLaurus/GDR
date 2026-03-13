@@ -121,7 +121,7 @@ typedef struct {
 
 static damage_log_entry_t damage_log[DAMAGE_LOG_MAX];
 static int damage_log_count = 0;
-static int damage_log_enabled = 0;
+int damage_log_enabled = 0;  /* non-static: toggled from g_game.c */
 
 void DMG_AddDamageLog(int damage, boolean is_crit, int crit_roll, const char *target_name, const char *weapon_name)
 {

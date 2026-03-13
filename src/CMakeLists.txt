@@ -54,7 +54,11 @@ else()
     endif()
 endif()
 
-target_link_libraries("${PROGRAM_PREFIX}server" ${SDL_LINK_LIBS})
+if(WIN32)
+    target_link_libraries("${PROGRAM_PREFIX}server" ${SDL_LINK_LIBS} dbghelp)
+else()
+    target_link_libraries("${PROGRAM_PREFIX}server" ${SDL_LINK_LIBS})
+endif()
 set_target_properties("${PROGRAM_PREFIX}server" PROPERTIES COMPILE_FLAGS "${SDL_FLAGS}")
 set_target_properties("${PROGRAM_PREFIX}server" PROPERTIES LINK_FLAGS "${SDL_FLAGS}")
 
@@ -126,7 +130,8 @@ set(GAME_SOURCE_FILES
     w_file_posix.c
     w_file_win32.c
     w_merge.c           w_merge.h
-    z_zone.c            z_zone.h)
+    z_zone.c            z_zone.h
+    gdr_stubs.c)
 
 set(GAME_INCLUDE_DIRS "${CMAKE_CURRENT_BINARY_DIR}/../")
 
@@ -151,8 +156,10 @@ set(SOURCE_FILES ${COMMON_SOURCE_FILES} ${GAME_SOURCE_FILES})
 set(SOURCE_FILES_WITH_DEH ${SOURCE_FILES} ${DEHACKED_SOURCE_FILES})
 
 set(EXTRA_LIBS ${SDL_LINK_LIBS} textscreen pcsound opl)
-if(OpenMP_C_FOUND)
+if(OpenMP_C_FOUND AND TARGET OpenMP::C)
     list(APPEND EXTRA_LIBS OpenMP::C)
+elseif(OpenMP_C_FOUND AND MSVC)
+    add_compile_options(/openmp)
 endif()
 if(SampleRate_FOUND)
     list(APPEND EXTRA_LIBS SampleRate::samplerate)
@@ -164,7 +171,7 @@ if(FluidSynth_FOUND)
     list(APPEND EXTRA_LIBS FluidSynth::libfluidsynth)
 endif()
 if(WIN32)
-	list(APPEND EXTRA_LIBS winmm shlwapi)
+	list(APPEND EXTRA_LIBS winmm shlwapi dbghelp)
 endif()
 
 if(WIN32)

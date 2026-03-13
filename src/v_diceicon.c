@@ -19,7 +19,7 @@
 #include "doomtype.h"
 #include "i_swap.h"
 #include "i_video.h"
-#include "m_random.h"
+#include "doom/m_random.h"
 #include "v_video.h"
 #include "w_wad.h"
 #include "z_zone.h"

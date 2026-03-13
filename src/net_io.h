@@ -20,6 +20,14 @@
 
 #include "net_defs.h"
 
+#define MAX_MODULES 5
+
+struct _net_context_s
+{
+    net_module_t *modules[MAX_MODULES];
+    int num_modules;
+};
+
 extern net_addr_t net_broadcast_addr;
 
 // Create a new network context.

@@ -101,6 +101,13 @@
 #include <inttypes.h>
 #include <stdbool.h>
 
+// Define 'boolean' only if not already provided by the Windows SDK.
+// rpcndr.h (included via ole2.h / shlobj.h) defines:  typedef unsigned char boolean;
+// winnt.h defines:                                     typedef BYTE BOOLEAN;
+// To avoid redefinition conflicts, skip our typedef when the Windows headers
+// have already defined boolean. The Windows definition (unsigned char) is
+// compatible with Doom's boolean usage (0/1 values).
+#ifndef __RPCNDR_H__
 #if defined(__cplusplus) || defined(__bool_true_false_are_defined)
 
 // The C++/C99 bool type (or _Bool that is) can only have two values:
@@ -111,13 +118,14 @@ typedef int boolean;
 
 #else
 
-typedef enum 
+typedef enum
 {
-    false, 
+    false,
     true
 } boolean;
 
 #endif
+#endif /* !__RPCNDR_H__ */
 
 typedef uint8_t byte;
 typedef uint8_t pixel_t;

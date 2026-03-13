@@ -18,7 +18,7 @@
 #include <stdlib.h>
 #include "doomtype.h"
 #include "m_misc.h"
-#include "m_random.h"
+#include "doom/m_random.h"
 
 static const char * const adjectives [] = {
     "Grumpy",

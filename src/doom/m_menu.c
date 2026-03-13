@@ -274,7 +274,7 @@ static void M_StartMessage(const char *string, void *routine, boolean input);
 static void M_ClearMenus (void);
 
 // Goblin Dice Rollaz: Level Up menu
-static void M_LevelUp(int choice);
+void M_LevelUp(int choice);  /* non-static: called from g_game.c */
 static void M_DrawLevelUp(void);
 static void M_LevelUpStrength(int choice);
 static void M_LevelUpDexterity(int choice);

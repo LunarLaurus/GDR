@@ -15,6 +15,14 @@
 //  Cloud save interface stubs.
 //
 
+// On Windows, include platform headers FIRST to prevent boolean/BOOLEAN
+// typedef conflicts between the Windows SDK (rpcndr.h/winnt.h) and doomtype.h.
+#ifdef _WIN32
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#include <shlobj.h>
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -24,10 +32,7 @@
 #include "m_misc.h"
 #include "i_system.h"
 
-#ifdef _WIN32
-#include <windows.h>
-#include <shlobj.h>
-#else
+#ifndef _WIN32
 #include <unistd.h>
 #include <sys/stat.h>
 #include <dirent.h>
@@ -68,11 +73,11 @@ void I_CloudInit(void)
 
     if (!cloud_available)
     {
-        I_Printf("Cloud storage not available - using local saves only");
+        fprintf(stderr, "Cloud storage not available - using local saves only\n");
     }
 }
 
-boolean I_CloudAvailable(void)
+int I_CloudAvailable(void)
 {
     if (!cloud_initialized)
     {
@@ -260,5 +265,5 @@ void I_CloudSync(void)
         return;
     }
 
-    I_Printf("Cloud sync: Stub implementation - no automatic sync");
+    fprintf(stderr, "Cloud sync: Stub implementation - no automatic sync\n");
 }

@@ -51,7 +51,10 @@ const char *configdir;
 static char *autoload_path = "";
 
 // Goblin Dice Rollaz: mod load order from config file
-static char *goblin_mod_load_order = "";
+char *goblin_mod_load_order = "";
+/* GDR STUB: import save path and trigger for future save migration feature */
+char *import_save_path = "";
+int import_saves_trigger = 0;
 
 // Default filenames for configuration files.
 

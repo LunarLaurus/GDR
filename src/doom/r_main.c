@@ -60,7 +60,8 @@ int r_render_frame_count = 0;
 
 // Goblin Dice Rollaz: Draw call counters
 int r_drawseg_count = 0;
-int r_sprite_count = 0;
+/* r_sprite_count defined in r_things.c */
+extern int r_sprite_count;
 int r_plane_count = 0;
 
 

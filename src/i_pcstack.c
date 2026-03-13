@@ -42,6 +42,7 @@ void I_WindowsStackTrace(EXCEPTION_POINTERS *ExceptionInfo)
 
     SymInitialize(process, NULL, TRUE);
 
+#if defined(_M_IX86)
     machineType = IMAGE_FILE_MACHINE_I386;
     stackframe.AddrPC.Offset = ExceptionInfo->ContextRecord->Eip;
     stackframe.AddrPC.Mode = AddrModeFlat;
@@ -49,6 +50,17 @@ void I_WindowsStackTrace(EXCEPTION_POINTERS *ExceptionInfo)
     stackframe.AddrFrame.Mode = AddrModeFlat;
     stackframe.AddrStack.Offset = ExceptionInfo->ContextRecord->Esp;
     stackframe.AddrStack.Mode = AddrModeFlat;
+#elif defined(_M_X64)
+    machineType = IMAGE_FILE_MACHINE_AMD64;
+    stackframe.AddrPC.Offset = ExceptionInfo->ContextRecord->Rip;
+    stackframe.AddrPC.Mode = AddrModeFlat;
+    stackframe.AddrFrame.Offset = ExceptionInfo->ContextRecord->Rbp;
+    stackframe.AddrFrame.Mode = AddrModeFlat;
+    stackframe.AddrStack.Offset = ExceptionInfo->ContextRecord->Rsp;
+    stackframe.AddrStack.Mode = AddrModeFlat;
+#else
+#error "Unsupported architecture for stack trace"
+#endif
 
     fprintf(stderr, "\nStack trace:\n");
 
@@ -65,8 +77,8 @@ void I_WindowsStackTrace(EXCEPTION_POINTERS *ExceptionInfo)
 
         if (SymGetLineFromAddr64(process, stackframe.AddrPC.Offset, NULL, &lineInfo))
         {
-            fprintf(stderr, " in %s (%s:%lu)",
-                   lineInfo.FunctionName ? lineInfo.FunctionName : "?",
+            /* GDR STUB: IMAGEHLP_LINE64 has no FunctionName on x64 SDK */
+            fprintf(stderr, " in %s:%lu",
                    lineInfo.FileName, (unsigned long)lineInfo.LineNumber);
         }
         fprintf(stderr, "\n");
@@ -81,9 +93,15 @@ void I_WindowsStackTrace(EXCEPTION_POINTERS *ExceptionInfo)
 // Returns EXCEPTION_EXECUTE_HANDLER to allow cleanup.
 long __stdcall I_HandleException(EXCEPTION_POINTERS *ExceptionInfo)
 {
+#if defined(_M_IX86)
     fprintf(stderr, "\nCRASH: Unhandled exception code 0x%lx at 0x%lx\n",
             ExceptionInfo->ExceptionRecord->ExceptionCode,
             (unsigned long)ExceptionInfo->ContextRecord->Eip);
+#elif defined(_M_X64)
+    fprintf(stderr, "\nCRASH: Unhandled exception code 0x%lx at 0x%llx\n",
+            ExceptionInfo->ExceptionRecord->ExceptionCode,
+            (unsigned long long)ExceptionInfo->ContextRecord->Rip);
+#endif
 
     I_WindowsStackTrace(ExceptionInfo);
 
