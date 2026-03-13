@@ -1900,6 +1900,13 @@ static default_t extra_defaults_list[] =
     CONFIG_VARIABLE_KEY(key_crouch),
     CONFIG_VARIABLE_KEY(key_menu_hud),
     CONFIG_VARIABLE_INT(auto_switch_weapon),
+
+    // Goblin Dice Rollaz: GDR-added mouse/joystick bindings
+    CONFIG_VARIABLE_INT(mouseb_altfire),
+    CONFIG_VARIABLE_INT(mouseb_jump),
+    CONFIG_VARIABLE_INT(mouseb_invleft),
+    CONFIG_VARIABLE_INT(mouseb_invright),
+    CONFIG_VARIABLE_INT(joyb_jump),
 };
 
 static default_collection_t extra_defaults =
