@@ -49,6 +49,13 @@ extern int screen_reader_enabled;
 extern float hud_scale;
 extern float screen_shake_intensity;
 
+// Forward declarations for menu item callbacks
+void M_ColorblindMode(int choice);
+void M_HUDScale(int choice);
+void M_ReduceMotion(int choice);
+void M_ScreenReaderMode(int choice);
+void M_DrawAccessibility(void);
+
 enum
 {
     accessibility_colorblind,

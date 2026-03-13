@@ -176,7 +176,7 @@ boolean			inhelpscreens;
 boolean			menuactive;
 
 #define SKULLXOFF		-32
-#define LINEHEIGHT		16
+// LINEHEIGHT is defined in m_menu.h
 
 char			savegamestrings[10][SAVESTRINGSIZE];
 char			savecomments[10][SAVESTRINGSIZE];
@@ -185,37 +185,7 @@ char	endstring[160];
 
 static boolean opldev;
 
-//
-// MENU TYPEDEFS
-//
-typedef struct
-{
-    // 0 = no cursor here, 1 = ok, 2 = arrows ok
-    short	status;
-    
-    char	name[10];
-    
-    // choice = menu item #.
-    // if status = 2,
-    //   choice=0:leftarrow,1:rightarrow
-    void	(*routine)(int choice);
-    
-    // hotkey in menu
-    char	alphaKey;			
-} menuitem_t;
-
-
-
-typedef struct menu_s
-{
-    short		numitems;	// # of menu items
-    struct menu_s*	prevMenu;	// previous menu
-    menuitem_t*		menuitems;	// menu items
-    void		(*routine)();	// draw routine
-    short		x;
-    short		y;		// x,y of menu
-    short		lastOn;		// last item user was on in menu
-} menu_t;
+// menuitem_t and menu_t are defined in m_menu.h
 
 short		itemOn;			// menu item skull is on
 short		skullAnimCounter;	// skull animation counter
@@ -288,8 +258,8 @@ static void M_DrawLoad(void);
 static void M_DrawSave(void);
 
 static void M_DrawSaveLoadBorder(int x,int y);
-static void M_SetupNextMenu(menu_t *menudef);
-static void M_DrawThermo(int x,int y,int thermWidth,int thermDot);
+// M_SetupNextMenu is declared in m_menu.h
+// M_DrawThermo is declared in m_menu.h
 void M_WriteText(int x, int y, const char *string);
 static int  M_StringWidth(const char *string);
 static int  M_StringHeight(const char *string);

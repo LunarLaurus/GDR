@@ -49,6 +49,14 @@ extern float damage_number_scale;
 extern int particle_effects;
 extern int goblin_reduce_motion;
 
+// Forward declarations for menu item callbacks
+void M_DiceSoundVol(int choice);
+void M_CritNotification(int choice);
+void M_ScreenShake(int choice);
+void M_DamageNumberScale(int choice);
+void M_ParticleEffects(int choice);
+void M_DrawGameSettings(void);
+
 enum
 {
     gamesettings_dicevol,

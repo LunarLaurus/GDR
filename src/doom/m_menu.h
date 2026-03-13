@@ -74,11 +74,49 @@ extern float hud_scale;
 extern int goblin_reduce_motion;
 extern int screen_reader_enabled;
 
+// Menu type definitions (shared with split menu files)
+#define LINEHEIGHT 16
+
+typedef struct
+{
+    // 0 = no cursor here, 1 = ok, 2 = arrows ok
+    short   status;
+
+    char    name[10];
+
+    // choice = menu item #.
+    // if status = 2,
+    //   choice=0:leftarrow,1:rightarrow
+    void    (*routine)(int choice);
+
+    // hotkey in menu
+    char    alphaKey;
+} menuitem_t;
+
+typedef struct menu_s
+{
+    short           numitems;   // # of menu items
+    struct menu_s*  prevMenu;   // previous menu
+    menuitem_t*     menuitems;  // menu items
+    void            (*routine)(); // draw routine
+    short           x;
+    short           y;          // x,y of menu
+    short           lastOn;     // last item user was on in menu
+} menu_t;
+
+// Main menu definition (used as prevMenu by submenus)
+extern menu_t MainDef;
+
+// Leaderboard close function
+void M_CloseLeaderboard(int choice);
+
 // Goblin Dice Rollaz: Level Up menu
-typedef struct menu_s menu_t;
 void M_SetupNextMenu(menu_t *menudef);
 extern menu_t LevelUpDef;
 void M_LevelUp(int choice);
+
+// Thermometer bar drawing (used by options/gameopts/accessibility menus)
+void M_DrawThermo(int x, int y, int thermWidth, int thermDot);
 
 // Text drawing function for intermission and other screens
 void M_WriteText(int x, int y, const char *string);
