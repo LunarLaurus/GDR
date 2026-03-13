@@ -19,6 +19,7 @@
 
 
 #include <stdlib.h>
+#include <math.h>
 #include <ctype.h>
 
 
@@ -110,13 +111,30 @@ int			content_warning_accepted = 0;  // Has user acknowledged warning
 // Goblin Dice Rollaz: Main menu animated background
 #define MENU_ANIM_FRAMES 8
 #define MENU_ANIM_SPEED 4
-#define MAX_MENU_PARTICLES 16
+#define MAX_MENU_PARTICLES 20
+
+// Die type palette: index into Doom palette for distinctive per-die colours
+// Safe dim palette indices that show up on black without blowing out
+static const int dice_palette_color[] = {
+    160, // d4  — orange-gold range
+    112, // d6  — green range
+    180, // d8  — amber
+     44, // d10 — rust red
+      8, // d12 — brown
+     80, // d20 — muted blue-purple range
+     32, // d100 — dark red
+};
+
+static const int dice_types[] = { 4, 6, 8, 10, 12, 20, 100 };
+#define NUM_DICE_TYPES 7
+
 typedef struct {
-    int x;
-    int y;
-    int die_type;  // 4, 6, 8, 10, 12, 20, 100
+    float x;
+    float y;      // float so sub-pixel speed actually moves the particle
+    int   die_type;
     float speed_y;
-    int color;
+    int   color;
+    int   wobble_offset; // horizontal oscillation phase
 } menu_dice_particle_t;
 
 static int menu_anim_tic = 0;
@@ -337,11 +355,11 @@ enum
 
 menuitem_t NewGameMenu[]=
 {
-    {1,"M_JKILL",	M_ChooseSkill, 'i'},
-    {1,"M_ROUGH",	M_ChooseSkill, 'h'},
-    {1,"M_HURT",	M_ChooseSkill, 'h'},
-    {1,"M_ULTRA",	M_ChooseSkill, 'u'},
-    {1,"M_NMARE",	M_ChooseSkill, 'n'}
+    {1,"",	M_ChooseSkill, 'i'},
+    {1,"",	M_ChooseSkill, 'h'},
+    {1,"",	M_ChooseSkill, 'h'},
+    {1,"",	M_ChooseSkill, 'u'},
+    {1,"",	M_ChooseSkill, 'n'}
 };
 
 menu_t  NewDef =
@@ -1162,15 +1180,16 @@ void M_InitMenuAnimation(void)
     if (menu_anim_initialized)
         return;
 
-    for (i = 0; i < 16; i++)
+    for (i = 0; i < MAX_MENU_PARTICLES; i++)
     {
-        menu_particles[i].x = (M_Random() % (SCREENWIDTH - 40)) + 20;
-        menu_particles[i].y = M_Random() % SCREENHEIGHT;
-        menu_particles[i].die_type = 4 + (M_Random() % 7) * 2; // 4, 6, 8, 10, 12, 16(not used), 18(not used), 20
-        if (menu_particles[i].die_type == 16 || menu_particles[i].die_type == 18)
-            menu_particles[i].die_type = 20;
-        menu_particles[i].speed_y = 0.2f + (M_Random() % 30) / 100.0f;
-        menu_particles[i].color = 4 + (M_Random() % 8); // palette colors in dark range
+        int dtype_idx = i % NUM_DICE_TYPES;
+        menu_particles[i].x            = (float)((M_Random() % (SCREENWIDTH - 48)) + 16);
+        menu_particles[i].y            = (float)(M_Random() % SCREENHEIGHT);
+        menu_particles[i].die_type     = dice_types[dtype_idx];
+        // Speed range 0.4–1.2 px/frame so all particles visibly move
+        menu_particles[i].speed_y      = 0.4f + (float)(M_Random() % 80) / 100.0f;
+        menu_particles[i].color        = dice_palette_color[dtype_idx];
+        menu_particles[i].wobble_offset = M_Random() % 64;
     }
     menu_anim_initialized = true;
 }
@@ -1179,115 +1198,129 @@ void M_InitMenuAnimation(void)
 // M_DrawMenuBackground
 // Draw animated background with floating dice for main menu
 //
+// Draw a single character from hu_font at (x,y), returns glyph width
+static int M_DrawMenuChar(int x, int y, char c)
+{
+    int cidx;
+    if (c >= 'a' && c <= 'z')
+        cidx = (c - 'a' + 'A') - HU_FONTSTART;
+    else
+        cidx = (unsigned char)c - HU_FONTSTART;
+
+    if (cidx >= 0 && cidx < HU_FONTSIZE && hu_font[cidx])
+    {
+        V_DrawPatchDirect(x, y, hu_font[cidx]);
+        return SHORT(hu_font[cidx]->width);
+    }
+    return 6;
+}
+
+// Draw a dice pip pattern for faces 1-6 inside a box at (bx,by) size (bw,bh)
+static void M_DrawDiePips(int bx, int by, int bw, int bh, int face, int col)
+{
+    // Pip positions as fractions of box (col_frac * bw / 4, row_frac * bh / 4)
+    static const int pip_col[6][6] = {
+        {2,-1,-1,-1,-1,-1}, // 1
+        {1, 3,-1,-1,-1,-1}, // 2
+        {1, 2, 3,-1,-1,-1}, // 3
+        {1, 3, 1, 3,-1,-1}, // 4
+        {1, 3, 2, 1, 3,-1}, // 5
+        {1, 3, 1, 3, 1, 3}, // 6
+    };
+    static const int pip_row[6][6] = {
+        {2,-1,-1,-1,-1,-1},
+        {1, 3,-1,-1,-1,-1},
+        {1, 2, 3,-1,-1,-1},
+        {1, 3, 1, 3,-1,-1},
+        {1, 3, 2, 1, 3,-1},
+        {1, 3, 1, 3, 1, 3},
+    };
+    int n, p;
+    if (face < 1 || face > 6) return;
+    n = face;
+    for (p = 0; p < n; p++)
+    {
+        int px = bx + (pip_col[face-1][p] * bw) / 4;
+        int py = by + (pip_row[face-1][p] * bh) / 4;
+        if (px >= 0 && py >= 0 && px < SCREENWIDTH && py < SCREENHEIGHT)
+            V_DrawFilledBox(px - 1, py - 1, 3, 3, col);
+    }
+}
+
 void M_DrawMenuBackground(void)
 {
     int i;
-    int frame;
-    int bg_color;
-    int time = I_GetTime();
 
-    // Initialize on first call
     if (!menu_anim_initialized)
         M_InitMenuAnimation();
 
-    // Update animation tic every few frames
-    if (time % 4 == 0)
-        menu_anim_tic++;
+    menu_anim_tic++;
 
-    // Cycle background color slowly
-    frame = (menu_anim_tic / 8) % MENU_ANIM_FRAMES;
+    // Dark background
+    V_DrawFilledBox(0, 0, SCREENWIDTH, SCREENHEIGHT, 0);
 
-    // Dark cavern-style background with subtle color shifting
-    bg_color = 0; // Base dark
-    V_DrawFilledBox(0, 0, SCREENWIDTH, SCREENHEIGHT, bg_color);
+    // Subtle horizontal scan-line bands for depth (every 4 rows, 1px tall)
+    for (i = 0; i < SCREENHEIGHT - 1; i += 4)
+        V_DrawFilledBox(0, i, SCREENWIDTH, 1, 2);
 
-    // Draw subtle gradient overlay (using box layers)
-    for (i = 0; i < 8; i++)
+    // Update and draw each die particle
+    for (i = 0; i < MAX_MENU_PARTICLES; i++)
     {
-        int alpha = (frame + i) % 16;
-        if (alpha < 8)
-            V_DrawFilledBox(0, i * (SCREENHEIGHT / 8), SCREENWIDTH, SCREENHEIGHT / 8, 0);
-    }
+        int px, py, bw, bh;
+        int wobble;
+        char label[8];
+        int lx, j;
 
-    // Draw floating dice particles
-    for (i = 0; i < 16; i++)
-    {
+        // Move upward — float y means every frame has real movement
         menu_particles[i].y -= menu_particles[i].speed_y;
 
-        // Wrap around when particle goes off screen
-        if (menu_particles[i].y < -20)
+        // Vertical wrap: reappear at bottom when off top
+        if (menu_particles[i].y < -24.0f)
         {
-            menu_particles[i].y = SCREENHEIGHT + 20;
-            menu_particles[i].x = (M_Random() % (SCREENWIDTH - 40)) + 20;
+            menu_particles[i].y      = (float)(SCREENHEIGHT + 10);
+            menu_particles[i].x      = (float)((M_Random() % (SCREENWIDTH - 48)) + 16);
+            menu_particles[i].speed_y = 0.4f + (float)(M_Random() % 80) / 100.0f;
         }
 
-        // Draw a simple representation of dice number using the number character
-        // Use hu_font to draw the die face number
+        py = (int)menu_particles[i].y;
+        if (py < -20 || py >= SCREENHEIGHT)
+            continue;
+
+        // Gentle horizontal wobble
+        wobble = (int)(2.0f * sinf(
+            (float)(menu_anim_tic + menu_particles[i].wobble_offset) * 0.08f));
+        px = (int)menu_particles[i].x + wobble;
+        px = px < 2 ? 2 : (px > SCREENWIDTH - 24 ? SCREENWIDTH - 24 : px);
+
+        // Die box size: d4/d6 need more room for pip patterns
+        bw = (menu_particles[i].die_type <= 6) ? 16 : 14;
+        bh = bw;
+
+        // Draw die border box (two-tone: bright edge, dark fill)
+        V_DrawFilledBox(px,     py,     bw,     bh,     menu_particles[i].color);
+        V_DrawFilledBox(px + 1, py + 1, bw - 2, bh - 2, 0);
+
+        // For d4/d6 draw pip pattern; for larger dice draw "dN" label
         if (menu_particles[i].die_type <= 6)
         {
-            // Draw dice face (1-6)
-            char dice_char = '0' + ((i % 6) + 1);
-            int char_index = dice_char - '!';
-            if (char_index >= 0 && char_index < HU_FONTSIZE && hu_font[char_index])
-            {
-                V_DrawPatchDirect(menu_particles[i].x, (int)menu_particles[i].y,
-                                  hu_font[char_index]);
-            }
+            // Animated face: cycle through 1..die_type slowly
+            int face = ((menu_anim_tic / 8 + i * 3) % menu_particles[i].die_type) + 1;
+            M_DrawDiePips(px + 1, py + 1, bw - 2, bh - 2, face,
+                          menu_particles[i].color);
         }
         else
         {
-            // For larger dice, draw the number as text
-            char dice_str[8];
-            int dice_num = menu_particles[i].die_type;
-            M_snprintf(dice_str, sizeof(dice_str), "%d", dice_num);
-            // Draw the d20 as a special case
-            if (dice_num == 20)
+            // Draw "d20", "d12", "d100" etc. as compact text inside the box
+            if (menu_particles[i].die_type == 100)
+                M_snprintf(label, sizeof(label), "d%%");
+            else
+                M_snprintf(label, sizeof(label), "d%d", menu_particles[i].die_type);
+
+            lx = px + 1;
+            for (j = 0; label[j] && lx < px + bw - 1; j++)
             {
-                // Draw '20' using the font
-                int char_index = '2' - '!';
-                if (char_index >= 0 && char_index < HU_FONTSIZE && hu_font[char_index])
-                    V_DrawPatchDirect(menu_particles[i].x, (int)menu_particles[i].y,
-                                      hu_font[char_index]);
-                char_index = '0' - '!';
-                if (char_index >= 0 && char_index < HU_FONTSIZE && hu_font[char_index])
-                    V_DrawPatchDirect(menu_particles[i].x + 8, (int)menu_particles[i].y,
-                                      hu_font[char_index]);
-            }
-            else if (dice_num == 10)
-            {
-                int char_index = '1' - '!';
-                if (char_index >= 0 && char_index < HU_FONTSIZE && hu_font[char_index])
-                    V_DrawPatchDirect(menu_particles[i].x, (int)menu_particles[i].y,
-                                      hu_font[char_index]);
-                char_index = '0' - '!';
-                if (char_index >= 0 && char_index < HU_FONTSIZE && hu_font[char_index])
-                    V_DrawPatchDirect(menu_particles[i].x + 8, (int)menu_particles[i].y,
-                                      hu_font[char_index]);
-            }
-            else if (dice_num == 12)
-            {
-                int char_index = '1' - '!';
-                if (char_index >= 0 && char_index < HU_FONTSIZE && hu_font[char_index])
-                    V_DrawPatchDirect(menu_particles[i].x, (int)menu_particles[i].y,
-                                      hu_font[char_index]);
-                char_index = '2' - '!';
-                if (char_index >= 0 && char_index < HU_FONTSIZE && hu_font[char_index])
-                    V_DrawPatchDirect(menu_particles[i].x + 8, (int)menu_particles[i].y,
-                                      hu_font[char_index]);
-            }
-            else if (dice_num == 8)
-            {
-                int char_index = '8' - '!';
-                if (char_index >= 0 && char_index < HU_FONTSIZE && hu_font[char_index])
-                    V_DrawPatchDirect(menu_particles[i].x, (int)menu_particles[i].y,
-                                      hu_font[char_index]);
-            }
-            else if (dice_num == 100)
-            {
-                int char_index = '%' - '!';
-                if (char_index >= 0 && char_index < HU_FONTSIZE && hu_font[char_index])
-                    V_DrawPatchDirect(menu_particles[i].x, (int)menu_particles[i].y,
-                                      hu_font[char_index]);
+                int w = M_DrawMenuChar(lx, py + 2, label[j]);
+                lx += w + 1;
             }
         }
     }
@@ -1303,8 +1336,10 @@ void M_DrawMainMenu(void)
 {
     M_DrawMenuBackground();
 
-    V_DrawPatchDirect(94, 2,
-                      W_CacheLumpName(DEH_String("M_DOOM"), PU_CACHE));
+    V_DrawFilledBox(40, 4, 240, 20, 0);
+    V_DrawFilledBox(40, 4,  240, 1, 160);
+    V_DrawFilledBox(40, 23, 240, 1, 160);
+    V_DrawGDRStringScaled(44, 7, "GOBLIN DICE ROLLAZ", 224, 1);
 
     M_WriteText(MainDef.x + 120, MainDef.y + LINEHEIGHT * 7, "Content");
 }
@@ -1317,8 +1352,18 @@ void M_DrawMainMenu(void)
 //
 void M_DrawNewGame(void)
 {
-    V_DrawPatchDirect(96, 14, W_CacheLumpName(DEH_String("M_NEWG"), PU_CACHE));
-    V_DrawPatchDirect(54, 38, W_CacheLumpName(DEH_String("M_SKILL"), PU_CACHE));
+    static const char *skill_labels[] = {
+        "1 - TOO YOUNG TO DIE",
+        "2 - HEY NOT TOO ROUGH",
+        "3 - HURT ME PLENTY",
+        "4 - ULTRA-VIOLENCE",
+        "6 - NIGHTMARE"
+    };
+    int i;
+    V_DrawGDRStringScaled(NewDef.x, NewDef.y - 24, "NEW GAME", 224, 1);
+    V_DrawGDRStringScaled(NewDef.x, NewDef.y - 12, "CHOOSE DIFFICULTY", 160, 1);
+    for (i = 0; i < 5; i++)
+        M_WriteText(NewDef.x, NewDef.y + i * LINEHEIGHT + 1, skill_labels[i]);
 }
 
 void M_NewGame(int choice)
@@ -2025,21 +2070,16 @@ M_DrawThermo
   int	thermWidth,
   int	thermDot )
 {
-    int		xx;
-    int		i;
-
-    xx = x;
-    V_DrawPatchDirect(xx, y, W_CacheLumpName(DEH_String("M_THERML"), PU_CACHE));
-    xx += 8;
-    for (i=0;i<thermWidth;i++)
-    {
-	V_DrawPatchDirect(xx, y, W_CacheLumpName(DEH_String("M_THERMM"), PU_CACHE));
-	xx += 8;
-    }
-    V_DrawPatchDirect(xx, y, W_CacheLumpName(DEH_String("M_THERMR"), PU_CACHE));
-
-    V_DrawPatchDirect((x + 8) + thermDot * 8, y,
-		      W_CacheLumpName(DEH_String("M_THERMO"), PU_CACHE));
+    int barW = thermWidth * 8;
+    // Background
+    V_DrawFilledBox(x, y, barW, 8, 0);
+    // Filled portion
+    V_DrawFilledBox(x, y, thermDot * 8, 8, 200);
+    // Border
+    V_DrawFilledBox(x, y,         barW, 1, 224);
+    V_DrawFilledBox(x, y + 7,     barW, 1, 224);
+    V_DrawFilledBox(x, y,         1,    8, 224);
+    V_DrawFilledBox(x + barW - 1, y,    1, 8,  224);
 }
 
 
@@ -2870,18 +2910,81 @@ void M_Drawer (void)
     {
         name = DEH_String(currentMenu->menuitems[i].name);
 
-	if (name[0] && W_CheckNumForName(name) > 0)
+	if (name[0] && W_CheckNumForName(name) >= 0)
 	{
 	    V_DrawPatchDirect (x, y, W_CacheLumpName(name, PU_CACHE));
+	}
+	else if (name[0])
+	{
+	    // Lump missing — look up a proper display name, fall back to lump name
+	    static const struct { const char *lump; const char *label; } lump_labels[] = {
+	        { "M_NGAME",  "New Game"       },
+	        { "M_SURVIV", "Survival"       },
+	        { "M_TIMATT", "Time Attack"    },
+	        { "M_LEADER", "Leaderboard"    },
+	        { "M_OPTION", "Options"        },
+	        { "M_GAMESET","Game Settings"  },
+	        { "M_ACCESS", "Accessibility"  },
+	        { "M_LOADG",  "Load Game"      },
+	        { "M_SAVEG",  "Save Game"      },
+	        { "M_RDTHIS", "Read This!"     },
+	        { "M_QUITG",  "Quit Game"      },
+	        { "M_CUSTM",  "Customize"      },
+	        { "M_MSGS",   "Messages"       },
+	        { "M_SNDvol", "Sound Volume"   },
+	        { "M_SENS",   "Mouse Sensitivity" },
+	        { "M_QUICK",  "Quick Save"     },
+	        { "M_ENDGC",  "End Game"       },
+	        { NULL, NULL }
+	    };
+	    const char *label = NULL;
+	    int li;
+	    for (li = 0; lump_labels[li].lump; li++)
+	    {
+	        if (!strcasecmp(name, lump_labels[li].lump))
+	        {
+	            label = lump_labels[li].label;
+	            break;
+	        }
+	    }
+	    if (!label) label = name;
+	    M_WriteText(x, y + 1, label);
+	    fprintf(stderr, "[STUB] Menu lump missing: %s — showing '%s'\n", name, label);
 	}
 	y += LINEHEIGHT;
     }
 
     
-    // DRAW SKULL
-    V_DrawPatchDirect(x + SKULLXOFF, currentMenu->y - 5 + itemOn*LINEHEIGHT,
-		      W_CacheLumpName(DEH_String(skullName[whichSkull]),
-				      PU_CACHE));
+    // DRAW DICE CURSOR (replaces skull)
+    {
+        static int dice_face = 1;
+        static int dice_timer = 0;
+        int cx = currentMenu->x + SKULLXOFF;
+        int cy = currentMenu->y - 4 + itemOn * LINEHEIGHT;
+        int sz = 16;
+        int dot = sz / 5;
+        int dr, dc;
+        // Animate: cycle face 1-6 every 8 ticks
+        if (++dice_timer >= 8) { dice_timer = 0; if (++dice_face > 6) dice_face = 1; }
+        // Die body
+        V_DrawFilledBox(cx, cy, sz, sz, 4);
+        // Die border
+        V_DrawFilledBox(cx,        cy,        sz, 1, 0);
+        V_DrawFilledBox(cx,        cy + sz-1, sz, 1, 0);
+        V_DrawFilledBox(cx,        cy,        1, sz, 0);
+        V_DrawFilledBox(cx + sz-1, cy,        1, sz, 0);
+        // Draw pips based on face value
+        #define PIP(px, py) V_DrawFilledBox(cx+(px), cy+(py), dot, dot, 0)
+        switch (dice_face) {
+            case 1: PIP(6, 6); break;
+            case 2: PIP(2, 2); PIP(9, 9); break;
+            case 3: PIP(2, 2); PIP(6, 6); PIP(9, 9); break;
+            case 4: PIP(2, 2); PIP(9, 2); PIP(2, 9); PIP(9, 9); break;
+            case 5: PIP(2, 2); PIP(9, 2); PIP(6, 6); PIP(2, 9); PIP(9, 9); break;
+            case 6: PIP(2, 2); PIP(9, 2); PIP(2, 6); PIP(9, 6); PIP(2, 10); PIP(9, 10); break;
+        }
+        #undef PIP
+    }
 }
 
 
