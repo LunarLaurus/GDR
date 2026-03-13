@@ -104,5 +104,10 @@ void V_LoadXlaTable(void);
 
 void V_DrawMouseSpeedBox(int speed);
 
+// GDR baked font rendering
+void V_DrawGDRChar(int x, int y, char c, int color);
+void V_DrawGDRString(int x, int y, const char *str, int color);
+void V_DrawGDRStringScaled(int x, int y, const char *str, int color, int scale);
+
 #endif
 

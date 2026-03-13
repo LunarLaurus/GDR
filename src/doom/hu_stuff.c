@@ -18,7 +18,9 @@
 
 #include <ctype.h>
 #include <stdlib.h>
+#include <string.h>
 
+#include "gdr_font.h"
 #include "doomdef.h"
 #include "doomkeys.h"
 
@@ -340,20 +342,54 @@ const char *mapnames_commercial[] =
     ""
 };
 
+// Synthesize a patch_t from gdr_font_data for character ch.
+// V_DrawPatch uses column offsets; each column is a single post of height GDR_FONT_H.
+// Layout: patch_t header (sizeof(patch_t)=40) + GDR_FONT_W columns * 13 bytes each.
+static patch_t *GDR_SynthGlyph(int ch)
+{
+    // Per column: topdelta(1) + length(1) + pad(1) + pixels(GDR_FONT_H) + pad(1) + terminator(1)
+    const int per_col = GDR_FONT_H + 5;
+    const int col_data_start = (int) sizeof(patch_t);
+    const int alloc_size = col_data_start + GDR_FONT_W * per_col;
+    byte *buf = Z_Malloc(alloc_size, PU_STATIC, NULL);
+    patch_t *p = (patch_t *) buf;
+    const unsigned char *glyph = NULL;
+    int col, row;
+
+    memset(buf, 0, alloc_size);
+    p->width      = SHORT(GDR_FONT_W);
+    p->height     = SHORT(GDR_FONT_H);
+    p->leftoffset = 0;
+    p->topoffset  = 0;
+
+    if (ch >= GDR_FONT_START && ch <= GDR_FONT_END)
+        glyph = gdr_font_data[ch - GDR_FONT_START];
+
+    for (col = 0; col < GDR_FONT_W; col++)
+    {
+        int col_ofs = col_data_start + col * per_col;
+        p->columnofs[col] = LONG(col_ofs);
+        buf[col_ofs + 0] = 0x00;            // topdelta = 0 (start at top)
+        buf[col_ofs + 1] = GDR_FONT_H;      // length = full height
+        buf[col_ofs + 2] = 0x00;            // pad_before
+        for (row = 0; row < GDR_FONT_H; row++)
+        {
+            buf[col_ofs + 3 + row] = (glyph && (glyph[row] & (0x80 >> col))) ? 224 : 0;
+        }
+        buf[col_ofs + 3 + GDR_FONT_H] = 0x00;  // pad_after
+        buf[col_ofs + 4 + GDR_FONT_H] = 0xff;  // end of column
+    }
+
+    return p;
+}
+
 void HU_Init(void)
 {
+    int i;
 
-    int		i;
-    int		j;
-    char	buffer[9];
-
-    // load the heads-up font
-    j = HU_FONTSTART;
-    for (i=0;i<HU_FONTSIZE;i++)
-    {
-	DEH_snprintf(buffer, 9, "STCFN%.3d", j++);
-	hu_font[i] = (patch_t *) W_CacheLumpName(buffer, PU_STATIC);
-    }
+    // Synthesize hu_font patches from baked GDR bitmap font (no WAD needed).
+    for (i = 0; i < HU_FONTSIZE; i++)
+        hu_font[i] = GDR_SynthGlyph(HU_FONTSTART + i);
 
     DMG_Init();
     PREDICT_Init();

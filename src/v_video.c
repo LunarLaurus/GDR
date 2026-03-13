@@ -1017,3 +1017,67 @@ void V_DrawMouseSpeedBox(int speed)
     }
 }
 
+#include "gdr_font.h"
+
+void V_DrawGDRChar(int x, int y, char c, int color)
+{
+    int col, row;
+    const unsigned char *glyph;
+
+    if (c < GDR_FONT_START || c > GDR_FONT_END)
+        return;
+
+    glyph = gdr_font_data[c - GDR_FONT_START];
+
+    for (row = 0; row < GDR_FONT_H; row++)
+    {
+        for (col = 0; col < GDR_FONT_W; col++)
+        {
+            if (glyph[row] & (0x80 >> col))
+            {
+                int px = x + col;
+                int py = y + row;
+                if (px >= 0 && px < SCREENWIDTH && py >= 0 && py < SCREENHEIGHT)
+                    I_VideoBuffer[py * SCREENWIDTH + px] = (pixel_t) color;
+            }
+        }
+    }
+}
+
+void V_DrawGDRString(int x, int y, const char *str, int color)
+{
+    int cx = x;
+    while (*str)
+    {
+        V_DrawGDRChar(cx, y, *str, color);
+        cx += GDR_FONT_W + 1;
+        str++;
+    }
+}
+
+void V_DrawGDRStringScaled(int x, int y, const char *str, int color, int scale)
+{
+    int cx = x;
+    int col, row, sx, sy;
+    const unsigned char *glyph;
+
+    while (*str)
+    {
+        char c = *str++;
+        if (c < GDR_FONT_START || c > GDR_FONT_END) { cx += (GDR_FONT_W + 1) * scale; continue; }
+        glyph = gdr_font_data[c - GDR_FONT_START];
+        for (row = 0; row < GDR_FONT_H; row++)
+            for (col = 0; col < GDR_FONT_W; col++)
+                if (glyph[row] & (0x80 >> col))
+                    for (sy = 0; sy < scale; sy++)
+                        for (sx = 0; sx < scale; sx++)
+                        {
+                            int px = cx + col * scale + sx;
+                            int py = y + row * scale + sy;
+                            if (px >= 0 && px < SCREENWIDTH && py >= 0 && py < SCREENHEIGHT)
+                                I_VideoBuffer[py * SCREENWIDTH + px] = (pixel_t) color;
+                        }
+        cx += (GDR_FONT_W + 1) * scale;
+    }
+}
+
