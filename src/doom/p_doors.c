@@ -38,6 +38,10 @@
 extern int arena_lock_tag;
 extern int arena_locked;
 
+// Slide door frame data (types defined in p_spec.h)
+#include "p_spec.h"
+slidename_t slideFrameNames[MAXSLIDEDOORS];
+
 
 
 

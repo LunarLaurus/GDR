@@ -18,6 +18,7 @@
 #define __P_PARTICLES_H__
 
 #include "doomdef.h"
+#include "m_fixed.h"
 
 #define MAX_PARTICLES 256
 

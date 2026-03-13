@@ -23,6 +23,7 @@
 #include "z_zone.h"
 #include "w_wad.h"
 
+#include "hu_stuff.h"
 #include "deh_main.h"
 #include "d_items.h"
 #include "doomdef.h"
