@@ -1155,7 +1155,7 @@ P_KillMobj
 
 	// Goblin Dice Rollaz: Track achievement kills
 	G_TrackAchievementProgress(ACH_TYPE_KILLS, global_dice_stats.kills);
-	if (target->flags & MF_BOSS)
+	if (target->flags2 & MF2_BOSS)
 	{
 	    G_TrackAchievementProgress(ACH_TYPE_BOSSES, 0);
 	}
@@ -2203,18 +2203,18 @@ P_DamageMobj
     if (source && source->player)
     {
         // Player is attacking - track the target if it's a boss
-        if (target->flags & MF_BOSS)
+        if (target->flags2 & MF2_BOSS)
         {
             source->player->bosstarget = target;
         }
     }
-    if (target->player && source && (source->flags & MF_BOSS))
+    if (target->player && source && (source->flags2 & MF2_BOSS))
     {
         // Boss is attacking player - track the boss
         target->player->bosstarget = source;
     }
     // If player damages a boss, also track it
-    if (target->player == NULL && source && source->player && (target->flags & MF_BOSS))
+    if (target->player == NULL && source && source->player && (target->flags2 & MF2_BOSS))
     {
         source->player->bosstarget = target;
     }

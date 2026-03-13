@@ -612,6 +612,22 @@ P_SpawnMobj
     mobj->radius = info->radius;
     mobj->height = info->height;
     mobj->flags = info->flags;
+
+    // Goblin Dice Rollaz: Initialize extended flags and scratch fields
+    mobj->flags2 = 0;
+    mobj->special1 = 0;
+    mobj->special2 = 0;
+    mobj->speed = 0;
+    mobj->damage = 0;
+
+    // Goblin Dice Rollaz: Set MF2_BOSS for boss mob types
+    if (type == MT_GOBLIN_KING ||
+        type == MT_DWARVEN_WAR_MACHINE ||
+        type == MT_DWARF_WARLORD)
+    {
+        mobj->flags2 |= MF2_BOSS;
+    }
+
     mobj->health = info->spawnhealth;
 
     // Goblin Dice Rollaz: Initialize enemy dodge capability

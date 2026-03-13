@@ -4223,7 +4223,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 	1500,		// mass
 	50,		// damage (high damage attacks)
 	sfx_bmact,		// activesound
-	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL|MF_BOSS,		// flags (BOSS flag for phase trigger)
+	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags (MF2_BOSS set at spawn via P_SpawnMobj)
 	S_NULL,		// raisestate
 	0,		// crit_resistance (50% crit reduction)
 	100,		// aggression (very aggressive)
@@ -4254,7 +4254,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 	2000,		// mass
 	100,		// damage (very high damage)
 	sfx_bmact,		// activesound
-	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL|MF_BOSS,		// flags
+	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags (MF2_BOSS set at spawn via P_SpawnMobj)
 	S_NULL,		// raisestate
 	75,		// crit_resistance (highly resistant to crits)
 	80,		// aggression
@@ -4456,7 +4456,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 	800,		// mass (very heavy)
 	25,		// damage (heavy attacks)
 	sfx_bmact,		// activesound
-	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL|MF_BOSS,		// flags (BOSS for phase trigger)
+	MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,		// flags (MF2_BOSS set at spawn via P_SpawnMobj)
 	S_SPOS_RAISE1,		// raisestate
 	80,		// crit_resistance (extremely high - boss)
 	100,		// aggression (maximum)

@@ -21,9 +21,11 @@
 #include "doomdef.h"
 #include "d_player.h"
 #include "p_local.h"
+#include "g_rpg.h"
 #include "doomstat.h"
 #include "m_menu.h"
 #include "g_game.h"
+
 
 #define XP_PER_LEVEL_BASE 100
 #define XP_PER_LEVEL_SCALE 50
@@ -103,7 +105,7 @@ void G_AddPlayerXPForKill(mobj_t* victim, mobj_t* inflictor)
 
     player = inflictor->player;
 
-    if (victim->flags & MF_FRIENDLY)
+    if (victim->flags2 & MF2_FRIENDLY)
         return;
 
     base_xp = 10;
@@ -117,7 +119,7 @@ void G_AddPlayerXPForKill(mobj_t* victim, mobj_t* inflictor)
             base_xp = 50;
     }
 
-    if (victim->flags & MF_BOSS)
+    if (victim->flags2 & MF2_BOSS)
     {
         base_xp *= 5;
     }
