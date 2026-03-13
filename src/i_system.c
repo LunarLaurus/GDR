@@ -83,6 +83,18 @@ static void I_PrintStackTrace(int sig)
     fflush(stderr);
 }
 
+#ifdef _WIN32
+#include <windows.h>
+static LONG CALLBACK I_HandleException(EXCEPTION_POINTERS *ep)
+{
+    fprintf(stderr, "\nCRASH: Unhandled exception 0x%08lX at 0x%p\n",
+            ep->ExceptionRecord->ExceptionCode,
+            ep->ExceptionRecord->ExceptionAddress);
+    fflush(stderr);
+    return EXCEPTION_EXECUTE_HANDLER;
+}
+#endif
+
 // I_InitCrashHandler - Initializes platform-specific crash handling
 // Windows: Sets up SetUnhandledExceptionFilter to catch unhandled exceptions
 // Unix-like: Registers signal handlers for SIGSEGV, SIGFPE, SIGILL, SIGABRT
@@ -375,8 +387,45 @@ void I_Error (const char *error, ...)
     // therefore be unable to otherwise see the message).
     if (exit_gui_popup && !I_ConsoleStdout())
     {
+#ifdef _WIN32
+        // Copy error message to clipboard
+        if (OpenClipboard(NULL))
+        {
+            HGLOBAL hglb = GlobalAlloc(GMEM_MOVEABLE, strlen(msgbuf) + 1);
+            if (hglb)
+            {
+                char *lptstr = (char *)GlobalLock(hglb);
+                memcpy(lptstr, msgbuf, strlen(msgbuf) + 1);
+                GlobalUnlock(hglb);
+                EmptyClipboard();
+                SetClipboardData(CF_TEXT, hglb);
+            }
+            CloseClipboard();
+        }
+
+        // Show dialog that auto-closes after 10 seconds
+        // MessageBoxTimeoutA is an undocumented but stable user32.dll export
+        {
+            typedef int (WINAPI *MSGBOXTIMEOUT_t)(HWND, LPCSTR, LPCSTR, UINT, WORD, DWORD);
+            MSGBOXTIMEOUT_t pMsgBoxTimeout = (MSGBOXTIMEOUT_t)GetProcAddress(
+                GetModuleHandleA("user32.dll"), "MessageBoxTimeoutA");
+            char title[128];
+            M_snprintf(title, sizeof(title), "%s  [closes in 10s, copied to clipboard]",
+                       PACKAGE_STRING);
+            if (pMsgBoxTimeout)
+            {
+                pMsgBoxTimeout(NULL, msgbuf, title, MB_OK | MB_ICONERROR, 0, 10000);
+            }
+            else
+            {
+                SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,
+                                         PACKAGE_STRING, msgbuf, NULL);
+            }
+        }
+#else
         SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,
                                  PACKAGE_STRING, msgbuf, NULL);
+#endif
     }
 
     // abort();
