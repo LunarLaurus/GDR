@@ -296,6 +296,7 @@ typedef enum
     S_D2_1,
     S_D2_2,
     S_D2_3,
+    S_D2_4,      // Goblin Dice Rollaz: D2 refire frame
     S_D2FLASH,
     S_D3,
     S_D3DOWN,
@@ -1441,8 +1442,6 @@ typedef enum
     S_TECH2LAMP2,
     S_TECH2LAMP3,
     S_TECH2LAMP4,
-    // Goblin Dice Rollaz: Missing weapon state (D2 refire frame)
-    S_D2_4,
     // Goblin Dice Rollaz: Environmental effect states (stubs - need WAD assets)
     S_ICE,          // GDR STUB: Ice effect spawn state
     S_FIRE,         // GDR STUB: Fire effect spawn state
