@@ -27,7 +27,7 @@
 
 // Size of statusbar.
 // Now sensitive for scaling.
-#define ST_HEIGHT	32
+#define ST_HEIGHT	48
 #define ST_WIDTH	SCREENWIDTH
 #define ST_Y		(SCREENHEIGHT - ST_HEIGHT)
 
@@ -81,5 +81,6 @@ extern cheatseq_t cheat_choppers;
 extern cheatseq_t cheat_clev;
 extern cheatseq_t cheat_mypos;
 
+extern int st_faceindex;
 
 #endif

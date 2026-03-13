@@ -25,6 +25,7 @@
 
 #include "playpal_data.h"
 #include "colormap_data.h"
+#include "gdr_face.h"
 #include "i_system.h"
 #include "i_video.h"
 #include "z_zone.h"
@@ -565,7 +566,7 @@ static patch_t*		shortnum[10];
 static patch_t*		keys[NUMCARDS]; 
 
 // face status patches
-static patch_t*		faces[ST_NUMFACES];
+// faces[] removed - replaced by procedural ST_DrawGDRFace
 
 // face background
 static patch_t*		faceback;
@@ -634,7 +635,7 @@ static boolean	oldweaponsowned[NUMWEAPONS];
 static int	st_facecount = 0;
 
 // current face index, used by w_faces
-static int	st_faceindex = 0;
+int	st_faceindex = 0;
 
 // holds key-type for each key box on bar
 static int	keyboxes[3]; 
@@ -1706,8 +1707,7 @@ void ST_Drawer (boolean fullscreen, boolean refresh)
     // ---------------------------------------------------------------
     // CENTER (x=176..207): Player face (32x32)
     // ---------------------------------------------------------------
-    if (faces[st_faceindex])
-        V_DrawPatchDirect(178, ST_Y + 8, faces[st_faceindex]);
+    ST_DrawGDRFace(178, ST_Y + 8, ST_GetGDRFaceState());
 
     // ---------------------------------------------------------------
     // CENTER-RIGHT (x=208..255): Armor
@@ -1783,8 +1783,6 @@ static void ST_loadUnloadGraphics(load_callback_t callback)
 
     int		i;
     int		j;
-    int		facenum;
-    
     char	namebuf[9];
 
     // Load the numbers, tall and short
@@ -1840,37 +1838,7 @@ static void ST_loadUnloadGraphics(load_callback_t callback)
         callback(DEH_String("STMBARR"), &sbarr);
     }
 
-    // face states
-    facenum = 0;
-    for (i=0; i<ST_NUMPAINFACES; i++)
-    {
-	for (j=0; j<ST_NUMSTRAIGHTFACES; j++)
-	{
-	    DEH_snprintf(namebuf, 9, "STFST%d%d", i, j);
-            callback(namebuf, &faces[facenum]);
-            ++facenum;
-	}
-	DEH_snprintf(namebuf, 9, "STFTR%d0", i);	// turn right
-        callback(namebuf, &faces[facenum]);
-        ++facenum;
-	DEH_snprintf(namebuf, 9, "STFTL%d0", i);	// turn left
-        callback(namebuf, &faces[facenum]);
-        ++facenum;
-	DEH_snprintf(namebuf, 9, "STFOUCH%d", i);	// ouch!
-        callback(namebuf, &faces[facenum]);
-        ++facenum;
-	DEH_snprintf(namebuf, 9, "STFEVL%d", i);	// evil grin ;)
-        callback(namebuf, &faces[facenum]);
-        ++facenum;
-	DEH_snprintf(namebuf, 9, "STFKILL%d", i);	// pissed off
-        callback(namebuf, &faces[facenum]);
-        ++facenum;
-    }
-
-    callback(DEH_String("STFGOD0"), &faces[facenum]);
-    ++facenum;
-    callback(DEH_String("STFDEAD0"), &faces[facenum]);
-    ++facenum;
+    // face states replaced by procedural ST_DrawGDRFace - no WAD patches loaded
 }
 
 static void ST_loadCallback(const char *lumpname, patch_t **variable)
@@ -1990,11 +1958,11 @@ void ST_createWidgets(void)
 		  &st_fragson,
 		  ST_FRAGSWIDTH);
 
-    // faces
+    // faces - patch array NULL since ST_DrawGDRFace renders procedurally
     STlib_initMultIcon(&w_faces,
 		       ST_FACESX,
 		       ST_FACESY,
-		       faces,
+		       NULL,
 		       &st_faceindex,
 		       &st_statusbaron);
 
