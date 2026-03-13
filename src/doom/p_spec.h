@@ -389,7 +389,6 @@ P_SpawnDoorRaiseIn5Mins
 
 
 
-#if 0 // UNUSED
 //
 //      Sliding doors...
 //
@@ -469,7 +468,6 @@ void
 EV_SlidingDoor
 ( line_t*	line,
   mobj_t*	thing );
-#endif
 
 
 
