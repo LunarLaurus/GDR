@@ -666,6 +666,84 @@ static default_t extra_defaults_list[] =
     //
     CONFIG_VARIABLE_INT(dice_crosshair_scale),
 
+    // Goblin Dice Rollaz: gameplay settings
+    CONFIG_VARIABLE_INT(advantage_mode),
+    CONFIG_VARIABLE_INT(luck),
+    CONFIG_VARIABLE_INT(powerup_spawn_rate),
+    CONFIG_VARIABLE_INT(crit_chance_default),
+    CONFIG_VARIABLE_INT(crit_multiplier_default),
+    CONFIG_VARIABLE_INT(crit_scaling_default),
+    CONFIG_VARIABLE_INT(crit_scaling_param),
+    CONFIG_VARIABLE_INT(crit_combo_timeout),
+    CONFIG_VARIABLE_INT(crit_combo_bonus),
+    CONFIG_VARIABLE_INT(crit_combo_max),
+    CONFIG_VARIABLE_INT(crit_notification),
+    CONFIG_VARIABLE_INT(dice_arena_damage_mult),
+    CONFIG_VARIABLE_INT(dice_sound_volume),
+    CONFIG_VARIABLE_INT(goblin_crit_boost_bonus),
+    CONFIG_VARIABLE_INT(goblin_exploding_dice),
+
+    // Goblin Dice Rollaz: powerup spawn rates
+    CONFIG_VARIABLE_INT(critboost_spawn_rate),
+    CONFIG_VARIABLE_INT(doubledamage_spawn_rate),
+    CONFIG_VARIABLE_INT(dicefortune_spawn_rate),
+    CONFIG_VARIABLE_INT(snakeeyes_spawn_rate),
+
+    // Goblin Dice Rollaz: difficulty scaling
+    CONFIG_VARIABLE_INT(difficulty_hp_baby),
+    CONFIG_VARIABLE_INT(difficulty_hp_easy),
+    CONFIG_VARIABLE_INT(difficulty_hp_medium),
+    CONFIG_VARIABLE_INT(difficulty_hp_hard),
+    CONFIG_VARIABLE_INT(difficulty_hp_nightmare),
+
+    // Goblin Dice Rollaz: status effect configuration
+    CONFIG_VARIABLE_INT(goblin_status_burn_damage),
+    CONFIG_VARIABLE_INT(goblin_status_burn_tics),
+    CONFIG_VARIABLE_INT(goblin_status_frozen_speed_mul),
+    CONFIG_VARIABLE_INT(goblin_status_frozen_tics),
+    CONFIG_VARIABLE_INT(goblin_status_stunned_tics),
+    CONFIG_VARIABLE_INT(goblin_status_dice_curse_tics),
+    CONFIG_VARIABLE_INT(goblin_status_dice_curse_variance_min),
+    CONFIG_VARIABLE_INT(goblin_status_dice_curse_variance_max),
+
+    // Goblin Dice Rollaz: multiplayer sync
+    CONFIG_VARIABLE_INT(debug_sync_check),
+    CONFIG_VARIABLE_INT(net_sync_debug),
+    CONFIG_VARIABLE_INT(rng_validation_enabled),
+    CONFIG_VARIABLE_INT(sv_authoritative_damage),
+    CONFIG_VARIABLE_INT(sv_validate_frequency),
+    CONFIG_VARIABLE_INT(sv_lag_compensation),
+    CONFIG_VARIABLE_INT(lag_compensation_window),
+
+    // Goblin Dice Rollaz: visual/performance
+    CONFIG_VARIABLE_INT(goblin_texture_lod),
+    CONFIG_VARIABLE_INT(goblin_particle_distance),
+    CONFIG_VARIABLE_INT(particle_effects),
+    CONFIG_VARIABLE_INT(r_spritedetail),
+    CONFIG_VARIABLE_INT(r_projectile_farclip),
+    CONFIG_VARIABLE_FLOAT(screen_shake_intensity),
+    CONFIG_VARIABLE_FLOAT(damage_number_scale),
+    CONFIG_VARIABLE_FLOAT(hud_scale),
+
+    // Goblin Dice Rollaz: HUD/gameplay toggles
+    CONFIG_VARIABLE_INT(show_messages),
+    CONFIG_VARIABLE_INT(goblin_weapon_stats),
+    CONFIG_VARIABLE_INT(kill_confirm_enabled),
+    CONFIG_VARIABLE_INT(rpg_mode),
+    CONFIG_VARIABLE_INT(thinker_profiling_enabled),
+
+    // Goblin Dice Rollaz: accessibility
+    CONFIG_VARIABLE_INT(goblin_colorblind_mode),
+    CONFIG_VARIABLE_INT(goblin_reduce_motion),
+    CONFIG_VARIABLE_INT(screen_reader_enabled),
+
+    // Goblin Dice Rollaz: save migration
+    CONFIG_VARIABLE_STRING(import_save_path),
+    CONFIG_VARIABLE_INT(import_saves_trigger),
+
+    // Goblin Dice Rollaz: mod loading
+    CONFIG_VARIABLE_STRING(goblin_mod_load_order),
+
     //!
     // If non-zero, save screenshots in PNG format. If zero, screenshots are
     // saved in PCX format, as Vanilla Doom does.
@@ -755,6 +833,16 @@ static default_t extra_defaults_list[] =
     // possible without clipping occurring.
 
     CONFIG_VARIABLE_FLOAT(libsamplerate_scale),
+
+    // Goblin Dice Rollaz: Cave reverb effect
+    CONFIG_VARIABLE_INT(snd_cave_reverb),
+    CONFIG_VARIABLE_INT(snd_cave_reverb_intensity),
+    CONFIG_VARIABLE_INT(snd_cave_reverb_mindarkness),
+    CONFIG_VARIABLE_INT(snd_cave_reverb_minceiling),
+
+    // Goblin Dice Rollaz: Audio level-of-detail
+    CONFIG_VARIABLE_INT(snd_audio_lod),
+    CONFIG_VARIABLE_INT(snd_audio_lod_dist),
 
     //!
     // Full path to a directory in which WAD files and dehacked patches
